@@ -1,0 +1,93 @@
+{
+  "name": "RoomUser",
+  "plural": "room-user",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "roomId": {
+        "type": "number",
+        "required": true
+    },
+    "userId": {
+        "type": "number",
+        "required": true
+    },
+    "points": {
+        "type": "number",
+        "required": false,
+        "default": 0
+    },
+    "hasFinished": {
+        "type": "boolean",
+        "required": false,
+        "default": false
+    },
+    "totalQuestions": {
+        "type": "number",
+        "required": false,
+        "default": 0
+    },
+    "totalCorrect": {
+        "type": "number",
+        "required": false,
+        "default": 0
+    },
+    "totalIncorrect": {
+        "type": "number",
+        "required": false,
+        "default": 0
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": [
+        "create"
+      ]
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": [
+        "upsertWithWhere"
+      ]
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "administrator",
+      "permission": "ALLOW",
+      "property": "*"
+    }
+  ],
+  "methods": {
+    "join": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/join"
+        }
+    }
+  }
+}

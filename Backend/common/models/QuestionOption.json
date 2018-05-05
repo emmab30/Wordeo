@@ -1,0 +1,29 @@
+{
+  "name": "QuestionOption",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "questionId": {
+        "type": "number",
+        "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "profitExp": {
+        "type": "number"
+    },
+    "isCorrect": {
+        "type": "boolean",
+        "default": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

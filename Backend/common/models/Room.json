@@ -1,0 +1,124 @@
+{
+  "name": "Room",
+  "plural": "rooms",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "name": {
+        "type": "string",
+        "required": true
+    },
+    "userId": {
+        "type": "number"
+    },
+    "players": {
+        "type": "number",
+        "required": false
+    },
+    "isProtected": {
+        "type": "boolean",
+        "default": false
+    },
+    "password": {
+        "type": "string"
+    },
+    "duration": {
+        "type": "number",
+        "default": 90
+    },
+    "isActive": {
+        "type": "boolean",
+        "default": "true"
+    },
+    "createdAt": {
+      "type": "date",
+      "required": false,
+      "default": null
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": [
+        "create"
+      ]
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": [
+        "upsertWithWhere"
+      ]
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "administrator",
+      "permission": "ALLOW",
+      "property": "*"
+    }
+  ],
+  "methods": {
+    "join": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/join"
+        }
+    },
+    "getStats": {
+        "accepts": {
+            "arg": "roomId",
+            "type": "number",
+            "required": true
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/:roomId/stats"
+        }
+    },
+    "postStats": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/stats"
+        }
+    }
+  }
+}

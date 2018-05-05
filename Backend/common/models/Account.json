@@ -1,0 +1,111 @@
+{
+  "name": "Account",
+  "plural": "accounts",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "password": {
+        "type": "string",
+        "required": true
+    },
+    "socketId": {
+        "type": "string",
+        "required": false
+    },
+    "isOnline": {
+        "type": "boolean",
+        "default": false
+    },
+    "lastLogin": {
+      "type": "date"
+    },
+    "createdAt": {
+      "type": "date",
+      "required": false,
+      "default": null
+    }
+  },
+  "validations": [],
+  "relations": {
+    "profile": {
+        "type": "hasOne",
+        "model": "Profile"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": [
+        "loginFacebook",
+        "me",
+        "uploadAvatar"
+      ]
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": [
+        "upsertWithWhere"
+      ]
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "administrator",
+      "permission": "ALLOW",
+      "property": "*"
+    }
+  ],
+  "methods": {
+    "me": {
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/me"
+        }
+    },
+    "loginFacebook": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/login/facebook"
+        }
+    },
+    "uploadAvatar": {
+        "accepts": [
+            { "arg": "req", "type": "object", "http": { "source": "req" } }
+        ],
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/me/uploadAvatar"
+        }
+    }
+  }
+}
