@@ -20,13 +20,13 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
     //This function determines when bootstrap has been initialized
 
     log('Initializing bots system.');
-    setTimeout(() => {
+    /* setTimeout(() => {
         BotUser.generateRoom(this);
     }, 5000);
     setInterval(() => {
         BotUser.generateRoom(this);
         log('Generating room from a Bot user type');
-    }, 50000);
+    }, 50000); */
 }
 
 SocketHandler.prototype.onPlayerConnected = function(sId, account){
