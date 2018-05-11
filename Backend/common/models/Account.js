@@ -193,7 +193,7 @@ module.exports = function(Account) {
                                             promises.push(new Promise((resolve, reject) => {
                                                 app.models.CharacterAccesory.findOne({ where : { id : userCharacterAccesories[idx].accesoryId }}, (e, result) => {
                                                     if(!err && result) {
-                                                        resolve(result.image);
+                                                        resolve(result);
                                                     }
                                                 })
                                             }));
@@ -201,13 +201,17 @@ module.exports = function(Account) {
 
                                         Promise.all(promises).then((value) => {
                                             let arr = [];
-                                            arr.push(__dirname + '/../../assets/images/character_set/monster_' + userCharacter.characterId + '.png');
+                                            arr.push({
+                                                src: (__dirname + '/../../assets/images/character_set/monster_' + userCharacter.characterId + '.png'),
+                                                zIndex: 0
+                                            });
 
                                             for(var idx in value) {
                                                 arr.push({
-                                                    src: __dirname + '/../../assets/images/character_set/' + value[idx],
+                                                    src: __dirname + '/../../assets/images/character_set/' + value[idx].image,
                                                     x: 0,
-                                                    y: 0
+                                                    y: 0,
+                                                    zIndex: value[idx].zIndex
                                                 });
                                             }
                                             mergeImages(arr, {
