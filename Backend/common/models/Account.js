@@ -214,6 +214,10 @@ module.exports = function(Account) {
                                                     zIndex: value[idx].zIndex
                                                 });
                                             }
+
+                                            arr.sort((a,b) => {
+                                                return a.zIndex > b.zIndex;
+                                            });
                                             mergeImages(arr, {
                                                 Canvas: Canvas
                                             }).then((b64) => {
