@@ -1,0 +1,31 @@
+{
+  "name": "UserCharacterAccesory",
+  "plural": "user-character-accesories",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "userCharacterId": {
+        "type": "number",
+        "required": true
+    },
+    "accesoryId": {
+        "type": "number",
+        "required": true
+    },
+    "isEquipped": {
+        "type": "boolean",
+        "required": true
+    },
+    "createdAt": {
+        "type": "date",
+        "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -4,6 +4,21 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 var SocketHandler = require('./classes/SocketHandler');
 var log = require('fancy-log');
+/* var mergeImages = require('merge-images');
+var Canvas = require('canvas');
+mergeImages([
+    './assets/images/character_set/monster_2.png',
+    { src: './assets/images/character_set/head_element_3.png', x: 0 },
+    { src: './assets/images/character_set/glass_1.png', x: 0 },
+    { src: './assets/images/character_set/mouth_7.png', x: 0 },
+    { src: './assets/images/character_set/monster_2_hands_1.png', x: 0 }
+], {
+    Canvas: Canvas
+}).then((b64) => {
+    var proc = require('child_process').spawn('pbcopy');
+    proc.stdin.write(b64);
+    proc.stdin.end();
+}); */
 
 var app = module.exports = loopback();
 
@@ -50,7 +65,6 @@ boot(app, __dirname, function(err) {
             log('Initialized redis on port 6379');
             log('Initializing socket handler');
             app.socketHandler.onInitializedBootstrap();
-
         }
 
         // etc.

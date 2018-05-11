@@ -43,6 +43,10 @@
     "dataSource": "mysql",
     "public": true
   },
+  "Configuration": {
+    "dataSource": "mysql",
+    "public": true
+  },
   "Question": {
     "dataSource": "mysql",
     "public": true
@@ -64,6 +68,22 @@
     "public": true
   },
   "Badge": {
+    "dataSource": "mysql",
+    "public": true
+  },
+  "Character": {
+    "dataSource": "mysql",
+    "public": true
+  },
+  "CharacterAccesory": {
+    "dataSource": "mysql",
+    "public": true
+  },
+  "UserCharacter": {
+    "dataSource": "mysql",
+    "public": true
+  },
+  "UserCharacterAccesory": {
     "dataSource": "mysql",
     "public": true
   }

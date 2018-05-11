@@ -4,6 +4,8 @@ const app = require('../../server/server');
 const loopbackContext = require("loopback-context");
 const log = require('fancy-log');
 
+const COMMON_RATE_TULS = 17.5;
+
 module.exports = function(Room) {
 
     Room.join = join;
@@ -118,6 +120,7 @@ module.exports = function(Room) {
 
                                 app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
                                     profile.experience_points += question.profitExp;
+                                    profile.balance_tuls += (question.profitExp * COMMON_RATE_TULS) / 100;
                                     profile.save();
                                 })
                             } else {

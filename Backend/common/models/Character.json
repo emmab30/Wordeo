@@ -1,0 +1,102 @@
+{
+  "name": "Character",
+  "plural": "characters",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "name": {
+        "type": "string",
+        "required": true
+    },
+    "price": {
+        "type": "number",
+        "required": false
+    },
+    "image_base": {
+        "type": "string",
+        "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "make": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/make"
+        }
+    },
+    "availableCharacters": {
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/availableCharacters"
+        }
+    },
+    "buyAccesories": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/buy_accesories"
+        }
+    },
+    "buyCharacter": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/buy_character"
+        }
+    },
+    "getMyCharacters": {
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/me"
+        }
+    }
+  }
+}

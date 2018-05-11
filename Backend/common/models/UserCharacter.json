@@ -1,0 +1,32 @@
+{
+  "name": "UserCharacter",
+  "plural": "user-character",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "profileId": {
+        "type": "number",
+        "required": true
+    },
+    "characterId": {
+        "type": "number",
+        "required": true
+    },
+    "createdAt": {
+        "type": "date",
+        "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "character": {
+        "type": "belongsTo",
+        "model": "Character"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

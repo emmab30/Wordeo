@@ -6,6 +6,8 @@ const multiparty = require('multiparty');
 const { join, extname } = require('path');
 const { readFileSync } = require('fs');
 const AWS = require('aws-sdk');
+var mergeImages = require('merge-images');
+var Canvas = require('canvas');
 const s3 = new AWS.S3({
     "accessKeyId": "AKIAISFXWZONKBC5R5WQ",
     "secretAccessKey": "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"
@@ -19,6 +21,20 @@ module.exports = function(Account) {
     function loginFacebook(data, next) {
 
         const ctx = this;
+
+        const debugMode = false;
+        if(debugMode) {
+            Account.findOne({ where : { email : 'eabuslaiman@gmail.com'}}, function(err, account) {
+                account.createAccessToken(12096000, function (error, token) {
+                    let obj = {
+                        session: token,
+                        user: account
+                    };
+                    next(null, obj);
+                });
+            });
+            return;
+        }
 
         /*//Only debug mode!
         if(data.accessToken == 'EAAMwIke40cQBACib6NlcIewCGhco4CmxSRr4YyYogI5ZBrW6pt8QGGUrZAGHq9jsRMHQK6gUOcOF0ZCpc523mhULbiMXZAvphM2VtZBJgvSyALOWhJeTuG49FZBZBS3MyCIZAqUrsnehTCTGLKY0b1FILENyA0bagP8zp6nZAvzGVIKAXqXVTfek4ZB2N3zH3qq2FENsE4gk9OYsCVF3av8Gv1x0d6ZCzfwJM8ZD')  {
@@ -131,24 +147,123 @@ module.exports = function(Account) {
         var accessToken = ctx && ctx.get('accessToken');
         if(accessToken != null && accessToken.userId > -1) {
             app.models.Account.findOne({ include: 'profile', where : { id : accessToken.userId  }}, function(err, user) {
-                if(err) {
-                    next(null, {
-                        result: false,
-                        error: err
+
+                var fnNext = (character = null, characterId = -1) => {
+                    user.profile.get().then((profile) => {
+                        if(character){
+                            user.__data.profile.characterId = characterId;
+                            user.__data.profile.character = character;
+                        }
+
+                        if(err) {
+                            next(null, {
+                                result: false,
+                                error: err
+                            });
+                        } else {
+                            if(user) {
+                                next(null, {
+                                    result: true,
+                                    user: user
+                                });
+                            } else {
+                                next(null, {
+                                    result: false,
+                                    user: null
+                                });
+                            }
+                        }
                     });
-                } else {
-                    if(user) {
-                        next(null, {
-                            result: true,
-                            user: user
-                        });
-                    } else {
-                        next(null, {
-                            result: false,
-                            user: null
-                        });
-                    }
                 }
+
+                user.profile.get().then((profile) => {
+
+                    //Get characters for user
+                    app.models.UserCharacter.find({ include : 'character', where : { profileId: profile.id }, order: 'createdAt DESC' }, (err, userCharacters) => {
+                        if(userCharacters != null && userCharacters.length > 0) {
+                            const userCharacter = userCharacters[0];
+                            userCharacter.character.get().then((character) => {
+                                //Load accesories for character!
+
+                                app.models.UserCharacterAccesory.find({ where : { userCharacterId : userCharacter.id }}, (err, userCharacterAccesories) => {
+                                    var promises = [];
+
+                                    if(!err && userCharacterAccesories) {
+                                        for(var idx in userCharacterAccesories) {
+                                            promises.push(new Promise((resolve, reject) => {
+                                                app.models.CharacterAccesory.findOne({ where : { id : userCharacterAccesories[idx].accesoryId }}, (e, result) => {
+                                                    if(!err && result) {
+                                                        resolve(result.image);
+                                                    }
+                                                })
+                                            }));
+                                        }
+
+                                        Promise.all(promises).then((value) => {
+                                            let arr = [];
+                                            arr.push(__dirname + '/../../assets/images/character_set/monster_' + userCharacter.characterId + '.png');
+
+                                            for(var idx in value) {
+                                                arr.push({
+                                                    src: __dirname + '/../../assets/images/character_set/' + value[idx],
+                                                    x: 0,
+                                                    y: 0
+                                                });
+                                            }
+                                            mergeImages(arr, {
+                                                Canvas: Canvas
+                                            }).then((b64) => {
+                                                fnNext(b64, userCharacter.characterId);
+                                            });
+                                        })
+                                    }
+                                });
+                            });
+                        } else {
+                            mergeImages([__dirname + '/../../assets/images/character_set/monster_default.png'], {
+                                Canvas: Canvas
+                            }).then((b64) => {
+                                fnNext(b64);
+                            });
+                        }
+                    })
+
+                    //Check if the user has any available character
+                    /* if(profile.character) {
+                        const character = JSON.parse(profile.character);
+                        var promises = [];
+                        for(var idx in character.accesories) {
+                            const accesoryId = character.accesories[idx];
+                            promises.push(new Promise((resolve, reject) => {
+                                app.models.CharacterAccesory.findOne({ where : { id : accesoryId }}, (e, result) => {
+                                    if(!err && result) {
+                                        resolve(result.image);
+                                    }
+                                })
+                            }));
+                        }
+
+                        Promise.all(promises).then((value) => {
+                            let arr = [];
+                            arr.push(__dirname + '/../../assets/images/character_set/monster_' + character.characterId + '.png');
+
+                            for(var idx in value) {
+                                arr.push({
+                                    src: __dirname + '/../../assets/images/character_set/' + value[idx],
+                                    x: 0,
+                                    y: 0
+                                });
+                            }
+                            mergeImages(arr, {
+                                Canvas: Canvas
+                            }).then((b64) => {
+                                fnNext(b64);
+                            });
+                        })
+                    } else {
+                        fnNext();
+                    } */
+                });
             })
         } else {
             next();
@@ -198,6 +313,7 @@ module.exports = function(Account) {
         var filterRole = {
             where: { name: 'Player' }
         };
+
         Account.app.models.Role.find(filterRole).then(function(role){
             role[0].principals.create({
               principalType: Account.app.models.RoleMapping.USER,

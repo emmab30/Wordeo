@@ -65,6 +65,14 @@ BotUser.simulateStats = (roomId, socketHandler) => {
                     socketHandler.io.sockets.to('Room=' + room.id).emit('onFinishedRound', {
                         roundTerminatedWithSuccess: true
                     });
+
+                    //Get the winner
+                    socketHandler.app.models.RoomUser.findOne({ order: 'points DESC', where : { roomId : room.id } }, (err, roomUser) => {
+                        socketHandler.app.models.Profile.findOne({ where : { accountId : roomUser.userId }}, (err, p) => {
+                            p.totalWins += 1;
+                            p.save();
+                        });
+                    });
                 }
             });
         };

@@ -23,7 +23,27 @@
       "required": true
     },
     "level": {
-      "type": "number"
+        "type": "number"
+    },
+    "balance_tuls": {
+        "type": "number",
+        "required": false,
+        "default": 0
+    },
+    "totalGames": {
+        "type": "number",
+        "required": false,
+        "default": 0
+    },
+    "totalWins": {
+        "type": "number",
+        "required": false,
+        "default": 0
+    },
+    "totalLost": {
+        "type": "number",
+        "required": false,
+        "default": 0
     },
     "experience_points": {
       "type": "number"
@@ -40,7 +60,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "userCharacters": {
+        "type": "hasMany",
+        "model": "Character",
+        "through": "UserCharacter"
+    }
+  },
   "acls": [],
   "methods": {}
 }

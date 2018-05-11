@@ -5,7 +5,7 @@ var io = require('socket.io')
 var BotUser = new require('./BotUser')
 
 const TIMEOUT_AFTER_PLAYER_DISCONNECTED  = 60; //In seconds
-const TIMEOUT_INSERT_BOT_AFTER_ROOM_CREATION  = 20000; //In seconds
+const TIMEOUT_INSERT_BOT_AFTER_ROOM_CREATION  = 1000; //In seconds
 
 var SocketHandler = function(app, io){
     this.app = app;
@@ -22,8 +22,8 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
     log('Initializing bots system.');
     /* setTimeout(() => {
         BotUser.generateRoom(this);
-    }, 5000);
-    setInterval(() => {
+    }, 5000); */
+    /* setInterval(() => {
         BotUser.generateRoom(this);
         log('Generating room from a Bot user type');
     }, 50000); */
@@ -130,11 +130,31 @@ SocketHandler.prototype.onPlayerFinishedRound = function(data, socket){
     let context = this;
     const roomName = 'Room=' + data.roomId;
 
+    this.app.models.Profile.findOne({ where : { accountId : data.userId }}, (err, profile) => {
+        profile.totalGames += 1;
+        profile.save();
+    });
+
     this.app.models.RoomUser.upsertWithWhere({roomId: data.roomId, userId: data.userId}, { roomId: data.roomId, userId: data.userId, hasFinished: true }, (err, result) => {
         this.app.models.RoomUser.count({ roomId: data.roomId, hasFinished: 0 }, function(err, count){
             if(count == 0) { //If there are no results, means that every player has finished
                 context.io.sockets.to(roomName).emit('onFinishedRound', {
                     roundTerminatedWithSuccess: true
+                });
+
+                //Get the winner
+                this.app.models.RoomUser.find({ order: 'points DESC', where : { roomId : data.roomId } }, (err, roomUser) => {
+                    for(var idx in roomUser) {
+                        this.app.models.Profile.findOne({ where : { accountId : roomUser.userId }}, (err, p) => {
+                            if(idx == 0) {
+                                p.totalWins += 1;
+                                p.save();
+                            } else {
+                                p.totalLost += 1;
+                                p.save();
+                            }
+                        });
+                    }
                 });
 
                 //Disconnect all the sockets from this room since it's terminated.
