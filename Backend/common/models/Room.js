@@ -121,6 +121,13 @@ module.exports = function(Room) {
                                 app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
                                     profile.experience_points += question.profitExp;
                                     profile.balance_tuls += (question.profitExp * COMMON_RATE_TULS) / 100;
+
+                                    //Streak correct answers
+                                    if(data.isStreakReward) {
+                                        profile.experience_points += 100;
+                                        profile.balance_tuls += COMMON_RATE_TULS;
+                                    }
+
                                     profile.save();
                                 })
                             } else {

@@ -1,0 +1,46 @@
+{
+  "name": "Contact",
+  "plural": "contacts",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "accountId": {
+        "type": "string",
+        "required": true
+    },
+    "subject": {
+        "type": "string",
+        "required": false
+    },
+    "message": {
+        "type": "string",
+        "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "send": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/send"
+        }
+    }
+  }
+}

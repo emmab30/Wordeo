@@ -59,6 +59,10 @@
     "dataSource": "mysql",
     "public": true
   },
+  "PendingQuestion": {
+    "dataSource": "mysql",
+    "public": true
+  },
   "Room": {
     "dataSource": "mysql",
     "public": true
@@ -84,6 +88,10 @@
     "public": true
   },
   "UserCharacterAccesory": {
+    "dataSource": "mysql",
+    "public": true
+  },
+  "Contact": {
     "dataSource": "mysql",
     "public": true
   }

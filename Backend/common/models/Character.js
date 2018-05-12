@@ -7,11 +7,13 @@ const loopbackContext = require("loopback-context");
 
 module.exports = function(Character) {
 
+    Character.availableCharacters = availableCharacters;
+    Character.getRankingTopPlayers = getRankingTopPlayers;
     Character.make = make;
     Character.getMyCharacters = getMyCharacters;
-    Character.availableCharacters = availableCharacters;
     Character.buyAccesories = buyAccesories;
     Character.buyCharacter = buyCharacter;
+    Character.getCharacterByUserId = getCharacterByUserId;
 
     function getMyCharacters(next) {
         /* var ctx = loopbackContext.getCurrentContext();
@@ -131,6 +133,36 @@ module.exports = function(Character) {
                 });
             })
         }
+    }
+
+    function getRankingTopPlayers(next) {
+
+        var ctx = loopbackContext.getCurrentContext();
+        var accessToken = ctx && ctx.get('accessToken');
+
+        app.models.Profile.find({ limit: 20, order: ['experience_points DESC', 'totalWins DESC'] }, (err, profiles) => {
+
+            //Check my position
+            app.models.Profile.find({ fields: { accountId: true }, order: ['experience_points DESC', 'totalWins DESC'] }, (err, allProfiles) => {
+                let promises = [];
+                for(var idx in profiles) {
+                    let profile = profiles[idx];
+                    promises.push(new Promise((resolve, reject) => {
+                        Character.getCharacterByUserId(profiles[idx].accountId, (character) => {
+                            profile.character = character;
+                            resolve(profile)
+                        })
+                    }));
+                }
+
+                Promise.all(promises).then((values) => {
+                    next(null, {
+                        myPosition: (allProfiles.indexOf(allProfiles.find((e) => { return e.accountId == accessToken.userId })) + 1),
+                        players: values
+                    });
+                });
+            });
+        });
     }
 
     function make(data, next) {
@@ -339,5 +371,66 @@ module.exports = function(Character) {
                 }
             });
         });
+    }
+
+    function getCharacterByUserId(userId, callback) {
+        app.models.Profile.findOne({ where : { accountId : userId }}, (err, profile) => {
+            if(profile) {
+                app.models.UserCharacter.find({ where : { profileId : profile.id }, order: 'createdAt DESC' }, (err, results) => {
+                    if(results.length > 0) {
+                        app.models.UserCharacterAccesory.find({ where : { userCharacterId : results[0].id }}, (err, accesories) => {
+                            let characterId = 1;
+                            if(results.length > 0) {
+                                characterId = results[0].characterId;
+                            } else {
+                                characterId = 'default';
+                            }
+
+                            let mergedItems = [];
+                            mergedItems.push({
+                                src: __dirname + '/../../assets/images/character_set/monster_' + characterId + '.png',
+                                zIndex: 0
+                            });
+
+                            let promises = [];
+                            for(var idx in accesories) {
+                                const accesoryId = accesories[idx].accesoryId;
+                                promises.push(new Promise((resolve, reject) => {
+                                    app.models.CharacterAccesory.findOne({ where : { id : accesoryId }}, (err, result) => {
+                                        if(!err && result) {
+                                            resolve(result);
+                                        }
+                                    })
+                                }));
+                            }
+
+                            Promise.all(promises).then((value) => {
+                                for(var idx in value) {
+                                    mergedItems.push({
+                                        src: __dirname + '/../../assets/images/character_set/' + value[idx].image,
+                                        x: 0,
+                                        y: 0,
+                                        zIndex: value[idx].zIndex
+                                    });
+                                }
+
+                                mergedItems.sort((a,b) => {
+                                    return a.zIndex > b.zIndex;
+                                });
+                                mergeImages(mergedItems, {
+                                    Canvas: Canvas
+                                }).then((b64) => {
+                                    callback(b64);
+                                });
+                            });
+                        });
+                    } else {
+                        callback(null);
+                    }
+                });
+            } else {
+                callback(null);
+            }
+        })
     }
 };

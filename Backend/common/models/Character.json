@@ -97,6 +97,16 @@
             "verb": "get",
             "path": "/me"
         }
+    },
+    "getRankingTopPlayers": {
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/ranking_top_players"
+        }
     }
   }
 }
