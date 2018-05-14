@@ -5,7 +5,7 @@ var io = require('socket.io')
 var BotUser = new require('./BotUser')
 
 const TIMEOUT_AFTER_PLAYER_DISCONNECTED  = 60; //In seconds
-const TIMEOUT_INSERT_BOT_AFTER_ROOM_CREATION  = 1000; //In seconds
+const TIMEOUT_INSERT_BOT_AFTER_ROOM_CREATION  = 6000; //In seconds
 
 var SocketHandler = function(app, io){
     this.app = app;
@@ -76,7 +76,8 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
 }
 
 SocketHandler.prototype.onRoomRemoved = function(roomId){
-    this.app.models.Room.destroyAll({roomId: roomId});
+    //this.app.models.Room.destroyAll({roomId: roomId});
+    this.app.models.Room.upsertWithWhere({ id: roomId }, { isActive : false });
     this.app.models.RoomUser.destroyAll({roomId: roomId});
 
     this.io.sockets.to('General').emit('onRoomRemoved', { id : roomId });

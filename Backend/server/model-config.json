@@ -59,6 +59,10 @@
     "dataSource": "mysql",
     "public": true
   },
+  "QuestionReport": {
+    "dataSource": "mysql",
+    "public": true
+  },
   "PendingQuestion": {
     "dataSource": "mysql",
     "public": true
@@ -68,6 +72,10 @@
     "public": true
   },
   "RoomUser": {
+    "dataSource": "mysql",
+    "public": true
+  },
+  "RoomUserQuestion": {
     "dataSource": "mysql",
     "public": true
   },

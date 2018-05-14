@@ -35,8 +35,13 @@
   "validations": [],
   "relations": {
     "options": {
-        "type": "belongsTo",
+        "type": "hasMany",
         "model": "QuestionOption"
+    },
+    "category": {
+        "type": "belongsTo",
+        "model": "QuestionCategory",
+        "foreignKey": "questionCategoryId"
     }
   },
   "acls": [],

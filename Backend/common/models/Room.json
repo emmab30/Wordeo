@@ -87,7 +87,7 @@
             "path": "/join"
         }
     },
-    "getStats": {
+    "getRoomStats": {
         "accepts": {
             "arg": "roomId",
             "type": "number",
@@ -100,6 +100,21 @@
         "http": {
             "verb": "get",
             "path": "/:roomId/stats"
+        }
+    },
+    "getQuestionStats": {
+        "accepts": {
+            "arg": "roomId",
+            "type": "number",
+            "required": true
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/:roomId/questions"
         }
     },
     "postStats": {

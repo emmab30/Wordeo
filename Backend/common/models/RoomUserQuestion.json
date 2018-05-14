@@ -1,0 +1,35 @@
+{
+  "name": "RoomUserQuestion",
+  "plural": "room_user_question",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "roomId": {
+        "type": "number",
+        "required": true
+    },
+    "accountId": {
+        "type": "number",
+        "required": true
+    },
+    "questionId": {
+        "type": "number",
+        "required": true
+    },
+    "optionId": {
+        "type": "number",
+        "required": false
+    },
+    "createdAt": {
+        "type": "date",
+        "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,45 @@
+{
+  "name": "QuestionReport",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "questionId": {
+        "type": "number",
+        "required": true
+    },
+    "questionId": {
+        "type": "number",
+        "required": true
+    },
+    "createdAt": {
+        "type": "date",
+        "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "create": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": false,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/create"
+        }
+    }
+  }
+}

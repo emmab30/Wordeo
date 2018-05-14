@@ -9,7 +9,8 @@ const COMMON_RATE_TULS = 17.5;
 module.exports = function(Room) {
 
     Room.join = join;
-    Room.getStats = getStats;
+    Room.getRoomStats = getRoomStats;
+    Room.getQuestionStats = getQuestionStats;
     Room.postStats = postStats;
 
     function join(data, next) {
@@ -75,7 +76,10 @@ module.exports = function(Room) {
         })
     }
 
-    function getStats(roomId, next) {
+    function getRoomStats(roomId, next) {
+        let ctx = loopbackContext.getCurrentContext();
+        let accessToken = ctx && ctx.get('accessToken');
+
         app.models.RoomUser.find({ where: { roomId: roomId }}, (err, userRooms) => {
             let userIds = [];
             for(var idx in userRooms) {
@@ -100,7 +104,47 @@ module.exports = function(Room) {
                 next(null, objects);
             });
         });
-        /* Get stats */
+    }
+
+    function getQuestionStats(roomId, next) {
+        let ctx = loopbackContext.getCurrentContext();
+        let accessToken = ctx && ctx.get('accessToken');
+
+        var promises = [];
+        app.models.RoomUserQuestion.find({ where : { roomId: roomId, accountId : accessToken.userId }}, (err, replies) => {
+            for(var idx in replies) {
+                const reply = replies[idx];
+                promises.push(new Promise((resolve, reject) => {
+                    app.models.Question.findOne({ include: [
+                        {
+                            relation: "category",
+                            "scope": {
+                                "fields": {
+                                    name: true
+                                }
+                            }
+                        },
+                        {
+                            relation: "options",
+                            "scope": {
+                                fields: {
+                                    isCorrect: true,
+                                    name: true,
+                                    id: true
+                                }
+                            }
+                        }
+                    ], where : { id : reply.questionId }}, (err, question) => {
+                        question.selectedOption = reply.optionId;
+                        resolve(question);
+                    });
+                }));
+            }
+
+            Promise.all(promises).then((values) => {
+                next(null, values);
+            });
+        });
     }
 
     function postStats(data, next) {
@@ -109,6 +153,16 @@ module.exports = function(Room) {
 
         if(accessToken && accessToken.userId > -1) {
             app.models.RoomUser.findOne({ where: { roomId: data.roomId, userId: accessToken.userId }}, (err, userRoom) => {
+
+                //Save the reply on database
+                if(data.questionId && data.optionId){
+                    app.models.RoomUserQuestion.create({
+                        accountId: accessToken.userId,
+                        roomId: data.roomId,
+                        questionId: data.questionId,
+                        optionId: data.optionId
+                    });
+                }
 
                 app.models.Question.findOne({ where : { id : data.questionId }}, (err, question) => {
                     if(question) {
