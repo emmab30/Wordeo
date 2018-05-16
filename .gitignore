@@ -1,1 +1,5 @@
 Backend/node_modules
+Backend/server/datasources.json
+Backend/server/config.json
+App/node_modules
+Design/
