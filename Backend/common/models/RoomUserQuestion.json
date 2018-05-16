@@ -11,7 +11,7 @@
         "type": "number",
         "required": true
     },
-    "accountId": {
+    "userId": {
         "type": "number",
         "required": true
     },

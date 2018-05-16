@@ -152,41 +152,6 @@ boot(app, __dirname, function(err) {
             });
 
             socket.on('message', function(data){
-
-                /*log("[debug] new incoming message on cluster ID " + process.env.pm_id);
-
-                var message = {
-                    userId: data.userId,
-                    roomId: data.roomId,
-                    message: data.message,
-                    image: data.image,
-                    doc: data.doc,
-                    voice: data.voice,
-                    gif: data.gif,
-                    seen: (data.seen || false),
-                    video: (data.video || false),
-                    error: false,
-                    retries: 0,
-                    activityId: (data.activityId != null ? data.activityId : null),
-                    internalId: (data.internalId != null ? data.internalId : null),
-                    isReplyCorrect: (data.isReplyCorrect || false),
-                    isReplyIncorrect: (data.isReplyIncorrect || false),
-                    isHidden: (data.isHidden || false),
-                    topicName: (data.topicName ? data.topicName : null),
-                    isInternalMessage: (data.isInternalMessage || false)
-                };
-
-                if(data.payload != null) {
-                    message.payload = data.payload;
-                }
-
-                ISocket.onNewStudentMessage(message, function(){
-                    //Success callback
-                }, function(error, entity, user){
-                    //Error callback (communication with botmaker)
-                    log.error("Failed sending message from " + message.userId + " [roomId: " + data.roomId + "] " + ". Details: " + error.message);
-                    socket.emit('message-sending-error', entity);
-                });*/
                 log('New message');
             });
         }

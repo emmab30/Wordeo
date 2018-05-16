@@ -33,7 +33,7 @@ module.exports = function(Room) {
                 }
 
                 //Check availability for room
-                app.models.RoomUser.count({ where : { roomId : room.id }}, function(err, count) {
+                app.models.RoomUser.count({ roomId : room.id }, function(err, count) {
 
                     //Check the players connected to this room.
                     if(room.isProtected) {
@@ -57,7 +57,7 @@ module.exports = function(Room) {
                                 next();
                             }
                         }
-                    } else if(isRoomFull(count)) { //This is because there are already 1 user (the owner of the room)
+                    } else if(isRoomFull(count)) {
                         //Check if the room is available.
                         error.status = 401;
                         error.message = 'La sala ya está completa.';
@@ -89,19 +89,24 @@ module.exports = function(Room) {
             app.models.Account.find({ include: 'profile', where : { id : { inq: userIds }}}, function(err, accounts) {
                 let objects = [];
 
-                if(accounts && accounts.length > 0) {
-                    for(var idx in accounts) {
-                        objects[idx] = accounts[idx];
-                        objects[idx].stats = userRooms.find((e) => { return e.userId == accounts[idx].id });
+                app.models.Configuration.findOne({ where : { name : 'TULS_RATE' }}, (err, value) => {
+                    if(accounts && accounts.length > 0) {
+                        for(var idx in accounts) {
+                            objects[idx] = accounts[idx];
+
+                            const userRoom = userRooms.find((e) => { return e.userId == accounts[idx].id });
+                            objects[idx].stats = userRoom;
+                            objects[idx].stats.tulsProfit = (userRoom.points * parseFloat(value.value)) / 100;
+                        }
+
+                        objects.sort((a, b) => {
+                            return parseInt(b.stats.points) - parseInt(a.stats.points);
+                        });
+                        objects[0].isWinner = true;
                     }
 
-                    objects.sort((a, b) => {
-                        return parseInt(b.stats.points) - parseInt(a.stats.points);
-                    });
-                    objects[0].isWinner = true;
-                }
-
-                next(null, objects);
+                    next(null, objects);
+                });
             });
         });
     }
@@ -111,7 +116,7 @@ module.exports = function(Room) {
         let accessToken = ctx && ctx.get('accessToken');
 
         var promises = [];
-        app.models.RoomUserQuestion.find({ where : { roomId: roomId, accountId : accessToken.userId }}, (err, replies) => {
+        app.models.RoomUserQuestion.find({ where : { roomId: roomId, userId : accessToken.userId }}, (err, replies) => {
             for(var idx in replies) {
                 const reply = replies[idx];
                 promises.push(new Promise((resolve, reject) => {
@@ -157,7 +162,7 @@ module.exports = function(Room) {
                 //Save the reply on database
                 if(data.questionId && data.optionId){
                     app.models.RoomUserQuestion.create({
-                        accountId: accessToken.userId,
+                        userId: accessToken.userId,
                         roomId: data.roomId,
                         questionId: data.questionId,
                         optionId: data.optionId

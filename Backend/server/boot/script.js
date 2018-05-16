@@ -1,9 +1,11 @@
 'use strict';
 
+const request = require('request');
+
 module.exports = function(server) {
 
     //Only do this for the first time.
-    if (process.env.pm_id == 1) {
+    if (process.env.pm_id == 0) {
         //Create default roles
         server.models.Role.upsertWithWhere({name : 'Administrator'}, {
             name: 'Administrator',
@@ -15,9 +17,58 @@ module.exports = function(server) {
             description: 'Player role'
         });
 
+        server.models.Role.upsertWithWhere({name: 'Bot'}, {
+            name: 'Bot',
+            description: 'Bot role'
+        });
+
         server.models.Configuration.upsertWithWhere({ name: 'TULS_RATE' }, {
             name: 'TULS_RATE',
-            value: '17.5'
+            value: '20.00'
+        });
+
+        server.models.Room.destroyAll({});
+        server.models.RoomUser.destroyAll({});
+        server.models.Account.update({isOnline: false}, (err, updated) => {
+            //Generate random bots if neccesary
+            server.models.Account.count({ isBot : true }, (err, count) => {
+                if(count <= 50) {
+                    const maxBotUsersQty = Math.floor(Math.random() * 20) + 70;
+                    request('https://randomuser.me/api/?results=' + maxBotUsersQty + '&nat=es', { json: true }, (err, res, body) => {
+                        for(var idx in body.results) {
+                            const result = body.results[idx];
+                            let account = {
+                                password: '$2a$10$jnAHPNshl50APC11tVFAzu5WGAw5rSsZtvq4xvebzFh.7mqbIBcIC',
+                                email: result.email,
+                                isOnline: true,
+                                lastLogin: new Date(),
+                                createdAt: new Date(),
+                                isBot: true
+                            };
+
+                            server.models.Account.create(account, (err, saved) => {
+                                if(saved) {
+                                    let profile = {
+                                        accountId: saved.id,
+                                        name: result.name.first.charAt(0).toUpperCase() + result.name.first.slice(1),
+                                        lastName: result.name.last.charAt(0).toUpperCase() + result.name.last.slice(1),
+                                        birthday: result.dob,
+                                        totalGames: 0,
+                                        totalWins: 0,
+                                        totalLost: 0,
+                                        experience_points: 0,
+                                        avatar: result.picture.large,
+                                        isBot: true
+                                    };
+                                    server.models.Profile.create(profile, (err1, savedProfile) => {
+                                        //Do nothing
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         });
 
         var monsters = [
@@ -170,9 +221,5 @@ module.exports = function(server) {
                 });
             }));
         }
-
-        server.models.Room.destroyAll({});
-        server.models.RoomUser.destroyAll({});
-        server.models.Account.update({isOnline: false});
     }
 };

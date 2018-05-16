@@ -1,0 +1,106 @@
+{
+  "name": "Notification",
+  "plural": "notifications",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "userId": {
+      "type": "number"
+    },
+    "message": {
+      "type": "string",
+      "required": true
+    },
+    "osPlayerId": {
+      "type": "string",
+      "required": true,
+      "description": "OneSignal notification ID"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "administrator",
+      "permission": "ALLOW",
+      "property": "*"
+    }
+  ],
+  "methods": {
+    "send": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "required": true,
+          "http": {
+            "source": "body"
+          }
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "description": "Send push notifications through OneSignal specifying the user ID and message.",
+      "http": {
+        "verb": "post",
+        "path": "/send"
+      }
+    },
+    "cancel": {
+      "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "required": true,
+          "http": {
+            "source": "body"
+          }
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        }
+      ],
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "description": "Cancel scheduled push notifications through OneSignal specifying ID for the notification.",
+      "http": {
+        "verb": "post",
+        "path": "/cancel"
+      }
+    },
+    "getScheduled": {
+      "accepts": {},
+      "returns": {
+        "root": true,
+        "type": "array"
+      },
+      "description": "Get scheduled push notifications",
+      "http": {
+        "verb": "get",
+        "path": "/scheduled"
+      }
+    }
+  }
+}

@@ -40,7 +40,12 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "users": {
+        "type": "hasMany",
+        "model": "RoomUser"
+    }
+  },
   "acls": [
     {
       "accessType": "EXECUTE",

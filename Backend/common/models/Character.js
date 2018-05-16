@@ -285,19 +285,24 @@ module.exports = function(Character) {
 
                         //Discount from the balance
                         profile.balance_tuls -= character.price;
-
-                        app.models.UserCharacter.create({
-                            userId: accessToken.userId,
-                            characterId: character.id,
-                            profileId: profile.id
-                        }, (err, created) => {
-                            if(!err && created) {
-                                next(null, {
-                                    code: 0,
-                                    message: 'Tu compra se ha realizado con éxito! Comienza a comprar items para tu nuevo personaje!'
+                        profile.save((err, profile) => {
+                            if(!err) {
+                                app.models.UserCharacter.create({
+                                    userId: accessToken.userId,
+                                    characterId: character.id,
+                                    profileId: profile.id
+                                }, (err, created) => {
+                                    if(!err && created) {
+                                        next(null, {
+                                            code: 0,
+                                            message: 'Tu compra se ha realizado con éxito! Comienza a comprar items para tu nuevo personaje!'
+                                        });
+                                    }
                                 });
                             } else {
-                                console.log(err);
+                                error.message = 'No tienes los tuls suficientes para comprar este personaje.';
+                                error.code = 'UNSUFFICIENT_FOUNDS';
+                                next(error);
                             }
                         });
                     } else {
@@ -425,7 +430,16 @@ module.exports = function(Character) {
                             });
                         });
                     } else {
-                        callback(null);
+                        let mergedItems = [];
+                        mergedItems.push({
+                            src: __dirname + '/../../assets/images/character_set/monster_default.png',
+                            zIndex: 0
+                        });
+                        mergeImages(mergedItems, {
+                            Canvas: Canvas
+                        }).then((b64) => {
+                            callback(b64);
+                        });
                     }
                 });
             } else {

@@ -4,8 +4,10 @@ var moment = require('moment');
 var io = require('socket.io')
 var BotUser = new require('./BotUser')
 
-const TIMEOUT_AFTER_PLAYER_DISCONNECTED  = 60; //In seconds
-const TIMEOUT_INSERT_BOT_AFTER_ROOM_CREATION  = 6000; //In seconds
+const TIME_BEFORE_ROUND_STARTS  = 10 * 1000;
+const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 15 * 1000;
+const INTERVAL_BOT_CREATION_ROOMS  = 10 * 1000;
+const INTERVAL_CHANGE_STATUS_BOTS = 300 * 1000;
 
 var SocketHandler = function(app, io){
     this.app = app;
@@ -19,26 +21,51 @@ var SocketHandler = function(app, io){
 SocketHandler.prototype.onInitializedBootstrap = function() {
     //This function determines when bootstrap has been initialized
 
-    log('Initializing bots system.');
-    /* setTimeout(() => {
-        BotUser.generateRoom(this);
-    }, 5000); */
-    /* setInterval(() => {
-        BotUser.generateRoom(this);
-        log('Generating room from a Bot user type');
-    }, 50000); */
+    console.log("Smart bot system initialized..");
+
+    //Set online the bots
+    BotUser.setRandomStatuses(this);
+    let intervalStatusBots = setInterval(() => {
+        BotUser.setRandomStatuses(this)
+    }, INTERVAL_CHANGE_STATUS_BOTS);
+
+    let context = this;
+    let interval = setInterval(() => {
+        var dataSource = this.app.dataSources.mysql.connector;
+        let query = "SELECT Room.*, COUNT(RoomUser.id) as users_connected FROM Room " +
+            "LEFT JOIN RoomUser ON RoomUser.roomId = Room.id " +
+            "LEFT JOIN Account ON Room.userId = Account.id " +
+            "WHERE Room.isActive = TRUE AND Room.isProtected = FALSE AND Account.isBot = false " +
+            "GROUP BY Room.id, Room.players " +
+            "HAVING COUNT(RoomUser.id) < Room.players";
+
+        dataSource.query(query, (err1, rooms) => {
+            for(var idx in rooms) {
+                const room = rooms[idx];
+                context.getDetailsForRoom(room.id, (data) => {
+                    if(data.accounts.length < room.players) {
+                        BotUser.assignRandomBotToRoom(context, room.id, (success) => {
+                            //Do nothing
+                        });
+                    }
+                });
+            }
+        });
+    }, INTERVAL_BOT_CHECKER_EMPTY_ROOMS);
+
+    let intervalCreationRooms = setInterval(() => {
+        this.app.models.Room.count({ isActive : true }, (err, activeRooms) => {
+            if(activeRooms < 15) {
+                BotUser.generateRandomRoom(context);
+            }
+        });
+    }, INTERVAL_BOT_CREATION_ROOMS);
 }
 
 SocketHandler.prototype.onPlayerConnected = function(sId, account){
     this.app.models.Account.upsertWithWhere({id: account.id}, { isOnline: true, socketId: sId }, (err, result) => {
         if(this.io) {
             const sockets = this.io.sockets;
-
-            this.app.models.Account.count({ isOnline : true }, function(err, count) {
-                if(!err) {
-                    sockets.to('General').emit('onStatisticsUsers', { online : count });
-                }
-            });
         }
     });
 }
@@ -56,8 +83,8 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
                     }, socket);
                 } else {
                     log('The user is not playing in any room.');
-                    this.app.models.Room.destroyAll({ userId : user.id });
-                    this.app.models.RoomUser.destroyAll({ roomId: roomUser.roomId });
+                    //this.app.models.Room.destroyAll({ userId : user.id });
+                    //this.app.models.RoomUser.destroyAll({ roomId: roomUser.roomId });
                 }
             })
         }
@@ -86,14 +113,12 @@ SocketHandler.prototype.onRoomRemoved = function(roomId){
 /*
 *   This will be triggered from Room after remote webhook.
 */
-SocketHandler.prototype.onRoomCreated = function(room){
+SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
     let context = this;
     const roomName = 'Room=' + room.id;
 
     this.app.models.Account.findOne({ include: 'profile', where : { id: room.userId }}, (err, user) => {
-        context.io.of('/').adapter.remoteJoin(user.socketId, roomName, (err) => {
-            log(err);
-            //We'll suppose that the user is connected to that room now.
+        var _fn = () => {
             context.app.models.RoomUser.create({
                 roomId: room.id,
                 userId: room.userId
@@ -101,29 +126,38 @@ SocketHandler.prototype.onRoomCreated = function(room){
                 this.io.sockets.to('General').emit('onRoomCreated', room);
                 if(!error) {
                     context.getDetailsForRoom(room.id, (data) => {
-                        setTimeout(() => {
-                            context.io.sockets.to(roomName).emit('onRoomActivity', data);
-                            context.onJoinedToRoom(room, room.userId);
-
-                            if(room.userId > 1) {
-                                setTimeout(() => {
-                                    context.getDetailsForRoom(room.id, (data) => {
-                                        if(data.accounts.length < room.players) {
-                                            context.app.models.RoomUser.create({
-                                                roomId: room.id,
-                                                userId: 1
-                                            }, (err, bot) => {
-                                                context.onJoinedToRoom(room, 1, true);
-                                            });
-                                        }
+                        let promises = [];
+                        for(var idx in data.accounts) {
+                            let account = data.accounts[idx];
+                            promises.push(new Promise((resolve, reject) => {
+                                context.app.models.Character.getCharacterByUserId(account.id, (character) => {
+                                    context.app.models.Account.getRankingByUserId(account.id, (rank) => {
+                                        account.avatar = character;
+                                        account.rank = rank;
+                                        resolve(account);
                                     });
-                                }, TIMEOUT_INSERT_BOT_AFTER_ROOM_CREATION);
-                            }
-                        }, 1000);
+                                });
+                            }));
+                        }
+                        Promise.all(promises).then((values) => {
+                            setTimeout(() => {
+                                context.io.sockets.to(roomName).emit('onRoomActivity', {
+                                    accounts: values
+                                });
+                                context.onJoinedToRoom(room, room.userId, isCreatedByBot);
+                            }, 2000);
+                        });
                     });
                 }
             });
-        });
+        }
+        if(isCreatedByBot) {
+            _fn();
+        } else {
+            context.io.of('/').adapter.remoteJoin(user.socketId, roomName, (err) => {
+                _fn();
+            });
+        }
     })
 }
 
@@ -173,23 +207,50 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
     let context = this;
     const roomName = 'Room=' + room.id;
 
-    this.app.models.Account.findOne({ where : { id: userId }}, function(err, user) {
+    this.app.models.Account.findOne({ where : { id: userId }}, (err, user) => {
 
         var fn = () => {
             context.getDetailsForRoom(room.id, (data) => {
-                setTimeout(() => {
-                    context.io.sockets.to(roomName).emit('onRoomActivity', data);
+                let promises = [];
+                for(var idx in data.accounts) {
+                    let account = data.accounts[idx];
+                    promises.push(new Promise((resolve, reject) => {
+                        context.app.models.Character.getCharacterByUserId(account.id, (character) => {
+                            context.app.models.Account.getRankingByUserId(account.id, (rank) => {
+                                account.avatar = character;
+                                account.rank = rank;
+                                resolve(account);
+                            });
+                        });
+                    }));
+                }
+                Promise.all(promises).then((values) => {
+                    setTimeout(() => {
+                        context.io.sockets.to(roomName).emit('onRoomActivity', {
+                            accounts: values
+                        });
 
-                    if(room.players == data.accounts.length) {
-                        context.io.sockets.to(roomName).emit('onStartRound');
-                    }
-                }, 2000);
+                        if(room.players == data.accounts.length) {
+                            context.io.sockets.to(roomName).emit('onStartRound');
+
+                            //Start simulating stats for bots in that room only for bots there.
+                            for(var idx in data.accounts) {
+                                const account = data.accounts[idx];
+                                if(account.isBot) {
+                                    setTimeout(() => {
+                                        log('Simulating stats for bot ' + account.id + ' in room ' + room.id);
+                                        BotUser.simulateStats(context, room.id, account.id);
+                                    }, TIME_BEFORE_ROUND_STARTS);
+                                }
+                            }
+                        }
+                    }, 2000);
+                })
             });
         }
 
         if(isBot) {
             fn();
-            BotUser.simulateStats(room.id, context);
         } else {
             context.io.of('/').adapter.remoteJoin(user.socketId, roomName, (err) => {
                 //We'll suppose that the user is connected to that room now.

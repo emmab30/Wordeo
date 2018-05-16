@@ -17,6 +17,7 @@ module.exports = function(Account) {
     Account.loginFacebook = loginFacebook;
     Account.me = getMe;
     Account.uploadAvatar = uploadAvatar;
+    Account.getRankingByUserId = getRankingByUserId;
 
     function loginFacebook(data, next) {
 
@@ -35,30 +36,6 @@ module.exports = function(Account) {
             });
             return;
         }
-
-        /*//Only debug mode!
-        if(data.accessToken == 'EAAMwIke40cQBACib6NlcIewCGhco4CmxSRr4YyYogI5ZBrW6pt8QGGUrZAGHq9jsRMHQK6gUOcOF0ZCpc523mhULbiMXZAvphM2VtZBJgvSyALOWhJeTuG49FZBZBS3MyCIZAqUrsnehTCTGLKY0b1FILENyA0bagP8zp6nZAvzGVIKAXqXVTfek4ZB2N3zH3qq2FENsE4gk9OYsCVF3av8Gv1x0d6ZCzfwJM8ZD')  {
-            Account.findOne({ where : { email : 'eabuslaiman@gmail.com'}}, function(err, account) {
-                account.createAccessToken(12096000, function (error, token) {
-                    let obj = {
-                        session: token,
-                        user: account
-                    };
-                    next(null, obj);
-                });
-            });
-        } else {
-            Account.findOne({ where : { email : 'jburalkmpy_1524744240@tfbnw.net'}}, function(err, account) {
-                account.createAccessToken(12096000, function (error, token) {
-                    let obj = {
-                        session: token,
-                        user: account
-                    };
-                    next(null, obj);
-                });
-            });
-        }
-        return;*/
 
         //Data contains the access token for the user, so if it's not already registered in the system, it will be registered automatically.
         graph.setAccessToken(data.accessToken);
@@ -80,6 +57,9 @@ module.exports = function(Account) {
                         let user = new Account;
                         user.email = dataGraph.email;
                         user.password = 'Wordeo2018EA3011!';
+                        user.appVersion = data.appVersion;
+                        user.notificationId = data.notificationId;
+                        user.platform = data.platform;
                         user.lastLogin = new Date();
 
                         let profile = new app.models.Profile;
@@ -95,6 +75,7 @@ module.exports = function(Account) {
                         user.save({}, function(err, userCreated) {
                             profile.accountId = userCreated.id;
                             profile.save({}, function(err, profile) {
+                                app.models.Notification.updateTagsDevice(userCreated.id);
                                 onUserCreated(userCreated, function(){
                                      Account.findOne(filter, function(err, user) {
                                         user.createAccessToken(12096000, function (error, token) {
@@ -121,6 +102,8 @@ module.exports = function(Account) {
 
                         account.lastLogin = new Date();
                         account.save();
+
+                        app.models.Notification.updateTagsDevice(account.id);
 
                         account.createAccessToken(12096000, function (error, token) {
                             let obj = {
@@ -345,6 +328,25 @@ module.exports = function(Account) {
                 ]
             }
         }); */
+    }
+
+    function getRankingByUserId(userId, callback) {
+        var dataSource = app.dataSources.mysql.connector;
+        var query = "SELECT id, isBot, (SELECT count(id) FROM profile f WHERE f.experience_points > profile.experience_points) + 1 as rank " +
+            "FROM profile " +
+            "WHERE accountId = " + userId + " " +
+            "ORDER BY experience_points;";
+        dataSource.query(query, (err1, rank) => {
+            if(rank && rank.length > 0) {
+                if(rank[0].isBot) {
+                    callback(Math.floor(Math.random() * 25) + 750);
+                } else {
+                    callback(rank[0].rank);
+                }
+            } else {
+                callback(-1);
+            }
+        });
     }
 
     /* HELPER FUNCTIONS */

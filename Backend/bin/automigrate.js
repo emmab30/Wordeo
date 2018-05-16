@@ -10,6 +10,7 @@ var lbTables = [
     'Badge',
     'Room',
     'RoomUser',
+    'RoomUserQuestion',
     'Profile',
     'Account',
     'User',
@@ -17,9 +18,13 @@ var lbTables = [
     'ACL',
     'RoleMapping',
     'Role',
-    'Question',
+    //'Question',
     'QuestionCategory',
-    'QuestionOption'
+    'QuestionReport',
+    'Notification',
+    //'QuestionOption',
+    'PendingQuestion',
+    'Contact'
 ];
 ds.automigrate(lbTables, function(er) {
     if (er) throw er;

@@ -21,7 +21,23 @@
         "default": false
     },
     "lastLogin": {
-      "type": "date"
+        "type": "date"
+    },
+    "appVersion": {
+        "type": "string",
+        "required": false
+    },
+    "notificationId": {
+        "type": "string",
+        "required": false
+    },
+    "platform": {
+        "type": "string",
+        "required": false
+    },
+    "isBot": {
+        "type": "boolean",
+        "default": false
     },
     "createdAt": {
         "type": "date",
