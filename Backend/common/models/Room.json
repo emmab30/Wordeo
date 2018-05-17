@@ -11,6 +11,10 @@
         "type": "string",
         "required": true
     },
+    "code": {
+        "type": "string",
+        "required": false
+    },
     "userId": {
         "type": "number"
     },
@@ -31,7 +35,11 @@
     },
     "isActive": {
         "type": "boolean",
-        "default": "true"
+        "default": true
+    },
+    "hasStarted": {
+        "type": "boolean",
+        "default": false
     },
     "createdAt": {
       "type": "date",
@@ -74,6 +82,24 @@
     }
   ],
   "methods": {
+    "invite": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/invite"
+        }
+    },
     "join": {
         "accepts": {
             "arg": "data",

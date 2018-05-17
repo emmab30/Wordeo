@@ -3,6 +3,7 @@ var log = require('fancy-log');
 var moment = require('moment');
 var io = require('socket.io')
 var BotUser = new require('./BotUser')
+var _ = require('lodash');
 
 const TIME_BEFORE_ROUND_STARTS  = 10 * 1000;
 const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 15 * 1000;
@@ -21,7 +22,7 @@ var SocketHandler = function(app, io){
 SocketHandler.prototype.onInitializedBootstrap = function() {
     //This function determines when bootstrap has been initialized
 
-    console.log("Smart bot system initialized..");
+    log("Smart bot system initialized..");
 
     //Set online the bots
     BotUser.setRandomStatuses(this);
@@ -35,7 +36,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
         let query = "SELECT Room.*, COUNT(RoomUser.id) as users_connected FROM Room " +
             "LEFT JOIN RoomUser ON RoomUser.roomId = Room.id " +
             "LEFT JOIN Account ON Room.userId = Account.id " +
-            "WHERE Room.isActive = TRUE AND Room.isProtected = FALSE AND Account.isBot = false " +
+            "WHERE Room.isActive = TRUE AND Room.hasStarted = FALSE AND Room.isProtected = FALSE AND Account.isBot = false " +
             "GROUP BY Room.id, Room.players " +
             "HAVING COUNT(RoomUser.id) < Room.players";
 
@@ -55,7 +56,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     let intervalCreationRooms = setInterval(() => {
         this.app.models.Room.count({ isActive : true }, (err, activeRooms) => {
-            if(activeRooms < 15) {
+            if(activeRooms < 2) {
                 BotUser.generateRandomRoom(context);
             }
         });
@@ -63,6 +64,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 }
 
 SocketHandler.prototype.onPlayerConnected = function(sId, account){
+    log("Player connected [" + account.id + ", " + account.email + "]");
     this.app.models.Account.upsertWithWhere({id: account.id}, { isOnline: true, socketId: sId }, (err, result) => {
         if(this.io) {
             const sockets = this.io.sockets;
@@ -73,21 +75,20 @@ SocketHandler.prototype.onPlayerConnected = function(sId, account){
 SocketHandler.prototype.onPlayerDisconnected = function(socket){
     this.app.models.Account.findOne({ where : { socketId : socket.id }}, (err, user) => {
         if(user) {
+            log("Player disconnected [" + user.id + ", " + user.email + "]");
             //Check if the user is playing
             this.app.models.RoomUser.findOne({ where : { userId : user.id }}, (err, roomUser) => {
                 if(!err && roomUser) {
-                    log('The user will leave the room ' + roomUser.id);
                     this.onLeaveRoom({
                         roomId: roomUser.roomId,
                         userId: roomUser.userId
                     }, socket);
-                } else {
-                    log('The user is not playing in any room.');
-                    //this.app.models.Room.destroyAll({ userId : user.id });
-                    //this.app.models.RoomUser.destroyAll({ roomId: roomUser.roomId });
                 }
             })
+        } else {
+            log("Player disconnected [Socket ID=" + socket.id + "]");
         }
+
         this.app.models.Account.upsertWithWhere({socketId: socket.id}, { isOnline: false, socketId: null }, (err, result) => {
             if(this.io) {
                 const sockets = this.io.sockets;
@@ -104,8 +105,8 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
 
 SocketHandler.prototype.onRoomRemoved = function(roomId){
     //this.app.models.Room.destroyAll({roomId: roomId});
-    this.app.models.Room.upsertWithWhere({ id: roomId }, { isActive : false });
-    this.app.models.RoomUser.destroyAll({roomId: roomId});
+    //this.app.models.Room.upsertWithWhere({ id: roomId }, { isActive : false });
+    //this.app.models.RoomUser.destroyAll({roomId: roomId});
 
     this.io.sockets.to('General').emit('onRoomRemoved', { id : roomId });
 }
@@ -171,7 +172,7 @@ SocketHandler.prototype.onPlayerFinishedRound = function(data, socket){
     });
 
     this.app.models.RoomUser.upsertWithWhere({roomId: data.roomId, userId: data.userId}, { roomId: data.roomId, userId: data.userId, hasFinished: true }, (err, result) => {
-        this.app.models.RoomUser.count({ roomId: data.roomId, hasFinished: 0 }, function(err, count){
+        this.app.models.RoomUser.count({ roomId: data.roomId, hasFinished: 0 }, (err, count) => {
             if(count == 0) { //If there are no results, means that every player has finished
                 context.io.sockets.to(roomName).emit('onFinishedRound', {
                     roundTerminatedWithSuccess: true
@@ -231,6 +232,13 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
                         });
 
                         if(room.players == data.accounts.length) {
+
+                            //Check this room as started!
+
+                            room.hasStarted = true;
+                            room.isActive = false;
+                            room.save();
+
                             context.io.sockets.to(roomName).emit('onStartRound');
 
                             //Start simulating stats for bots in that room only for bots there.
@@ -238,8 +246,8 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
                                 const account = data.accounts[idx];
                                 if(account.isBot) {
                                     setTimeout(() => {
-                                        log('Simulating stats for bot ' + account.id + ' in room ' + room.id);
-                                        BotUser.simulateStats(context, room.id, account.id);
+                                        log('Starting simulation of stats for bot ' + account.id + ' in room ' + roomName);
+                                        BotUser.startSimulatingStats(context, room.id, account.id);
                                     }, TIME_BEFORE_ROUND_STARTS);
                                 }
                             }
@@ -252,8 +260,8 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
         if(isBot) {
             fn();
         } else {
+            //log("Joining user " + userId + " to " + roomName, user);
             context.io.of('/').adapter.remoteJoin(user.socketId, roomName, (err) => {
-                //We'll suppose that the user is connected to that room now.
                 if(!err) {
                     fn();
                 }
@@ -274,32 +282,49 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
     if(data.roomId) {
         socket.leave('Room=' + data.roomId);
 
-        context.app.models.RoomUser.destroyAll({
-            userId: data.userId,
-            roomId: data.roomId
-        }, function() {
+        context.getDetailsForRoom(data.roomId, (roomData) => {
 
-            //Check if there is any other user in the room
-            context.app.models.Room.findOne({ where : { id : data.roomId }}, function(err, room) {
-                if(room) {
-                    if(data.userId == room.userId) {
-                        context.io.sockets.to('Room=' + room.id).emit('onFinishedRound', {
-                            isOwnerDisconnected: true
-                        }); //Finish round if the owner leaves it.
-                        context.onRoomRemoved(room.id);
-                    } else {
-                        //Success
-                        context.getDetailsForRoom(data.roomId, (details) => {
-                            context.io.sockets.to('Room=' + data.roomId).emit('onRoomActivity', details);
-                            if(details.accounts.length == 1) {
-                                context.io.sockets.to('Room=' + data.roomId).emit('onFinishedRound', {
-                                    allUsersDisconnected: true
+            console.log("User is leaving a room", data);
+
+            //Check if there is any user who is not a real user (not a bot)
+            if(_.some(roomData.accounts, { isBot: false })){
+
+                //There are real users still in the room so don't stop the simulation of the bots (if there are)
+                context.app.models.RoomUser.destroyAll({
+                    userId: data.userId,
+                    roomId: data.roomId
+                }, function() {
+
+                    //Check if there is any other user in the room
+                    context.app.models.Room.findOne({ where : { id : data.roomId }}, function(err, room) {
+                        if(room) {
+                            if(data.userId == room.userId) {
+                                context.io.sockets.to('Room=' + room.id).emit('onFinishedRound', {
+                                    isOwnerDisconnected: true
+                                }); //Finish round if the owner leaves it.
+                                context.onRoomRemoved(room.id);
+                            } else {
+                                //Success
+                                context.getDetailsForRoom(data.roomId, (details) => {
+                                    context.io.sockets.to('Room=' + data.roomId).emit('onRoomActivity', details);
+                                    if(details.accounts.length == 1) {
+                                        context.io.sockets.to('Room=' + data.roomId).emit('onFinishedRound', {
+                                            allUsersDisconnected: true
+                                        });
+                                    }
                                 });
                             }
-                        });
-                    }
-                }
-            });
+                        }
+                    });
+                });
+            } else {
+                log("Someone left the room " + data.roomId + " but there are no more real users so this room will be closed.");
+
+                //Delete the room, all the members from it and stop the simulation for user.
+                let stoppedBots = BotUser.stopSimulatingStats(data.roomId);
+                //context.app.models.RoomUser.destroyAll({ id : data.roomId });
+                //context.app.models.Room.destroyAll({ id : data.roomId });
+            }
         });
     }
 }

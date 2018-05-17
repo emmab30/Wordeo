@@ -3,12 +3,14 @@
 const app = require('../../server/server');
 const loopbackContext = require("loopback-context");
 const log = require('fancy-log');
+const _ = require('lodash')
 
 const COMMON_RATE_TULS = 17.5;
 
 module.exports = function(Room) {
 
     Room.join = join;
+    Room.invite = invite;
     Room.getRoomStats = getRoomStats;
     Room.getQuestionStats = getQuestionStats;
     Room.postStats = postStats;
@@ -36,7 +38,7 @@ module.exports = function(Room) {
                 app.models.RoomUser.count({ roomId : room.id }, function(err, count) {
 
                     //Check the players connected to this room.
-                    if(room.isProtected) {
+                    if(room.isProtected && !data.isInvited) {
                         if(room.password != data.password) {
                             error.status = 401;
                             error.message = 'La contraseña es invalida.';
@@ -66,13 +68,60 @@ module.exports = function(Room) {
                     } else {
                         app.models.RoomUser.upsertWithWhere({ userId : accessToken.userId, roomId : room.id }, { userId : accessToken.userId, roomId : room.id });
                         if(app.socketHandler != null) {
-                            log('Joining player to room');
-                            app.socketHandler.onJoinedToRoom(room, accessToken.userId);
+                            setTimeout(() => {
+                                app.socketHandler.onJoinedToRoom(room, accessToken.userId);
+                            }, 2000);
+                            next(null, room);
                         }
-                        next();
                     }
                 });
             }
+        })
+    }
+
+    function invite(data, next) {
+
+        let ctx = loopbackContext.getCurrentContext();
+        let accessToken = ctx && ctx.get('accessToken');
+
+        let error = new Error();
+        error.status = 401;
+        error.code = 'INVALID_INVITE_CRITERIA';
+
+        //Check availability of room and check if the password is correct.
+        app.models.Room.findById(data.roomId, function(err, room) {
+            app.models.Profile.findOne({ where : { email : accessToken.userId }}, (err, sender) => {
+                app.models.Account.findOne({ where : { email : data.email }}, (err, account) => {
+                    if(!account) {
+                        error.message = '¡El usuario ' + data.email + ' aún no juega Wordeo! Compártele el link de la aplicación para poder jugar juntos.'
+                        next(error);
+                    } else {
+                        if(account.isOnline) {
+                            next(null, {
+                                message: '¡Tu amigo se encuentra en linea jugando Wordeo! La invitación se ha enviado así que es probable que la acepte en un momento.'
+                            });
+                        } else {
+                            next(null, {
+                                message: '¡Tu amigo no se encuentra en linea! De todas maneras le hemos enviado una invitación para conectarse.'
+                            });
+                        }
+
+                        app.models.Notification.send({
+                            userId: account.id,
+                            message: sender.name + " te desafía a una partida Wordeo. ¿Aceptas?",
+                            options: {
+                                buttons: [
+                                    {id: "Now", text: "¡Jugar ahora!"},
+                                    {id: "Later", text: "Ahora no"}
+                                ],
+                                data: {
+                                    roomId: data.roomId
+                                }
+                            }
+                        });
+                    }
+                });
+            });
         })
     }
 
@@ -219,9 +268,16 @@ module.exports = function(Room) {
         var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
         if(accessToken != null && accessToken.userId > -1) {
-            //Append owner ID to the room
-            context.args.data.userId = accessToken.userId;
-            next();
+            app.models.Profile.findOne({ where : { accountId : accessToken.userId }}, (err, profile) => {
+
+                var roomCode = (profile.name.toUpperCase().substr(0, 4) + profile.lastName.toUpperCase().substr(0, 4) + _.random(0, 10000).toString());
+
+                //Append owner ID to the room
+                context.args.data.userId = accessToken.userId;
+                //Append the code
+                context.args.data.code = roomCode;
+                next();
+            });
         }
     });
 };

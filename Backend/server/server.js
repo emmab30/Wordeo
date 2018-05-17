@@ -4,21 +4,7 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 var SocketHandler = require('./classes/SocketHandler');
 var log = require('fancy-log');
-/* var mergeImages = require('merge-images');
-var Canvas = require('canvas');
-mergeImages([
-    './assets/images/character_set/monster_2.png',
-    { src: './assets/images/character_set/head_element_3.png', x: 0 },
-    { src: './assets/images/character_set/glass_1.png', x: 0 },
-    { src: './assets/images/character_set/mouth_7.png', x: 0 },
-    { src: './assets/images/character_set/monster_2_hands_1.png', x: 0 }
-], {
-    Canvas: Canvas
-}).then((b64) => {
-    var proc = require('child_process').spawn('pbcopy');
-    proc.stdin.write(b64);
-    proc.stdin.end();
-}); */
+var memwatch = require('memwatch-next');
 
 var app = module.exports = loopback();
 
@@ -28,11 +14,14 @@ app.start = function() {
         app.emit('started');
         var baseUrl = app.get('url').replace(/\/$/, '');
         if (process.env.pm_id == undefined || process.env.pm_id == 0) {
-            console.log('Web server listening at: %s', baseUrl);
+            log('Wordeo server listening at: %s', baseUrl);
             if (app.get('loopback-component-explorer')) {
                 var explorerPath = app.get('loopback-component-explorer').mountPath;
-                console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
-                console.log('Environment: ' + process.env.NODE_ENV);
+                log('Browse your REST API at %s%s', baseUrl, explorerPath);
+                if(process.env.NODE_ENV == undefined) {
+                    process.env.NODE_ENV = 'development';
+                }
+                log('Environment: ' + process.env.NODE_ENV);
             }
         }
     });
@@ -60,10 +49,20 @@ boot(app, __dirname, function(err) {
         SocketHandler = new SocketHandler(app, app.io);
         app.socketHandler = SocketHandler;
 
+        memwatch.on('leak', function(info) {
+            console.log("leak");
+            console.log(info);
+        });
+        memwatch.on('stats', function(stats) {
+            console.log("Stats");
+            console.log(stats);
+        });
+
         if (process.env.pm_id == undefined || process.env.pm_id == 0) {
             log('Initialized socket.io');
             log('Initialized redis on port 6379');
             log('Initializing socket handler');
+
             app.socketHandler.onInitializedBootstrap();
         }
 
@@ -141,13 +140,6 @@ boot(app, __dirname, function(err) {
                 if(info.roomId) {
                     info.userId = data.userId;
                     SocketHandler.onPlayerFinishedRound(info, socket);
-                }
-            });
-
-            socket.on('requestJoinToRoom', function(info){
-                if(info.roomId) {
-                    socket.join('Room=' + info.roomId);
-                    log('User joined to Room=' + info.roomId);
                 }
             });
 

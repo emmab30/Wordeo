@@ -2,6 +2,10 @@ var app = require('../server');
 var log = require('fancy-log');
 var moment = require('moment');
 var io = require('socket.io')
+var log = require('fancy-log');
+var _ = require('lodash');
+
+//On execution parameters
 var persistedBots = [];
 var persistedRooms = [];
 var botsOnline = 0;
@@ -9,7 +13,7 @@ var botsOnline = 0;
 function BotUser() {}
 
 BotUser.setRandomStatuses = (socketHandler) => {
-    console.log("Setting random statuses for bots.");
+    log("Setting random statuses for bots.");
     botsOnline = false;
     socketHandler.app.models.Account.find({ where : { isBot : true }}, (err, bots) => {
         for(var idx in bots) {
@@ -91,7 +95,7 @@ BotUser.assignRandomBotToRoom = (socketHandler, roomId, success, error) => {
     });
 }
 
-BotUser.simulateStats = (socketHandler, roomId, botId) => {
+BotUser.startSimulatingStats = (socketHandler, roomId, botId, callback) => {
     let POINTS_SUM = 0;
     let TOTAL_QUESTIONS = 0;
     let TOTAL_CORRECT = 0;
@@ -124,6 +128,9 @@ BotUser.simulateStats = (socketHandler, roomId, botId) => {
 
             socketHandler.getDetailsForRoom(room.id, (details) => {
                 socketHandler.io.sockets.to('Room=' + room.id).emit('onRoundStats', details);
+                if(!_.some(details.accounts, { isBot: false })){
+                    BotUser.stopSimulatingStats(room.id);
+                }
             });
 
             socketHandler.app.models.RoomUser.count({ roomId: roomId, hasFinished: true }, (err, count) => {
@@ -132,6 +139,7 @@ BotUser.simulateStats = (socketHandler, roomId, botId) => {
                     //Finish automatically this bot.
                     let botObject = getBotFromRoom(roomId, botId);
                     if(botObject) {
+                        log('The simulating stats has finished for bot ' + botId + ' in room ' + roomId);
                         clearInterval(botObject.interval);
 
                         const idxCurrentBot = persistedBots.indexOf(botObject);
@@ -149,6 +157,9 @@ BotUser.simulateStats = (socketHandler, roomId, botId) => {
                                 p.save();
                             });
                         }
+                    } else {
+                        log('The bot cannot be find in the persisted bots');
+                        log(persistedBots);
                     }
 
                     //Get the winner
@@ -174,10 +185,35 @@ BotUser.simulateStats = (socketHandler, roomId, botId) => {
         let botObject = getBotFromRoom(roomId, botId);
         if(botObject) {
             botObject.interval = setInterval(() => {
+                log("Number of current persisted bots: " + persistedBots.length);
+                log("Number of current persisted bots simulating stats: " + _.sumBy(persistedBots, (e) => { return (e.interval !== undefined) ? 1 : 0 }));
                 fn();
             }, RANDOM_TIME_RESPONSE * 1000);
+        } else {
+            log("The bot object cannot be find");
+            log(persistedBots);
         }
     })
+}
+
+BotUser.stopSimulatingStats = function(roomId) {
+    let stoppedBots = [];
+
+    let bots = _.filter(persistedBots, (e) => { return e.roomId == roomId });
+    if(bots != null && bots.length > 0) {
+        for(var idx in bots) {
+            const bot = bots[idx];
+            if(bot) {
+                log("Cleared interval of simulation for stats, for bot " + bot.accountId + " in Room=" + roomId);
+
+                clearInterval(bot.interval);
+                stoppedBots.push(bot);
+                persistedBots.splice(persistedBots.indexOf(bot), 1);
+            }
+        }
+    }
+
+    return stoppedBots;
 }
 
 function getBotFromRoom(roomId, botId) {

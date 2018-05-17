@@ -32,15 +32,18 @@ module.exports = function(Notification) {
             if(user !== null &&
                 user.notificationId !== undefined &&
                 user.notificationId !== null) {
-                var body = {
+                var body = Object.assign(data.options || {}, {
                     app_id: appId,
                     include_player_ids: [user.notificationId],
                     android_accent_color: '#222222', //Blue color
+                    large_icon: 'https://s3-sa-east-1.amazonaws.com/wordeo/common/logo.png',
+                    ttl: 30,
                     //android_sound: 'push_nsound',
                     contents: {
                         en: data.message
                     }
-                };
+                });
+                console.log(body);
 
                 if(data.scheduled_at != undefined && data.scheduled_at != null) {
                     body.send_after = data.scheduled_at;
@@ -181,14 +184,18 @@ module.exports = function(Notification) {
                         headers: headersOS,
                         body: JSON.stringify(body)
                     }, function(err, response) {
-                        let body = JSON.parse(response.body);
-                        if(body !== undefined &&
-                            body.success == true) {
-                            if(callback)
-                                callback(true);
-                        } else {
-                            if(callback)
-                                callback(true);
+                        try {
+                            let body = JSON.parse(response.body);
+                            if(body !== undefined &&
+                                body.success == true) {
+                                if(callback)
+                                    callback(true);
+                            } else {
+                                if(callback)
+                                    callback(true);
+                            }
+                        } catch (e) {
+                            callback(false);
                         }
                     });
                 } else {

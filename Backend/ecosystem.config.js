@@ -4,8 +4,7 @@ module.exports = {
         script    : 'server/server.js',
         autorestart: false,
         instances : "1",
-        //exec_mode : "cluster",
-        //exec_mode : "cluster",
+        exec_mode : "cluster",
         env: {
         },
         env_development: {
