@@ -56,7 +56,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     let intervalCreationRooms = setInterval(() => {
         this.app.models.Room.count({ isActive : true }, (err, activeRooms) => {
-            if(activeRooms < 2) {
+            if(activeRooms < 10) {
                 BotUser.generateRandomRoom(context);
             }
         });
