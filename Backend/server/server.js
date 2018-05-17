@@ -4,7 +4,6 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 var SocketHandler = require('./classes/SocketHandler');
 var log = require('fancy-log');
-var memwatch = require('memwatch-next');
 
 var app = module.exports = loopback();
 
@@ -48,15 +47,6 @@ boot(app, __dirname, function(err) {
         //This is to make sure that we only have one instance for socket handler
         SocketHandler = new SocketHandler(app, app.io);
         app.socketHandler = SocketHandler;
-
-        memwatch.on('leak', function(info) {
-            console.log("leak");
-            console.log(info);
-        });
-        memwatch.on('stats', function(stats) {
-            console.log("Stats");
-            console.log(stats);
-        });
 
         if (process.env.pm_id == undefined || process.env.pm_id == 0) {
             log('Initialized socket.io');
