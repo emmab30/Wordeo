@@ -8,6 +8,7 @@ const { readFileSync } = require('fs');
 const AWS = require('aws-sdk');
 var mergeImages = require('merge-images');
 var Canvas = require('canvas');
+var _ = require('lodash');
 const s3 = new AWS.S3({
     "accessKeyId": "AKIAISFXWZONKBC5R5WQ",
     "secretAccessKey": "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"
