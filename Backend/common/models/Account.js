@@ -61,6 +61,8 @@ module.exports = function(Account) {
                         user.notificationId = data.notificationId;
                         user.platform = data.platform;
                         user.lastLogin = new Date();
+                        var username = (dataGraph.name.toUpperCase().substr(0, 4) + dataGraph.last_name.toUpperCase().substr(0, 4) + _.random(0, 2000).toString());
+                        user.username = username;
 
                         let profile = new app.models.Profile;
                         if(dataGraph.first_name) profile.name = dataGraph.first_name;

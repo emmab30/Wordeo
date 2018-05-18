@@ -20,6 +20,10 @@
         "type": "boolean",
         "default": false
     },
+    "username": {
+        "type": "string",
+        "required": false
+    },
     "lastLogin": {
         "type": "date"
     },
