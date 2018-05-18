@@ -3,6 +3,7 @@
 var loopback = require('loopback');
 var request = require('request');
 var app = require('../../server/server');
+const loopbackContext = require("loopback-context");
 
 module.exports = function(Notification) {
 
@@ -13,17 +14,48 @@ module.exports = function(Notification) {
         "Authorization": "Basic MzczMWE0ZDUtOTBhMi00NDZjLTkxMWYtZDRiYTYzZTE5MjU5"
     };
 
+    Notification.deleteNotification = deleteNotification;
+    Notification.me = me;
     Notification.send = send;
     Notification.cancel = cancel;
     Notification.updateTagsDevice = updateTagsDevice;
 
-    function send(data, options, next) {
+    function me(next) {
+        var ctx = loopbackContext.getCurrentContext();
+        var accessToken = ctx && ctx.get('accessToken');
+        var userId = accessToken.userId;
+
+        app.models.Notification.find({ where : { userId : userId }, order: 'createdAt DESC' }, (err, notifications) => {
+            next(null, notifications);
+        })
+    }
+
+    function deleteNotification(data, next) {
+        var ctx = loopbackContext.getCurrentContext();
+        var accessToken = ctx && ctx.get('accessToken');
+        var userId = accessToken.userId;
+
+        var filter = {
+            where : {
+                id: data.notificationId
+            }
+        };
+        app.models.Notification.findOne(filter, (err, notification) => {
+            if(notification.userId == userId) {
+                app.models.Notification.destroyAll({ id : data.notificationId })
+            }
+
+            next();
+        })
+    }
+
+    function send(data, next) {
         var filter = {
             where: {
                 id: data.userId
             }
         };
-        app.models.Account.findOne(filter, function(err, user){
+        app.models.Account.findOne(filter, (err, user) => {
             var retValue = {
                 code: 400,
                 message: "The user doesn't have any associated device."
@@ -32,7 +64,7 @@ module.exports = function(Notification) {
             if(user !== null &&
                 user.notificationId !== undefined &&
                 user.notificationId !== null) {
-                var body = Object.assign(data.options || {}, {
+                var bodyRequest = Object.assign(data.options || {}, {
                     app_id: appId,
                     include_player_ids: [user.notificationId],
                     android_accent_color: '#222222', //Blue color
@@ -43,7 +75,6 @@ module.exports = function(Notification) {
                         en: data.message
                     }
                 });
-                console.log(body);
 
                 if(data.scheduled_at != undefined && data.scheduled_at != null) {
                     body.send_after = data.scheduled_at;
@@ -53,24 +84,26 @@ module.exports = function(Notification) {
                     url: 'https://onesignal.com/api/v1/notifications',
                     method: 'POST',
                     headers: headersOS,
-                    body: JSON.stringify(body)
+                    body: JSON.stringify(bodyRequest)
                 }, function(err, response) {
                     let body = JSON.parse(response.body);
                     if(body !== undefined &&
                         body.id !== undefined) {
+
+                        let obj = {
+                            userId: user.id,
+                            category: data.category,
+                            message: data.message,
+                            osPlayerId: body.id,
+                            payload: JSON.stringify(bodyRequest)
+                        };
+                        app.models.Notification.create(obj, (success, err) => {});
 
                         if(next !== undefined) {
                             retValue = {
                                 code: 200,
                                 message: 'The push notification has been sent succesfully.'
                             };
-
-                            //Create the notification in database.
-                            app.models.Notification.create({
-                                userId: user.id,
-                                message: data.message,
-                                osPlayerId: body.id
-                            });
 
                             next(err, retValue);
                         }

@@ -97,8 +97,8 @@ module.exports = function(Room) {
 
         //Check availability of room and check if the password is correct.
         app.models.Room.findById(data.roomId, function(err, room) {
-            app.models.Profile.findOne({ where : { email : accessToken.userId }}, (err, sender) => {
-                app.models.Account.findOne({ where : { email : data.email }}, (err, account) => {
+            app.models.Profile.findOne({ where : { accountId : accessToken.userId }}, (err, sender) => {
+                app.models.Account.findOne({ where : { or : [{ email: data.email }, { username: data.email }] }}, (err, account) => {
                     if(!account) {
                         error.message = '¡El usuario ' + data.email + ' aún no juega Wordeo! Compártele el link de la aplicación para poder jugar juntos.'
                         next(error);
@@ -116,6 +116,7 @@ module.exports = function(Room) {
                         app.models.Notification.send({
                             userId: account.id,
                             message: sender.name + " te desafía a una partida Wordeo. ¿Aceptas?",
+                            category: 1,
                             options: {
                                 buttons: [
                                     {id: "Now", text: "¡Jugar ahora!"},
