@@ -30,59 +30,58 @@ module.exports = function(Room) {
                 next(error)
             } else {
 
-                //Check if the room has expired
-                if(!room.isActive || room.hasStarted) {
+                if(room == null || !room.isActive || room.hasStarted){
                     error.status = 401;
                     error.message = 'La sala ya ha empezado o ha expirado. ¡Intenta unirte a otra sala o prueba creando un juego nuevo!';
                     error.code = 'INVALID_ROOM';
                     next(error)
-                }
+                } else {
+                    let isRoomFull = (connectedUsersLength) => {
+                        return room.players == connectedUsersLength;
+                    }
 
-                let isRoomFull = (connectedUsersLength) => {
-                    return room.players == connectedUsersLength;
-                }
+                    //Check availability for room
+                    app.models.RoomUser.count({ roomId : room.id }, function(err, count) {
 
-                //Check availability for room
-                app.models.RoomUser.count({ roomId : room.id }, function(err, count) {
-
-                    //Check the players connected to this room.
-                    if(room.isProtected && !data.isInvited) {
-                        if(room.password != data.password) {
-                            error.status = 401;
-                            error.message = 'La contraseña es invalida.';
-                            error.code = 'INVALID_ROOM_PASSWORD';
-                            next(error);
-                        } else {
-                            if(isRoomFull(count)) {
-                                //Check if the room is available.
+                        //Check the players connected to this room.
+                        if(room.isProtected && !data.isInvited) {
+                            if(room.password != data.password) {
                                 error.status = 401;
-                                error.message = 'La sala ya está completa.';
-                                error.code = 'ROOM_COMPLETED';
+                                error.message = 'La contraseña es invalida.';
+                                error.code = 'INVALID_ROOM_PASSWORD';
                                 next(error);
                             } else {
-                                app.models.RoomUser.upsertWithWhere({ userId : accessToken.userId, roomId : room.id }, { userId : accessToken.userId, roomId : room.id });
-                                if(app.socketHandler != null) {
-                                    app.socketHandler.onJoinedToRoom(room, accessToken.userId);
+                                if(isRoomFull(count)) {
+                                    //Check if the room is available.
+                                    error.status = 401;
+                                    error.message = 'La sala ya está completa.';
+                                    error.code = 'ROOM_COMPLETED';
+                                    next(error);
+                                } else {
+                                    app.models.RoomUser.upsertWithWhere({ userId : accessToken.userId, roomId : room.id }, { userId : accessToken.userId, roomId : room.id });
+                                    if(app.socketHandler != null) {
+                                        app.socketHandler.onJoinedToRoom(room, accessToken.userId);
+                                    }
+                                    next();
                                 }
-                                next();
+                            }
+                        } else if(isRoomFull(count)) {
+                            //Check if the room is available.
+                            error.status = 401;
+                            error.message = 'La sala ya está completa.';
+                            error.code = 'ROOM_COMPLETED';
+                            next(error);
+                        } else {
+                            app.models.RoomUser.upsertWithWhere({ userId : accessToken.userId, roomId : room.id }, { userId : accessToken.userId, roomId : room.id });
+                            if(app.socketHandler != null) {
+                                setTimeout(() => {
+                                    app.socketHandler.onJoinedToRoom(room, accessToken.userId);
+                                }, 2000);
+                                next(null, room);
                             }
                         }
-                    } else if(isRoomFull(count)) {
-                        //Check if the room is available.
-                        error.status = 401;
-                        error.message = 'La sala ya está completa.';
-                        error.code = 'ROOM_COMPLETED';
-                        next(error);
-                    } else {
-                        app.models.RoomUser.upsertWithWhere({ userId : accessToken.userId, roomId : room.id }, { userId : accessToken.userId, roomId : room.id });
-                        if(app.socketHandler != null) {
-                            setTimeout(() => {
-                                app.socketHandler.onJoinedToRoom(room, accessToken.userId);
-                            }, 2000);
-                            next(null, room);
-                        }
-                    }
-                });
+                    });
+                }
             }
         })
     }
