@@ -119,7 +119,7 @@ module.exports = function(Room) {
                             options: {
                                 buttons: [
                                     {id: "Now", text: "¡Jugar ahora!"},
-                                    {id: "Later", text: "Ahora no"}
+                                    {id: "Delete", text: "Eliminar notificación"}
                                 ],
                                 data: {
                                     roomId: data.roomId
