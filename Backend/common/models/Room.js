@@ -122,7 +122,8 @@ module.exports = function(Room) {
                                     {id: "Delete", text: "Eliminar notificación"}
                                 ],
                                 data: {
-                                    roomId: data.roomId
+                                    roomId: data.roomId,
+                                    date: new Date()
                                 }
                             }
                         });
