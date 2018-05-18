@@ -23,12 +23,20 @@ module.exports = function(Room) {
 
         //Check availability of room and check if the password is correct.
         app.models.Room.findById(data.roomId, function(err, room) {
-            if(err || !room.isActive || room.hasStarted) {
+            if(err) {
                 error.status = 401;
                 error.message = 'La sala ya ha empezado o ha expirado. ¡Intenta unirte a otra sala o prueba creando un juego nuevo!';
                 error.code = 'INVALID_ROOM';
                 next(error)
             } else {
+
+                //Check if the room has expired
+                if(!room.isActive || room.hasStarted) {
+                    error.status = 401;
+                    error.message = 'La sala ya ha empezado o ha expirado. ¡Intenta unirte a otra sala o prueba creando un juego nuevo!';
+                    error.code = 'INVALID_ROOM';
+                    next(error)
+                }
 
                 let isRoomFull = (connectedUsersLength) => {
                     return room.players == connectedUsersLength;
