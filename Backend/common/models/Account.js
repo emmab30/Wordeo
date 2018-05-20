@@ -340,6 +340,8 @@ module.exports = function(Account) {
             "WHERE accountId = " + userId + " " +
             "ORDER BY experience_points;";
         dataSource.query(query, (err1, rank) => {
+            console.log(err1);
+            console.log("Got rank!");
             if(rank && rank.length > 0) {
                 if(rank[0].isBot) {
                     callback(Math.floor(Math.random() * 25) + 750);

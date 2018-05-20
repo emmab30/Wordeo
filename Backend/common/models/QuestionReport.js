@@ -16,7 +16,6 @@ module.exports = function(QuestionReport) {
 
         QuestionReport.create({
             questionId: data.questionId,
-            accountId: accessToken.userId,
             userId: accessToken.userId
         }, (err, reported) => {
             if(!err && reported) {
