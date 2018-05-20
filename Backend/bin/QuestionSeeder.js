@@ -28,14 +28,6 @@ var Seeder = {
                 lastModifiedAt: new Date()
             };
 
-            /* if(clearCategory){
-                promises.push(new Promise((resolve, reject) => {
-                    server.models.Question.destroyAll({ questionCategoryId: idCategory }, (err, deleted) => {
-                        resolve();
-                    });
-                }));
-            } */
-
             promises.push(new Promise((resolve, reject) => {
                 server.models.Question.create(question, (err, result) => {
                     if(result && result.id) {

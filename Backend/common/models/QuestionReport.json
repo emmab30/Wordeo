@@ -14,6 +14,10 @@
         "type": "number",
         "required": true
     },
+    "userId": {
+        "type": "number",
+        "required": false
+    },
     "createdAt": {
         "type": "date",
         "defaultFn": "now"
