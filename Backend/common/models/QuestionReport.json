@@ -10,10 +10,6 @@
         "type": "number",
         "required": true
     },
-    "questionId": {
-        "type": "number",
-        "required": true
-    },
     "userId": {
         "type": "number",
         "required": false

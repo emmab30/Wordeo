@@ -42,9 +42,8 @@
         "default": false
     },
     "createdAt": {
-      "type": "date",
-      "required": false,
-      "default": null
+        "type": "date",
+        "defaultFn": "now"
     }
   },
   "validations": [],
