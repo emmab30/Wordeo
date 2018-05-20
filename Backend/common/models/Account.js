@@ -335,13 +335,11 @@ module.exports = function(Account) {
 
     function getRankingByUserId(userId, callback) {
         var dataSource = app.dataSources.mysql.connector;
-        var query = "SELECT id, isBot, (SELECT count(id) FROM profile f WHERE f.experience_points > profile.experience_points) + 1 as rank " +
-            "FROM profile " +
+        var query = "SELECT id, isBot, (SELECT count(id) FROM Profile f WHERE f.experience_points > Profile.experience_points) + 1 as rank " +
+            "FROM Profile " +
             "WHERE accountId = " + userId + " " +
             "ORDER BY experience_points;";
         dataSource.query(query, (err1, rank) => {
-            console.log(err1);
-            console.log("Got rank!");
             if(rank && rank.length > 0) {
                 if(rank[0].isBot) {
                     callback(Math.floor(Math.random() * 25) + 750);
