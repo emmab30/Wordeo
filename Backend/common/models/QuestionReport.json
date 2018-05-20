@@ -23,7 +23,7 @@
   "relations": {},
   "acls": [],
   "methods": {
-    "create": {
+    "createReport": {
         "accepts": {
             "arg": "data",
             "type": "object",

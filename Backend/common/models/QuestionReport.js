@@ -3,9 +3,9 @@
 const loopbackContext = require("loopback-context");
 
 module.exports = function(QuestionReport) {
-    QuestionReport.create = create;
+    QuestionReport.createReport = createReport;
 
-    function create(data, next) {
+    function createReport(data, next) {
         var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
 
