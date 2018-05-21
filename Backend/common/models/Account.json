@@ -63,6 +63,7 @@
       "permission": "ALLOW",
       "property": [
         "loginFacebook",
+        "loginAdmin",
         "me",
         "uploadAvatar"
       ]
@@ -77,7 +78,7 @@
       ]
     },
     {
-      "accessType": "EXECUTE",
+      "accessType": "*",
       "principalType": "ROLE",
       "principalId": "administrator",
       "permission": "ALLOW",
@@ -93,6 +94,24 @@
         "http": {
             "verb": "get",
             "path": "/me"
+        }
+    },
+    "loginAdmin": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/login/admin"
         }
     },
     "loginFacebook": {

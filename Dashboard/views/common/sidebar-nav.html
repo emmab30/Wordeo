@@ -1,0 +1,68 @@
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            <li class="divider"></li>
+            <li class="nav-title">
+                Administration
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ng-class="{active: $state.is('app.main')}" ui-sref="app.main" href="#"><i class="icon-home"></i> Dashboard</a>
+            </li>
+            <!-- <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.students')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.students')}" href="#"><i class="icon-badge"></i> Students</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.students.list"><i class="icon-list"></i> List all students</a>
+                    </li>
+                </ul>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.students.scheduled"><i class="icon-clock"></i> Scheduled notifications</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.configuration')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.configuration')}" href="#"><i class="icon-settings"></i> Configuration</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.configuration.list"><i class="icon-list"></i> List configurations</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.topics')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.topics')}" href="#"><i class="icon-settings"></i> Topics</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.topics.list"><i class="icon-list"></i> List Topics</a>
+                    </li>
+                </ul>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.topics.add"><i class="icon-list"></i> Add topic</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.badges')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.badges')}" href="#"><i class="icon-settings"></i> Badges</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.badges.list"><i class="icon-list"></i> List Badges</a>
+                    </li>
+                </ul>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.badges.add"><i class="icon-list"></i> Add Badge</a>
+                    </li>
+                </ul>
+            </li> !-->
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.badges')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.pendingQuestions')}" href="#"><i class="icon-settings"></i> Preguntas de usuarios</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.pendingQuestions.list"><i class="icon-list"></i> Listar preguntas</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>

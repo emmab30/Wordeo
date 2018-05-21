@@ -1,0 +1,147 @@
+<div class="animated fadeIn">
+    <div class="card" id="new">
+        <div class="card-header">Badge creation / edition</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Name [EN]</label>
+                        <input type="text" class="form-control" id="teacher_id" ng-model="badge.name" placeholder="Enter the badge name">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Name [ES]</label>
+                        <input type="text" class="form-control" id="teacher_id" ng-model="badge.name_es" placeholder="Enter the badge name for Spanish">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Description [EN]</label>
+                        <textarea class="form-control" placeholder="Badge description in english" ng-model="badge.description"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Description [ES]</label>
+                        <textarea class="form-control" placeholder="Badge description in spanish" ng-model="badge.description_es"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Inactive Image</label>
+                        <input type="text" class="form-control" id="image" ng-model="badge.image" placeholder="Enter the URL of the inactive image for the badge">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Active Image</label>
+                        <input type="text" class="form-control" id="image" ng-model="badge.image_active" placeholder="Enter the URL of the active image for the badge">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <!-- <h3>Condition</h3>
+            <br />
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <label class="text-center col-sm-2 form-control-label" for="variable">Variable</label>
+                        <div class="col-sm-10">
+                            <select name="variable" class="form-control">
+                                <option>Points earned</option>
+                                <option>Level up</option>
+                                <option>Streak</option>
+                                <option>Correct activities on a row</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <label class="text-center col-sm-2 form-control-label" for="operator">Operator</label>
+                        <div class="col-sm-10">
+                            <select name="variable" class="form-control">
+                                <option><</option>
+                                <option><=</option>
+                                <option>=</option>
+                                <option>=></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <label class="text-center col-sm-2 form-control-label" for="variable">Value</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Enter the value to compare" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <p>{{ query }}</p> !-->
+
+            <!-- <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">MySQL Query</label>
+                        <textarea class="form-control" placeholder="MySQL Query for Condition" ng-model="badge.condition">{{ badge.condition }}</textarea>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Replacements (separated by comma)</label>
+                        <textarea class="form-control" placeholder="Replacements separated by comma" ng-model="badge.condition_replacements">{{ badge.condition_replacements }}</textarea>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group" style="background: #eee; border-radius: 5px; padding: 10px;">
+                        <label for="name">Evaluate condition with user</label>
+                        <input type="text" class="form-control" placeholder="MySQL Query for Condition" ng-model="queryTest.userId" />
+                        <button class="btn btn-sm btn-primary" style="margin-top: 5px;" ng-click="evaluateCondition()"><i class="fa fa-dot-circle-o"></i> Test Query</button>
+                    </div>
+
+                </div>
+            </div> !-->
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary" ng-click="isCreating ? save() : update()"><i class="fa fa-dot-circle-o"></i> Submit</button>
+        </div>
+    </div>
+</div>

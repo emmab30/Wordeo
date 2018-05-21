@@ -15,10 +15,28 @@ const s3 = new AWS.S3({
 });
 
 module.exports = function(Account) {
+    Account.loginAdmin = loginAdmin;
     Account.loginFacebook = loginFacebook;
     Account.me = getMe;
     Account.uploadAvatar = uploadAvatar;
     Account.getRankingByUserId = getRankingByUserId;
+
+    function loginAdmin(data, next) {
+
+        const ctx = this;
+
+        if(data.email == 'admin@admin.com' && data.password == 'iloveyou30') {
+            app.models.Account.findOne({ where : { email : 'admin@admin.com' } }, (err, account) => {
+                account.createAccessToken(12096000, function (error, token) {
+                    let obj = {
+                        session: token,
+                        user: account
+                    };
+                    next(null, obj);
+                });
+            });
+        };
+    }
 
     function loginFacebook(data, next) {
 

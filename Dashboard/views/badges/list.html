@@ -1,0 +1,35 @@
+<div class="animated fadeIn list-students">
+    <div class="card" id="new">
+        <div class="card-body">
+
+            <table datatable="ng" ng-if="badges" class="row-border hover">
+                <thead>
+                    <td class="text-center">ID</td>
+                    <td class="text-center">Name</td>
+                    <td class="text-center">Image</td>
+                    <td class="text-center">Actions</td>
+                </thead>
+                <tr ng-repeat="badge in badges">
+                    <td class="text-center">{{ badge.id }}</td>
+                    <td class="text-center">
+                        <p ng-if="badge.name" style="font-size: 12px;">[EN] {{ badge.name }}</p>
+                        <p ng-if="badge.name_es" style="font-size: 12px;">[ES] {{ badge.name_es }}</p>
+                    </td>
+                    <td class="text-center">
+                        <div id="cf" ng-if="badge.image && badge.image_active">
+                            <img class="bottom" src="{{ badge.image_active }}" />
+                            <img class="top" src="{{ badge.image }}" />
+                        </div>
+                        <a ng-if="badge.image && !badge.image_active" href="{{ badge.image }}" target="_blank" style="max-width: 80px;"><img src="{{ badge.image }}" style="max-width: 80px;" /></a>
+                        <!-- <a ng-if="badge.image" href="{{ badge.image }}" target="_blank" style="max-width: 80px;"><img src="{{ badge.image }}" style="max-width: 80px;" /></a> !-->
+                    </td>
+                    <td class="text-center">
+                        <a ng-click="edit(badge.id)" href="#">[ Edit ]</a>
+                        &nbsp;
+                        <a ng-click="delete(badge.id)" href="#">[ Delete ]</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

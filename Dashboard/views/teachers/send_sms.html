@@ -1,0 +1,32 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <strong ng-show="!sendingMultiples">Send SMS to {{teachers[0].phone}}</strong>
+            <br />
+            <small ng-show="!sendingMultiples">Teacher name: {{teachers[0].name}} {{teachers[0].lastname}}</small>
+
+            <strong ng-show="sendingMultiples">Send SMS to {{teachers.length}} teachers</strong>
+            <br />
+            <small ng-show="sendingMultiples">Teacher's names: <span ng-repeat="teacher in teachers">{{ teacher.name }} {{ teacher.lastname }} - </span></small>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Text message (max characters: 120)</label>
+                        <input type="text" class="form-control" maxlength="120" ng-model="message" placeholder="Enter the message for the teachers">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary" ng-click="sendSMS()"><i class="fa fa-send-o"></i> Send</button>
+        </div>
+    </div>
+
+    <div class="alert alert-{{statusMessage.done ? 'success' : 'primary'}}" ng-if="statusMessage.show" role="alert">
+        {{statusMessage.text}} <a ng-show="statusMessage.done" ui-sref="app.teachers.list">Go back</a>
+    </div>
+</div>

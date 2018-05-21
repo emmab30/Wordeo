@@ -1,0 +1,174 @@
+body {
+    font-family: 'ProximaNovaRegular' !important;
+}
+
+/** Modals **/
+
+.modal-backdrop {
+    display: none !important;
+}
+
+.modal.show {
+    background: rgba(0,0,0,.7) !important;
+}
+
+.modal-dialog {
+    margin-top: 90px;
+}
+
+.list-students {
+    .student_detailed_row {
+        padding: 10px;
+        font-size: 16px;
+        background: #0084ff;
+        color: white;
+        border-radius: 5px;
+        margin: 15px;
+    }
+
+    /** Datatable **/
+    .dataTables_wrapper {
+        input[type=search] {
+            border: 1px solid #222 !important;
+            border-radius: 5px !important;
+        }
+
+        select {
+            border: 0 !important;
+            outline: none !important;
+        }
+    }
+}
+
+/** Loading spinner **/
+.loading {
+	background-color: #000;
+	width: 100%;
+	height: 100%;
+	opacity: 0.7;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	z-index: 10;
+	flex-direction: column;
+}
+
+//Navbar
+.sidebar {
+    background-color: $blueColor;
+
+    .nav {
+        .nav-item {
+            .nav-link {
+                transition: all 0.2s ease-in !important;
+
+                &:hover {
+                    background-color: white !important;
+                    color: $blueColor !important;
+
+                    i {
+                        color: $blueColor !important;
+                    }
+                }
+
+                i {
+                    color: white !important;
+                }
+            }
+        }
+    }
+}
+
+header {
+    .nav-link {
+        color: #000 !important;
+    }
+}
+
+th {
+    &.sort {
+        color: $blueColor;
+        cursor: pointer !important;
+    }
+}
+
+tr {
+    &.selected td {
+        background: $blueColor !important;
+        color: white !important;
+
+        a {
+            color: white !important;
+        }
+    }
+}
+
+.moment-picker {
+    z-index: 9999 !important;
+}
+
+/** View chat **/
+
+.chat-zone {
+    max-height: 60vh;
+    max-width: 90%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: 1px solid #0084ff;
+    border-radius: 10px;
+    padding: 20px;
+
+    .author {
+        width: 100%;
+        font-size: 12px;
+        margin: 0;
+
+        &.teacher {
+            text-align: right;
+        }
+    }
+
+    .message {
+        margin: 10px 0;
+        &.text {
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #0084ff;
+            color: white;
+            display: inline-block;
+
+            p {
+                margin: 0;
+            }
+        }
+
+        &.gif {
+            background-color: red;
+        }
+
+        a { //Links to external
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+        }
+    }
+}
+
+/** Datatable processing **/
+
+.dataTables_processing {
+    height: 40px !important;
+    line-height: 40px !important;
+    padding: 0 !important;
+    font-size: 17px !important;
+    background: $blueColor !important;
+    opacity: .95 !important;
+    border-radius: 10px !important;
+    color: white !important;
+
+    background: rgba(0,0,0,.9) !important;
+    width: 150px !important;
+    margin: 0 auto !important;
+    left: 43% !important;
+}

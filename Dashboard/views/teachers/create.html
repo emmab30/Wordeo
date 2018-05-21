@@ -1,0 +1,93 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <strong>{{ isCreating ? 'Create a new teacher' : 'Edit teacher' }}</strong>
+            <small>Information</small>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Teacher ID</label>
+                        <input type="text" class="form-control" id="teacher_id" ng-model="teacher.teacherId" placeholder="Enter the teacher ID">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">First name</label>
+                        <input type="text" class="form-control" id="name" ng-model="teacher.name" placeholder="Enter the first name">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Last Name</label>
+                        <input type="text" class="form-control" ng-model="teacher.lastname" placeholder="Enter the last name">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">E-mail account</label>
+                        <input type="text" class="form-control" ng-model="teacher.email" placeholder="Enter the email account">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Password</label>
+                        <input type="password" class="form-control" ng-model="teacher.password" placeholder="{{ isCreating ? 'Enter the password' : 'Enter the new password or leave it blank to keep your current one.' }}">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <!-- <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Age</label>
+                        <input type="number" class="form-control" ng-model="teacher.age" placeholder="Enter the age">
+                    </div>
+
+                </div>
+            </div> !-->
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Phone Number</label>
+                        <input type="phone" class="form-control" ng-model="teacher.phone" placeholder="Enter the phone number">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary" ng-click="isCreating ? save() : update()"><i class="fa fa-dot-circle-o"></i> Submit</button>
+        </div>
+    </div>
+
+    <div class="alert alert-success" role="alert" ng-show="successOperation">
+        The operation has been completed with success. Redirecting to the list..
+    </div>
+</div>

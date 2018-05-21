@@ -1,0 +1,39 @@
+<div class="animated fadeIn list-students">
+    <div class="card" id="new">
+        <div class="card-body">
+
+            <table datatable="ng" ng-if="topics" class="row-border hover">
+                <thead>
+                    <td class="text-center">ID</td>
+                    <td class="text-center">Name</td>
+                    <!-- <td class="text-center">Description</td> !-->
+                    <td class="text-center">Image</td>
+                    <td class="text-center">Level</td>
+                    <td class="text-center">Spreadsheet Topic ID</td>
+                    <td class="text-center">Actions</td>
+                </thead>
+                <tr ng-repeat="topic in topics">
+                    <td class="text-center">{{ topic.id }}</td>
+                    <td class="text-center">
+                        <p ng-if="topic.name" style="font-size: 12px;">[EN] {{ topic.name }}</p>
+                        <p ng-if="topic.name_es" style="font-size: 12px;">[ES] {{ topic.name_es }}</p>
+                    </td>
+                    <!-- <td class="text-center">
+                        <p>[ENGLISH] : {{ topic.description }}</p>
+                        <p>[SPANISH] : {{ topic.description_es }}</p>
+                    </td> !-->
+                    <td style="max-width: 100px;">
+                        <a href="{{ topic.image }}" target="_blank" style="max-width: 150px;"><img src="{{ topic.image }}" style="max-width: 150px;" /></a>
+                    </td>
+                    <td class="text-center">{{ topic.difficultyStage.name }}</td>
+                    <td class="text-center">{{ topic.spreadsheetId }}</td>
+                    <td>
+                        <a ng-click="edit(topic.id)" href="#">[ Edit ]</a>
+                        &nbsp;
+                        <a ng-click="delete(topic.id)" href="#">[ Delete ]</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

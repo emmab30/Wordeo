@@ -1,0 +1,32 @@
+<div class="animated fadeIn">
+    <div class="card" id="new">
+        <div class="card-header">Total scheduled: {{ notifications.length }}</div>
+        <div class="card-body">
+            <h3 class="text-center" ng-show="notifications.length == 0">No scheduled notifications</h3>
+            <table class="table table-striped" ng-show="notifications.length > 0">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Scheduled at</th>
+                        <th>Sending in</th>
+                        <th>Quick actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="notification in notifications">
+                        <td>{{ notification.user.name }} {{ notification.user.lastname }}</td>
+                        <td>{{ notification.user.email }}</td>
+                        <td>{{ notification.message }}</td>
+                        <td>{{ notification.scheduled_at }}</td>
+                        <td>{{ notification.diffDays }} days, {{ notification.diffHours }} hours and {{ notification.diffMinutes }} minutes</td>
+                        <td>
+                            <a href="" ng-click="cancel(notification)">Cancel</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="animated fadeIn">
+    <div class="card" id="new">
+        <div class="card-header">
+            Configuration parameters
+        </div>
+        <div class="card-body">
+            <!-- <div class="form-group row">
+                <label class="col-md-3 form-control-label" for="text-input">Max. students per teacher</label>
+                <div class="col-md-9">
+                    <input type="number" min="0" name="text-input" ng-model="configuration.MAX_STUDENTS_PER_TEACHER" class="form-control" placeholder="Value">
+                </div>
+            </div> !-->
+
+            <!-- <div class="form-group row">
+                <label class="col-md-3 form-control-label" for="text-input">Time fetching unassigned students (seconds)</label>
+                <div class="col-md-9">
+                    <input type="number" min="0" name="text-input" ng-model="configuration.TIME_FETCHING_UNASSIGNED_STUDENTS" class="form-control" placeholder="Value">
+                </div>
+            </div> !-->
+
+            <!-- <div class="form-group row">
+                <label class="col-md-3 form-control-label" for="text-input">Inactivity time before student goes to Idle (seconds)</label>
+                <div class="col-md-9">
+                    <input type="number" min="0" name="text-input" ng-model="configuration.INACTIVITY_TIME_STUDENT_GO_IDLE" class="form-control" placeholder="Value">
+                </div>
+            </div> !-->
+
+            <!-- <div class="form-group row">
+                <label class="col-md-3 form-control-label" for="text-input">Welcome message for application</label>
+                <div class="col-md-9">
+                    <input type="text" name="text-input" ng-model="configuration.WELCOME_MESSAGE_STUDENT" class="form-control" placeholder="Value">
+                </div>
+            </div> !-->
+
+            <div class="form-group row">
+                <label class="col-md-3 form-control-label" for="text-input">Teachers gender replacement</label>
+                <div class="col-md-9">
+                    <textarea ng-model="configuration.TEACHER_GENDERS_TABLE" class="form-control" style="height: 200px;" placeholder="Emma Abuslaiman=M (one per line)"></textarea>
+                </div>
+            </div>
+
+            <!-- <div class="form-group row">
+                <label class="col-md-3 form-control-label" for="text-input">Terms and conditions for Application</label>
+                <div class="col-md-9">
+                    <textarea name="text-input" ng-model="configuration.TERMS_AND_CONDITIONS_APP" class="form-control" style="height: 200px;" placeholder="Enter the terms and conditions for the application">
+                    </textarea>
+                </div>
+            </div> !-->
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary" ng-click="save()"><i class="fa fa-dot-circle-o"></i> Save</button>
+        </div>
+    </div>
+
+    <div class="alert alert-success" role="alert" ng-show="success">
+        Saved configuration.
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <strong>Chat of student {{ student.name }} {{ student.lastname }}</strong>
+        </div>
+        <div class="card-body">
+
+            <div class="empty" ng-show="messages.length == 0">
+                <h3>There is no interaction for this student.</h3>
+            </div>
+
+            <div class="chat-zone" id="chat-zone" ng-show="messages.length > 0">
+                <div class="row">
+                    <div class="col-md-12" ng-repeat="message in messages">
+                        <div class="author" ng-class="{'teacher': message.teacherId == message.userId}">
+                            {{ message.user.name }} {{message.user.lastname}} on {{ formatDate(message.created) }}:
+                        </div>
+                        <div class="message text" ng-class="{'pull-right': message.teacherId == message.userId}">
+                            <p ng-show="!message.gif && !message.voice && !message.video && !message.image && !message.doc">{{ message.message }}</p>
+                            <img src="{{ message.message }}" ng-show="message.gif" />
+                            <a href="{{apiUrl}}/containers/images/download/{{message.message}}" target="_blank" ng-show="message.image">Link to image</a>
+                            <a href="{{apiUrl}}/containers/videos/download/{{message.message}}" target="_blank" ng-show="message.video">Link to video</a>
+                            <a href="{{apiUrl}}/containers/voice/download/{{message.message}}" target="_blank" ng-show="message.voice">Link to audio</a>
+                            <a href="{{apiUrl}}/containers/documents/download/{{message.message}}" target="_blank" ng-show="message.doc">Link to document</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="" ng-click="refresh()">Reload</a>
+            -
+            <a ui-sref="app.students.list">Go back</a>
+        </div>
+    </div>
+</div>

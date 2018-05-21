@@ -1,0 +1,65 @@
+<div class="animated fadeIn list-students">
+    <modal visible="isApproving"  ng-show="isApproving">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="name">Profit exp para pregunta</label>
+                    <input type="text" class="form-control" id="teacher_id" ng-model="approvement.profitExp" placeholder="Ingresa el profit de exp para quien responda la pregunta (de 1 a 100)">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="name">Tuls de ganancia</label>
+                    <input type="text" class="form-control" id="teacher_id" ng-model="approvement.profitTuls" placeholder="Ingresa el profit de tuls por aprobar esta pregunta">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <select class="form-control" ng-model="approvement.categoryId">
+                    <option ng-repeat="category in categories" ng-selected="category.id == approvement.categoryId" ng-value="category.id">{{category.name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" style="margin-top: 10px;">
+                <button type="button" class="btn btn-primary col-sm-12" ng-click="sendApprovement()">Enviar</button>
+            </div>
+        </div>
+    </modal>
+
+    <div class="card" id="new">
+        <div class="card-body">
+
+            <table datatable="ng" ng-if="pendingQuestions" class="row-border hover">
+                <thead>
+                    <td class="text-center">ID</td>
+                    <td class="text-center">Pregunta</td>
+                    <td class="text-center">Opciones</td>
+                    <td class="text-center">Acciones</td>
+                </thead>
+                <tr ng-repeat="pendingQuestion in pendingQuestions">
+                    <td class="text-center">{{ pendingQuestion.id }}</td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ pendingQuestion.question }}</p>
+                    </td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ pendingQuestion.option1 }}</p>
+                        <p style="font-size: 12px;">{{ pendingQuestion.option2 }}</p>
+                        <p style="font-size: 12px;">{{ pendingQuestion.option3 }}</p>
+                        <p style="font-size: 12px;">{{ pendingQuestion.option4 }}</p>
+                    </td>
+                    <td class="text-center">
+                        <a ng-click="approve(pendingQuestion.id)" href="#">[ Aprobar ]</a>
+                        &nbsp;
+                        <a ng-click="approve(pendingQuestion.id)" href="#">[ Rechazar ]</a>
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

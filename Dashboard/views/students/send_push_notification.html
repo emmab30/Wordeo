@@ -1,0 +1,48 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <strong ng-show="!sendingMultiples">Send Push notification to {{ students[0].name }} {{ students[0].lastname }}</strong>
+            <strong ng-show="sendingMultiples">Send Push notification to {{ students.length }} students </strong>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Text message (max characters: 120)</label>
+                        <input type="text" class="form-control" maxlength="120" ng-model="notification.message" placeholder="Enter the message for the student">
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Schedule</label>
+                        <input type="checkbox" ng-model="notification.scheduled">
+                    </div>
+
+                </div>
+            </div>
+            <div class="row" ng-show="notification.scheduled">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input
+                            class="form-control"
+                            placeholder="Click here to pick date"
+                            min-view="day"
+                            moment-picker="dateFormatted"
+                            ng-model="notification.scheduled_at" format="DD/MM/YYYY HH:mm">
+                    </div>
+                </div>
+            </div>
+            <!--/.row-->
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary" ng-click="sendPushNotification()"><i class="fa fa-send-o"></i> Send</button>
+        </div>
+    </div>
+
+    <div class="alert alert-{{statusMessage.done ? 'success' : 'primary'}}" ng-if="statusMessage.show" role="alert">
+        {{statusMessage.text}} <a ng-show="statusMessage.done" ui-sref="app.students.list">Go back</a>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="animated fadeIn">
+    <div class="card" id="new">
+        <div class="card-header">Topic creation / edition</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Name [EN]</label>
+                        <input type="text" class="form-control" id="teacher_id" ng-model="topic.name" placeholder="Enter the topic name">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Name [ES]</label>
+                        <input type="text" class="form-control" id="teacher_id" ng-model="topic.name_es" placeholder="Enter the topic name in spanish">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Description [EN]</label>
+                        <textarea class="form-control" placeholder="Topic description" ng-model="topic.description"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Description [ES]</label>
+                        <textarea class="form-control" placeholder="Topic description" ng-model="topic.description_es"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Image URL</label>
+                        <input type="text" class="form-control" id="image" ng-model="topic.image" placeholder="Enter the URL of the image for the topic">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Difficulty Stage</label>
+                        <select class="form-control" ng-model="topic.difficultyStageId">
+                            <option ng-repeat="difficultyStage in difficultyStages" ng-selected="difficultyStage.id == topic.difficultyStageId" ng-value="difficultyStage.id">{{difficultyStage.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Spreadsheet ID</label>
+                        <input type="text" class="form-control" id="spreadsheet_id" ng-model="topic.spreadsheetId" placeholder="Enter the ID from BotMaker spreadsheet">
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary" ng-click="isCreating ? save() : update()"><i class="fa fa-dot-circle-o"></i> Submit</button>
+        </div>
+    </div>
+</div>

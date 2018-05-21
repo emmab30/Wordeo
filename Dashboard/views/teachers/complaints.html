@@ -1,0 +1,29 @@
+<div class="animated fadeIn">
+    <div class="card" id="new">
+        <div class="card-header">
+            Reports qty: {{reports.length}}
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Reason</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="complaint in complaints">
+                        <td>
+                            <b>{{ complaint.userFrom.name }} {{ complaint.userFrom.lastname }}</b>
+                        </td>
+                        <td>{{ complaint.reason.reason }}</td>
+                        <td>{{ (complaint.extraData != null) ? complaint.extraData : '-' }}</td>
+                        <td>{{ complaint.created }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

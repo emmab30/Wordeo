@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+    <div class="card" id="filter">
+        <div class="card-header">Filters</div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label" for="select">Status</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" ng-model="filters.status" ng-change="filter()">
+                                <option ng-repeat="status in statuses" ng-selected="status.id == filters.status" ng-value="status">{{status.label}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <label class="col-sm-3 form-control-label" for="select">Name, Email or Teacher ID</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" ng-model="filters.pattern" ng-change="filter()" placeholder="Enter the pattern here">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="multiple-actions" style="padding: 5px;" ng-show="selectedTeachers.length > 0">
+            <h5 class="text-center">Multiple actions</h5>
+
+            <div class="col-md-3 col-md-offset-1">
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="sendMultipleSMS()"><i class="fa fa-send"></i> Send SMS to selected ones ({{ selectedTeachers.length }})</button>
+            </div>
+        </div>
+        <!-- <button type="submit" class="btn btn-sm btn-primary" ng-click="filter()"><i class="fa fa-search"></i> Filter</button> !-->
+    </div>
+    <div class="card" id="new">
+        <div class="card-header">
+            Total teachers: {{filtering.length}}
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" ng-checked="selectedAll" ng-click="selectAllTeachers()">
+                        </th>
+                        <th class="sort" ng-click="orderBy('teacherId')">Teacher ID</th>
+                        <th class="sort" ng-click="orderBy('name')">Name</th>
+                        <th class="sort" ng-click="orderBy('email')">E-mail</th>
+                        <th class="sort" ng-click="orderBy('created_at')">Date registered</th>
+                        <th class="sort" ng-click="orderBy('students')">Students</th>
+                        <th class="sort" ng-click="orderBy('status')">Status</th>
+                        <th>Quick actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="teacher in filtering | orderBy: order.getOrder() " ng-class="{'selected' : selectedTeachers.indexOf(teacher) > -1}">
+                        <td>
+                            <input type="checkbox" ng-checked="selectedTeachers.indexOf(teacher) > -1" ng-click="selectTeacher(teacher)">
+                        </td>
+                        <td>
+                            <b ng-show="teacher.teacherId != null && teacher.teacherId != ''">{{teacher.teacherId}}</b>
+                            <b ng-show="teacher.teacherId == null || teacher.teacherId == ''">-</b>
+                        </td>
+                        <td>{{teacher.name}} {{teacher.lastname}}</td>
+                        <td>{{teacher.email}}</td>
+                        <td>{{teacher.created_at | amUtc | amLocal | amDateFormat:'MM/DD/YYYY'}}</td>
+                        <td>
+                            <span ng-show="teacher.status == 0">0</span>
+                            <a ui-sref="app.teachers.assigned_students({id: teacher.id})" ng-show="teacher.status == 1">{{ teacher.students }}</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-success" ng-show="teacher.status == 1">Active</span>
+                            <span class="badge badge-light" ng-show="teacher.status == 0">Offline</span>
+                        </td>
+                        <td>
+                            <a ui-sref="app.teachers.edit({id: teacher.id})">Edit</a>
+                            -
+                            <a ui-sref="app.teachers.send_sms({id: teacher.id})">Send SMS</a>
+                            -
+                            <a ui-sref="app.teachers.complaints({id: teacher.id})">Complaints</a>
+                            -
+                            <a href="" ng-click="generateReport(teacher)">Report</a>
+                            -
+                            <a href="" ng-csv="generateCSV(teacher)" field-separator=";" csv-header="generateCSVHeader()" filename="report.csv">Export to CSV</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <ul class="pagination">
+                <li class="page-item"
+                    ng-repeat="n in range(1,pagination.numberOfPages)"
+                    ng-click="paginate(n)"
+                    ng-class="{'active': n == currentPage}"><a class="page-link" href="#">{{n}}</a></li>
+            </ul> !-->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,206 @@
+<div class="animated fadeIn list-students">
+    <modal visible="showModalDetails"  ng-show="showModalDetails">
+        <div class="student_detailed_row">Name: {{ student.name }} {{ student.lastname }}</div>
+        <div class="student_detailed_row">Email: {{ student.email }}</div>
+        <div class="student_detailed_row">Level: {{ student.level.name }} [{{ student.level.difficultyStage.name }}]</div>
+        <div class="student_detailed_row">Total EXP: {{ student.points }}</div>
+        <div class="student_detailed_row">Phone number: {{ student.phone }}</div>
+        <div class="student_detailed_row">Preferred language: {{ student.preferredLanguage }}</div>
+        <div class="student_detailed_row">Age: {{ student.age }}</div>
+        <div class="student_detailed_row">Member since: {{ student.created_at }}</div>
+        <div class="student_detailed_row">Verified account: {{ student.phoneVerified ? 'YES' : 'NO' }}</div>
+        <div class="student_detailed_row">Verification code: {{ student.verificationCode }}</div>
+        <!-- <div class="student_detailed_row">Already notified ending free trial?: {{ student.notifiedEndingFreeTrial ? 'YES' : 'NO' }}</div> !-->
+
+        <hr />
+        <p>Subscription details</p>
+
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && !student.subscription.message.freeTrialPeriod">Subscription status: Premium</div>
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && student.subscription.message.freeTrialPeriod">Subscription status: Free trial</div>
+        <div class="student_detailed_row" ng-show="student.subscription.code == 0">Subscription status: Expired</div>
+
+        <!-- Premium subscription !-->
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && !student.subscription.message.freeTrialPeriod">Subscription started: {{ student.subscription.message.from | amUtc | amLocal | amDateFormat:'DD/MM/YYYY H:MM' }}</div>
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && !student.subscription.message.freeTrialPeriod">Subscription ends: {{ student.subscription.message.validUntil }}</div>
+
+        <!-- Free trial subscription !-->
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && student.subscription.message.freeTrialPeriod">Free trial started: {{ student.subscription.message.from | amUtc | amLocal | amDateFormat:'DD/MM/YYYY H:MM' }}</div>
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && student.subscription.message.freeTrialPeriod">Free trial ends: {{ student.subscription.message.validUntil }}</div>
+
+        <hr />
+        <p>Reports</p>
+
+        <!-- Free trial subscription !-->
+        <div class="student_detailed_row" ng-repeat="report in student.reports">
+            <span style="font-size: 11px;">Report created on {{ report.created | amUtc | amLocal | amDateFormat:'DD/MM/YYYY H:MM' }} by admin</span>
+            <p>{{ report.extraData }}</p>
+        </div>
+    </modal>
+
+    <modal visible="showModalReportUser" ng-show="showModalReportUser">
+        <textarea ng-model="reportUserText.text" style="margin: 10px; outline: none; width: 90%; padding: 10px; resize: none; border-radius: 20px;" placeholder="Enter here the details for the report"></textarea>
+        <button type="submit" class="btn btn-sm btn-primary btn-block" ng-click="submitReportUser()">Save report</button>
+    </modal>
+
+    <div class="card" id="filter">
+        <div class="card-header">Filters</div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label" for="select">Status</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" ng-model="filters.status" ng-change="filter()">
+                                <option ng-repeat="status in statuses" ng-selected="status.id == filters.status" ng-value="status">{{status.label}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row" style="margin-top: 10px;">
+                        <label class="col-sm-3 form-control-label" for="select">Membership type</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" ng-model="filters.membership" ng-change="filter()">
+                                <option ng-repeat="membership in memberships" ng-selected="membership.id == filters.membership" ng-value="membership">{{membership.label}}</option>
+                            </select>
+                        </div>
+                    </div> !-->
+
+                    <div class="row" style="margin-top: 10px;">
+                        <label class="col-sm-3 form-control-label" for="select">Blocked/Active</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" ng-model="filters.blockedUnblockedStatus" ng-change="filter()">
+                                <option ng-repeat="blockedUnblockedStatus in blockedUnblockedStatus" ng-selected="blockedUnblockedStatus.id == filters.blockedUnblockedStatus" ng-value="blockedUnblockedStatus">{{blockedUnblockedStatus.label}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <label class="col-sm-3 form-control-label" for="select">Creation date</label>
+                        <div class="col-sm-9">
+                            <input date-range-picker id="daterange2" name="daterange2" class="form-control date-picker" type="text" ng-model="date" required/>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row" style="margin-top: 10px;">
+                        <label class="col-sm-3 form-control-label" for="select">Name or email</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" ng-model="filters.pattern" ng-change="filter()" placeholder="Enter the pattern here">
+                        </div>
+                    </div> !-->
+                </div>
+            </div>
+        </div>
+
+        <div class="multiple-actions" style="padding: 5px;" ng-show="selectedStudents.length > 0 || selectedAll">
+            <h5 class="text-center">Multiple actions</h5>
+
+            <div class="col-md-3 col-md-offset-1">
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="sendMultiplePushNotification()"><i class="fa fa-send"></i> Send Push Notifications to selected ones ({{ (selectedStudents.length > 0) ? selectedStudents.length : totalStudents }})</button>
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="exportToCSV()" style="margin-top: 20px;"><i class="fa fa-save"></i> Export selected to CSV ({{ (selectedStudents.length > 0) ? selectedStudents.length : totalStudents }})</button>
+            </div>
+        </div>
+        <!-- <button type="submit" class="btn btn-sm btn-primary" ng-click="filter()"><i class="fa fa-search"></i> Filter</button> !-->
+    </div>
+    <div class="card" id="new">
+        <div class="card-body">
+            <button type="submit" class="btn btn-sm btn-primary" ng-click="selectAllStudents()" ng-show="selectedAll" style="margin-bottom: 15px;">Unselect all</button>
+
+            <button type="submit" class="btn btn-sm btn-primary" ng-click="selectAllStudents()" ng-show="!selectedAll" style="margin-bottom: 15px;">Select all</button>
+
+            <table datatable dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="row-border hover">
+                <thead>
+
+                </thead>
+                <tr dt-rows ng-repeat="student in filtering">
+                    <td>
+                        <input type="checkbox" ng-checked="selectedStudents.indexOf(student) > -1" ng-click="selectStudent(student)">
+                    </td>
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.name }} {{ student.lastname }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>
+                        <span class="badge badge-success" ng-if="student.subscription.code == 1 && !student.subscription.message.freeTrialPeriod">Premium</span>
+                        <span class="badge badge-primary" ng-if="student.subscription.code == 1 && student.subscription.message.freeTrialPeriod">Free Trial</span>
+                        <span class="badge badge-light" ng-if="student.subscription.code == 0">Expired</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-success" ng-if="student.status == 1">Active</span>
+                        <span class="badge badge-light" ng-if="student.status == 0">Offline</span>
+                        <span class="badge badge-danger" ng-if="student.isBlocked">Blocked</span>
+                    </td>
+                    <td>{{ student.created_at }}</td>
+                    <td>{{ student.lastInteractionDate }}</td>
+                    <td>{{ student.lastLogin }}</td>
+                    <td>
+                        {{ student.appReferrer }}
+                    </td>
+                    <td><span ng-show="student.platform != null">{{ student.platform }}</span>
+                    <td>
+                        <a ui-sref="app.students.send_push_notification({id: student.id})" ng-show="student.notificationId !== null && student.notificationId !== ''">[Send Push Notification]&nbsp;&nbsp;</a>
+                        <a ng-click="openReportUser(student)" href="#">[Report user]&nbsp;&nbsp;</a>
+                        <a ng-click="viewStudentDetails(student)" href="#">[Full details]&nbsp;&nbsp;</a>
+                        <a ng-click="blockUnblock(student)" href="#" ng-show="student.isBlocked == 0">[Block]&nbsp;&nbsp;</a>
+                        <a ng-click="blockUnblock(student)" href="#" ng-show="student.isBlocked == 1">[Unblock]&nbsp;&nbsp;</a>
+                        <a style="color: red;" ng-click="removeStudent(student)" href="#">[Remove user]&nbsp;&nbsp;</a>
+                    </td>
+                </tr>
+            </table>
+            <!-- <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" ng-checked="selectedAll" ng-click="selectAllStudents()">
+                        </th>
+                        <th class="sort">ID</th>
+                        <th class="sort" ng-click="orderBy('name')">Name</th>
+                        <th class="sort" ng-click="orderBy('email')">E-mail</th>
+                        <th class="sort" ng-click="orderBy('created_at')">Date registered</th>
+                        <th class="sort" ng-click="orderBy('subscription.code')">Membership</th>
+                        <th class="sort" ng-click="orderBy('status')">Status</th>
+                        <th>Quick actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="student in filtering | orderBy: order.getOrder() " ng-class="{'selected' : selectedStudents.indexOf(student) > -1}">
+                        <td>
+                            <input type="checkbox" ng-checked="selectedStudents.indexOf(student) > -1" ng-click="selectStudent(student)">
+                        </td>
+                        <td>{{ student.id }}</td>
+                        <td>{{ student.name }} {{ student.lastname }}</td>
+                        <td>{{ student.email }}</td>
+                        <td>{{ student.created_at | amUtc | amLocal | amDateFormat:'DD/MM/YYYY' }}</td>
+                        <td>
+                            <span class="badge badge-success" ng-show="student.subscription.code == 1 && !student.subscription.message.freeTrialPeriod">Premium</span>
+                            <span class="badge badge-primary" ng-show="student.subscription.code == 1 && student.subscription.message.freeTrialPeriod">Free Trial</span>
+                            <span class="badge badge-light" ng-show="student.subscription.code == 0">Expired</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-success" ng-show="student.status == 1">Active</span>
+                            <span class="badge badge-light" ng-show="student.status == 0">Offline</span>
+                        </td>
+                        <td>
+                            <a ui-sref="app.students.send_push_notification({id: student.id})" ng-show="student.notificationId !== null && student.notificationId !== ''">[Send Push Notification]</a>
+                            &nbsp;&nbsp;
+                            <a ng-click="viewStudentDetails(student)" href="#">[Full details]</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> !-->
+            <!-- <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Prev</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">4</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">Next</a>
+                </li>
+            </ul> !-->
+        </div>
+    </div>
+</div>

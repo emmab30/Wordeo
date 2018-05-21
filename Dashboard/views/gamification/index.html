@@ -1,0 +1,103 @@
+<!-- <div class="animated fadeIn list-students">
+    <modal visible="showModalDetails"  ng-show="showModalDetails">
+        <div class="student_detailed_row">Name: {{ student.name }} {{ student.lastname }}</div>
+        <div class="student_detailed_row">Email: {{ student.email }}</div>
+        <div class="student_detailed_row">Level: {{ student.level.name }} [{{ student.level.difficultyStage.name }}]</div>
+        <div class="student_detailed_row">Total EXP: {{ student.points }}</div>
+        <div class="student_detailed_row">Phone number: {{ student.phone }}</div>
+        <div class="student_detailed_row">Preferred language: {{ student.preferredLanguage }}</div>
+        <div class="student_detailed_row">Age: {{ student.age }}</div>
+        <div class="student_detailed_row">Member since: {{ student.created_at }}</div>
+        <div class="student_detailed_row">Verified account: {{ student.phoneVerified ? 'YES' : 'NO' }}</div>
+        <div class="student_detailed_row">Verification code: {{ student.verificationCode }}</div>
+
+        <hr />
+        <p>Subscription details</p>
+
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && !student.subscription.message.freeTrialPeriod">Subscription status: Premium</div>
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && student.subscription.message.freeTrialPeriod">Subscription status: Free trial</div>
+        <div class="student_detailed_row" ng-show="student.subscription.code == 0">Subscription status: Expired</div>
+
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && !student.subscription.message.freeTrialPeriod">Subscription started: {{ student.subscription.message.from | amUtc | amLocal | amDateFormat:'DD/MM/YYYY H:MM' }}</div>
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && !student.subscription.message.freeTrialPeriod">Subscription ends: {{ student.subscription.message.validUntil }}</div>
+
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && student.subscription.message.freeTrialPeriod">Free trial started: {{ student.subscription.message.from | amUtc | amLocal | amDateFormat:'DD/MM/YYYY H:MM' }}</div>
+        <div class="student_detailed_row" ng-show="student.subscription.code == 1 && student.subscription.message.freeTrialPeriod">Free trial ends: {{ student.subscription.message.validUntil }}</div>
+
+        <hr />
+        <p>Reports</p>
+
+        <div class="student_detailed_row" ng-repeat="report in student.reports">
+            <span style="font-size: 11px;">Report created on {{ report.created | amUtc | amLocal | amDateFormat:'DD/MM/YYYY H:MM' }} by admin</span>
+            <p>{{ report.extraData }}</p>
+        </div>
+    </modal>
+
+    <modal visible="showModalReportUser" ng-show="showModalReportUser">
+        <textarea ng-model="reportUserText.text" style="margin: 10px; outline: none; width: 90%; padding: 10px; resize: none; border-radius: 20px;" placeholder="Enter here the details for the report"></textarea>
+        <button type="submit" class="btn btn-sm btn-primary btn-block" ng-click="submitReportUser()">Save report</button>
+    </modal> !-->
+
+    <div class="card" id="filter">
+        <div class="card-header">Filters</div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label" style="padding-top: 5px;" for="select">Pattern</label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-model="filters.pattern" ng-keyup="$event.keyCode == 13 && filter()" class="form-control" placeholder="Press enter to filter" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" id="list">
+        <div class="card-body">
+            <table datatable dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="row-border hover">
+                <thead>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Points</th>
+                    <th class="text-center">Badges</th>
+                    <th class="text-center">Last Login</th>
+                    <th class="text-center">Daily time configured</th>
+                    <th class="text-center">Spent time today ({{ today }})</th>
+                </thead>
+                <tr dt-rows ng-repeat="student in students">
+                    <td class="text-center">{{ student.id }}</td>
+                    <td class="text-center">{{ student.name }} {{ student.lastname }} </td>
+                    <td class="text-center">
+                        <p ng-if="student.points == null || student.points == 0" class="badge badge-light">0</p>
+                        <p ng-if="student.points > 0" class="badge badge-success">{{student.points}}</p>
+                    </td>
+                    <td class="text-center">
+                        <p ng-if="student.badges == null || student.badges.length == 0" class="badge badge-light">No badges yet</p>
+                        <p ng-repeat="badge in student.badges" class="badge badge-success">{{ badge.name }}</p>
+                    </td>
+                    <td class="text-center">{{ student.lastLogin }}</td>
+                    <td class="text-center">
+                        <p class="badge badge-light">{{ student.mins_daily_goal }} minutes</p>
+                    </td>
+                    <td class="text-center">
+                        <p ng-show="student.daily != null && student.daily.timeInSeconds" class="badge badge-success">{{ student.daily.timeInSeconds }} seconds</p>
+                        <p ng-show="student.daily == null" class="badge badge-light">0 seconds</p>
+                    </td>
+                </tr>
+            </table>
+            <div class="pagination dark">
+                <p>Current page {{ $page }}</p>
+                <a href="#" class="page dark gradient">First</a>
+                <a href="#" ng-repeat="page in pagination.pages" class="page dark gradient" ng-class="{'active': page == filters.page }" ng-click="goToPage(page)">{{ page }}</a>
+                <!-- <a href="#" class="page dark gradient">2</a>
+                <a href="#" class="page dark gradient">3</a>
+                    <span class="page dark active">4</span>
+                <a href="#" class="page dark gradient">5</a>
+                <a href="#" class="page dark gradient">6</a> !-->
+                <a href="#" class="page dark gradient">Last</a>
+            </div>
+        </div>
+    </div>
+</div>

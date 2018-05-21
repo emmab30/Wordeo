@@ -1,0 +1,23 @@
+<div class="animated fadeIn">
+    <div class="card" id="new">
+        <div class="card-header">
+            Assigned students for {{teacher.name}} {{teacher.lastname}}
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Student name</th>
+                        <th>Student email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="student in students">
+                        <td>{{student.name}} {{student.lastname}}</td>
+                        <td>{{student.email}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

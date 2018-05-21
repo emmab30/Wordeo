@@ -87,6 +87,24 @@
             "verb": "get",
             "path": "/me"
         }
+    },
+    "changeQuestionStatus": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": false,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/changeQuestionStatus"
+        }
     }
   }
 }
