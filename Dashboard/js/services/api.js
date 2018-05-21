@@ -13,7 +13,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 (function(window, angular, undefined) {
   'use strict';
 
-  var urlBase = "http://localhost:3000/api";
+  //var urlBase = "http://localhost:3000/api";
+  var urlBase = 'http://216.172.179.17:12002/api';
   var authHeader = 'authorization';
 
   function getHost(url) {

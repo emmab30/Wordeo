@@ -3,9 +3,10 @@ var app = angular.module('app.factories', []);
 app.factory('BaseService', function () {
     return {
         apiUrl: function() {
+            return 'http://216.172.179.17:12002/api';
             //return 'https://chat.openenglish.com:12003/api';
             //return 'https://megachat.stg.openenglish.com:12003/api';
-            return 'https://chat.openenglish.com:12003/api';
+            //return 'https://chat.openenglish.com:12003/api';
         }
     }
 })
