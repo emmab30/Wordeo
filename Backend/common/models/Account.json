@@ -43,6 +43,14 @@
         "type": "boolean",
         "default": false
     },
+    "facebookId": {
+        "type": "string",
+        "required": null
+    },
+    "facebookAccessToken": {
+        "type": "string",
+        "required": null
+    },
     "createdAt": {
         "type": "date",
         "defaultFn": "now"
@@ -65,7 +73,9 @@
         "loginFacebook",
         "loginAdmin",
         "me",
-        "uploadAvatar"
+        "uploadAvatar",
+        "getFriends",
+        "getUserStatus"
       ]
     },
     {
@@ -130,6 +140,31 @@
         "http": {
             "verb": "post",
             "path": "/login/facebook"
+        }
+    },
+    "getFriends": {
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/me/friends"
+        }
+    },
+    "getUserStatus": {
+        "accepts": {
+            "arg": "userId",
+            "type": "number",
+            "required": true
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/:userId/status"
         }
     },
     "uploadAvatar": {

@@ -17,9 +17,11 @@ const s3 = new AWS.S3({
 module.exports = function(Account) {
     Account.loginAdmin = loginAdmin;
     Account.loginFacebook = loginFacebook;
+    Account.getFriends = getFriends;
     Account.me = getMe;
     Account.uploadAvatar = uploadAvatar;
     Account.getRankingByUserId = getRankingByUserId;
+    Account.getUserStatus = getUserStatus;
 
     function loginAdmin(data, next) {
 
@@ -80,8 +82,10 @@ module.exports = function(Account) {
                         user.notificationId = data.notificationId;
                         user.platform = data.platform;
                         user.lastLogin = new Date();
+                        user.facebookId = dataGraph.id;
                         var username = (dataGraph.name.toUpperCase().substr(0, 4) + dataGraph.last_name.toUpperCase().substr(0, 4) + _.random(0, 2000).toString());
                         user.username = username;
+                        user.facebookAccessToken = data.accessToken;
 
                         let profile = new app.models.Profile;
                         if(dataGraph.first_name) profile.name = dataGraph.first_name;
@@ -121,7 +125,9 @@ module.exports = function(Account) {
                             account.appVersion = data.appVersion;
                         }
 
+                        account.facebookId = dataGraph.id;
                         account.lastLogin = new Date();
+                        account.facebookAccessToken = data.accessToken;
                         account.save();
 
                         app.models.Notification.updateTagsDevice(account.id);
@@ -143,6 +149,46 @@ module.exports = function(Account) {
                 next(error);
             }
         })
+    }
+
+    function getFriends(next) {
+        var ctx = loopbackContext.getCurrentContext();
+        // Get the current access token
+        var accessToken = ctx && ctx.get('accessToken');
+        if(accessToken != null && accessToken.userId > -1) {
+            app.models.Account.findOne({ where : { id : accessToken.userId } }, (err, result) => {
+                graph.setAccessToken(result.facebookAccessToken);
+                graph.batch([
+                    { method: "GET", relative_url: "me/friends?limit=10" }
+                ], function(err, res) {
+                    var friends = [];
+                    var promises = [];
+                    var results = res[0];
+                    results = JSON.parse(results.body);
+
+                    for(var idx in results.data) {
+                        const result = results.data[idx];
+                        promises.push(new Promise((resolve, reject) => {
+                            app.models.Account.findOne({ fields: {id: true, facebookId: true, username: true, isOnline: true}, include: 'profile', where : { facebookId : result.id }}, (err, account) => {
+                                if(account) {
+                                    Account.getRankingByUserId(account.id, (rank) => {
+                                        account.rank = rank;
+                                        app.models.Character.getCharacterByUserId(account.id, (character) => {
+                                            account.character = character;
+                                            resolve(account);
+                                        });
+                                    });
+                                }
+                            });
+                        }));
+                    }
+
+                    Promise.all(promises).then((values) => {
+                        next(null, values);
+                    });
+                });
+            });
+        }
     }
 
     function getMe(next) {
@@ -366,6 +412,23 @@ module.exports = function(Account) {
                 }
             } else {
                 callback(-1);
+            }
+        });
+    }
+
+    function getUserStatus(userId, next) {
+        app.models.Account.findOne({ include: 'profile', where : { id: userId }}, (err, account) => {
+            if(account) {
+                var status = {
+                    isOnline: account.isOnline
+                };
+
+                app.models.RoomUser.count({ userId : account.id }, (err, count) => {
+                    status.isPlaying = count > 0;
+                    next(null, status);
+                })
+            } else {
+                next();
             }
         });
     }

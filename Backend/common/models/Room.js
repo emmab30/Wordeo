@@ -127,6 +127,8 @@ module.exports = function(Room) {
                                     date: new Date()
                                 }
                             }
+                        }, (response) => {
+                            //Do nothing
                         });
                     }
                 });
@@ -270,6 +272,18 @@ module.exports = function(Room) {
         if(app.socketHandler != null) {
             app.socketHandler.onRoomCreated(result);
         }
+
+        if(result.challengeTo !== undefined) {
+            app.models.Account.findOne({ where : { facebookId : result.challengeTo }}, (err, account) => {
+                Room.invite({
+                    roomId: result.id,
+                    email: account.email
+                }, (response) => {
+                    //Do nothing
+                });
+            });
+        }
+
         next();
     });
 

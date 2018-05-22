@@ -41,8 +41,10 @@ module.exports = function(Notification) {
             }
         };
         app.models.Notification.findOne(filter, (err, notification) => {
-            if(notification.userId == userId) {
-                app.models.Notification.destroyAll({ id : data.notificationId })
+            if(notification) {
+                if(notification.userId == userId) {
+                    app.models.Notification.destroyAll({ id : data.notificationId })
+                }
             }
 
             next();
@@ -50,80 +52,89 @@ module.exports = function(Notification) {
     }
 
     function send(data, next) {
-        var filter = {
-            where: {
-                id: data.userId
-            }
-        };
-        app.models.Account.findOne(filter, (err, user) => {
-            var retValue = {
-                code: 400,
-                message: "The user doesn't have any associated device."
-            };
-
-            if(user !== null &&
-                user.notificationId !== undefined &&
-                user.notificationId !== null) {
-                var bodyRequest = Object.assign(data.options || {}, {
-                    app_id: appId,
-                    include_player_ids: [user.notificationId],
-                    android_accent_color: '#222222', //Blue color
-                    large_icon: 'https://s3-sa-east-1.amazonaws.com/wordeo/common/logo.png',
-                    ttl: 30,
-                    //android_sound: 'push_nsound',
-                    contents: {
-                        en: data.message
-                    }
-                });
-
-                if(data.scheduled_at != undefined && data.scheduled_at != null) {
-                    body.send_after = data.scheduled_at;
+        if(data && data.userId != undefined) {
+            var filter = {
+                where: {
+                    id: data.userId
                 }
+            };
+            app.models.Account.findOne(filter, (err, user) => {
+                var retValue = {
+                    code: 400,
+                    message: "The user doesn't have any associated device."
+                };
 
-                request.post({
-                    url: 'https://onesignal.com/api/v1/notifications',
-                    method: 'POST',
-                    headers: headersOS,
-                    body: JSON.stringify(bodyRequest)
-                }, function(err, response) {
-                    let body = JSON.parse(response.body);
-                    if(body !== undefined &&
-                        body.id !== undefined) {
+                if(user !== null &&
+                    user.notificationId !== undefined &&
+                    user.notificationId !== null) {
+                    var bodyRequest = Object.assign(data.options || {}, {
+                        app_id: appId,
+                        include_player_ids: [user.notificationId],
+                        android_accent_color: '#222222', //Blue color
+                        large_icon: 'https://s3-sa-east-1.amazonaws.com/wordeo/common/logo.png',
+                        ttl: 30,
+                        //android_sound: 'push_nsound',
+                        contents: {
+                            en: data.message
+                        }
+                    });
+
+                    if(data.scheduled_at != undefined && data.scheduled_at != null) {
+                        body.send_after = data.scheduled_at;
+                    }
+
+                    request.post({
+                        url: 'https://onesignal.com/api/v1/notifications',
+                        method: 'POST',
+                        headers: headersOS,
+                        body: JSON.stringify(bodyRequest)
+                    }, function(err, response) {
+                        let body = JSON.parse(response.body);
+                        console.log(body);
+                        if(body !== undefined &&
+                            body.id !== undefined) {
+
+                            if(next !== undefined) {
+                                retValue = {
+                                    code: 200,
+                                    message: 'The push notification has been sent succesfully.'
+                                };
+
+                                next(err, retValue);
+                            }
+                        } else {
+                            console.log("Por eso entre aca");
+
+                            if(next !== undefined) {
+                                retValue = {
+                                    code: 400,
+                                    message: 'The push notification cannot be sent at this moment.'
+                                };
+                                next(err, retValue);
+                            }
+                        }
 
                         let obj = {
                             userId: user.id,
                             category: data.category,
                             message: data.message,
-                            osPlayerId: body.id,
+                            osPlayerId: (body.id === undefined || body.id === '') ? 'noPlayerId' : body.id,
                             payload: JSON.stringify(bodyRequest)
                         };
-                        app.models.Notification.create(obj, (success, err) => {});
+                        app.models.Notification.create(obj, (success, err) => {
+                            console.log(success, err);
+                        });
+                    });
 
-                        if(next !== undefined) {
-                            retValue = {
-                                code: 200,
-                                message: 'The push notification has been sent succesfully.'
-                            };
-
-                            next(err, retValue);
-                        }
-                    } else {
-                        if(next !== undefined) {
-                            retValue = {
-                                code: 400,
-                                message: 'The push notification cannot be sent at this moment.'
-                            };
-                            next(err, retValue);
-                        }
+                } else {
+                    if(next !== undefined) {
+                        next(null, retValue);
                     }
-                });
-
-            } else {
-                if(next !== undefined) {
-                    next(null, retValue);
                 }
-            }
-        });
+            });
+        } else {
+            next();
+        }
 	}
 
     function cancel(data, options, next) {

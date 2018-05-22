@@ -23,6 +23,7 @@ var models = [
     'Notification',
     'PendingQuestion',
     'Contact', */
+    'Account',
     'QuestionReport'
 ];
 ds.isActual(models, function(err, actual) {

@@ -302,6 +302,7 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                                 context.io.sockets.to('Room=' + room.id).emit('onFinishedRound', {
                                     isOwnerDisconnected: true
                                 }); //Finish round if the owner leaves it.
+                                console.log("Eliminar sala ya!");
                                 context.onRoomRemoved(room.id);
                             } else {
                                 //Success
