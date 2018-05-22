@@ -89,8 +89,8 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
             log("Player disconnected [Socket ID=" + socket.id + "]");
         }
 
-        this.app.models.Account.upsertWithWhere({socketId: socket.id}, { isOnline: false, socketId: null }, (err, result) => {
-            if(this.io) {
+        this.app.models.Account.upsertWithWhere({socketId: socket.id}, { isOnline: false }, (err, result) => {
+            /* if(this.io) {
                 const sockets = this.io.sockets;
 
                 this.app.models.Account.count({ isOnline : true }, function(err, count) {
@@ -98,7 +98,7 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
                         sockets.to('General').emit('onStatisticsUsers', { online : count });
                     }
                 });
-            }
+            } */
         });
     });
 }
@@ -302,7 +302,6 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                                 context.io.sockets.to('Room=' + room.id).emit('onFinishedRound', {
                                     isOwnerDisconnected: true
                                 }); //Finish round if the owner leaves it.
-                                console.log("Eliminar sala ya!");
                                 context.onRoomRemoved(room.id);
                             } else {
                                 //Success
@@ -323,8 +322,8 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
 
                 //Delete the room, all the members from it and stop the simulation for user.
                 let stoppedBots = BotUser.stopSimulatingStats(data.roomId);
-                //context.app.models.RoomUser.destroyAll({ id : data.roomId });
-                //context.app.models.Room.destroyAll({ id : data.roomId });
+                context.app.models.RoomUser.destroyAll({ id : data.roomId });
+                context.app.models.Room.destroyAll({ id : data.roomId });
             }
         });
     }
