@@ -17,7 +17,7 @@ module.exports = function(QuestionCategory) {
             if(data.desiredPoints) {
                 query = "SELECT *, ABS(Question.profitExp - " + data.desiredPoints + ") as difference FROM Question WHERE questionCategoryId = " + data.categoryId + " ORDER BY difference LIMIT 1";
             } else {
-                let query = "SELECT * FROM Question WHERE questionCategoryId = " + data.categoryId + " ORDER BY RAND() LIMIT 1";
+                query = "SELECT * FROM Question WHERE questionCategoryId = " + data.categoryId + " ORDER BY RAND() LIMIT 1";
             }
             dataSource.query(query, (err1, questions) => {
                 if(questions && questions.length == 1) {
