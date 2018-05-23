@@ -57,8 +57,11 @@ module.exports = function(News) {
                 newsId: data.newsId
             }, (err, created) => {
                 if(!err && created) {
-                    next(null, {
-                        message: 'Te hemos sumado los tuls a tu cuenta! Gracias y disfruta el juego'
+                    app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
+                        profile.balance_tuls += 100;
+                        next(null, {
+                            message: 'Te hemos sumado 100 tuls a tu cuenta! ¡Gracias y que disfrutes del juego'
+                        });
                     });
                 }
             });
