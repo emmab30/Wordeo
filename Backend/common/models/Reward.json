@@ -1,0 +1,52 @@
+{
+  "name": "Reward",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "userId": {
+        "type": "number",
+        "required": true
+    },
+    "title": {
+        "type": "string"
+    },
+    "text": {
+        "type": "string"
+    },
+    "profitTuls": {
+        "type": "string"
+    },
+    "profitExp": {
+        "type": "string"
+    },
+    "wasNotified": {
+        "type": "boolean"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [{
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": [
+        "me"
+      ]
+  }],
+  "methods": {
+    "me": {
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/me"
+        }
+    }
+  }
+}

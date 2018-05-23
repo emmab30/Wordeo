@@ -24,7 +24,8 @@ var models = [
     'PendingQuestion',
     'Contact', */
     'Account',
-    'QuestionReport'
+    'QuestionReport',
+    'Reward'
 ];
 ds.isActual(models, function(err, actual) {
     if (!actual) {

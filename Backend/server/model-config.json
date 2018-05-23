@@ -79,7 +79,7 @@
     "dataSource": "mysql",
     "public": true
   },
-  "Badge": {
+  "Reward": {
     "dataSource": "mysql",
     "public": true
   },
