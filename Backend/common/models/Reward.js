@@ -15,8 +15,10 @@ module.exports = function(Reward) {
             Reward.findOne({ where : { userId : accessToken.userId, wasNotified: false }}, (err, result) => {
                 next(null, [result]);
 
-                result.wasNotified = true;
-                result.save();
+                if(result != null) {
+                    result.wasNotified = true;
+                    result.save();
+                }
             });
         }
     }
