@@ -6,7 +6,7 @@ var BotUser = new require('./BotUser')
 var _ = require('lodash');
 
 const TIME_BEFORE_ROUND_STARTS  = 10 * 1000;
-const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 15 * 1000;
+const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 60 * 1000;
 const INTERVAL_BOT_CREATION_ROOMS  = 10 * 1000;
 const INTERVAL_CHANGE_STATUS_BOTS = 300 * 1000;
 

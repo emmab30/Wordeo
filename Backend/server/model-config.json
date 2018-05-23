@@ -87,6 +87,14 @@
     "dataSource": "mysql",
     "public": true
   },
+  "News": {
+    "dataSource": "mysql",
+    "public": true
+  },
+  "NewsUser": {
+    "dataSource": "mysql",
+    "public": true
+  },
   "CharacterAccesory": {
     "dataSource": "mysql",
     "public": true

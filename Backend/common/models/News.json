@@ -1,0 +1,63 @@
+{
+  "name": "News",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "payload": {
+        "type": "string",
+        "required": false
+    },
+    "isActive": {
+        "type": "boolean",
+        "default": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [{
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": [
+        "me",
+        "onTapButton"
+      ]
+  }],
+  "methods": {
+    "me": {
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/me"
+        }
+    },
+    "onTapButton": {
+        "accepts": [
+        {
+          "arg": "data",
+          "type": "object",
+          "required": false,
+          "http": {
+            "source": "body"
+          }
+        }
+      ],
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "description": "",
+      "http": {
+        "verb": "post",
+        "path": "/tap_button"
+      }
+    }
+  }
+}
