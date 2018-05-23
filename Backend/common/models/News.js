@@ -59,6 +59,8 @@ module.exports = function(News) {
                 if(!err && created) {
                     app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
                         profile.balance_tuls += 100;
+                        profile.save();
+
                         next(null, {
                             message: 'Te hemos sumado 100 tuls a tu cuenta! ¡Gracias y que disfrutes del juego'
                         });
