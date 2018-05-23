@@ -19,7 +19,7 @@ module.exports = function(News) {
             News.find({ where : { isActive : true }}, (err, results) => {
                 const newsIds = _.map(results, (e) => { return e.id });
 
-                app.models.NewsUser.find({ fields: { newsId: true }, where : { newsId: { inq : newsIds } }}, (err, toSend) => {
+                app.models.NewsUser.find({ fields: { newsId: true }, where : { newsId: { inq : newsIds }, userId: accessToken.userId }}, (err, toSend) => {
                     if(err) {
                         next(null, []);
                     } else {
