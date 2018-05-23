@@ -58,11 +58,11 @@ module.exports = function(News) {
             }, (err, created) => {
                 if(!err && created) {
                     app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
-                        profile.balance_tuls += 100;
+                        profile.balance_tuls += 300;
                         profile.save();
 
                         next(null, {
-                            message: 'Te hemos sumado 100 tuls a tu cuenta! ¡Gracias y que disfrutes del juego'
+                            message: 'Te hemos sumado 300 tuls a tu cuenta! ¡Gracias y que disfrutes del juego'
                         });
                     });
                 }
