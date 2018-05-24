@@ -42,7 +42,7 @@ BotUser.generateRandomRoom = (socketHandler) => {
     dataSource.query(query, (err1, bots) => {
         if(bots) {
             let bot = bots[0];
-            let isMisteryRoom = ((!_.some(persistedRooms, { multiplierExp : 2 })) && _.random(0, 10) <= 1); //10% of probability of getting mistery room exp and tuls x2.
+            let isMisteryRoom = (false && (!_.some(persistedRooms, { multiplierExp : 2 })) && _.random(0, 10) <= 1); //10% of probability of getting mistery room exp and tuls x2.
             const room = {
                 name: 'Sala libre',
                 userId: bot.id,
