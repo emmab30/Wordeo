@@ -90,6 +90,7 @@ module.exports = function(Notification) {
                         body: JSON.stringify(bodyRequest),
                         timeout: 5000
                     }, function(err, response) {
+                        console.log(response);
                         if(response != undefined) {
                             let body = JSON.parse(response.body);
                             if(body !== undefined &&
