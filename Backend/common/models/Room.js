@@ -279,7 +279,7 @@ module.exports = function(Room) {
     function getPeopleBy(data, next) {
         if(data.pattern != null) {
             var dataSource = app.dataSources.mysql.connector;
-            var query = "SELECT Profile.*, Account.username, " +
+            var query = "SELECT Profile.*, Account.username, Account.isOnline, " +
                 "(SELECT count(id) FROM Profile f WHERE f.experience_points > Profile.experience_points) + 1 as rank " +
                 "FROM Profile " +
                 "INNER JOIN Account ON Account.id = Profile.accountId " +

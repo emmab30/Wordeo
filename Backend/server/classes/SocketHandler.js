@@ -6,7 +6,7 @@ var BotUser = new require('./BotUser')
 var _ = require('lodash');
 
 const TIME_BEFORE_ROUND_STARTS  = 10 * 1000;
-const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 150 * 1000; //2 minutos y medio
+const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 60 * 1000; //80 seconds
 const INTERVAL_BOT_CREATION_ROOMS  = 10 * 1000;
 const INTERVAL_CHANGE_STATUS_BOTS = 300 * 1000;
 
@@ -37,6 +37,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
             "LEFT JOIN RoomUser ON RoomUser.roomId = Room.id " +
             "LEFT JOIN Account ON Room.userId = Account.id " +
             "WHERE Room.isActive = TRUE AND Room.hasStarted = FALSE AND Room.isProtected = FALSE AND Account.isBot = false " +
+            "AND Room.createdAt > (now() - INTERVAL 150 SECOND) " +
             "GROUP BY Room.id, Room.players " +
             "HAVING COUNT(RoomUser.id) < Room.players";
 
