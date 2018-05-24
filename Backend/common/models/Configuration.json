@@ -17,7 +17,15 @@
   },
   "validations": [],
   "relations": {},
-  "acls": [],
+  "acls": [{
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": [
+        "getLastVersion"
+      ]
+    }],
   "methods": {
     "userStatistics": {
         "returns": {
@@ -27,6 +35,24 @@
         "http": {
             "verb": "get",
             "path": "/user_statistics"
+        }
+    },
+    "getLastVersion": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/last_version"
         }
     }
   }

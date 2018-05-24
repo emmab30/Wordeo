@@ -28,6 +28,11 @@ module.exports = function(server) {
             value: '20.00'
         });
 
+        server.models.Configuration.upsertWithWhere({ name: 'LAST_VERSION' }, {
+            name: 'LAST_VERSION',
+            value: '1.0.0.13'
+        });
+
         server.models.Room.destroyAll({});
         server.models.RoomUser.destroyAll({});
         server.models.Account.update({isOnline: false}, (err, updated) => {
