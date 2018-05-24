@@ -23,6 +23,7 @@ var models = [
     'Notification',
     'PendingQuestion',
     'Contact', */
+    'Room',
     'Account',
     'QuestionReport',
     'Reward',

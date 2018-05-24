@@ -276,7 +276,8 @@ module.exports = function(Notification) {
                                     callback(true);
                             }
                         } catch (e) {
-                            callback(false);
+                            if(callback)
+                                callback(false);
                         }
                     });
                 } else {

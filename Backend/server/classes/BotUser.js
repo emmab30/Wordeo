@@ -35,22 +35,22 @@ BotUser.generateRandomRoom = (socketHandler) => {
 
     let query = "SELECT * FROM Account WHERE isBot = true ORDER BY RAND() LIMIT 1";
 
-    //const players = [2,3,4,5,6];
     const players = [2];
     const durations = [60];
-    //const durations = [60, 90, 120, 160];
 
     var dataSource = socketHandler.app.dataSources.mysql.connector;
     dataSource.query(query, (err1, bots) => {
         if(bots) {
             let bot = bots[0];
+            let isMisteryRoom = ((!_.some(persistedRooms, { multiplierExp : 2 })) && _.random(0, 10) <= 1); //10% of probability of getting mistery room exp and tuls x2.
             const room = {
                 name: 'Sala libre',
                 userId: bot.id,
                 players: players[Math.floor(Math.random()*players.length)],
                 duration: durations[Math.floor(Math.random()*durations.length)],
                 isActive: true,
-                isCreatedByBot: true
+                isCreatedByBot: true,
+                multiplierExp: (isMisteryRoom ? 2 : 1)
             };
 
             socketHandler.app.models.Room.create(room, (err, createdRoom) => {
@@ -58,7 +58,8 @@ BotUser.generateRandomRoom = (socketHandler) => {
                     persistedRooms.push(room);
                     persistedBots.push({
                         roomId: createdRoom.id,
-                        accountId: bot.id
+                        accountId: bot.id,
+                        multiplierExp: createdRoom.multiplierExp
                     });
 
                     socketHandler.onRoomCreated(createdRoom, true);

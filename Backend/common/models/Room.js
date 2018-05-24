@@ -225,52 +225,63 @@ module.exports = function(Room) {
         let accessToken = ctx && ctx.get('accessToken');
 
         if(accessToken && accessToken.userId > -1) {
-            app.models.RoomUser.findOne({ where: { roomId: data.roomId, userId: accessToken.userId }}, (err, userRoom) => {
+            app.models.Room.findOne({ where : { id : data.roomId }}, (err, room) => {
+                app.models.RoomUser.findOne({ where: { roomId: data.roomId, userId: accessToken.userId }}, (err, userRoom) => {
 
-                //Save the reply on database
-                if(data.questionId && data.optionId){
-                    app.models.RoomUserQuestion.create({
-                        userId: accessToken.userId,
-                        roomId: data.roomId,
-                        questionId: data.questionId,
-                        optionId: data.optionId
-                    });
-                }
+                    //Save the reply on database
+                    if(data.questionId && data.optionId){
+                        app.models.RoomUserQuestion.create({
+                            userId: accessToken.userId,
+                            roomId: data.roomId,
+                            questionId: data.questionId,
+                            optionId: data.optionId
+                        });
+                    }
 
-                app.models.Question.findOne({ where : { id : data.questionId }}, (err, question) => {
-                    if(question) {
-                        if(userRoom) {
-                            userRoom.totalQuestions += 1;
-                            if(data.isCorrect) {
-                                userRoom.totalCorrect += 1;
-                                userRoom.points += question.profitExp;
-
-                                app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
-                                    profile.experience_points += question.profitExp;
-                                    console.log("Appending profile with " + COMMON_RATE_TULS + " common tuls");
-                                    profile.balance_tuls += (question.profitExp * COMMON_RATE_TULS) / 100;
+                    app.models.Question.findOne({ where : { id : data.questionId }}, (err, question) => {
+                        if(question) {
+                            if(userRoom) {
+                                userRoom.totalQuestions += 1;
+                                if(data.isCorrect) {
+                                    var sumExp = question.profitExp;
+                                    var sumTuls = (question.profitExp * COMMON_RATE_TULS) / 100;
 
                                     //Streak correct answers
                                     if(data.isStreakReward) {
-                                        profile.experience_points += 100;
-                                        profile.balance_tuls += COMMON_RATE_TULS;
+                                        sumExp += 100;
+                                        sumTuls += COMMON_RATE_TULS;
                                     }
 
-                                    profile.save();
-                                })
-                            } else {
-                                userRoom.totalIncorrect += 1;
+                                    if(room && room.multiplierExp > 1) {
+                                        sumExp *= room.multiplierExp;
+                                        sumTuls *= room.multiplierExp;
+                                    }
+
+                                    app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
+
+                                        profile.experience_points += sumExp;
+                                        profile.balance_tuls += sumTuls;
+
+                                        profile.save();
+                                    });
+
+                                    //Append the points to the user room
+                                    userRoom.totalCorrect += 1;
+                                    userRoom.points += sumExp;
+                                    userRoom.save();
+                                } else {
+                                    userRoom.totalIncorrect += 1;
+                                    userRoom.save();
+                                }
+
+                                if(app.socketHandler != null) {
+                                    app.socketHandler.onSendRoundStats(data.roomId);
+                                }
+
+                                next(null, userRoom);
                             }
-
-                            userRoom.save();
-
-                            if(app.socketHandler != null) {
-                                app.socketHandler.onSendRoundStats(data.roomId);
-                            }
-
-                            next(null, userRoom);
                         }
-                    }
+                    });
                 });
             });
         }

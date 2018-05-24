@@ -41,6 +41,10 @@
         "type": "boolean",
         "default": false
     },
+    "multiplierExp": {
+        "type": "number",
+        "default": 1
+    },
     "createdAt": {
         "type": "date",
         "defaultFn": "now"

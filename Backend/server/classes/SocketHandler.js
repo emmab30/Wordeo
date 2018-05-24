@@ -4,6 +4,7 @@ var moment = require('moment');
 var io = require('socket.io')
 var BotUser = new require('./BotUser')
 var _ = require('lodash');
+var schedule = require('node-schedule');
 
 const TIME_BEFORE_ROUND_STARTS  = 10 * 1000;
 const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 60 * 1000; //80 seconds
@@ -23,6 +24,13 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
     //This function determines when bootstrap has been initialized
 
     log("Smart bot system initialized..");
+    var dataSource = this.app.dataSources.mysql.connector;
+
+    //Setting cronjobs
+    var job = schedule.scheduleJob('*/30 * * * *', () => {
+        var query = "DELETE FROM Room WHERE isActive = TRUE AND multiplierExp = 1 AND hasStarted = FALSE AND name = 'Sala libre' ORDER BY createdAt ASC LIMIT 3";
+        dataSource.query(query, (err, deletedRooms) => {});
+    });
 
     //Set online the bots
     BotUser.setRandomStatuses(this);
@@ -32,7 +40,6 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     let context = this;
     let interval = setInterval(() => {
-        var dataSource = this.app.dataSources.mysql.connector;
         let query = "SELECT Room.*, COUNT(RoomUser.id) as users_connected FROM Room " +
             "LEFT JOIN RoomUser ON RoomUser.roomId = Room.id " +
             "LEFT JOIN Account ON Room.userId = Account.id " +
