@@ -90,11 +90,22 @@ module.exports = function(Notification) {
                         body: JSON.stringify(bodyRequest),
                         timeout: 5000
                     }, function(err, response) {
-                        console.log(response);
+
                         if(response != undefined) {
                             let body = JSON.parse(response.body);
                             if(body !== undefined &&
                                 body.id !== undefined) {
+
+                                let obj = {
+                                    userId: user.id,
+                                    category: data.category,
+                                    message: data.message,
+                                    osPlayerId: (body.id === undefined || body.id === '') ? 'noPlayerId' : body.id,
+                                    payload: JSON.stringify(bodyRequest)
+                                };
+                                app.models.Notification.create(obj, (success, err) => {
+                                    console.log(success, err);
+                                });
 
                                 if(next !== undefined) {
                                     retValue = {
@@ -112,24 +123,24 @@ module.exports = function(Notification) {
                                     };
                                     next(err, retValue);
                                 }
+
+                                let obj = {
+                                    userId: user.id,
+                                    category: data.category,
+                                    message: data.message,
+                                    osPlayerId: 'noPlayerId',
+                                    payload: JSON.stringify(bodyRequest)
+                                };
+                                app.models.Notification.create(obj, (success, err) => {
+                                    console.log(success, err);
+                                });
                             }
                         } else {
-                            console.log("Creating notification unless OneSignal cannot be sent.");
-                            let obj = {
-                                userId: user.id,
-                                category: data.category,
-                                message: data.message,
-                                osPlayerId: (body.id === undefined || body.id === '') ? 'noPlayerId' : body.id,
-                                payload: JSON.stringify(bodyRequest)
-                            };
-                            app.models.Notification.create(obj, (success, err) => {
-                                //console.log(success, err);
-                            });
+                            next();
                         }
                     });
 
                 } else {
-                    console.log("Creating notification unless OneSignal cannot be sent.");
                     let obj = {
                         userId: user.id,
                         category: data.category,
@@ -138,7 +149,7 @@ module.exports = function(Notification) {
                         payload: JSON.stringify(bodyRequest)
                     };
                     app.models.Notification.create(obj, (success, err) => {
-                        //console.log(success, err);
+                        console.log(success, err);
                     });
 
                     if(next !== undefined) {
