@@ -136,6 +136,18 @@ module.exports = function(Notification) {
                                 });
                             }
                         } else {
+
+                            console.log("The push cannot be sent but we'll create the notification anyway.");
+                            let obj = {
+                                userId: user.id,
+                                category: data.category,
+                                message: data.message,
+                                osPlayerId: 'noPlayerId',
+                                payload: JSON.stringify(bodyRequest)
+                            };
+                            app.models.Notification.create(obj, (success, err) => {
+                                console.log(success, err);
+                            });
                             next();
                         }
                     });
