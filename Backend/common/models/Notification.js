@@ -104,7 +104,7 @@ module.exports = function(Notification) {
                                     payload: JSON.stringify(bodyRequest)
                                 };
                                 app.models.Notification.create(obj, (success, err) => {
-                                    console.log(success, err);
+                                    //console.log(success, err);
                                 });
 
                                 if(next !== undefined) {
