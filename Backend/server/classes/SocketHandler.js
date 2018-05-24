@@ -6,7 +6,7 @@ var BotUser = new require('./BotUser')
 var _ = require('lodash');
 
 const TIME_BEFORE_ROUND_STARTS  = 10 * 1000;
-const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 60 * 1000;
+const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 150 * 1000; //2 minutos y medio
 const INTERVAL_BOT_CREATION_ROOMS  = 10 * 1000;
 const INTERVAL_CHANGE_STATUS_BOTS = 300 * 1000;
 
@@ -56,7 +56,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     let intervalCreationRooms = setInterval(() => {
         this.app.models.Room.count({ isActive : true }, (err, activeRooms) => {
-            if(activeRooms < 10) {
+            if(activeRooms < 7) {
                 BotUser.generateRandomRoom(context);
             }
         });
@@ -287,7 +287,7 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
             console.log("User is leaving a room", data);
 
             //Check if there is any user who is not a real user (not a bot)
-            if(_.some(roomData.accounts, { isBot: false })){
+            if(roomData.accounts.length > 1 && _.some(roomData.accounts, { isBot: false })){
 
                 //There are real users still in the room so don't stop the simulation of the bots (if there are)
                 context.app.models.RoomUser.destroyAll({

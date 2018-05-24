@@ -5,7 +5,7 @@ const loopbackContext = require("loopback-context");
 const log = require('fancy-log');
 const _ = require('lodash')
 
-const COMMON_RATE_TULS = 17.5;
+let COMMON_RATE_TULS = 17.5;
 
 module.exports = function(Room) {
 
@@ -14,6 +14,7 @@ module.exports = function(Room) {
     Room.getRoomStats = getRoomStats;
     Room.getQuestionStats = getQuestionStats;
     Room.postStats = postStats;
+    Room.getPeopleBy = getPeopleBy;
 
     function join(data, next) {
 
@@ -213,6 +214,13 @@ module.exports = function(Room) {
     }
 
     function postStats(data, next) {
+
+        if(COMMON_RATE_TULS == 17.5) {
+            app.models.Configuration.findOne({ where : { name : 'TULS_RATE' }}, (err, value) => {
+                COMMON_RATE_TULS = value.value;
+            });
+        }
+
         let ctx = loopbackContext.getCurrentContext();
         let accessToken = ctx && ctx.get('accessToken');
 
@@ -239,6 +247,7 @@ module.exports = function(Room) {
 
                                 app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
                                     profile.experience_points += question.profitExp;
+                                    console.log("Appending profile with " + COMMON_RATE_TULS + " common tuls");
                                     profile.balance_tuls += (question.profitExp * COMMON_RATE_TULS) / 100;
 
                                     //Streak correct answers
@@ -263,6 +272,24 @@ module.exports = function(Room) {
                         }
                     }
                 });
+            });
+        }
+    }
+
+    function getPeopleBy(data, next) {
+        if(data.pattern != null) {
+            var dataSource = app.dataSources.mysql.connector;
+            var query = "SELECT Profile.*, Account.username, " +
+                "(SELECT count(id) FROM Profile f WHERE f.experience_points > Profile.experience_points) + 1 as rank " +
+                "FROM Profile " +
+                "INNER JOIN Account ON Account.id = Profile.accountId " +
+                "WHERE Account.isBot = FALSE AND (Account.username LIKE '%" + data.pattern + "%' " +
+                "OR Account.email LIKE '%" + data.pattern + "%' " +
+                "OR Profile.name LIKE '%" + data.pattern + "%' " +
+                "OR Profile.lastName LIKE '%" + data.pattern + "%') " +
+                "LIMIT 30";
+            dataSource.query(query, (err1, users) => {
+                next(null, users);
             });
         }
     }

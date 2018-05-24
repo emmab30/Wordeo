@@ -164,6 +164,24 @@
             "verb": "post",
             "path": "/stats"
         }
+    },
+    "getPeopleBy": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/find_people"
+        }
     }
   }
 }
