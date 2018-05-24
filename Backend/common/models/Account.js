@@ -406,7 +406,7 @@ module.exports = function(Account) {
         dataSource.query(query, (err1, rank) => {
             if(rank && rank.length > 0) {
                 if(rank[0].isBot) {
-                    callback(Math.floor(Math.random() * 25) + 750);
+                    callback(_.random(10, 85));
                 } else {
                     callback(rank[0].rank);
                 }
