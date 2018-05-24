@@ -43,7 +43,8 @@ module.exports = function(server) {
                                 isOnline: true,
                                 lastLogin: new Date(),
                                 createdAt: new Date(),
-                                isBot: true
+                                isBot: true,
+                                username: (result.name.first.toUpperCase().substr(0, 4) + result.name.last.toUpperCase().substr(0, 4) + _.random(0, 2000).toString())
                             };
 
                             server.models.Account.create(account, (err, saved) => {
