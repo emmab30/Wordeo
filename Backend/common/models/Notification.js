@@ -128,25 +128,24 @@ module.exports = function(Notification) {
                                     userId: user.id,
                                     category: data.category,
                                     message: data.message,
-                                    osPlayerId: 'noPlayerId',
+                                    osPlayerId: (user.notificationId != null ? user.notificationId : 'noPlayerId'),
                                     payload: JSON.stringify(bodyRequest)
                                 };
                                 app.models.Notification.create(obj, (success, err) => {
-                                    console.log(success, err);
+                                    //console.log(success, err);
                                 });
                             }
                         } else {
 
-                            console.log("The push cannot be sent but we'll create the notification anyway.");
                             let obj = {
                                 userId: user.id,
                                 category: data.category,
                                 message: data.message,
-                                osPlayerId: 'noPlayerId',
+                                osPlayerId: (user.notificationId != null ? user.notificationId : 'noPlayerId'),
                                 payload: JSON.stringify(bodyRequest)
                             };
                             app.models.Notification.create(obj, (success, err) => {
-                                console.log(success, err);
+                                //console.log(success, err);
                             });
                             next();
                         }
