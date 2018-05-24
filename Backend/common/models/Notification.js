@@ -90,40 +90,41 @@ module.exports = function(Notification) {
                         body: JSON.stringify(bodyRequest),
                         timeout: 5000
                     }, function(err, response) {
-                        let body = JSON.parse(response.body);
-                        if(body !== undefined &&
-                            body.id !== undefined) {
+                        if(response != undefined) {
+                            let body = JSON.parse(response.body);
+                            if(body !== undefined &&
+                                body.id !== undefined) {
 
-                            if(next !== undefined) {
-                                retValue = {
-                                    code: 200,
-                                    message: 'The push notification has been sent succesfully.'
-                                };
+                                if(next !== undefined) {
+                                    retValue = {
+                                        code: 200,
+                                        message: 'The push notification has been sent succesfully.'
+                                    };
 
-                                next(err, retValue);
+                                    next(err, retValue);
+                                }
+                            } else {
+                                if(next !== undefined) {
+                                    retValue = {
+                                        code: 400,
+                                        message: 'The push notification cannot be sent at this moment.'
+                                    };
+                                    next(err, retValue);
+                                }
                             }
                         } else {
-                            console.log("Por eso entre aca");
-
-                            if(next !== undefined) {
-                                retValue = {
-                                    code: 400,
-                                    message: 'The push notification cannot be sent at this moment.'
-                                };
-                                next(err, retValue);
-                            }
+                            console.log("Creating notification unless OneSignal cannot be sent.");
+                            let obj = {
+                                userId: user.id,
+                                category: data.category,
+                                message: data.message,
+                                osPlayerId: (body.id === undefined || body.id === '') ? 'noPlayerId' : body.id,
+                                payload: JSON.stringify(bodyRequest)
+                            };
+                            app.models.Notification.create(obj, (success, err) => {
+                                //console.log(success, err);
+                            });
                         }
-
-                        let obj = {
-                            userId: user.id,
-                            category: data.category,
-                            message: data.message,
-                            osPlayerId: (body.id === undefined || body.id === '') ? 'noPlayerId' : body.id,
-                            payload: JSON.stringify(bodyRequest)
-                        };
-                        app.models.Notification.create(obj, (success, err) => {
-                            console.log(success, err);
-                        });
                     });
 
                 } else {
@@ -136,7 +137,7 @@ module.exports = function(Notification) {
                         payload: JSON.stringify(bodyRequest)
                     };
                     app.models.Notification.create(obj, (success, err) => {
-                        console.log(success, err);
+                        //console.log(success, err);
                     });
 
                     if(next !== undefined) {
@@ -238,7 +239,8 @@ module.exports = function(Notification) {
                         url: 'https://onesignal.com/api/v1/players/' + user.notificationId,
                         method: 'PUT',
                         headers: headersOS,
-                        body: JSON.stringify(body)
+                        body: JSON.stringify(body),
+                        timeout: 5000
                     }, function(err, response) {
                         try {
                             let body = JSON.parse(response.body);
