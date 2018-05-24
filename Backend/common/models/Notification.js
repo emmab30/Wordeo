@@ -87,10 +87,10 @@ module.exports = function(Notification) {
                         url: 'https://onesignal.com/api/v1/notifications',
                         method: 'POST',
                         headers: headersOS,
-                        body: JSON.stringify(bodyRequest)
+                        body: JSON.stringify(bodyRequest),
+                        timeout: 5000
                     }, function(err, response) {
                         let body = JSON.parse(response.body);
-                        console.log(body);
                         if(body !== undefined &&
                             body.id !== undefined) {
 
@@ -127,6 +127,18 @@ module.exports = function(Notification) {
                     });
 
                 } else {
+                    console.log("Creating notification unless OneSignal cannot be sent.");
+                    let obj = {
+                        userId: user.id,
+                        category: data.category,
+                        message: data.message,
+                        osPlayerId: 'noPlayerId',
+                        payload: JSON.stringify(bodyRequest)
+                    };
+                    app.models.Notification.create(obj, (success, err) => {
+                        console.log(success, err);
+                    });
+
                     if(next !== undefined) {
                         next(null, retValue);
                     }
