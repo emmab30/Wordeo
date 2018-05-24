@@ -1,6 +1,7 @@
 'use strict';
 
 const request = require('request');
+var _ = require('lodash');
 
 module.exports = function(server) {
 
