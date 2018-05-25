@@ -37,7 +37,7 @@ module.exports = function(News) {
                                         retVal.push(items[idx]);
                                     }
                                 }
-                                next(null, items)
+                                next(null, retVal)
                             } else {
                                 next(null, []);
                             }
