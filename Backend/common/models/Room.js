@@ -4,7 +4,7 @@ const app = require('../../server/server');
 const loopbackContext = require("loopback-context");
 const log = require('fancy-log');
 const _ = require('lodash')
-var vCompare = require('../../server/classes/versionCompare')
+var vCompare = require('../../server/classes/VersionCompare')
 
 let COMMON_RATE_TULS = 17.5;
 
