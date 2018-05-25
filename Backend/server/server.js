@@ -128,7 +128,6 @@ boot(app, __dirname, function(err) {
 
             socket.on('onSendRoomEmoticon', function(info) {
                 if(info.roomId && info.emoticonKey) {
-                    console.log("Received emoticon");
                     app.io.sockets.to('Room=' + info.roomId).emit('onReceivedEmoticon', {
                         emoticonKey: info.emoticonKey,
                         roomId: info.roomId

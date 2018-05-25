@@ -30,7 +30,7 @@ module.exports = function(server) {
 
         server.models.Configuration.upsertWithWhere({ name: 'LAST_VERSION' }, {
             name: 'LAST_VERSION',
-            value: '1.0.0.14'
+            value: '1.0.0.15'
         });
 
         server.models.Room.destroyAll({});
