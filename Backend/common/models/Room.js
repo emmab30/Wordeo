@@ -260,7 +260,6 @@ module.exports = function(Room) {
                                             let appVersionUser = account.appVersion;
                                             let expectedVersion = '1.0.0.14';
                                             let comparison = vCompare.compare(appVersionUser, expectedVersion);
-                                            console.log("Comparison between versions", comparison);
                                             if(comparison >= 0) {
                                                 sumExp *= room.multiplierExp;
                                                 sumTuls *= room.multiplierExp;
