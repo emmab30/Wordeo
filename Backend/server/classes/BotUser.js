@@ -61,7 +61,7 @@ BotUser.generateRandomRoom = (socketHandler) => {
                     multiplierExp = 4;
                 } else if(randomNumber <= 40) { //40% of creating rooms x3
                     multiplierExp = 3;
-                } else if(randomNumber <= 90) { //90% of creating rooms x2
+                } else if(randomNumber <= 70) { //70% of creating rooms x2
                     multiplierExp = 2;
                 }
             }

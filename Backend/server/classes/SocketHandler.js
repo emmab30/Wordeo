@@ -30,7 +30,6 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
     var job = schedule.scheduleJob('*/10 * * * *', () => {
         var query = "SELECT * FROM Room WHERE isActive = TRUE AND hasStarted = FALSE AND (name = 'Sala bonus' OR name = 'Sala libre') ORDER BY RAND() LIMIT 4";
         dataSource.query(query, (err, rooms) => {
-            console.log("Removing following rooms", rooms);
             for(var idx in rooms) {
                 BotUser.removeRandomRoom(this, rooms[idx].id);
             }
