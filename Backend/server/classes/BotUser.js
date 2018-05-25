@@ -32,14 +32,10 @@ BotUser.setRandomStatuses = (socketHandler) => {
 }
 
 BotUser.removeRandomRoom = (socketHandler, id) => {
-    console.log("Removing random room " + id);
-
     socketHandler.app.models.Room.destroyById(id);
     var room = _.find(persistedRooms, { id : id });
     if(room) {
-        console.log("Deleting room from persisted rooms");
         persistedRooms.splice(persistedRooms.indexOf(room), 1);
-        console.log(persistedRooms);
     }
 };
 
@@ -65,12 +61,12 @@ BotUser.generateRandomRoom = (socketHandler) => {
                     multiplierExp = 4;
                 } else if(randomNumber <= 40) { //40% of creating rooms x3
                     multiplierExp = 3;
-                } else if(randomNumber <= 90) { //70% of creating rooms x2
+                } else if(randomNumber <= 90) { //90% of creating rooms x2
                     multiplierExp = 2;
                 }
             }
             const room = {
-                name: 'Sala libre',
+                name: (multiplierExp > 1 ? 'Sala bonus' : 'Sala libre'),
                 userId: bot.id,
                 players: players[Math.floor(Math.random()*players.length)],
                 duration: durations[Math.floor(Math.random()*durations.length)],
@@ -81,6 +77,7 @@ BotUser.generateRandomRoom = (socketHandler) => {
 
             socketHandler.app.models.Room.create(room, (err, createdRoom) => {
                 if(!err) {
+                    room.id = createdRoom.id;
                     persistedRooms.push(room);
                     persistedBots.push({
                         roomId: createdRoom.id,

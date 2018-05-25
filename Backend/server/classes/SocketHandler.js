@@ -26,11 +26,11 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
     log("Smart bot system initialized..");
     var dataSource = this.app.dataSources.mysql.connector;
 
-    //Setting cronjobs
-    var job = schedule.scheduleJob('*/30 * * * *', () => {
-        var query = "SELECT * FROM Room WHERE isActive = TRUE AND multiplierExp = 1 AND hasStarted = FALSE AND name = 'Sala libre' ORDER BY createdAt ASC LIMIT 3";
+    //Setting cronjob
+    var job = schedule.scheduleJob('*/10 * * * *', () => {
+        var query = "SELECT * FROM Room WHERE isActive = TRUE AND hasStarted = FALSE AND (name = 'Sala bonus' OR name = 'Sala libre') ORDER BY RAND() LIMIT 4";
         dataSource.query(query, (err, rooms) => {
-            console.log("Rooms to be removed", rooms);
+            console.log("Removing following rooms", rooms);
             for(var idx in rooms) {
                 BotUser.removeRandomRoom(this, rooms[idx].id);
             }
@@ -300,8 +300,6 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
         socket.leave('Room=' + data.roomId);
 
         context.getDetailsForRoom(data.roomId, (roomData) => {
-
-            console.log("User is leaving a room", data);
 
             //Check if there is any user who is not a real user (not a bot)
             if(roomData.accounts.length > 1 && _.some(roomData.accounts, { isBot: false })){
