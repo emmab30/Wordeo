@@ -51,42 +51,46 @@ BotUser.generateRandomRoom = (socketHandler) => {
         if(bots) {
             let bot = bots[0];
 
-            //Percentages for multiplier exp rooms
-            let multiplierExp = 1;
-            if(!_.some(persistedRooms, _.conforms({ 'multiplierExp' : (e) => { return e > 1 } }))) {
-                let randomNumber = _.random(0, 100);
-                if(randomNumber <= 5) { //15% of creating rooms x5
-                    multiplierExp = 5;
-                } else if(randomNumber <= 15) { //25% of creating rooms x4
-                    multiplierExp = 4;
-                } else if(randomNumber <= 30) { //40% of creating rooms x3
-                    multiplierExp = 3;
-                } else if(randomNumber <= 70) { //70% of creating rooms x2
-                    multiplierExp = 2;
-                }
-            }
-            const room = {
-                name: (multiplierExp > 1 ? 'Sala bonus' : 'Sala libre'),
-                userId: bot.id,
-                players: players[Math.floor(Math.random()*players.length)],
-                duration: (multiplierExp > 1) ? 45 : durations[Math.floor(Math.random()*durations.length)],
-                isActive: true,
-                isCreatedByBot: true,
-                multiplierExp: multiplierExp
-            };
+            socketHandler.app.models.Room.find({}, (err, rooms) => {
 
-            socketHandler.app.models.Room.create(room, (err, createdRoom) => {
-                if(!err) {
-                    room.id = createdRoom.id;
-                    persistedRooms.push(room);
-                    persistedBots.push({
-                        roomId: createdRoom.id,
-                        accountId: bot.id,
-                        multiplierExp: createdRoom.multiplierExp
-                    });
-
-                    socketHandler.onRoomCreated(createdRoom, true);
+                //Percentages for multiplier exp rooms
+                let multiplierExp = 1;
+                if(!_.some(rooms, _.conforms({ 'multiplierExp' : (e) => { return e > 1 } }))) {
+                    let randomNumber = _.random(0, 100);
+                    if(randomNumber <= 5) { //15% of creating rooms x5
+                        multiplierExp = 5;
+                    } else if(randomNumber <= 15) { //25% of creating rooms x4
+                        multiplierExp = 4;
+                    } else if(randomNumber <= 30) { //40% of creating rooms x3
+                        multiplierExp = 3;
+                    } else if(randomNumber <= 70) { //70% of creating rooms x2
+                        multiplierExp = 2;
+                    }
                 }
+                const room = {
+                    name: (multiplierExp > 1 ? 'Sala bonus' : 'Sala libre'),
+                    userId: bot.id,
+                    players: players[Math.floor(Math.random()*players.length)],
+                    duration: (multiplierExp > 1) ? 45 : durations[Math.floor(Math.random()*durations.length)],
+                    isActive: true,
+                    isCreatedByBot: true,
+                    multiplierExp: multiplierExp
+                };
+
+                socketHandler.app.models.Room.create(room, (err, createdRoom) => {
+                    if(!err) {
+                        room.id = createdRoom.id;
+                        persistedRooms.push(room);
+                        persistedBots.push({
+                            roomId: createdRoom.id,
+                            accountId: bot.id,
+                            multiplierExp: createdRoom.multiplierExp
+                        });
+
+                        socketHandler.onRoomCreated(createdRoom, true);
+                    }
+                });
+
             });
         }
     });
@@ -157,11 +161,10 @@ BotUser.startSimulatingStats = (socketHandler, roomId, botId, callback) => {
                         socketHandler.getDetailsForRoom(room.id, (detailsRetry) => {
                             if(!_.some(detailsRetry.accounts, { isBot: false })){
                                 console.log("The user keeps being disconnected. This sucks.");
-                                BotUser.stopSimulatingStats(room.id);
+                                BotUser.stopSimulatingStats(socketHandler, room.id);
                             }
                         });
                     }, 15000);
-                    //BotUser.stopSimulatingStats(room.id);
                 }
                 socketHandler.io.sockets.to('Room=' + room.id).emit('onRoundStats', details);
             });
@@ -233,6 +236,7 @@ BotUser.stopSimulatingStats = function(roomId) {
     let stoppedBots = [];
 
     let bots = _.filter(persistedBots, (e) => { return e.roomId == roomId });
+    let rooms = _.filter(persistedRooms, (e) => { return e.id == roomId });
     if(bots != null && bots.length > 0) {
         for(var idx in bots) {
             const bot = bots[idx];

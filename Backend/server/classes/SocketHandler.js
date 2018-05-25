@@ -339,7 +339,7 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                 setTimeout(() => {
                     app.models.Account.findOne({ where : { id : data.userId }}, (err, account) => {
                         if(account && !account.isOnline) {
-                            let stoppedBots = BotUser.stopSimulatingStats(data.roomId);
+                            let stoppedBots = BotUser.stopSimulatingStats(context, data.roomId);
                             context.app.models.RoomUser.destroyAll({ id : data.roomId });
                             context.app.models.Room.destroyAll({ id : data.roomId });
                         }
