@@ -31,6 +31,18 @@ BotUser.setRandomStatuses = (socketHandler) => {
     });
 }
 
+BotUser.removeRandomRoom = (socketHandler, id) => {
+    console.log("Removing random room " + id);
+
+    socketHandler.app.models.Room.destroyById(id);
+    var room = _.find(persistedRooms, { id : id });
+    if(room) {
+        console.log("Deleting room from persisted rooms");
+        persistedRooms.splice(persistedRooms.indexOf(room), 1);
+        console.log(persistedRooms);
+    }
+};
+
 BotUser.generateRandomRoom = (socketHandler) => {
 
     let query = "SELECT * FROM Account WHERE isBot = true ORDER BY RAND() LIMIT 1";
@@ -45,7 +57,6 @@ BotUser.generateRandomRoom = (socketHandler) => {
 
             //Percentages for multiplier exp rooms
             let multiplierExp = 1;
-            //let isMisteryRoom = (true && (!_.some(persistedRooms, { multiplierExp : 2 })) && _.random(0, 10) <= 4); //40% of probability of getting mistery room exp and tuls x2.
             if(!_.some(persistedRooms, _.conforms({ 'multiplierExp' : (e) => { return e > 1 } }))) {
                 let randomNumber = _.random(0, 100);
                 if(randomNumber <= 15) { //15% of creating rooms x5
@@ -54,7 +65,7 @@ BotUser.generateRandomRoom = (socketHandler) => {
                     multiplierExp = 4;
                 } else if(randomNumber <= 40) { //40% of creating rooms x3
                     multiplierExp = 3;
-                } else if(randomNumber <= 70) { //70% of creating rooms x2
+                } else if(randomNumber <= 90) { //70% of creating rooms x2
                     multiplierExp = 2;
                 }
             }

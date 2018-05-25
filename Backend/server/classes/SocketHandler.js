@@ -28,8 +28,13 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     //Setting cronjobs
     var job = schedule.scheduleJob('*/30 * * * *', () => {
-        var query = "DELETE FROM Room WHERE isActive = TRUE AND multiplierExp = 1 AND hasStarted = FALSE AND name = 'Sala libre' ORDER BY createdAt ASC LIMIT 3";
-        dataSource.query(query, (err, deletedRooms) => {});
+        var query = "SELECT * FROM Room WHERE isActive = TRUE AND multiplierExp = 1 AND hasStarted = FALSE AND name = 'Sala libre' ORDER BY createdAt ASC LIMIT 3";
+        dataSource.query(query, (err, rooms) => {
+            console.log("Rooms to be removed", rooms);
+            for(var idx in rooms) {
+                BotUser.removeRandomRoom(this, rooms[idx].id);
+            }
+        });
     });
 
     //Set online the bots
@@ -64,7 +69,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     let intervalCreationRooms = setInterval(() => {
         this.app.models.Room.count({ isActive : true }, (err, activeRooms) => {
-            if(activeRooms < 7) {
+            if(activeRooms < 15) {
                 BotUser.generateRandomRoom(context);
             }
         });
