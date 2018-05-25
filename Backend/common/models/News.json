@@ -17,7 +17,7 @@
     "toAppVersion": {
         "type": "string",
         "default": false
-    },
+    }
   },
   "validations": [],
   "relations": {},
