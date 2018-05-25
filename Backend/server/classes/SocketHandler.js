@@ -336,9 +336,15 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                 log("Someone left the room " + data.roomId + " but there are no more real users so this room will be closed.");
 
                 //Delete the room, all the members from it and stop the simulation for user.
-                let stoppedBots = BotUser.stopSimulatingStats(data.roomId);
-                context.app.models.RoomUser.destroyAll({ id : data.roomId });
-                context.app.models.Room.destroyAll({ id : data.roomId });
+                setTimeout(() => {
+                    app.models.Account.findOne({ where : { id : data.userId }}, (err, account) => {
+                        if(account && !account.isOnline) {
+                            let stoppedBots = BotUser.stopSimulatingStats(data.roomId);
+                            context.app.models.RoomUser.destroyAll({ id : data.roomId });
+                            context.app.models.Room.destroyAll({ id : data.roomId });
+                        }
+                    });
+                }, 15000);
             }
         });
     }

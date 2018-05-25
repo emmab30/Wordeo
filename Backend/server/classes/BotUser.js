@@ -151,10 +151,19 @@ BotUser.startSimulatingStats = (socketHandler, roomId, botId, callback) => {
             }
 
             socketHandler.getDetailsForRoom(room.id, (details) => {
-                socketHandler.io.sockets.to('Room=' + room.id).emit('onRoundStats', details);
                 if(!_.some(details.accounts, { isBot: false })){
-                    BotUser.stopSimulatingStats(room.id);
+                    console.log("The user disconnected but we'll retry before stopping the simulation for bot.");
+                    setTimeout(() => {
+                        socketHandler.getDetailsForRoom(room.id, (detailsRetry) => {
+                            if(!_.some(detailsRetry.accounts, { isBot: false })){
+                                console.log("The user keeps being disconnected. This sucks.");
+                                BotUser.stopSimulatingStats(room.id);
+                            }
+                        });
+                    }, 15000);
+                    //BotUser.stopSimulatingStats(room.id);
                 }
+                socketHandler.io.sockets.to('Room=' + room.id).emit('onRoundStats', details);
             });
 
             socketHandler.app.models.RoomUser.count({ roomId: roomId, hasFinished: true }, (err, count) => {
