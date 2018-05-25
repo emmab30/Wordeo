@@ -46,7 +46,7 @@ module.exports = function(Account) {
 
         var onCheckLastVersion = (callback) => {
             app.models.Configuration.findOne({ where : { name : 'LAST_VERSION' }}, (err, value) => {
-                if(value.value != data.version) {
+                if(value.value != data.appVersion) {
                     callback(false, {
                         message: 'Parece que no estás usando la última versión del juego. Recuerda actualizarla del PlayStore para poder ver todas nuestras últimas funcionalidades y disfrutar de ellas. ¡Además puedes tener premios por mantener actualizado tu juego!',
                         force: false
