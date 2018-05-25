@@ -44,6 +44,19 @@ module.exports = function(Account) {
 
         const ctx = this;
 
+        var onCheckLastVersion = (callback) => {
+            app.models.Configuration.findOne({ where : { name : 'LAST_VERSION' }}, (err, value) => {
+                if(value.value != data.version) {
+                    callback(false, {
+                        message: 'Parece que no estás usando la última versión del juego. Recuerda actualizarla del PlayStore para poder ver todas nuestras últimas funcionalidades y disfrutar de ellas. ¡Además puedes tener premios por mantener actualizado tu juego!',
+                        force: false
+                    })
+                } else {
+                    callback(true);
+                }
+            });
+        }
+
         const debugMode = false;
         if(debugMode) {
             Account.findOne({ where : { email : 'eabuslaiman@gmail.com'}}, function(err, account) {
@@ -97,18 +110,31 @@ module.exports = function(Account) {
                         profile.level = 1;
                         profile.experience_points = 0;
 
-                        user.save({}, function(err, userCreated) {
-                            profile.accountId = userCreated.id;
-                            profile.save({}, function(err, profile) {
-                                app.models.Notification.updateTagsDevice(userCreated.id);
-                                onUserCreated(userCreated, function(){
-                                     Account.findOne(filter, function(err, user) {
-                                        user.createAccessToken(12096000, function (error, token) {
-                                            let obj = {
-                                                session: token,
-                                                user: user
-                                            };
-                                            next(null, obj);
+                        onCheckLastVersion((result, extraData) => {
+                            user.save({}, function(err, userCreated) {
+                                profile.accountId = userCreated.id;
+                                profile.save({}, function(err, profile) {
+                                    app.models.Notification.updateTagsDevice(userCreated.id);
+                                    onUserCreated(userCreated, function(){
+                                         Account.findOne(filter, function(err, user) {
+                                            user.createAccessToken(12096000, function (error, token) {
+                                                let obj = {
+                                                    session: token,
+                                                    user: user
+                                                };
+                                                if(!result) {
+                                                    obj.version = {
+                                                        isOldVersion: true,
+                                                        message: extraData.message,
+                                                        force: extraData.force
+                                                    };
+                                                } else {
+                                                    obj.version = {
+                                                        isOldVersion: false,
+                                                    };
+                                                }
+                                                next(null, obj);
+                                            });
                                         });
                                     });
                                 });
@@ -132,12 +158,25 @@ module.exports = function(Account) {
 
                         app.models.Notification.updateTagsDevice(account.id);
 
-                        account.createAccessToken(12096000, function (error, token) {
-                            let obj = {
-                                session: token,
-                                user: account
-                            };
-                            next(null, obj);
+                        onCheckLastVersion((result, extraData) => {
+                            account.createAccessToken(12096000, function (error, token) {
+                                let obj = {
+                                    session: token,
+                                    user: account
+                                };
+                                if(!result) {
+                                    obj.version = {
+                                        isOldVersion: true,
+                                        message: extraData.message,
+                                        force: extraData.force
+                                    };
+                                } else {
+                                    obj.version = {
+                                        isOldVersion: false,
+                                    };
+                                }
+                                next(null, obj);
+                            });
                         });
                     }
                 });

@@ -112,8 +112,7 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
 }
 
 SocketHandler.prototype.onRoomRemoved = function(roomId){
-    //this.app.models.Room.destroyAll({roomId: roomId});
-    //this.app.models.Room.upsertWithWhere({ id: roomId }, { isActive : false });
+    this.app.models.Room.upsertWithWhere({ id : roomId}, { isActive : false });
     //this.app.models.RoomUser.destroyAll({roomId: roomId});
 
     this.io.sockets.to('General').emit('onRoomRemoved', { id : roomId });
@@ -244,7 +243,7 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
                             //Check this room as started!
 
                             room.hasStarted = true;
-                            room.isActive = false;
+                            room.isActive = true;
                             room.save();
 
                             context.io.sockets.to(roomName).emit('onStartRound');
@@ -319,6 +318,7 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                                         context.io.sockets.to('Room=' + data.roomId).emit('onFinishedRound', {
                                             allUsersDisconnected: true
                                         });
+                                        context.onRoomRemoved(room.id);
                                     }
                                 });
                             }

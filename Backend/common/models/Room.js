@@ -4,6 +4,7 @@ const app = require('../../server/server');
 const loopbackContext = require("loopback-context");
 const log = require('fancy-log');
 const _ = require('lodash')
+var vCompare = require('../../server/classes/versionCompare')
 
 let COMMON_RATE_TULS = 17.5;
 
@@ -238,49 +239,59 @@ module.exports = function(Room) {
                         });
                     }
 
-                    app.models.Question.findOne({ where : { id : data.questionId }}, (err, question) => {
-                        if(question) {
-                            if(userRoom) {
-                                userRoom.totalQuestions += 1;
-                                if(data.isCorrect) {
-                                    var sumExp = question.profitExp;
-                                    var sumTuls = (question.profitExp * COMMON_RATE_TULS) / 100;
+                    app.models.Account.findOne({ where : { id : accessToken.userId }}, (err, account) => {
+                        app.models.Question.findOne({ where : { id : data.questionId }}, (err, question) => {
+                            if(question) {
+                                if(userRoom) {
+                                    userRoom.totalQuestions += 1;
+                                    if(data.isCorrect) {
+                                        var sumExp = question.profitExp;
+                                        var sumTuls = (question.profitExp * COMMON_RATE_TULS) / 100;
 
-                                    //Streak correct answers
-                                    if(data.isStreakReward) {
-                                        sumExp += 100;
-                                        sumTuls += COMMON_RATE_TULS;
+                                        //Streak correct answers
+                                        if(data.isStreakReward) {
+                                            sumExp += 100;
+                                            sumTuls += COMMON_RATE_TULS;
+                                        }
+
+                                        //Only for updated applications
+
+                                        if(room && room.multiplierExp > 1) {
+                                            let appVersionUser = account.appVersion;
+                                            let expectedVersion = '1.0.0.14';
+                                            let comparison = vCompare.compare(appVersionUser, expectedVersion);
+                                            console.log("Comparison between versions", comparison);
+                                            if(comparison >= 0) {
+                                                sumExp *= room.multiplierExp;
+                                                sumTuls *= room.multiplierExp;
+                                            }
+                                        }
+
+                                        app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
+
+                                            profile.experience_points += sumExp;
+                                            profile.balance_tuls += sumTuls;
+
+                                            profile.save();
+                                        });
+
+                                        //Append the points to the user room
+                                        userRoom.totalCorrect += 1;
+                                        userRoom.points += sumExp;
+                                        userRoom.save();
+                                    } else {
+                                        userRoom.totalIncorrect += 1;
+                                        userRoom.save();
                                     }
 
-                                    if(room && room.multiplierExp > 1) {
-                                        sumExp *= room.multiplierExp;
-                                        sumTuls *= room.multiplierExp;
+                                    if(app.socketHandler != null) {
+                                        app.socketHandler.onSendRoundStats(data.roomId);
                                     }
 
-                                    app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
-
-                                        profile.experience_points += sumExp;
-                                        profile.balance_tuls += sumTuls;
-
-                                        profile.save();
-                                    });
-
-                                    //Append the points to the user room
-                                    userRoom.totalCorrect += 1;
-                                    userRoom.points += sumExp;
-                                    userRoom.save();
-                                } else {
-                                    userRoom.totalIncorrect += 1;
-                                    userRoom.save();
+                                    next(null, userRoom);
                                 }
-
-                                if(app.socketHandler != null) {
-                                    app.socketHandler.onSendRoundStats(data.roomId);
-                                }
-
-                                next(null, userRoom);
                             }
-                        }
+                        });
                     });
                 });
             });

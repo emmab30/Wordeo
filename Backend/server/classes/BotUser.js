@@ -42,7 +42,22 @@ BotUser.generateRandomRoom = (socketHandler) => {
     dataSource.query(query, (err1, bots) => {
         if(bots) {
             let bot = bots[0];
-            let isMisteryRoom = (false && (!_.some(persistedRooms, { multiplierExp : 2 })) && _.random(0, 10) <= 1); //10% of probability of getting mistery room exp and tuls x2.
+
+            //Percentages for multiplier exp rooms
+            let multiplierExp = 1;
+            //let isMisteryRoom = (true && (!_.some(persistedRooms, { multiplierExp : 2 })) && _.random(0, 10) <= 4); //40% of probability of getting mistery room exp and tuls x2.
+            if(!_.some(persistedRooms, _.conforms({ 'multiplierExp' : (e) => { return e > 1 } }))) {
+                let randomNumber = _.random(0, 100);
+                if(randomNumber <= 15) { //15% of creating rooms x5
+                    multiplierExp = 5;
+                } else if(randomNumber <= 25) { //25% of creating rooms x4
+                    multiplierExp = 4;
+                } else if(randomNumber <= 40) { //40% of creating rooms x3
+                    multiplierExp = 3;
+                } else if(randomNumber <= 70) { //70% of creating rooms x2
+                    multiplierExp = 2;
+                }
+            }
             const room = {
                 name: 'Sala libre',
                 userId: bot.id,
@@ -50,7 +65,7 @@ BotUser.generateRandomRoom = (socketHandler) => {
                 duration: durations[Math.floor(Math.random()*durations.length)],
                 isActive: true,
                 isCreatedByBot: true,
-                multiplierExp: (isMisteryRoom ? 2 : 1)
+                multiplierExp: multiplierExp
             };
 
             socketHandler.app.models.Room.create(room, (err, createdRoom) => {

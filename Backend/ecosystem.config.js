@@ -2,7 +2,7 @@ module.exports = {
     apps : [{
         name      : 'wordeo',
         script    : 'server/server.js',
-        autorestart: false,
+        autorestart: true,
         instances : "1",
         exec_mode : "cluster",
         env: {
