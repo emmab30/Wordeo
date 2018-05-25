@@ -201,10 +201,15 @@ SocketHandler.prototype.onPlayerFinishedRound = function(data, socket){
                 });
 
                 //Disconnect all the sockets from this room since it's terminated.
-                const sockets = context.io.sockets.adapter.rooms[roomName].sockets;
-                for(var socketId in sockets) {
-                    var socket = context.io.sockets.connected[socketId];
-                    socket.leave(roomName);
+                let sockets = context.io.sockets.adapter.rooms[roomName];
+                if(sockets != null) {
+                    sockets = sockets.sockets;
+                    if(sockets != null) {
+                        for(var socketId in sockets) {
+                            var socket = context.io.sockets.connected[socketId];
+                            socket.leave(roomName);
+                        }
+                    }
                 }
             }
         })
