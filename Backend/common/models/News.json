@@ -13,7 +13,11 @@
     "isActive": {
         "type": "boolean",
         "default": false
-    }
+    },
+    "toAppVersion": {
+        "type": "string",
+        "default": false
+    },
   },
   "validations": [],
   "relations": {},

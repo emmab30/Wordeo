@@ -268,10 +268,14 @@ module.exports = function(Room) {
 
                                         app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
 
-                                            profile.experience_points += sumExp;
-                                            profile.balance_tuls += sumTuls;
+                                            if(profile) {
+                                                profile.experience_points = profile.experience_points + sumExp;
+                                                profile.balance_tuls = profile.balance_tuls sumTuls;
 
-                                            profile.save();
+                                                profile.save();
+                                            } else {
+                                                console.log("Nada que hacer.");
+                                            }
                                         });
 
                                         //Append the points to the user room

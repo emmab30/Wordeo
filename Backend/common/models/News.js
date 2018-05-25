@@ -16,23 +16,35 @@ module.exports = function(News) {
         var accessToken = ctx && ctx.get('accessToken');
         if(accessToken != null && accessToken.userId > -1) {
 
-            News.find({ where : { isActive : true }}, (err, results) => {
-                const newsIds = _.map(results, (e) => { return e.id });
+            app.models.Account.findOne({ where : { id: accessToken.userId }}, (err, account) => {
+                News.find({ where : { isActive : true }}, (err, results) => {
+                    const newsIds = _.map(results, (e) => { return e.id });
 
-                app.models.NewsUser.find({ fields: { newsId: true }, where : { newsId: { inq : newsIds }, userId: accessToken.userId }}, (err, toSend) => {
-                    if(err) {
-                        next(null, []);
-                    } else {
-                        if(toSend) {
-                            const sentIds = _.map(toSend, (e) => e.newsId);
-                            next(null, _.filter(results, (e) => { return sentIds.indexOf(e.id) == -1 }))
-                        } else {
+                    app.models.NewsUser.find({ fields: { newsId: true }, where : { newsId: { inq : newsIds }, userId: accessToken.userId }}, (err, toSend) => {
+                        if(err) {
                             next(null, []);
-                        }
-                    }
-                });
-            });
+                        } else {
+                            if(toSend) {
+                                const sentIds = _.map(toSend, (e) => e.newsId);
 
+                                var retVal = [];
+                                let items = _.filter(results, (e) => { return sentIds.indexOf(e.id) == -1 })
+                                for(var idx in items) {
+                                    if(items[idx].toAppVersion != null) {
+                                        if(items[idx].toAppVersion == account.appVersion)
+                                            retVal.push(items[idx]);
+                                    } else {
+                                        retVal.push(items[idx]);
+                                    }
+                                }
+                                next(null, items)
+                            } else {
+                                next(null, []);
+                            }
+                        }
+                    });
+                });
+            })
         }
     }
 
