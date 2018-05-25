@@ -245,8 +245,8 @@ module.exports = function(Room) {
                                 if(userRoom) {
                                     userRoom.totalQuestions += 1;
                                     if(data.isCorrect) {
-                                        var sumExp = question.profitExp;
-                                        var sumTuls = (question.profitExp * COMMON_RATE_TULS) / 100;
+                                        var sumExp = parseFloat(question.profitExp);
+                                        var sumTuls = parseFloat(question.profitExp * COMMON_RATE_TULS) / 100;
 
                                         //Streak correct answers
                                         if(data.isStreakReward) {
@@ -261,20 +261,18 @@ module.exports = function(Room) {
                                             let expectedVersion = '1.0.0.14';
                                             let comparison = vCompare.compare(appVersionUser, expectedVersion);
                                             if(comparison >= 0) {
-                                                sumExp *= room.multiplierExp;
-                                                sumTuls *= room.multiplierExp;
+                                                sumExp = parseFloat(sumExp) * parseFloat(room.multiplierExp);
+                                                sumTuls = parseFloat(sumTuls) * parseFloat(room.multiplierExp);
                                             }
                                         }
 
                                         app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
 
                                             if(profile) {
-                                                profile.experience_points = profile.experience_points + sumExp;
-                                                profile.balance_tuls = profile.balance_tuls + sumTuls;
+                                                profile.experience_points = parseFloat(profile.experience_points) + parseFloat(sumExp);
+                                                profile.balance_tuls = parseFloat(profile.balance_tuls) + parseFloat(sumTuls);
 
                                                 profile.save();
-                                            } else {
-                                                console.log("Nada que hacer.");
                                             }
                                         });
 

@@ -69,7 +69,7 @@ BotUser.generateRandomRoom = (socketHandler) => {
                 name: (multiplierExp > 1 ? 'Sala bonus' : 'Sala libre'),
                 userId: bot.id,
                 players: players[Math.floor(Math.random()*players.length)],
-                duration: durations[Math.floor(Math.random()*durations.length)],
+                duration: (multiplierExp > 1) ? 45 : durations[Math.floor(Math.random()*durations.length)],
                 isActive: true,
                 isCreatedByBot: true,
                 multiplierExp: multiplierExp
