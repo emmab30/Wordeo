@@ -270,7 +270,7 @@ module.exports = function(Room) {
 
                                             if(profile) {
                                                 profile.experience_points = profile.experience_points + sumExp;
-                                                profile.balance_tuls = profile.balance_tuls sumTuls;
+                                                profile.balance_tuls = profile.balance_tuls + sumTuls;
 
                                                 profile.save();
                                             } else {
