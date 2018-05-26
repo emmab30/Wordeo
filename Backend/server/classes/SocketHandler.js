@@ -34,7 +34,6 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
         var query = "SELECT Room.* FROM Room " +
             "INNER JOIN Account ON Account.id = Room.userId " +
             "WHERE CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 420 SECOND) AND " +
-            "Room.hasStarted = FALSE AND " +
             "Account.isBot = true;";
         dataSource.query(query, (err, rooms) => {
             for(var idx in rooms) {
