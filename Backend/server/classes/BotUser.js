@@ -56,11 +56,11 @@ BotUser.generateRandomRoom = (socketHandler) => {
                 let multiplierExp = 1;
                 if(!_.some(rooms, _.conforms({ 'multiplierExp' : (e) => { return e > 1 } }))) {
                     let randomNumber = _.random(0, 100);
-                    if(randomNumber <= 5) { //15% of creating rooms x5
+                    if(randomNumber <= 5) { //5% of creating rooms x5
                         multiplierExp = 5;
-                    } else if(randomNumber <= 15) { //25% of creating rooms x4
+                    } else if(randomNumber <= 15) { //15% of creating rooms x4
                         multiplierExp = 4;
-                    } else if(randomNumber <= 30) { //40% of creating rooms x3
+                    } else if(randomNumber <= 30) { //30% of creating rooms x3
                         multiplierExp = 3;
                     } else if(randomNumber <= 70) { //70% of creating rooms x2
                         multiplierExp = 2;
