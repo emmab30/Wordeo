@@ -1,5 +1,10 @@
 'use strict';
 
+//ToDo, fix this
+process.setMaxListeners(0);
+require('events').EventEmitter.prototype._maxListeners = 0;
+require('events').EventEmitter.defaultMaxListeners = 0
+
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var SocketHandler = require('./classes/SocketHandler');

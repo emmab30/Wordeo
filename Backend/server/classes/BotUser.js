@@ -13,7 +13,6 @@ var botsOnline = 0;
 function BotUser() {}
 
 BotUser.setRandomStatuses = (socketHandler) => {
-    log("Setting random statuses for bots.");
     botsOnline = false;
     socketHandler.app.models.Account.find({ where : { isBot : true }}, (err, bots) => {
         for(var idx in bots) {

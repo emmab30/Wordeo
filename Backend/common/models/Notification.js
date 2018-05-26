@@ -23,11 +23,15 @@ module.exports = function(Notification) {
     function me(next) {
         var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
-        var userId = accessToken.userId;
+        if(accessToken && accessToken.userId > -1) {
+            var userId = accessToken.userId;
 
-        app.models.Notification.find({ where : { userId : userId }, order: 'createdAt DESC' }, (err, notifications) => {
-            next(null, notifications);
-        })
+            app.models.Notification.find({ where : { userId : userId }, order: 'createdAt DESC' }, (err, notifications) => {
+                next(null, notifications);
+            });
+        } else {
+            next(null, []);
+        }
     }
 
     function deleteNotification(data, next) {
