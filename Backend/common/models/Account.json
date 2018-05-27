@@ -75,7 +75,9 @@
         "me",
         "uploadAvatar",
         "getFriends",
-        "getUserStatus"
+        "getUserStatus",
+        "find",
+        "findOne"
       ]
     },
     {
