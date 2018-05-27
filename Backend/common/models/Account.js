@@ -18,6 +18,7 @@ module.exports = function(Account) {
     Account.loginAdmin = loginAdmin;
     Account.loginFacebook = loginFacebook;
     Account.getFriends = getFriends;
+    Account.getPeople = getPeople;
     Account.me = getMe;
     Account.uploadAvatar = uploadAvatar;
     Account.getRankingByUserId = getRankingByUserId;
@@ -225,6 +226,42 @@ module.exports = function(Account) {
                     Promise.all(promises).then((values) => {
                         next(null, values);
                     });
+                });
+            });
+        }
+    }
+
+    function getPeople(data, next) {
+        var ctx = loopbackContext.getCurrentContext();
+        // Get the current access token
+        var accessToken = ctx && ctx.get('accessToken');
+        if(accessToken != null && accessToken.userId > -1) {
+            var filter = {
+                include: 'profile',
+                where: {},
+                order: 'isBot DESC'
+            };
+            if(data.onlines) {
+                filter.where.isOnline = true;
+            }
+            app.models.Account.find(filter, (err, accounts) => {
+                var promises = [];
+
+                for(var idx in accounts) {
+                    let account = accounts[idx];
+                    promises.push(new Promise((resolve, reject) => {
+                        Account.getRankingByUserId(account.id, (rank) => {
+                            account.rank = rank;
+                            app.models.Character.getCharacterByUserId(account.id, (character) => {
+                                account.character = character;
+                                resolve(account);
+                            });
+                        });
+                    }));
+                }
+
+                Promise.all(promises).then((values) => {
+                    next(null, values);
                 });
             });
         }
