@@ -33,8 +33,9 @@ module.exports = function(server) {
             value: '1.0.0.15'
         });
 
-        server.models.Room.destroyAll({});
-        server.models.RoomUser.destroyAll({});
+        server.models.Room.updateAll({}, { isDeleted : true });
+        //server.models.RoomUser.destroyAll({});
+        //server.models.RoomUser.destroyAll({});
         server.models.Account.update({isOnline: false}, (err, updated) => {
             //Generate random bots if neccesary
             server.models.Account.count({ isBot : true }, (err, count) => {
