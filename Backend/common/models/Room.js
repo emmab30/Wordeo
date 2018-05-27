@@ -5,6 +5,7 @@ const loopbackContext = require("loopback-context");
 const log = require('fancy-log');
 const _ = require('lodash')
 var vCompare = require('../../server/classes/VersionCompare')
+var BotUser = require('../../server/classes/BotUser');
 
 let COMMON_RATE_TULS = 17.5;
 
@@ -44,7 +45,6 @@ module.exports = function(Room) {
 
                     //Check availability for room
                     app.models.RoomUser.count({ roomId : room.id }, function(err, count) {
-
                         //Check the players connected to this room.
                         if(room.isProtected && !data.isInvited) {
                             if(room.password != data.password) {
@@ -319,9 +319,6 @@ module.exports = function(Room) {
 
     /* Remote hooks */
     Room.afterRemote('create', function(ctx, result, next) {
-        if(app.socketHandler != null) {
-            app.socketHandler.onRoomCreated(result);
-        }
 
         if(result.challengeTo !== undefined && (result.isChallengingBot == false || result.isChallengingBot == undefined)) {
             app.models.Account.findOne({ where : { facebookId : result.challengeTo }}, (err, account) => {
@@ -333,11 +330,9 @@ module.exports = function(Room) {
                 });
             });
         } else if(result.isChallengingBot) {
-            console.log("Está con un bot !");
-            console.log(result);
-            if(app.socketHandler != null && app.socketHandler.botUser) {
-                console.log("Tiene !");
-                app.socketHandler.botUser.assignBotToRoom(app.socketHandler, result.id, result.challengeTo);
+            if(app.socketHandler != null) {
+                console.log(result);
+                BotUser.assignBotToRoom(app.socketHandler, result.id, result.challengeTo);
             }
         }
 

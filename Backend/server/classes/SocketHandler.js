@@ -169,7 +169,35 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
                 }
             });
         }
+
         if(isCreatedByBot) {
+
+            //Check if it's multiplier x5, then send notifications to everyone
+            if(room.multiplierExp == 5) {
+                context.app.models.Account.find({ where : { isBot : false }}, (err, accounts) => {
+                    for(var idx in accounts) {
+                        const account = accounts[idx];
+                        context.app.models.Notification.send({
+                            userId: account.id,
+                            message: "Hay una Sala Bonus x5 disponible. ¡Jugá ya antes que otro usuario la ocupe!",
+                            category: 1,
+                            options: {
+                                buttons: [
+                                    {id: "Now", text: "¡Jugar ya!"},
+                                    {id: "Delete", text: "Eliminar notificación"}
+                                ],
+                                data: {
+                                    roomId: room.id,
+                                    date: new Date()
+                                }
+                            }
+                        }, (response) => {
+                            //Do nothing
+                        });
+                    }
+                });
+            }
+
             _fn();
         } else {
             context.io.of('/').adapter.remoteJoin(user.socketId, roomName, (err) => {
@@ -229,6 +257,8 @@ SocketHandler.prototype.onPlayerFinishedRound = function(data, socket){
 SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
     let context = this;
     const roomName = 'Room=' + room.id;
+
+    console.log("User joining to room ", userId, room.id);
 
     this.app.models.Account.findOne({ where : { id: userId }}, (err, user) => {
 
@@ -339,11 +369,11 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                     });
                 });
             } else {
-                log("Someone left the room " + data.roomId + " but there are no more real users so this room will be closed.");
+                log("Someone " + data.userId + " left the room " + data.roomId + " but there are no more real users so this room will be closed.");
 
                 //Delete the room, all the members from it and stop the simulation for user.
                 setTimeout(() => {
-                    app.models.Account.findOne({ where : { id : data.userId }}, (err, account) => {
+                    context.app.models.Account.findOne({ where : { id : data.userId }}, (err, account) => {
                         if(account && !account.isOnline) {
                             let stoppedBots = BotUser.stopSimulatingStats(context, data.roomId);
                             context.app.models.RoomUser.destroyAll({ id : data.roomId });
