@@ -39,7 +39,7 @@
     },
     "isDeleted": {
         "type": "boolean",
-        "default": true
+        "default": false
     },
     "hasStarted": {
         "type": "boolean",
