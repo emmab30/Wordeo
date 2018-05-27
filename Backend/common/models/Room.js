@@ -333,6 +333,8 @@ module.exports = function(Room) {
                 });
             });
         } else if(result.isChallengingBot) {
+            console.log("Está con un bot !");
+            console.log(result);
             if(app.socketHandler != null && app.socketHandler.botUser) {
                 console.log("Tiene !");
                 app.socketHandler.botUser.assignBotToRoom(app.socketHandler, result.id, result.challengeTo);
