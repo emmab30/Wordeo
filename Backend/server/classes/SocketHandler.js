@@ -15,6 +15,7 @@ var SocketHandler = function(app, io){
     this.app = app;
     this.socket = null;
     this.io = io;
+    this.botUser = null;
     //this.players = [];
 
     return this;
@@ -43,6 +44,8 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
         //Set random statuses
         BotUser.setRandomStatuses(this);
+
+        this.botUser = BotUser;
     });
 
     let context = this;

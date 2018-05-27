@@ -323,7 +323,7 @@ module.exports = function(Room) {
             app.socketHandler.onRoomCreated(result);
         }
 
-        if(result.challengeTo !== undefined) {
+        if(result.challengeTo !== undefined && (result.isChallengingBot == false || result.isChallengingBot == undefined)) {
             app.models.Account.findOne({ where : { facebookId : result.challengeTo }}, (err, account) => {
                 Room.invite({
                     roomId: result.id,
@@ -332,6 +332,11 @@ module.exports = function(Room) {
                     //Do nothing
                 });
             });
+        } else if(result.isChallengingBot) {
+            if(app.socketHandler != null && app.socketHandler.botUser) {
+                console.log("Tiene !");
+                app.socketHandler.botUser.assignBotToRoom(app.socketHandler, result.id, result.challengeTo);
+            }
         }
 
         next();

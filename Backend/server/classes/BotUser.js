@@ -122,6 +122,33 @@ BotUser.assignRandomBotToRoom = (socketHandler, roomId, success, error) => {
     });
 }
 
+BotUser.assignBotToRoom = (socketHandler, roomId, botId, success, error) => {
+
+    //Get random bot
+    var dataSource = socketHandler.app.dataSources.mysql.connector;
+    let query = "SELECT * FROM Account WHERE isBot = true AND id = " + botId + " LIMIT 1";
+    dataSource.query(query, (err1, bots) => {
+        if(bots) {
+            let bot = bots[0];
+            socketHandler.app.models.Room.findOne({ where : { id : roomId }}, (err1, room) => {
+                if(!err1 && room) {
+                    socketHandler.app.models.RoomUser.create({
+                        roomId: roomId,
+                        userId: bot.id
+                    }, (err, userRoomBot) => {
+                        success();
+                        persistedBots.push({
+                            roomId: roomId,
+                            accountId: bot.id
+                        });
+                        socketHandler.onJoinedToRoom(room, bot.id, true);
+                    });
+                }
+            })
+        }
+    });
+}
+
 BotUser.startSimulatingStats = (socketHandler, roomId, botId, callback) => {
     let POINTS_SUM = 0;
     let TOTAL_QUESTIONS = 0;
