@@ -37,10 +37,6 @@
         "type": "boolean",
         "default": true
     },
-    "isDeleted": {
-        "type": "boolean",
-        "default": false
-    },
     "hasStarted": {
         "type": "boolean",
         "default": false

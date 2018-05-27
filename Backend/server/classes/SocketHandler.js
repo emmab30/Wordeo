@@ -36,7 +36,6 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
             "WHERE (CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 420 SECOND) AND Account.isBot = true) OR " +
             "(CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 600 SECOND) AND Account.isBot = false AND Room.hasStarted = true)";
         dataSource.query(query, (err, rooms) => {
-            console.log("Rooms", rooms);
             for(var idx in rooms) {
                 BotUser.removeRandomRoom(this, rooms[idx].id);
             }
@@ -345,8 +344,7 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                         if(account && !account.isOnline) {
                             let stoppedBots = BotUser.stopSimulatingStats(context, data.roomId);
                             context.app.models.RoomUser.destroyAll({ id : data.roomId });
-                            context.app.models.Room.upsertWithWhere({ id: data.roomId }, { isActive: 0, isDeleted : true });
-                            //context.app.models.Room.destroyAll({ id : data.roomId });
+                            context.app.models.Room.destroyAll({ id : data.roomId });
                         }
                     });
                 }, 15000);
