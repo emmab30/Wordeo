@@ -21,6 +21,11 @@
     "osPlayerId": {
       "type": "string",
       "required": true,
+      "description": "OneSignal player ID"
+    },
+    "osNotificationId": {
+      "type": "string",
+      "required": true,
       "description": "OneSignal notification ID"
     },
     "payload": {
@@ -113,11 +118,6 @@
           "http": {
             "source": "body"
           }
-        },
-        {
-          "arg": "options",
-          "type": "object",
-          "http": "optionsFromRequest"
         }
       ],
       "returns": {

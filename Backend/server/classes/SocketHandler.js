@@ -10,6 +10,7 @@ const TIME_BEFORE_ROUND_STARTS  = 10 * 1000;
 const INTERVAL_BOT_CHECKER_EMPTY_ROOMS  = 80 * 1000;
 const INTERVAL_BOT_CREATION_ROOMS  = 10 * 1000;
 const INTERVAL_CHANGE_STATUS_BOTS = 300 * 1000;
+const MESSAGE_ROOM_X5 = 'Hay una Sala Bonus x5 disponible. ¡Jugá ya antes que otro usuario la ocupe!';
 
 var SocketHandler = function(app, io){
     this.app = app;
@@ -95,7 +96,7 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
         if(user) {
             log("Player disconnected [" + user.id + ", " + user.email + "]");
             //Check if the user is playing
-            this.app.models.RoomUser.findOne({ where : { userId : user.id }}, (err, roomUser) => {
+            this.app.models.RoomUser.findOne({ order: 'id DESC', where : { userId : user.id }}, (err, roomUser) => {
                 if(!err && roomUser) {
                     this.onLeaveRoom({
                         roomId: roomUser.roomId,
@@ -179,13 +180,9 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
                         const account = accounts[idx];
                         context.app.models.Notification.send({
                             userId: account.id,
-                            message: "Hay una Sala Bonus x5 disponible. ¡Jugá ya antes que otro usuario la ocupe!",
+                            templateId: 'a52156ac-cfa0-4ace-ae8a-27c6911712d8', //Located in onesignal
                             category: 1,
                             options: {
-                                buttons: [
-                                    {id: "Now", text: "¡Jugar ya!"},
-                                    {id: "Delete", text: "Eliminar notificación"}
-                                ],
                                 data: {
                                     roomId: room.id,
                                     date: new Date()
@@ -258,7 +255,18 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
     let context = this;
     const roomName = 'Room=' + room.id;
 
-    console.log("User joining to room ", userId, room.id);
+    /* if(!isBot && room.multiplierExp == 5) {
+        //Cancel notifications about this
+        context.app.models.Notification.find({ where : { message: MESSAGE_ROOM_X5, osNotificationId: { neq: 'none' } }}, (err, notifications) => {
+            for(var idx in notifications) {
+                const notification = notifications[idx];
+                console.log("Cancelling notification", notification);
+                context.app.models.Notification.cancel(notification.id, (err, data) => {
+                    //console.log(err, data);
+                });
+            }
+        });
+    } */
 
     this.app.models.Account.findOne({ where : { id: userId }}, (err, user) => {
 
@@ -334,6 +342,8 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
     if(data.roomId) {
         socket.leave('Room=' + data.roomId);
 
+        console.log("User leaves the room", data);
+
         context.getDetailsForRoom(data.roomId, (roomData) => {
 
             //Check if there is any user who is not a real user (not a bot)
@@ -372,15 +382,13 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                 log("Someone " + data.userId + " left the room " + data.roomId + " but there are no more real users so this room will be closed.");
 
                 //Delete the room, all the members from it and stop the simulation for user.
-                setTimeout(() => {
-                    context.app.models.Account.findOne({ where : { id : data.userId }}, (err, account) => {
-                        if(account && !account.isOnline) {
-                            let stoppedBots = BotUser.stopSimulatingStats(context, data.roomId);
-                            context.app.models.RoomUser.destroyAll({ id : data.roomId });
-                            context.app.models.Room.destroyAll({ id : data.roomId });
-                        }
-                    });
-                }, 15000);
+                context.app.models.Account.findOne({ where : { id : data.userId }}, (err, account) => {
+                    if(account && !account.isOnline) {
+                        let stoppedBots = BotUser.stopSimulatingStats(context, data.roomId);
+                        context.app.models.RoomUser.destroyAll({ id : data.roomId });
+                        context.app.models.Room.destroyAll({ id : data.roomId });
+                    }
+                });
             }
         });
     }

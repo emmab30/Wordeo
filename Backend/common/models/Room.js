@@ -329,10 +329,9 @@ module.exports = function(Room) {
                     //Do nothing
                 });
             });
-        } else if(result.isChallengingBot) {
+        } else {
             if(app.socketHandler != null) {
-                console.log(result);
-                BotUser.assignBotToRoom(app.socketHandler, result.id, result.challengeTo);
+                app.socketHandler.onRoomCreated(result, false); //Created by an user
             }
         }
 

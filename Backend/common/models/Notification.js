@@ -75,13 +75,22 @@ module.exports = function(Notification) {
                         app_id: appId,
                         include_player_ids: [user.notificationId],
                         android_accent_color: '#222222', //Blue color
-                        large_icon: 'https://s3-sa-east-1.amazonaws.com/wordeo/common/logo.png',
-                        ttl: 30,
-                        //android_sound: 'push_nsound',
-                        contents: {
-                            en: data.message
-                        }
+                        android_group: data.category,
+                        android_group_message: {
+                            en: '¡Tienes $[notif_count] nuevas alertas!',
+                        },
+                        large_icon: 'https://s3-sa-east-1.amazonaws.com/wordeo/common/notification.png',
+                        ttl: 300,
+                        android_sound: 'notification'
                     });
+
+                    if(data.templateId) {
+                        bodyRequest.template_id = data.templateId;
+                    } else {
+                        bodyRequest.contents= {
+                            en: data.message
+                        };
+                    }
 
                     if(data.scheduled_at != undefined && data.scheduled_at != null) {
                         body.send_after = data.scheduled_at;
@@ -104,7 +113,8 @@ module.exports = function(Notification) {
                                     userId: user.id,
                                     category: data.category,
                                     message: data.message,
-                                    osPlayerId: (body.id === undefined || body.id === '') ? 'noPlayerId' : body.id,
+                                    osPlayerId: user.notificationId != null ? user.notificationId : 'none',
+                                    osNotificationId: (body.id === undefined || body.id === '') ? 'none' : body.id,
                                     payload: JSON.stringify(bodyRequest)
                                 };
                                 app.models.Notification.create(obj, (success, err) => {
@@ -132,7 +142,8 @@ module.exports = function(Notification) {
                                     userId: user.id,
                                     category: data.category,
                                     message: data.message,
-                                    osPlayerId: (user.notificationId != null ? user.notificationId : 'noPlayerId'),
+                                    osPlayerId: user.notificationId != null ? user.notificationId : 'none',
+                                    osNotificationId: 'none',
                                     payload: JSON.stringify(bodyRequest)
                                 };
                                 app.models.Notification.create(obj, (success, err) => {
@@ -145,7 +156,8 @@ module.exports = function(Notification) {
                                 userId: user.id,
                                 category: data.category,
                                 message: data.message,
-                                osPlayerId: (user.notificationId != null ? user.notificationId : 'noPlayerId'),
+                                osPlayerId: user.notificationId != null ? user.notificationId : 'none',
+                                osNotificationId: 'none',
                                 payload: JSON.stringify(bodyRequest)
                             };
                             app.models.Notification.create(obj, (success, err) => {
@@ -160,7 +172,8 @@ module.exports = function(Notification) {
                         userId: user.id,
                         category: data.category,
                         message: data.message,
-                        osPlayerId: 'noPlayerId',
+                        osPlayerId: 'none',
+                        osNotificationId: 'none',
                         payload: JSON.stringify(bodyRequest)
                     };
                     app.models.Notification.create(obj, (success, err) => {
@@ -177,7 +190,7 @@ module.exports = function(Notification) {
         }
 	}
 
-    function cancel(data, options, next) {
+    function cancel(data, next) {
         var filter = {
             where: {
                 id: data.id
@@ -197,6 +210,7 @@ module.exports = function(Notification) {
                     method: 'DELETE',
                     headers: headersOS
                 }, function(err, response) {
+                    console.log(err, response);
                     let body = JSON.parse(response.body);
                     if(body !== undefined && body.success) {
                         //Destroy the local notification.
