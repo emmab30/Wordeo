@@ -50,7 +50,7 @@
         "defaultFn": "now"
     },
     "deletedAt": {
-        "type": "datetime",
+        "type": "date",
         "required": false
     }
   },
