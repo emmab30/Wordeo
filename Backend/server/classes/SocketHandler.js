@@ -126,7 +126,7 @@ SocketHandler.prototype.onRoomRemoved = function(roomId){
     this.app.models.Room.upsertWithWhere({ id : roomId}, { isActive : false });
     //this.app.models.RoomUser.destroyAll({roomId: roomId});
 
-    this.io.sockets.to('General').emit('onRoomRemoved', { id : roomId });
+    this.io.sockets.to('General').emit('onRoomsUpdated');
 }
 
 /*
@@ -142,7 +142,7 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
                 roomId: room.id,
                 userId: room.userId
             }, (error, bot) => {
-                this.io.sockets.to('General').emit('onRoomCreated', room);
+                this.io.sockets.to('General').emit('onRoomsUpdated');
                 if(!error) {
                     context.getDetailsForRoom(room.id, (data) => {
                         let promises = [];
@@ -255,6 +255,8 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
     let context = this;
     const roomName = 'Room=' + room.id;
 
+    this.io.sockets.to('General').emit('onRoomsUpdated');
+
     /* if(!isBot && room.multiplierExp == 5) {
         //Cancel notifications about this
         context.app.models.Notification.find({ where : { message: MESSAGE_ROOM_X5, osNotificationId: { neq: 'none' } }}, (err, notifications) => {
@@ -341,8 +343,6 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
     let context = this;
     if(data.roomId) {
         socket.leave('Room=' + data.roomId);
-
-        console.log("User leaves the room", data);
 
         context.getDetailsForRoom(data.roomId, (roomData) => {
 
