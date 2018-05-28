@@ -31,13 +31,13 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     //Setting cronjob
     BotUser.setRandomStatuses(this);
-    var job = schedule.scheduleJob('*/3 * * * *', () => {
+    var job = schedule.scheduleJob('*/10 * * * *', () => {
         //Delete expired rooms and renegerate new ones
 
         var query = "SELECT Room.* FROM Room " +
             "INNER JOIN Account ON Account.id = Room.userId " +
-            "WHERE (CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 60 SECOND) AND Account.isBot = true) OR " +
-            "(CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 60 SECOND) AND Account.isBot = false AND Room.hasStarted = true) " +
+            "WHERE ((CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 420 SECOND) AND Account.isBot = true) OR " +
+            "(CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 600 SECOND) AND Account.isBot = false AND Room.hasStarted = true)) " +
             "AND deletedAt IS NULL";
         dataSource.query(query, (err, rooms) => {
             for(var idx in rooms) {
