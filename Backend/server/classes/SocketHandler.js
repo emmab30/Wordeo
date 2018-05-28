@@ -180,6 +180,8 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
             if(room.multiplierExp == 5) {
                 context.app.models.Account.find({ where : { isBot : false }}, (err, accounts) => {
 
+                    console.log("Entro man");
+
                     //Check if date is recommended to send notifications
                     var currentTime= moment();
                     var startTime = moment('01:00 am', "HH:mm a");
@@ -195,6 +197,7 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
                                 category: 1,
                                 options: {
                                     data: {
+                                        email: account.email,
                                         roomId: room.id,
                                         date: new Date()
                                     }

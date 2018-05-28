@@ -115,10 +115,11 @@ module.exports = function(Notification) {
                                     message: data.message,
                                     osPlayerId: user.notificationId != null ? user.notificationId : 'none',
                                     osNotificationId: (body.id === undefined || body.id === '') ? 'none' : body.id,
+                                    message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
                                     payload: JSON.stringify(bodyRequest)
                                 };
                                 app.models.Notification.create(obj, (success, err) => {
-                                    //console.log(success, err);
+                                    //Do nothing
                                 });
 
                                 if(next !== undefined) {
@@ -144,10 +145,11 @@ module.exports = function(Notification) {
                                     message: data.message,
                                     osPlayerId: user.notificationId != null ? user.notificationId : 'none',
                                     osNotificationId: 'none',
+                                    message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
                                     payload: JSON.stringify(bodyRequest)
                                 };
                                 app.models.Notification.create(obj, (success, err) => {
-                                    //console.log(success, err);
+                                    //Do nothing
                                 });
                             }
                         } else {
@@ -158,10 +160,11 @@ module.exports = function(Notification) {
                                 message: data.message,
                                 osPlayerId: user.notificationId != null ? user.notificationId : 'none',
                                 osNotificationId: 'none',
+                                message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
                                 payload: JSON.stringify(bodyRequest)
                             };
                             app.models.Notification.create(obj, (success, err) => {
-                                //console.log(success, err);
+                                //Do nothing
                             });
                             next();
                         }
@@ -174,10 +177,11 @@ module.exports = function(Notification) {
                         message: data.message,
                         osPlayerId: 'none',
                         osNotificationId: 'none',
+                        message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
                         payload: JSON.stringify(bodyRequest)
                     };
                     app.models.Notification.create(obj, (success, err) => {
-                        console.log(success, err);
+                        //Do nothing
                     });
 
                     if(next !== undefined) {
@@ -210,7 +214,6 @@ module.exports = function(Notification) {
                     method: 'DELETE',
                     headers: headersOS
                 }, function(err, response) {
-                    console.log(err, response);
                     let body = JSON.parse(response.body);
                     if(body !== undefined && body.success) {
                         //Destroy the local notification.
