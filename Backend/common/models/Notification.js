@@ -115,7 +115,7 @@ module.exports = function(Notification) {
                                     message: data.message,
                                     osPlayerId: user.notificationId != null ? user.notificationId : 'none',
                                     osNotificationId: (body.id === undefined || body.id === '') ? 'none' : body.id,
-                                    message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
+                                    message: data.message,
                                     payload: JSON.stringify(bodyRequest)
                                 };
                                 app.models.Notification.create(obj, (success, err) => {
@@ -145,7 +145,7 @@ module.exports = function(Notification) {
                                     message: data.message,
                                     osPlayerId: user.notificationId != null ? user.notificationId : 'none',
                                     osNotificationId: 'none',
-                                    message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
+                                    message: data.message,
                                     payload: JSON.stringify(bodyRequest)
                                 };
                                 app.models.Notification.create(obj, (success, err) => {
@@ -160,7 +160,7 @@ module.exports = function(Notification) {
                                 message: data.message,
                                 osPlayerId: user.notificationId != null ? user.notificationId : 'none',
                                 osNotificationId: 'none',
-                                message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
+                                message: data.message,
                                 payload: JSON.stringify(bodyRequest)
                             };
                             app.models.Notification.create(obj, (success, err) => {
