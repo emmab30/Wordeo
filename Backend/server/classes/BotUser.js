@@ -51,7 +51,7 @@ BotUser.generateRandomRoom = (socketHandler) => {
         if(bots) {
             let bot = bots[0];
 
-            socketHandler.app.models.Room.find({}, (err, rooms) => {
+            socketHandler.app.models.Room.find({ deletedAt: null }, (err, rooms) => {
 
                 //Percentages for multiplier exp rooms
                 let multiplierExp = 1;
