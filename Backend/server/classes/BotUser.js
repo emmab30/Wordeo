@@ -32,7 +32,10 @@ BotUser.setRandomStatuses = (socketHandler) => {
 
 BotUser.removeRandomRoom = (socketHandler, id) => {
     let currentDate = new Date();
-    socketHandler.app.models.Room.upsertWithWhere({id : id}, {isActive: false,deletedAt:currentDate});
+    socketHandler.app.models.Room.upsertWithWhere({id : id}, {isActive: false, deletedAt:currentDate}, (err, rows) => {
+        console.log("Actualice.");
+        console.log(err, rows);
+    });
     var room = _.find(persistedRooms, { id : id });
     if(room) {
         persistedRooms.splice(persistedRooms.indexOf(room), 1);
