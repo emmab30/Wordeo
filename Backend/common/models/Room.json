@@ -37,6 +37,10 @@
         "type": "boolean",
         "default": true
     },
+    "isDeleted": {
+        "type": "boolean",
+        "default": 0
+    },
     "hasStarted": {
         "type": "boolean",
         "default": false

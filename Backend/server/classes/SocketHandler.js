@@ -26,6 +26,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
     //This function determines when bootstrap has been initialized
 
     log("Smart bot system initialized..");
+
     var dataSource = this.app.dataSources.mysql.connector;
 
     //Setting cronjob
@@ -36,7 +37,8 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
         var query = "SELECT Room.* FROM Room " +
             "INNER JOIN Account ON Account.id = Room.userId " +
             "WHERE (CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 420 SECOND) AND Account.isBot = true) OR " +
-            "(CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 600 SECOND) AND Account.isBot = false AND Room.hasStarted = true)";
+            "(CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 600 SECOND) AND Account.isBot = false AND Room.hasStarted = true) " +
+            "AND isDeleted = 0";
         dataSource.query(query, (err, rooms) => {
             for(var idx in rooms) {
                 BotUser.removeRandomRoom(this, rooms[idx].id);
@@ -123,7 +125,7 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
 }
 
 SocketHandler.prototype.onRoomRemoved = function(roomId){
-    this.app.models.Room.upsertWithWhere({ id : roomId}, { isActive : false });
+    this.app.models.Room.upsertWithWhere({ id : roomId}, { isActive : false, isDeleted: true });
     //this.app.models.RoomUser.destroyAll({roomId: roomId});
 
     this.io.sockets.to('General').emit('onRoomsUpdated');
@@ -176,21 +178,30 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
             //Check if it's multiplier x5, then send notifications to everyone
             if(room.multiplierExp == 5) {
                 context.app.models.Account.find({ where : { isBot : false }}, (err, accounts) => {
-                    for(var idx in accounts) {
-                        const account = accounts[idx];
-                        context.app.models.Notification.send({
-                            userId: account.id,
-                            templateId: 'a52156ac-cfa0-4ace-ae8a-27c6911712d8', //Located in onesignal
-                            category: 1,
-                            options: {
-                                data: {
-                                    roomId: room.id,
-                                    date: new Date()
+
+                    //Check if date is recommended to send notifications
+                    var currentTime= moment();
+                    var startTime = moment('01:00 am', "HH:mm a");
+                    var endTime = moment('09:00 am', "HH:mm a");
+                    let isBetween = currentTime.isBetween(startTime, endTime);
+
+                    if(!isBetween) {
+                        for(var idx in accounts) {
+                            const account = accounts[idx];
+                            context.app.models.Notification.send({
+                                userId: account.id,
+                                templateId: 'a52156ac-cfa0-4ace-ae8a-27c6911712d8', //Located in onesignal
+                                category: 1,
+                                options: {
+                                    data: {
+                                        roomId: room.id,
+                                        date: new Date()
+                                    }
                                 }
-                            }
-                        }, (response) => {
-                            //Do nothing
-                        });
+                            }, (response) => {
+                                //Do nothing
+                            });
+                        }
                     }
                 });
             }
@@ -385,8 +396,7 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                 context.app.models.Account.findOne({ where : { id : data.userId }}, (err, account) => {
                     if(account && !account.isOnline) {
                         let stoppedBots = BotUser.stopSimulatingStats(context, data.roomId);
-                        context.app.models.RoomUser.destroyAll({ id : data.roomId });
-                        context.app.models.Room.destroyAll({ id : data.roomId });
+                        context.app.models.Room.upsertWithWhere({ id : data.roomId }, { isDeleted : true });
                     }
                 });
             }
