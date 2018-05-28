@@ -240,7 +240,8 @@ BotUser.startSimulatingStats = (socketHandler, roomId, botId, callback) => {
                         socketHandler.io.sockets.to('Room=' + room.id).emit('onFinishedRound', {
                             roundTerminatedWithSuccess: true
                         });
-                        socketHandler.app.models.Room.upsertWithWhere({ id: room.id }, { isActive: 0, deletedAt : new Date() });
+                        let currentDate = new Date();
+                        socketHandler.app.models.Room.upsertWithWhere({ id: room.id }, { isActive: 0, deletedAt : currentDate });
                     }
                 }
             });
