@@ -31,7 +31,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     //Setting cronjob
     BotUser.setRandomStatuses(this);
-    var job = schedule.scheduleJob('*/10 * * * *', () => {
+    var job = schedule.scheduleJob('*/1 * * * *', () => {
         //Delete expired rooms and renegerate new ones
 
         var query = "SELECT Room.* FROM Room " +
