@@ -66,11 +66,18 @@ BotUser.generateRandomRoom = (socketHandler) => {
                         multiplierExp = 2;
                     }
                 }
+
+                let duration = 60;
+                if(multiplierExp == 5) {
+                    duration = 35;
+                } else if(multiplierExp > 1) {
+                    duration = 45;
+                }
                 const room = {
                     name: (multiplierExp > 1 ? 'Sala bonus' : 'Sala libre'),
                     userId: bot.id,
                     players: players[Math.floor(Math.random()*players.length)],
-                    duration: (multiplierExp > 1) ? 45 : durations[Math.floor(Math.random()*durations.length)],
+                    duration: duration,
                     isActive: true,
                     isCreatedByBot: true,
                     multiplierExp: multiplierExp
