@@ -31,7 +31,7 @@ BotUser.setRandomStatuses = (socketHandler) => {
 }
 
 BotUser.removeRandomRoom = (socketHandler, id) => {
-    socketHandler.app.models.Room.destroyById(id);
+    socketHandler.app.models.Room.upsertWithWhere({ id : id}, { isActive: false, deletedAt : new Date() });
     var room = _.find(persistedRooms, { id : id });
     if(room) {
         persistedRooms.splice(persistedRooms.indexOf(room), 1);

@@ -125,8 +125,8 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
 }
 
 SocketHandler.prototype.onRoomRemoved = function(roomId){
-    this.app.models.Room.upsertWithWhere({ id : roomId}, { isActive : false, deletedAt: new Date() });
-    //this.app.models.RoomUser.destroyAll({roomId: roomId});
+    let current = new Date();
+    this.app.models.Room.upsertWithWhere({ id : roomId}, { isActive : false, deletedAt: current });
 
     this.io.sockets.to('General').emit('onRoomsUpdated');
 }
@@ -361,33 +361,34 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
             if(roomData.accounts.length > 1 && _.some(roomData.accounts, { isBot: false })){
 
                 //There are real users still in the room so don't stop the simulation of the bots (if there are)
-                context.app.models.RoomUser.destroyAll({
+                /* context.app.models.RoomUser.destroyAll({
                     userId: data.userId,
                     roomId: data.roomId
                 }, function() {
 
-                    //Check if there is any other user in the room
-                    context.app.models.Room.findOne({ where : { id : data.roomId }}, function(err, room) {
-                        if(room) {
-                            if(data.userId == room.userId) {
-                                context.io.sockets.to('Room=' + room.id).emit('onFinishedRound', {
-                                    isOwnerDisconnected: true
-                                }); //Finish round if the owner leaves it.
-                                context.onRoomRemoved(room.id);
-                            } else {
-                                //Success
-                                context.getDetailsForRoom(data.roomId, (details) => {
-                                    context.io.sockets.to('Room=' + data.roomId).emit('onRoomActivity', details);
-                                    if(details.accounts.length == 1) {
-                                        context.io.sockets.to('Room=' + data.roomId).emit('onFinishedRound', {
-                                            allUsersDisconnected: true
-                                        });
-                                        context.onRoomRemoved(room.id);
-                                    }
-                                });
-                            }
+                }); */
+
+                //Check if there is any other user in the room
+                context.app.models.Room.findOne({ where : { id : data.roomId }}, function(err, room) {
+                    if(room) {
+                        if(data.userId == room.userId) {
+                            context.io.sockets.to('Room=' + room.id).emit('onFinishedRound', {
+                                isOwnerDisconnected: true
+                            }); //Finish round if the owner leaves it.
+                            context.onRoomRemoved(room.id);
+                        } else {
+                            //Success
+                            context.getDetailsForRoom(data.roomId, (details) => {
+                                context.io.sockets.to('Room=' + data.roomId).emit('onRoomActivity', details);
+                                if(details.accounts.length == 1) {
+                                    context.io.sockets.to('Room=' + data.roomId).emit('onFinishedRound', {
+                                        allUsersDisconnected: true
+                                    });
+                                    context.onRoomRemoved(room.id);
+                                }
+                            });
                         }
-                    });
+                    }
                 });
             } else {
                 log("Someone " + data.userId + " left the room " + data.roomId + " but there are no more real users so this room will be closed.");
