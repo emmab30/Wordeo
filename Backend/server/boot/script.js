@@ -30,10 +30,10 @@ module.exports = function(server) {
 
         server.models.Configuration.upsertWithWhere({ name: 'LAST_VERSION' }, {
             name: 'LAST_VERSION',
-            value: '1.0.0.15'
+            value: '1.0.0.16'
         });
 
-        server.models.Room.destroyAll({});
+        server.models.Room.destroyAll({ isDeleted : false });
         //server.models.RoomUser.destroyAll({});
         server.models.Account.update({isOnline: false}, (err, updated) => {
             //Generate random bots if neccesary
