@@ -192,6 +192,7 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
                             context.app.models.Notification.send({
                                 userId: account.id,
                                 templateId: 'a52156ac-cfa0-4ace-ae8a-27c6911712d8', //Located in onesignal
+                                message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
                                 category: 1,
                                 options: {
                                     buttons: [
