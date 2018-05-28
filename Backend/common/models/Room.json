@@ -37,10 +37,6 @@
         "type": "boolean",
         "default": true
     },
-    "deletedAt": {
-        "type": "datetime",
-        "required": false
-    },
     "hasStarted": {
         "type": "boolean",
         "default": false
@@ -52,6 +48,10 @@
     "createdAt": {
         "type": "date",
         "defaultFn": "now"
+    },
+    "deletedAt": {
+        "type": "datetime",
+        "required": false
     }
   },
   "validations": [],
