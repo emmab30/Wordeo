@@ -193,11 +193,11 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
                                 userId: account.id,
                                 templateId: 'a52156ac-cfa0-4ace-ae8a-27c6911712d8', //Located in onesignal
                                 category: 1,
-                                buttons: [
-                                    {id: "Now", text: "¡Entrar ya!"},
-                                    {id: "Delete", text: "Eliminar notificación"}
-                                ],
                                 options: {
+                                    buttons: [
+                                        {id: "Now", text: "¡Entrar ya!"},
+                                        {id: "Delete", text: "Eliminar notificación"}
+                                    ],
                                     data: {
                                         email: account.email,
                                         roomId: room.id,
