@@ -31,7 +31,8 @@ BotUser.setRandomStatuses = (socketHandler) => {
 }
 
 BotUser.removeRandomRoom = (socketHandler, id) => {
-    socketHandler.app.models.Room.upsertWithWhere({ id : id}, { isActive: false, deletedAt : new Date() });
+    let currentDate = new Date();
+    socketHandler.app.models.Room.upsertWithWhere({id : id}, {isActive: false,deletedAt:currentDate});
     var room = _.find(persistedRooms, { id : id });
     if(room) {
         persistedRooms.splice(persistedRooms.indexOf(room), 1);
@@ -241,7 +242,7 @@ BotUser.startSimulatingStats = (socketHandler, roomId, botId, callback) => {
                             roundTerminatedWithSuccess: true
                         });
                         let currentDate = new Date();
-                        socketHandler.app.models.Room.upsertWithWhere({ id: room.id }, { isActive: 0, deletedAt : currentDate });
+                        socketHandler.app.models.Room.upsertWithWhere({ id: room.id },{isActive: false,deletedAt:currentDate});
                     }
                 }
             });
