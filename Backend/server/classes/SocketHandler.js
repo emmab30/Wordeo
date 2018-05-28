@@ -38,7 +38,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
             "INNER JOIN Account ON Account.id = Room.userId " +
             "WHERE (CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 420 SECOND) AND Account.isBot = true) OR " +
             "(CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 600 SECOND) AND Account.isBot = false AND Room.hasStarted = true) " +
-            "AND deletedAt = NULL";
+            "AND deletedAt IS NULL";
         dataSource.query(query, (err, rooms) => {
             for(var idx in rooms) {
                 BotUser.removeRandomRoom(this, rooms[idx].id);
@@ -57,7 +57,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
             "LEFT JOIN RoomUser ON RoomUser.roomId = Room.id " +
             "LEFT JOIN Account ON Room.userId = Account.id " +
             "WHERE Room.isActive = TRUE AND Room.hasStarted = FALSE AND Room.isProtected = FALSE AND Account.isBot = false " +
-            "AND CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') > (now() - INTERVAL 150 SECOND) " +
+            "AND CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') > (now() - INTERVAL 150 SECOND) AND deletedAt IS NULL " +
             "GROUP BY Room.id, Room.players " +
             "HAVING COUNT(RoomUser.id) < Room.players";
 
@@ -76,7 +76,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
     }, INTERVAL_BOT_CHECKER_EMPTY_ROOMS);
 
     let intervalCreationRooms = setInterval(() => {
-        this.app.models.Room.count({ isActive : true }, (err, activeRooms) => {
+        this.app.models.Room.count({ isActive : true, deletedAt: null }, (err, activeRooms) => {
             if(activeRooms < 15) {
                 BotUser.generateRandomRoom(context);
             }
