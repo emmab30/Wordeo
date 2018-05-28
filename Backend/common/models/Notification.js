@@ -177,7 +177,7 @@ module.exports = function(Notification) {
                         message: data.message,
                         osPlayerId: 'none',
                         osNotificationId: 'none',
-                        message: 'Hay una Sala Bonus x5 disponible. ¡Entra ahora antes que otro usuario la ocupe!',
+                        message: data.message,
                         payload: JSON.stringify(bodyRequest)
                     };
                     app.models.Notification.create(obj, (success, err) => {
