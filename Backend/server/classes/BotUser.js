@@ -34,8 +34,12 @@ BotUser.removeRandomRoom = (socketHandler, id) => {
     let currentDate = new Date();
     socketHandler.app.models.Room.upsertWithWhere({id : id}, {isActive: false,deletedAt:currentDate});
     var room = _.find(persistedRooms, { id : id });
+    var bot = _.find(persistedBots, { roomId : id });
     if(room) {
         persistedRooms.splice(persistedRooms.indexOf(room), 1);
+    }
+    if(bot) {
+        persistedBots.splice(persistedBots.indexOf(bot), 1);
     }
 };
 
