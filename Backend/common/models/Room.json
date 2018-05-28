@@ -37,9 +37,9 @@
         "type": "boolean",
         "default": true
     },
-    "isDeleted": {
-        "type": "boolean",
-        "default": 0
+    "deletedAt": {
+        "type": "datetime",
+        "required": false
     },
     "hasStarted": {
         "type": "boolean",

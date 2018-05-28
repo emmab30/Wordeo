@@ -38,7 +38,7 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
             "INNER JOIN Account ON Account.id = Room.userId " +
             "WHERE (CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 420 SECOND) AND Account.isBot = true) OR " +
             "(CONVERT_TZ(Room.createdAt, '+00:00', '-03:00') < (now() - INTERVAL 600 SECOND) AND Account.isBot = false AND Room.hasStarted = true) " +
-            "AND isDeleted = 0";
+            "AND deletedAt = NULL";
         dataSource.query(query, (err, rooms) => {
             for(var idx in rooms) {
                 BotUser.removeRandomRoom(this, rooms[idx].id);
@@ -125,7 +125,7 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
 }
 
 SocketHandler.prototype.onRoomRemoved = function(roomId){
-    this.app.models.Room.upsertWithWhere({ id : roomId}, { isActive : false, isDeleted: true });
+    this.app.models.Room.upsertWithWhere({ id : roomId}, { isActive : false, deletedAt: new Date() });
     //this.app.models.RoomUser.destroyAll({roomId: roomId});
 
     this.io.sockets.to('General').emit('onRoomsUpdated');
@@ -396,7 +396,7 @@ SocketHandler.prototype.onLeaveRoom = function(data, socket) {
                 context.app.models.Account.findOne({ where : { id : data.userId }}, (err, account) => {
                     if(account && !account.isOnline) {
                         let stoppedBots = BotUser.stopSimulatingStats(context, data.roomId);
-                        context.app.models.Room.upsertWithWhere({ id : data.roomId }, { isDeleted : true });
+                        context.app.models.Room.upsertWithWhere({ id : data.roomId }, { deletedAt : new Date() });
                     }
                 });
             }
