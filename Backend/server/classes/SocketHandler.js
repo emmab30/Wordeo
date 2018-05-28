@@ -98,7 +98,7 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
         if(user) {
             log("Player disconnected [" + user.id + ", " + user.email + "]");
             //Check if the user is playing
-            this.app.models.RoomUser.updateAll({ userId : user.id }, { hasFinished : true }});
+            this.app.models.RoomUser.updateAll({ userId : user.id }, { hasFinished : true });
             this.app.models.RoomUser.findOne({ order: 'id DESC', where : { userId : user.id }}, (err, roomUser) => {
                 if(!err && roomUser) {
                     this.onLeaveRoom({
