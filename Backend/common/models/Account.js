@@ -236,7 +236,7 @@ module.exports = function(Account) {
         // Get the current access token
         var accessToken = ctx && ctx.get('accessToken');
         var dataSource = app.dataSources.mysql.connector;
-        var query = "SELECT *, (SELECT createdAt FROM RoomUser WHERE RoomUser.userId = Account.id ORDER BY createdAt DESC LIMIT 1) as last_reply_time FROM Account " +
+        var query = "SELECT *, (SELECT createdAt FROM RoomUserQuestion WHERE RoomUserQuestion.userId = Account.id ORDER BY createdAt DESC LIMIT 1) as lastReplyTime FROM Account " +
             "WHERE id NOT IN (" + accessToken.userId + ") AND isBot = FALSE " +
             "ORDER BY Account.isBot ASC, Account.isOnline DESC, Account.lastLogin DESC " +
             "LIMIT 15;";
