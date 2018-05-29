@@ -289,7 +289,7 @@ module.exports = function(Character) {
                     });
                 });
             });
-        });
+        }
     }
 
     function getCharacterByUserId(userId, callback) {
