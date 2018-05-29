@@ -239,19 +239,18 @@ module.exports = function(Character) {
         var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
 
-        app.models.UserCharacter.findOne({ where : { profileId : accessToken.userId }, order: 'createdAt DESC'}, (err, userCharacter) => {
-            app.models.CharacterAccesory.find({ where : { id: { inq : data.accesories } }}, (err, accesories) => {
-                var totalAmount = 0;
-                for(var idx in accesories) {
-                    const accesory = accesories[idx];
-                    totalAmount += accesory.price;
-                }
+        if(accessToken != null && accessToken.userId > -1) {
+            app.models.Profile.findOne({ where : { accountId : accessToken.userId }}, (err, profile) => {
+                app.models.UserCharacter.findOne({ where : { profileId : profile.id }, order: 'createdAt DESC'}, (err, userCharacter) => {
+                    app.models.CharacterAccesory.find({ where : { id: { inq : data.accesories } }}, (err, accesories) => {
+                        var totalAmount = 0;
+                        for(var idx in accesories) {
+                            const accesory = accesories[idx];
+                            totalAmount += accesory.price;
+                        }
 
-                var error = new Error();
-                error.status = 401;
-
-                if(accessToken != null && accessToken.userId > -1) {
-                    app.models.Profile.findOne({ where : { accountId : accessToken.userId }}, (err, profile) => {
+                        var error = new Error();
+                        error.status = 401;
                         if(profile.balance_tuls >= totalAmount) {
 
                             //Discount from the balance
@@ -288,11 +287,7 @@ module.exports = function(Character) {
                             next(error);
                         }
                     });
-                } else {
-                    error.message = 'Necesitas loguearte para hacer una compra.';
-                    error.code = 'AUTH_UNAUTHORIZED';
-                    next(error);
-                }
+                });
             });
         });
     }
