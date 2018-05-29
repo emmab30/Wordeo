@@ -60,7 +60,7 @@ module.exports = function(Character) {
         var accessToken = ctx && ctx.get('accessToken');
 
         //Check my position
-        app.models.Profile.find({ limit: 10, where : { isBot : false }, fields: { accountId: true }, order: ['experience_points DESC', 'totalWins DESC'] }, (err, allProfiles) => {
+        app.models.Profile.find({ limit: 10, where : { isBot : false }, fields: { accountId: true }, order: ['experience_points DESC', 'totalWins DESC'] }, (err, profiles) => {
             let promises = [];
             for(var idx in profiles) {
                 let profile = profiles[idx];
