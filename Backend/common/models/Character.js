@@ -75,7 +75,7 @@ module.exports = function(Character) {
             Promise.all(promises).then((values) => {
                 app.models.Account.getRankingByUserId(accessToken.userId, (rank) => {
                     next(null, {
-                        myPosition: rank
+                        myPosition: rank,
                         players: values
                     });
                 });
