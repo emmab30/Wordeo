@@ -235,7 +235,7 @@ module.exports = function(Account) {
         var ctx = loopbackContext.getCurrentContext();
         // Get the current access token
         var accessToken = ctx && ctx.get('accessToken');
-        if(accessToken != null && accessToken.userId > -1) {
+        /* if(accessToken != null && accessToken.userId > -1) {
             var filter = {
                 include: 'profile',
                 where: {},
@@ -264,7 +264,39 @@ module.exports = function(Account) {
                     next(null, values);
                 });
             });
-        }
+        } */
+
+        var dataSource = app.dataSources.mysql.connector;
+        var query = "SELECT * FROM Account " +
+            "WHERE id NOT IN (" + accessToken.userId + ") AND isBot = FALSE " +
+            "ORDER BY Account.isBot ASC, Account.isOnline DESC, Account.lastLogin DESC " +
+            "LIMIT 15;";
+        dataSource.query(query, (err, accounts) => {
+            var promises = [];
+
+            for(var idx in accounts) {
+                let account = accounts[idx];
+
+                promises.push(new Promise((resolve, reject) => {
+                    dataSource.query("SELECT * FROM Profile WHERE accountId = " + account.id, (err, profile) => {
+                        if(profile && profile.length > 0) {
+                            account.profile = profile[0];
+                            app.models.Character.getCharacterByUserId(account.id, (character) => {
+                                account.character = character;
+                                resolve(account);
+                            });
+                        } else {
+                            resolve(null);
+                        }
+                    });
+                }));
+            }
+
+            Promise.all(promises).then((values) => {
+                var filtered = _.filter(values, (e) => { return e != null && e.username != null });
+                next(null, filtered)
+            })
+        });
     }
 
     function getMe(next) {

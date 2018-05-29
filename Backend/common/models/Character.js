@@ -59,24 +59,23 @@ module.exports = function(Character) {
         var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
 
-        app.models.Profile.find({ limit: 20, order: ['experience_points DESC', 'totalWins DESC'] }, (err, profiles) => {
+        //Check my position
+        app.models.Profile.find({ limit: 10, { where : { isBot : false } }, fields: { accountId: true }, order: ['experience_points DESC', 'totalWins DESC'] }, (err, allProfiles) => {
+            let promises = [];
+            for(var idx in profiles) {
+                let profile = profiles[idx];
+                promises.push(new Promise((resolve, reject) => {
+                    Character.getCharacterByUserId(profiles[idx].accountId, (character) => {
+                        profile.character = character;
+                        resolve(profile)
+                    })
+                }));
+            }
 
-            //Check my position
-            app.models.Profile.find({ fields: { accountId: true }, order: ['experience_points DESC', 'totalWins DESC'] }, (err, allProfiles) => {
-                let promises = [];
-                for(var idx in profiles) {
-                    let profile = profiles[idx];
-                    promises.push(new Promise((resolve, reject) => {
-                        Character.getCharacterByUserId(profiles[idx].accountId, (character) => {
-                            profile.character = character;
-                            resolve(profile)
-                        })
-                    }));
-                }
-
-                Promise.all(promises).then((values) => {
+            Promise.all(promises).then((values) => {
+                app.models.Account.getRankingByUserId(accessToken.userId, (rank) => {
                     next(null, {
-                        myPosition: (allProfiles.indexOf(allProfiles.find((e) => { return e.accountId == accessToken.userId })) + 1),
+                        myPosition: rank
                         players: values
                     });
                 });

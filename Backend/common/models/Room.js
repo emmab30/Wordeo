@@ -356,8 +356,8 @@ module.exports = function(Room) {
     /* Remote hooks */
     Room.afterRemote('create', function(ctx, result, next) {
 
-        if(result.challengeTo !== undefined && (result.isChallengingBot == false || result.isChallengingBot == undefined)) {
-            app.models.Account.findOne({ where : { facebookId : result.challengeTo }}, (err, account) => {
+        if(result.challengeTo !== undefined) {
+            app.models.Account.findOne({ where : { id : result.challengeTo }}, (err, account) => {
                 Room.invite({
                     roomId: result.id,
                     email: account.email
