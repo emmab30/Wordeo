@@ -235,39 +235,8 @@ module.exports = function(Account) {
         var ctx = loopbackContext.getCurrentContext();
         // Get the current access token
         var accessToken = ctx && ctx.get('accessToken');
-        /* if(accessToken != null && accessToken.userId > -1) {
-            var filter = {
-                include: 'profile',
-                where: {},
-                order: 'isBot DESC'
-            };
-            if(data.onlines) {
-                filter.where.isOnline = true;
-            }
-            app.models.Account.find(filter, (err, accounts) => {
-                var promises = [];
-
-                for(var idx in accounts) {
-                    let account = accounts[idx];
-                    promises.push(new Promise((resolve, reject) => {
-                        Account.getRankingByUserId(account.id, (rank) => {
-                            account.rank = rank;
-                            app.models.Character.getCharacterByUserId(account.id, (character) => {
-                                account.character = character;
-                                resolve(account);
-                            });
-                        });
-                    }));
-                }
-
-                Promise.all(promises).then((values) => {
-                    next(null, values);
-                });
-            });
-        } */
-
         var dataSource = app.dataSources.mysql.connector;
-        var query = "SELECT * FROM Account " +
+        var query = "SELECT *, (SELECT createdAt FROM RoomUser WHERE RoomUser.userId = Account.id ORDER BY createdAt DESC LIMIT 1) as last_reply_time FROM Account " +
             "WHERE id NOT IN (" + accessToken.userId + ") AND isBot = FALSE " +
             "ORDER BY Account.isBot ASC, Account.isOnline DESC, Account.lastLogin DESC " +
             "LIMIT 15;";
