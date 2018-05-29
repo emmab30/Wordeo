@@ -238,7 +238,7 @@ module.exports = function(Account) {
         var dataSource = app.dataSources.mysql.connector;
         var query = "SELECT *, (SELECT createdAt FROM RoomUserQuestion WHERE RoomUserQuestion.userId = Account.id ORDER BY createdAt DESC LIMIT 1) as lastReplyTime FROM Account " +
             "WHERE id NOT IN (" + accessToken.userId + ") AND isBot = FALSE " +
-            "ORDER BY Account.isBot ASC, Account.isOnline DESC, Account.lastLogin DESC " +
+            "ORDER BY Account.isBot ASC, Account.isOnline DESC, lastReplyTime DESC " +
             "LIMIT 15;";
         dataSource.query(query, (err, accounts) => {
             var promises = [];
