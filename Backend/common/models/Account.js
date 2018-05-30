@@ -239,7 +239,7 @@ module.exports = function(Account) {
         var query = "SELECT *, (SELECT createdAt FROM RoomUserQuestion WHERE RoomUserQuestion.userId = Account.id ORDER BY createdAt DESC LIMIT 1) as lastReplyTime FROM Account " +
             "WHERE id NOT IN (" + accessToken.userId + ") AND isBot = FALSE " +
             "ORDER BY Account.isBot ASC, Account.isOnline DESC, lastReplyTime DESC " +
-            "LIMIT 15;";
+            "LIMIT 7;";
         dataSource.query(query, (err, accounts) => {
             var promises = [];
 
@@ -247,16 +247,23 @@ module.exports = function(Account) {
                 let account = accounts[idx];
 
                 promises.push(new Promise((resolve, reject) => {
-                    dataSource.query("SELECT * FROM Profile WHERE accountId = " + account.id, (err, profile) => {
-                        if(profile && profile.length > 0) {
-                            account.profile = profile[0];
-                            app.models.Character.getCharacterByUserId(account.id, (character) => {
-                                account.character = character;
-                                resolve(account);
-                            });
+                    Account.getUserStatus({ userId : account.id, includeCurrentStats: true }, (err, response) => {
+                        if(response) {
+                            account.status = response;
                         } else {
-                            resolve(null);
+                            account.status = null;
                         }
+                        dataSource.query("SELECT * FROM Profile WHERE accountId = " + account.id, (err, profile) => {
+                            if(profile && profile.length > 0) {
+                                account.profile = profile[0];
+                                app.models.Character.getCharacterByUserId(account.id, (character) => {
+                                    account.character = character;
+                                    resolve(account);
+                                });
+                            } else {
+                                resolve(null);
+                            }
+                        });
                     });
                 }));
             }
@@ -493,16 +500,36 @@ module.exports = function(Account) {
         });
     }
 
-    function getUserStatus(userId, next) {
-        app.models.Account.findOne({ include: 'profile', where : { id: userId }}, (err, account) => {
+    function getUserStatus(data, next) {
+        app.models.Account.findOne({ include: 'profile', where : { id: data.userId }}, (err, account) => {
             if(account) {
                 var status = {
                     isOnline: account.isOnline
                 };
 
-                app.models.RoomUser.count({ userId : account.id }, (err, count) => {
-                    status.isPlaying = count > 0;
-                    next(null, status);
+                app.models.RoomUser.findOne({ order: 'id DESC', where : { userId : account.id, hasFinished: false } }, (err, roomUser) => {
+                    status.isPlaying = roomUser != null;
+
+                    //If this flag is active then returns the current room status
+                    if(status.isPlaying && data.includeCurrentStats) {
+                        app.models.RoomUser.find({ where : { roomId: roomUser.roomId }}, (err, stats) => {
+                            if(!err && stats) {
+                                let currentUser = _.find(stats, (e) => { return e.userId == data.userId });
+                                let max = _.maxBy(stats, (e) => { return e.points });
+                                if(max && max.userId == currentUser.userId) {
+                                    status.statusRoundString = "Ganando (" + max.points + " p)";
+                                } else {
+                                    status.statusRoundString = "Perdiendo (" + max.points + " p)";
+                                }
+                                console.log("Current user", status);
+                                next(null, status);
+                            } else {
+                                next(null, status);
+                            }
+                        });
+                    } else {
+                        next(null, status);
+                    }
                 })
             } else {
                 next();

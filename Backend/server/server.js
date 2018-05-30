@@ -9,6 +9,8 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 var SocketHandler = require('./classes/SocketHandler');
 var log = require('fancy-log');
+var SocketGD = require('socketgd').SocketGD;
+var socketgd = new SocketGD();
 
 var app = module.exports = loopback();
 
@@ -39,7 +41,12 @@ boot(app, __dirname, function(err) {
     // start the server if `$ node server.js`
     if (require.main === module){
         //app.start();
-        app.io = require('socket.io')(app.start());//(app.start());
+        app.io = require('socket.io')(app.start(), {
+            serveClient: false,
+            pingInterval: 10000,
+            pingTimeout: 5000,
+            cookie: false
+        });
 
         /** Use redis **/
         const redis = require('socket.io-redis');
@@ -120,18 +127,21 @@ boot(app, __dirname, function(err) {
         });
 
         function postAuthenticate(socket, data){
-            socket.on('disconnect', function(){
+
+            socketgd.setSocket(socket);
+
+            socketgd.on('disconnect', function(){
                 SocketHandler.onPlayerDisconnected(socket);
             });
 
-            socket.on('onLeaveRoom', function(info) {
+            socketgd.on('onLeaveRoom', function(info) {
                 if(info.roomId) {
                     info.userId = data.userId;
                     SocketHandler.onLeaveRoom(info, socket);
                 }
             });
 
-            socket.on('onSendRoomEmoticon', function(info) {
+            socketgd.on('onSendRoomEmoticon', function(info) {
                 if(info.roomId && info.emoticonKey) {
                     app.io.sockets.to('Room=' + info.roomId).emit('onReceivedEmoticon', {
                         emoticonKey: info.emoticonKey,
@@ -140,14 +150,14 @@ boot(app, __dirname, function(err) {
                 }
             });
 
-            socket.on('onPlayerFinishedRound', function(info) {
+            socketgd.on('onPlayerFinishedRound', function(info) {
                 if(info.roomId) {
                     info.userId = data.userId;
                     SocketHandler.onPlayerFinishedRound(info, socket);
                 }
             });
 
-            socket.on('message', function(data){
+            socketgd.on('message', function(data){
                 log('New message');
             });
         }

@@ -3,6 +3,7 @@ var log = require('fancy-log');
 var moment = require('moment');
 var io = require('socket.io')
 var BotUser = new require('./BotUser')
+var vCompare = require('./VersionCompare')
 var _ = require('lodash');
 var schedule = require('node-schedule');
 
@@ -94,6 +95,7 @@ SocketHandler.prototype.onPlayerConnected = function(sId, account){
 }
 
 SocketHandler.prototype.onPlayerDisconnected = function(socket){
+
     this.app.models.Account.findOne({ where : { socketId : socket.id }}, (err, user) => {
         if(user) {
             log("Player disconnected [" + user.id + ", " + user.email + "]");
@@ -107,21 +109,11 @@ SocketHandler.prototype.onPlayerDisconnected = function(socket){
                     }, socket);
                 }
             })
+
+            this.app.models.Account.upsertWithWhere({socketId: socket.id}, { isOnline: false });
         } else {
-            log("Player disconnected [Socket ID=" + socket.id + "]");
+            //log("Player disconnected [Socket ID=" + socket.id + "]");
         }
-
-        this.app.models.Account.upsertWithWhere({socketId: socket.id}, { isOnline: false }, (err, result) => {
-            /* if(this.io) {
-                const sockets = this.io.sockets;
-
-                this.app.models.Account.count({ isOnline : true }, function(err, count) {
-                    if(!err) {
-                        sockets.to('General').emit('onStatisticsUsers', { online : count });
-                    }
-                });
-            } */
-        });
     });
 }
 
@@ -162,12 +154,10 @@ SocketHandler.prototype.onRoomCreated = function(room, isCreatedByBot = false){
                             }));
                         }
                         Promise.all(promises).then((values) => {
-                            setTimeout(() => {
-                                context.io.sockets.to(roomName).emit('onRoomActivity', {
-                                    accounts: values
-                                });
-                                context.onJoinedToRoom(room, room.userId, isCreatedByBot);
-                            }, 2000);
+                            context.io.sockets.to(roomName).emit('onRoomActivity', {
+                                accounts: values
+                            });
+                            context.onJoinedToRoom(room, room.userId, isCreatedByBot);
                         });
                     });
                 }
@@ -274,20 +264,6 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
     const roomName = 'Room=' + room.id;
 
     this.io.sockets.to('General').emit('onRoomsUpdated');
-
-    /* if(!isBot && room.multiplierExp == 5) {
-        //Cancel notifications about this
-        context.app.models.Notification.find({ where : { message: MESSAGE_ROOM_X5, osNotificationId: { neq: 'none' } }}, (err, notifications) => {
-            for(var idx in notifications) {
-                const notification = notifications[idx];
-                console.log("Cancelling notification", notification);
-                context.app.models.Notification.cancel(notification.id, (err, data) => {
-                    //console.log(err, data);
-                });
-            }
-        });
-    } */
-
     this.app.models.Account.findOne({ where : { id: userId }}, (err, user) => {
 
         var fn = () => {
@@ -321,18 +297,30 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
 
                             context.io.sockets.to(roomName).emit('onStartRound');
 
-                            //Start simulating stats for bots in that room only for bots there.
-                            for(var idx in data.accounts) {
-                                const account = data.accounts[idx];
-                                if(account.isBot) {
-                                    setTimeout(() => {
-                                        log('Starting simulation of stats for bot ' + account.id + ' in room ' + roomName);
-                                        BotUser.startSimulatingStats(context, room.id, account.id);
-                                    }, TIME_BEFORE_ROUND_STARTS);
+                            var simulateStats = true;
+                            if(user && user.appVersion) {
+                                let appVersionUser = user.appVersion;
+                                let expectedVersion = '1.0.0.17';
+                                let comparison = vCompare.compare(appVersionUser, expectedVersion);
+                                if(comparison >= 0) {
+                                    simulateStats = false;
+                                }
+                            }
+
+                            if(simulateStats) {
+                                //Start simulating stats for bots in that room only for bots there.
+                                for(var idx in data.accounts) {
+                                    const account = data.accounts[idx];
+                                    if(account.isBot) {
+                                        setTimeout(() => {
+                                            log('Starting simulation of stats for bot ' + account.id + ' in room ' + roomName);
+                                            BotUser.startSimulatingStats(context, room.id, account.id);
+                                        }, TIME_BEFORE_ROUND_STARTS);
+                                    }
                                 }
                             }
                         }
-                    }, 2000);
+                    }, 0);
                 })
             });
         }
@@ -340,7 +328,6 @@ SocketHandler.prototype.onJoinedToRoom = function(room, userId, isBot = false) {
         if(isBot) {
             fn();
         } else {
-            //log("Joining user " + userId + " to " + roomName, user);
             context.io.of('/').adapter.remoteJoin(user.socketId, roomName, (err) => {
                 if(!err) {
                     fn();

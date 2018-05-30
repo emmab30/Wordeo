@@ -42,7 +42,12 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "user": {
+        "type": "belongsTo",
+        "model": "Account"
+    }
+  },
   "acls": [
     {
       "accessType": "EXECUTE",

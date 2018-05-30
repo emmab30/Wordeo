@@ -175,17 +175,20 @@
     },
     "getUserStatus": {
         "accepts": {
-            "arg": "userId",
-            "type": "number",
-            "required": true
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
         },
         "returns": {
             "root": true,
             "type": "object"
         },
         "http": {
-            "verb": "get",
-            "path": "/:userId/status"
+            "verb": "post",
+            "path": "/status"
         }
     },
     "uploadAvatar": {

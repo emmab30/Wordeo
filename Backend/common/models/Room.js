@@ -11,6 +11,7 @@ let COMMON_RATE_TULS = 17.5;
 
 module.exports = function(Room) {
 
+    Room.finish = finish;
     Room.join = join;
     Room.invite = invite;
     Room.getRoomStats = getRoomStats;
@@ -28,14 +29,14 @@ module.exports = function(Room) {
         app.models.Room.findById(data.roomId, function(err, room) {
             if(err) {
                 error.status = 401;
-                error.message = 'La sala ya ha empezado o ha expirado. ¡Intenta unirte a otra sala o prueba creando un juego nuevo!';
+                error.message = 'La sala ha expirado u otro usuario la ha tomado. ¡Intenta unirte a otra sala o prueba creando un juego nuevo!';
                 error.code = 'INVALID_ROOM';
                 next(error)
             } else {
 
                 if(room == null || !room.isActive || room.hasStarted){
                     error.status = 401;
-                    error.message = 'La sala ya ha empezado o ha expirado. ¡Intenta unirte a otra sala o prueba creando un juego nuevo!';
+                    error.message = 'La sala ha expirado u otro usuario la ha tomado. ¡Intenta unirte a otra sala o prueba creando un juego nuevo!';
                     error.code = 'INVALID_ROOM';
                     next(error)
                 } else {
@@ -227,107 +228,134 @@ module.exports = function(Room) {
 
         if(accessToken && accessToken.userId > -1) {
             app.models.Room.findOne({ where : { id : data.roomId }}, (err, room) => {
-                app.models.RoomUser.findOne({ where: { roomId: data.roomId, userId: accessToken.userId }}, (err, userRoom) => {
 
-                    //Save the reply on database
-                    if(data.questionId && data.optionId){
-                        app.models.RoomUserQuestion.create({
-                            userId: accessToken.userId,
-                            roomId: data.roomId,
-                            questionId: data.questionId,
-                            optionId: data.optionId
+                app.models.RoomUser.find({
+                    where: {
+                        roomId: data.roomId
+                    },
+                    include: {
+                        relation: 'user',
+                        scope: {
+                            where: {
+                                isBot : true
+                            }
+                        }
+                    }
+                }, (err, accounts) => {
+                    for(var idx in accounts) {
+                        const account = accounts[idx];
+                        const probabilityCorrectAnswer = _.random(0, 10) >= 5;
+
+                        account.user.get().then((user) => {
+                            if(user && user.isBot == true && probabilityCorrectAnswer) {
+                                account.points += _.random(0, 50);
+                                account.save();
+                            }
                         });
                     }
 
-                    app.models.Account.findOne({ where : { id : accessToken.userId }}, (err, account) => {
-                        app.models.Question.findOne({ where : { id : data.questionId }}, (err, question) => {
-                            if(question) {
-                                if(userRoom) {
-                                    userRoom.totalQuestions += 1;
-                                    if(data.isCorrect) {
-                                        var sumExp = parseFloat(question.profitExp);
-                                        var sumTuls = parseFloat(question.profitExp * COMMON_RATE_TULS) / 100;
+                    app.models.RoomUser.findOne({ where: { roomId: data.roomId, userId: accessToken.userId }}, (err, userRoom) => {
 
-                                        //Streak correct answers
-                                        if(data.isStreakReward) {
-                                            sumExp += 100;
-                                            sumTuls += COMMON_RATE_TULS;
-                                        }
+                        //Save the reply on database
+                        if(data.questionId && data.optionId){
+                            app.models.RoomUserQuestion.create({
+                                userId: accessToken.userId,
+                                roomId: data.roomId,
+                                questionId: data.questionId,
+                                optionId: data.optionId
+                            });
+                        }
 
-                                        //Only for updated applications
+                        app.models.Account.findOne({ where : { id : accessToken.userId }}, (err, account) => {
+                            app.models.Question.findOne({ where : { id : data.questionId }}, (err, question) => {
+                                if(question) {
+                                    if(userRoom) {
+                                        userRoom.totalQuestions += 1;
+                                        if(data.isCorrect) {
+                                            var sumExp = parseFloat(question.profitExp);
+                                            var sumTuls = parseFloat(question.profitExp * COMMON_RATE_TULS) / 100;
 
-                                        if(room && room.multiplierExp > 1) {
-                                            let appVersionUser = account.appVersion;
-                                            let expectedVersion = '1.0.0.14';
-                                            let comparison = vCompare.compare(appVersionUser, expectedVersion);
-                                            if(comparison >= 0) {
-                                                sumExp = parseFloat(sumExp) * parseFloat(room.multiplierExp);
-                                                sumTuls = parseFloat(sumTuls) * parseFloat(room.multiplierExp);
+                                            //Streak correct answers
+                                            if(data.isStreakReward) {
+                                                sumExp += 100;
+                                                sumTuls += COMMON_RATE_TULS;
                                             }
-                                        }
 
-                                        app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
+                                            //Only for updated applications
 
-                                            if(profile) {
-                                                profile.experience_points = parseFloat(profile.experience_points) + parseFloat(sumExp);
-                                                profile.balance_tuls = parseFloat(profile.balance_tuls) + parseFloat(sumTuls);
-
-                                                //Generate rewards based on the level from the user
-                                                if(profile.experience_points >= 35000 && profile.level == 1) {
-                                                    app.models.Reward.create({
-                                                        userId: profile.accountId,
-                                                        title: '¡Pasaste a nivel 2!',
-                                                        text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 2 es de 1.500 tuls. El próximo cambio de nivel es a los 70.000 puntos de experiencia.. ¡Sigue así!',
-                                                        profitTuls: 1500,
-                                                        profitExp: 0,
-                                                        wasNotified: false
-                                                    });
-                                                    profile.level = 2;
-                                                    profile.balance_tuls = parseFloat(profile.balance_tuls) + 1500;
-                                                } else if(profile.experience_points >= 70000 && profile.level == 2) {
-                                                    app.models.Reward.create({
-                                                        userId: profile.accountId,
-                                                        title: '¡Pasaste a nivel 3!',
-                                                        text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 3 es de 3.000 tuls. El próximo cambio de nivel es a los 120.000 puntos de experiencia.. ¡Sigue así!',
-                                                        profitTuls: 3000,
-                                                        profitExp: 0,
-                                                        wasNotified: false
-                                                    });
-                                                    profile.level = 3;
-                                                    profile.balance_tuls = parseFloat(profile.balance_tuls) + 3000;
-                                                } else if(profile.experience_points >= 120000 && profile.level == 3) {
-                                                    app.models.Reward.create({
-                                                        userId: profile.accountId,
-                                                        title: '¡Pasaste a nivel 4!',
-                                                        text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 4 es de 4.500 tuls. El próximo cambio de nivel es a los 160.000 puntos de experiencia.. ¡Sigue así!',
-                                                        profitTuls: 5000,
-                                                        profitExp: 0,
-                                                        wasNotified: false
-                                                    });
-                                                    profile.level = 4;
-                                                    profile.balance_tuls = parseFloat(profile.balance_tuls) + 4500;
+                                            if(room && room.multiplierExp > 1) {
+                                                let appVersionUser = account.appVersion;
+                                                let expectedVersion = '1.0.0.14';
+                                                let comparison = vCompare.compare(appVersionUser, expectedVersion);
+                                                if(comparison >= 0) {
+                                                    sumExp = parseFloat(sumExp) * parseFloat(room.multiplierExp);
+                                                    sumTuls = parseFloat(sumTuls) * parseFloat(room.multiplierExp);
                                                 }
-
-                                                profile.save();
                                             }
-                                        });
 
-                                        //Append the points to the user room
-                                        userRoom.totalCorrect += 1;
-                                        userRoom.points += sumExp;
-                                        userRoom.save();
-                                    } else {
-                                        userRoom.totalIncorrect += 1;
-                                        userRoom.save();
+                                            app.models.Profile.findOne({ where : { accountId : accessToken.userId } }, (err, profile) => {
+
+                                                if(profile) {
+                                                    profile.experience_points = parseFloat(profile.experience_points) + parseFloat(sumExp);
+                                                    profile.balance_tuls = parseFloat(profile.balance_tuls) + parseFloat(sumTuls);
+
+                                                    //Generate rewards based on the level from the user
+                                                    if(profile.experience_points >= 35000 && profile.level == 1) {
+                                                        app.models.Reward.create({
+                                                            userId: profile.accountId,
+                                                            title: '¡Pasaste a nivel 2!',
+                                                            text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 2 es de 1.500 tuls. El próximo cambio de nivel es a los 70.000 puntos de experiencia.. ¡Sigue así!',
+                                                            profitTuls: 1500,
+                                                            profitExp: 0,
+                                                            wasNotified: false
+                                                        });
+                                                        profile.level = 2;
+                                                        profile.balance_tuls = parseFloat(profile.balance_tuls) + 1500;
+                                                    } else if(profile.experience_points >= 70000 && profile.level == 2) {
+                                                        app.models.Reward.create({
+                                                            userId: profile.accountId,
+                                                            title: '¡Pasaste a nivel 3!',
+                                                            text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 3 es de 3.000 tuls. El próximo cambio de nivel es a los 120.000 puntos de experiencia.. ¡Sigue así!',
+                                                            profitTuls: 3000,
+                                                            profitExp: 0,
+                                                            wasNotified: false
+                                                        });
+                                                        profile.level = 3;
+                                                        profile.balance_tuls = parseFloat(profile.balance_tuls) + 3000;
+                                                    } else if(profile.experience_points >= 120000 && profile.level == 3) {
+                                                        app.models.Reward.create({
+                                                            userId: profile.accountId,
+                                                            title: '¡Pasaste a nivel 4!',
+                                                            text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 4 es de 4.500 tuls. El próximo cambio de nivel es a los 160.000 puntos de experiencia.. ¡Sigue así!',
+                                                            profitTuls: 5000,
+                                                            profitExp: 0,
+                                                            wasNotified: false
+                                                        });
+                                                        profile.level = 4;
+                                                        profile.balance_tuls = parseFloat(profile.balance_tuls) + 4500;
+                                                    }
+
+                                                    profile.save();
+                                                }
+                                            });
+
+                                            //Append the points to the user room
+                                            userRoom.totalCorrect += 1;
+                                            userRoom.points += sumExp;
+                                            userRoom.save();
+                                        } else {
+                                            userRoom.totalIncorrect += 1;
+                                            userRoom.save();
+                                        }
+
+                                        if(app.socketHandler != null) {
+                                            app.socketHandler.onSendRoundStats(data.roomId);
+                                        }
+
+                                        next(null, userRoom);
                                     }
-
-                                    if(app.socketHandler != null) {
-                                        app.socketHandler.onSendRoundStats(data.roomId);
-                                    }
-
-                                    next(null, userRoom);
                                 }
-                            }
+                            });
                         });
                     });
                 });
@@ -349,6 +377,62 @@ module.exports = function(Room) {
                 "LIMIT 30";
             dataSource.query(query, (err1, users) => {
                 next(null, users);
+            });
+        }
+    }
+
+    function finish(data, next) {
+        let ctx = loopbackContext.getCurrentContext();
+        let accessToken = ctx && ctx.get('accessToken');
+
+        if(accessToken && accessToken.userId > -1) {
+            app.models.RoomUser.find({ include: 'user', where : { roomId: data.roomId, hasFinished : false }}, (err, users) => {
+                if(!err) {
+                    var totalTerminated = 0;
+
+                    //Every player has finished (so the users length will be zero)
+                    if(users.length == 0){
+                        next(null, {
+                            finished: true
+                        })
+                    } else {
+                        for(var idx in users) {
+                            const user = users[idx];
+                            const userEntity = user.user.get().then((account) => {
+
+                                var retVal = true;
+                                if(account.isBot){
+                                    user.hasFinished = true;
+                                    user.save();
+                                } else if(account.id == accessToken.userId) {
+                                    user.hasFinished = true;
+                                    user.save();
+                                } else if(!account.isOnline) {
+                                    user.hasFinished = true;
+                                    user.save();
+                                } else {
+                                    retVal = false;
+                                }
+
+                                return retVal;
+                            }).then((value) => {
+                                if(value) {
+                                    totalTerminated++;
+                                    if(totalTerminated == users.length) {
+                                        next(null, {
+                                            finished: true
+                                        })
+                                    }
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    next(null, {
+                        code: 0,
+                        message: 'Ha surgido un error finalizando la ronda. De todas maneras no te preocupes: ¡los tuls que haz ganado no se perderán!'
+                    });
+                }
             });
         }
     }

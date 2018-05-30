@@ -25,6 +25,7 @@ var models = [
     'Contact', */
     'Notification',
     'Room',
+    'RoomUserQuestion',
     'Account',
     'QuestionReport',
     'Reward',

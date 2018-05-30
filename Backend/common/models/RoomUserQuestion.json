@@ -17,7 +17,8 @@
     },
     "questionId": {
         "type": "number",
-        "required": true
+        "required": true,
+        "index": true
     },
     "optionId": {
         "type": "number",

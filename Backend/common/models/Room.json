@@ -68,7 +68,8 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": [
-        "create"
+        "create",
+        "finishRound"
       ]
     },
     {
@@ -123,6 +124,24 @@
         "http": {
             "verb": "post",
             "path": "/join"
+        }
+    },
+    "finish": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/finish"
         }
     },
     "getRoomStats": {

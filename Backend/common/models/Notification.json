@@ -31,6 +31,7 @@
     "payload": {
       "type": "string",
       "required": false,
+      "length": 10000,
       "description": "Payload sent to the device"
     },
     "createdAt": {
