@@ -333,6 +333,61 @@ module.exports = function(Room) {
                                                         });
                                                         profile.level = 4;
                                                         profile.balance_tuls = parseFloat(profile.balance_tuls) + 4500;
+                                                    } else if(profile.experience_points >= 160000 && profile.level == 4) {
+                                                        app.models.Reward.create({
+                                                            userId: profile.accountId,
+                                                            title: '¡Pasaste a nivel 5!',
+                                                            text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 5 es de 7.500 tuls. El próximo cambio de nivel es a los 220.000 puntos de experiencia.. ¡Sigue así!',
+                                                            profitTuls: 7500,
+                                                            profitExp: 0,
+                                                            wasNotified: false
+                                                        });
+                                                        profile.level = 5;
+                                                        profile.balance_tuls = parseFloat(profile.balance_tuls) + 7500;
+                                                    } else if(profile.experience_points >= 220000 && profile.level == 5) {
+                                                        app.models.Reward.create({
+                                                            userId: profile.accountId,
+                                                            title: '¡Pasaste a nivel 6!',
+                                                            text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 6 es de 10.000 tuls. El próximo cambio de nivel es a los 300.000 puntos de experiencia.. ¡Sigue así!',
+                                                            profitTuls: 10000,
+                                                            profitExp: 0,
+                                                            wasNotified: false
+                                                        });
+                                                        profile.level = 6;
+                                                        profile.balance_tuls = parseFloat(profile.balance_tuls) + 10000;
+                                                    } else if(profile.experience_points >= 300000 && profile.level == 6) {
+                                                        app.models.Reward.create({
+                                                            userId: profile.accountId,
+                                                            title: '¡Pasaste a nivel 7!',
+                                                            text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 7 es de 15.000 tuls. El próximo cambio de nivel es a los 450.000 puntos de experiencia.. ¡Sigue así!',
+                                                            profitTuls: 15000,
+                                                            profitExp: 0,
+                                                            wasNotified: false
+                                                        });
+                                                        profile.level = 7;
+                                                        profile.balance_tuls = parseFloat(profile.balance_tuls) + 15000;
+                                                    } else if(profile.experience_points >= 450000 && profile.level == 7) {
+                                                        app.models.Reward.create({
+                                                            userId: profile.accountId,
+                                                            title: '¡Pasaste a nivel 8!',
+                                                            text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 8 es de 25.000 tuls. El próximo cambio de nivel es a los 600.000 puntos de experiencia.. ¡Sigue así!',
+                                                            profitTuls: 25000,
+                                                            profitExp: 0,
+                                                            wasNotified: false
+                                                        });
+                                                        profile.level = 8;
+                                                        profile.balance_tuls = parseFloat(profile.balance_tuls) + 25000;
+                                                    } else if(profile.experience_points >= 600000 && profile.level == 5) {
+                                                        app.models.Reward.create({
+                                                            userId: profile.accountId,
+                                                            title: '¡Pasaste a nivel 9!',
+                                                            text: '¡Felicitaciones ' + profile.name + '! Tu premio por alcanzar el nivel 9 es de 35.000 tuls. El próximo cambio de nivel es al millon de experiencia.. ¡Sigue así! El millón se festeja con un gran premio..',
+                                                            profitTuls: 35000,
+                                                            profitExp: 0,
+                                                            wasNotified: false
+                                                        });
+                                                        profile.level = 6;
+                                                        profile.balance_tuls = parseFloat(profile.balance_tuls) + 35000;
                                                     }
 
                                                     profile.save();

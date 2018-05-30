@@ -128,38 +128,71 @@ boot(app, __dirname, function(err) {
 
         function postAuthenticate(socket, data){
 
-            socketgd.setSocket(socket);
+            if(false) {
+                socketgd.setSocket(socket);
 
-            socketgd.on('disconnect', function(){
-                SocketHandler.onPlayerDisconnected(socket);
-            });
+                socketgd.on('disconnect', function(){
+                    SocketHandler.onPlayerDisconnected(socket);
+                });
 
-            socketgd.on('onLeaveRoom', function(info) {
-                if(info.roomId) {
-                    info.userId = data.userId;
-                    SocketHandler.onLeaveRoom(info, socket);
-                }
-            });
+                socketgd.on('onLeaveRoom', function(info) {
+                    if(info.roomId) {
+                        info.userId = data.userId;
+                        SocketHandler.onLeaveRoom(info, socket);
+                    }
+                });
 
-            socketgd.on('onSendRoomEmoticon', function(info) {
-                if(info.roomId && info.emoticonKey) {
-                    app.io.sockets.to('Room=' + info.roomId).emit('onReceivedEmoticon', {
-                        emoticonKey: info.emoticonKey,
-                        roomId: info.roomId
-                    });
-                }
-            });
+                socketgd.on('onSendRoomEmoticon', function(info) {
+                    if(info.roomId && info.emoticonKey) {
+                        app.io.sockets.to('Room=' + info.roomId).emit('onReceivedEmoticon', {
+                            emoticonKey: info.emoticonKey,
+                            roomId: info.roomId
+                        });
+                    }
+                });
 
-            socketgd.on('onPlayerFinishedRound', function(info) {
-                if(info.roomId) {
-                    info.userId = data.userId;
-                    SocketHandler.onPlayerFinishedRound(info, socket);
-                }
-            });
+                socketgd.on('onPlayerFinishedRound', function(info) {
+                    if(info.roomId) {
+                        info.userId = data.userId;
+                        SocketHandler.onPlayerFinishedRound(info, socket);
+                    }
+                });
 
-            socketgd.on('message', function(data){
-                log('New message');
-            });
+                socketgd.on('message', function(data){
+                    log('New message');
+                });
+            } else {
+                socket.on('disconnect', function(){
+                    SocketHandler.onPlayerDisconnected(socket);
+                });
+
+                socket.on('onLeaveRoom', function(info) {
+                    if(info.roomId) {
+                        info.userId = data.userId;
+                        SocketHandler.onLeaveRoom(info, socket);
+                    }
+                });
+
+                socket.on('onSendRoomEmoticon', function(info) {
+                    if(info.roomId && info.emoticonKey) {
+                        app.io.sockets.to('Room=' + info.roomId).emit('onReceivedEmoticon', {
+                            emoticonKey: info.emoticonKey,
+                            roomId: info.roomId
+                        });
+                    }
+                });
+
+                socket.on('onPlayerFinishedRound', function(info) {
+                    if(info.roomId) {
+                        info.userId = data.userId;
+                        SocketHandler.onPlayerFinishedRound(info, socket);
+                    }
+                });
+
+                socket.on('message', function(data){
+                    log('New message');
+                });
+            }
         }
     }
 });
