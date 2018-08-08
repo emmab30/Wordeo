@@ -23,6 +23,9 @@ var models = [
     'Notification',
     'PendingQuestion',
     'Contact', */
+    'ElementalLifeAccesory',
+    'UserElementalLifeAccesory',
+    'UserCharacter',
     'Notification',
     'Room',
     'RoomUserQuestion',

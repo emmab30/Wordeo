@@ -99,11 +99,19 @@
     "dataSource": "mysql",
     "public": true
   },
+  "ElementalLifeAccesory": {
+    "dataSource": "mysql",
+    "public": true
+  },
   "UserCharacter": {
     "dataSource": "mysql",
     "public": true
   },
   "UserCharacterAccesory": {
+    "dataSource": "mysql",
+    "public": true
+  },
+  "UserElementalLifeAccesory": {
     "dataSource": "mysql",
     "public": true
   },

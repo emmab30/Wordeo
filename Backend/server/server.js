@@ -13,6 +13,7 @@ var SocketGD = require('socketgd').SocketGD;
 var socketgd = new SocketGD();
 
 var app = module.exports = loopback();
+process.env.GAME_VERSION = true;
 
 app.start = function() {
     // start the web server

@@ -282,11 +282,12 @@ module.exports = function(Account) {
         if(accessToken != null && accessToken.userId > -1) {
             app.models.Account.findOne({ include: 'profile', where : { id : accessToken.userId  }}, function(err, user) {
 
-                var fnNext = (character = null, characterId = -1) => {
+                var fnNext = (character = null, characterId = -1, life = -1) => {
                     user.profile.get().then((profile) => {
                         if(character){
                             user.__data.profile.characterId = characterId;
                             user.__data.profile.character = character;
+                            user.__data.profile.characterLife = life;
                         }
 
                         if(err) {
@@ -313,7 +314,7 @@ module.exports = function(Account) {
                 user.profile.get().then((profile) => {
 
                     //Get characters for user
-                    app.models.UserCharacter.find({ include : 'character', where : { profileId: profile.id }, order: 'createdAt DESC' }, (err, userCharacters) => {
+                    app.models.UserCharacter.find({ include : 'character', where : { profileId: profile.id, isDead: false }, order: 'createdAt DESC' }, (err, userCharacters) => {
                         if(userCharacters != null && userCharacters.length > 0) {
                             const userCharacter = userCharacters[0];
                             userCharacter.character.get().then((character) => {
@@ -355,7 +356,7 @@ module.exports = function(Account) {
                                             mergeImages(arr, {
                                                 Canvas: Canvas
                                             }).then((b64) => {
-                                                fnNext(b64, userCharacter.characterId);
+                                                fnNext(b64, userCharacter.characterId, userCharacter.life);
                                             });
                                         })
                                     }

@@ -30,9 +30,76 @@ SocketHandler.prototype.onInitializedBootstrap = function() {
 
     var dataSource = this.app.dataSources.mysql.connector;
 
+    var jobLifes = schedule.scheduleJob('*/1 * * * *', () => { //Every 40 minutes we reduce the life of the monster
+        //Delete expired rooms and renegerate new ones
+
+        var query = "UPDATE UserCharacter SET life = life - 1 WHERE life > 0";
+        dataSource.query(query, (err, updated) => {
+            var query2 = "SELECT Account.*, UserCharacter.life FROM UserCharacter " +
+                "INNER JOIN Profile ON Profile.id = UserCharacter.profileId " +
+                "INNER JOIN Account ON Account.id = Profile.accountId " +
+                "WHERE UserCharacter.life <= 15 AND UserCharacter.life > 0 AND UserCharacter.isDead = FALSE";
+            dataSource.query(query2, (err, aboutToExpire) => {
+                if(aboutToExpire && aboutToExpire.length > 0) {
+                    for(var idx in aboutToExpire) {
+                        const account = aboutToExpire[idx];
+
+                        if(account.notificationId != null) {
+                            context.app.models.Notification.send({
+                                userId: account.id,
+                                title: '¡' + account.life + '% de vida.',
+                                message: '¡Tu monstruo necesita comida! Tan solo tiene ' + account.life + '% de vida.',
+                                category: 2,
+                                options: {
+                                    data: {
+                                        email: account.email,
+                                        date: new Date()
+                                    }
+                                }
+                            }, (response) => {
+                                //Do nothing
+                            });
+                        }
+                    }
+                }
+
+                var query3 = "SELECT Account.*, UserCharacter.life, UserCharacter.id as monster_id FROM UserCharacter " +
+                    "INNER JOIN Profile ON Profile.id = UserCharacter.profileId " +
+                    "INNER JOIN Account ON Account.id = Profile.accountId " +
+                    "WHERE UserCharacter.life = 0 AND UserCharacter.isDead = FALSE";
+                dataSource.query(query3, (err, deads) => {
+                    if(deads && deads.length > 0) {
+                        for(var idx in deads) {
+                            const account = deads[idx];
+
+                            if(account.notificationId != null) {
+                                context.app.models.Notification.send({
+                                    userId: account.id,
+                                    title: '¡' + account.life + '% de vida.',
+                                    message: '¡Tu monstruo ha muerto, lo siento!',
+                                    category: 2,
+                                    options: {
+                                        data: {
+                                            email: account.email,
+                                            date: new Date()
+                                        }
+                                    }
+                                }, (response) => {
+                                    //Do nothing
+                                });
+                            }
+
+                            dataSource.query("DELETE FROM UserCharacter WHERE id = " + account.monster_id, (err, results) => {});
+                        }
+                    }
+                });
+            });
+        });
+    });
+
     //Setting cronjob
     BotUser.setRandomStatuses(this);
-    var job = schedule.scheduleJob('*/1 * * * *', () => {
+    var job = schedule.scheduleJob('*/10 * * * *', () => {
         //Delete expired rooms and renegerate new ones
 
         var query = "SELECT Room.* FROM Room " +

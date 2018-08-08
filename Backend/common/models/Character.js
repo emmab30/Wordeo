@@ -13,6 +13,7 @@ module.exports = function(Character) {
     Character.getMyCharacters = getMyCharacters;
     Character.buyAccesories = buyAccesories;
     Character.buyCharacter = buyCharacter;
+    Character.buyElementalLife = buyElementalLife;
     Character.getCharacterByUserId = getCharacterByUserId;
 
     function getMyCharacters(next) {
@@ -234,6 +235,56 @@ module.exports = function(Character) {
         }
     }
 
+    function buyElementalLife(data, next) {
+        var ctx = loopbackContext.getCurrentContext();
+        var accessToken = ctx && ctx.get('accessToken');
+
+        var error = new Error();
+        error.status = 401;
+
+        if(accessToken != null && accessToken.userId > -1) {
+            app.models.Profile.findOne({ where : { accountId : accessToken.userId }}, (err, profile) => {
+                app.models.ElementalLifeAccesory.findOne({ where : { id : data.id }}, (err, element) => {
+                    if(err) {
+                        error.message = 'No es posible realizar la compra en este momento.';
+                        error.code = 'UNSUFFICIENT_FOUNDS';
+                        next(error);
+                    } else {
+                        if(element.price > profile.balance_tuls) {
+                            error.message = 'No tienes los tuls suficientes para realizar esta compra.';
+                            error.code = 'UNSUFFICIENT_FOUNDS';
+                            next(error);
+                        } else {
+
+                            app.models.UserCharacter.find({ where : { profileId: profile.id }}, (err, userCharacters) => {
+                                for(var idx in userCharacters) {
+                                    userCharacters[idx].life += element.life;
+                                    if(userCharacters[idx].life > 100) {
+                                        userCharacters[idx].life = 100;
+                                    }
+                                    userCharacters[idx].save();
+                                }
+
+                                profile.balance_tuls = parseFloat(profile.balance_tuls) - parseFloat(element.price);
+                                profile.save();
+
+                                app.models.UserElementalLifeAccesory.create({
+                                    characterId: userCharacters[0].id,
+                                    elementLifeAccesoryId: element.id
+                                });
+
+                                next(null, {
+                                    code: 0,
+                                    message: '¡Tu compra se ha realizado con éxito!'
+                                });
+                            });
+                        }
+                    }
+                });
+            });
+        }
+    }
+
     function buyAccesories(data, next) {
         var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
@@ -294,7 +345,7 @@ module.exports = function(Character) {
     function getCharacterByUserId(userId, callback) {
         app.models.Profile.findOne({ where : { accountId : userId }}, (err, profile) => {
             if(profile) {
-                app.models.UserCharacter.find({ where : { profileId : profile.id }, order: 'createdAt DESC' }, (err, results) => {
+                app.models.UserCharacter.find({ where : { profileId : profile.id, isDead: false }, order: 'createdAt DESC' }, (err, results) => {
                     if(results.length > 0) {
                         app.models.UserCharacterAccesory.find({ where : { userCharacterId : results[0].id }}, (err, accesories) => {
                             let characterId = 1;

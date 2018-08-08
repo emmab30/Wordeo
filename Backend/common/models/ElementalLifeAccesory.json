@@ -1,0 +1,46 @@
+{
+  "name": "ElementalLifeAccesory",
+  "plural": "elemental-life-accesories",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {},
+  "properties": {
+    "name": {
+        "type": "string",
+        "required": true
+    },
+    "price": {
+        "type": "number",
+        "required": true
+    },
+    "life": {
+        "type": "number",
+        "required": true
+    },
+    "image":{
+        "type": "string",
+        "required": true
+    },
+    "createdAt": {
+        "type": "date",
+        "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "availableElements": {
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "get",
+            "path": "/availableElements"
+        }
+    }
+  }
+}

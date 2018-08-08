@@ -3,8 +3,8 @@ module.exports = {
         name      : 'wordeo',
         script    : 'server/server.js',
         autorestart: true,
-        instances : "1",
-        exec_mode : "cluster",
+        //instances : "1",
+        //exec_mode : "cluster",
         env: {
             "TZ": "America/Sao_Paulo"
         },

@@ -85,8 +85,45 @@ module.exports = function(server) {
             { name: 'Munray', price: 1500, imageBase: 'monster_4.png' },
             { name: 'Plebo', price: 1000, imageBase: 'monster_5.png' },
             { name: 'Dunky', price: 1200, imageBase: 'monster_6.png' },
-            { name: 'Rubix', price: 1300, imageBase: 'monster_7.png' }
+            { name: 'Rubix', price: 1300, imageBase: 'monster_7.png' },
+            { name: 'Pipi', price: 3000, imageBase: 'monster_8.png' },
+            { name: 'Turis', price: 3000, imageBase: 'monster_9.png' },
+            { name: 'Rainbow', price: 5000, imageBase: 'monster_10.png' },
+            { name: 'Rucula', price: 9000, imageBase: 'monster_11.png' },
+            { name: 'Bombai', price: 7000, imageBase: 'monster_12.png' },
         ];
+
+        var lifeAccesories = [
+            { name: 'Pancho', price: 200, imageBase: 'food_2.png', life: 5 },
+            { name: 'Pata de pollo', price: 400, imageBase: 'food_4.png', life: 10 },
+            { name: 'Pizza', price: 600, imageBase: 'food_5.png', life: 15 },
+            { name: 'Papas', price: 1000, imageBase: 'food_6.png', life: 30 },
+            { name: 'Sandwich', price: 1500, imageBase: 'food_7.png', life: 40 },
+            { name: 'Comida china', price: 2500, imageBase: 'food_8.png', life: 60 },
+            { name: 'Helado', price: 3000, imageBase: 'food_9.png', life: 70 },
+            { name: 'Queso', price: 3500, imageBase: 'food_10.png', life: 80 },
+            { name: 'Churrasco', price: 5000, imageBase: 'food_3.png', life: 95 }
+        ];
+
+        var promisesLifeAccesories = [];
+        for(var idx in lifeAccesories) {
+            const accesory = lifeAccesories[idx];
+            promisesLifeAccesories.push(new Promise((resolve, reject) => {
+                server.models.ElementalLifeAccesory.upsertWithWhere({ name: accesory.name }, {
+                    name: accesory.name,
+                    price: accesory.price,
+                    image: accesory.imageBase,
+                    life: accesory.life,
+                    createdAt: new Date()
+                }, (err, result) => {
+                    resolve()
+                });
+            }));
+        }
+
+        Promise.all(promisesLifeAccesories).then((result) => {
+            console.log('-------- Migrated life accesories -------');
+        });
 
         var promises = [];
         for(var idx in monsters) {
@@ -130,6 +167,7 @@ module.exports = function(server) {
             { zIndex: 1, characterId: -1, category: 'OJOS', name: 'Ojos 18', image: 'eyes_18.png', image_placeholder: 'eyes_18_ph.png', price: 9000},
             { zIndex: 1, characterId: -1, category: 'OJOS', name: 'Ojos 19', image: 'eyes_19.png', image_placeholder: 'eyes_19_ph.png', price: 9000},
             { zIndex: 1, characterId: -1, category: 'OJOS', name: 'Ojos 20', image: 'eyes_20.png', image_placeholder: 'eyes_20_ph.png', price: 9000},
+            { zIndex: 1, characterId: -1, category: 'OJOS', name: 'Ojos 21', image: 'eyes_21.png', image_placeholder: 'eyes_21_ph.png', price: 12000},
             { zIndex: 1, characterId: -1, category: 'OJOS', name: 'Lentes 1', image: 'glass_1.png', image_placeholder: 'glass_1_ph.png', price: 12000},
             { zIndex: 1, characterId: -1, category: 'OJOS', name: 'Lentes 2', image: 'glass_2.png', image_placeholder: 'glass_2_ph.png', price: 7500},
             { zIndex: 1, characterId: -1, category: 'OJOS', name: 'Lentes 3', image: 'glass_3.png', image_placeholder: 'glass_3_ph.png', price: 10000},

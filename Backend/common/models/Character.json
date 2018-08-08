@@ -88,6 +88,24 @@
             "path": "/buy_character"
         }
     },
+    "buyElementalLife": {
+        "accepts": {
+            "arg": "data",
+            "type": "object",
+            "required": true,
+            "http": {
+                "source": "body"
+            }
+        },
+        "returns": {
+            "root": true,
+            "type": "object"
+        },
+        "http": {
+            "verb": "post",
+            "path": "/buy_elemental_life_accesory"
+        }
+    },
     "getMyCharacters": {
         "returns": {
             "root": true,

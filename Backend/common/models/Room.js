@@ -26,7 +26,7 @@ module.exports = function(Room) {
         let accessToken = ctx && ctx.get('accessToken');
 
         //Check availability of room and check if the password is correct.
-        app.models.Room.findById(data.roomId, function(err, room) {
+        app.models.Room.findById(parseInt(data.roomId), function(err, room) {
             if(err) {
                 error.status = 401;
                 error.message = 'La sala ha expirado u otro usuario la ha tomado. ¡Intenta unirte a otra sala o prueba creando un juego nuevo!';
@@ -69,18 +69,57 @@ module.exports = function(Room) {
                                 }
                             }
                         } else if(isRoomFull(count)) {
-                            //Check if the room is available.
-                            error.status = 401;
-                            error.message = 'La sala ya está completa.';
-                            error.code = 'ROOM_COMPLETED';
-                            next(error);
+
+                            if(process.env.GAME_VERSION) {
+
+                                console.log(count);
+                                console.log("asking for room " , room);
+                                app.models.RoomUser.find({ where : { roomId : room.id }}, (err, roomUsers) => {
+                                    console.log(roomUsers);
+                                    let some = _.some(roomUsers, { userId : accessToken.userId });
+                                    if(some) {
+                                        //New version implementation
+                                        app.socketHandler.getDetailsForRoom(room.id, (data) => {
+                                            console.log(data);
+                                            next(null, {
+                                                room: room,
+                                                players: data.accounts,
+                                                startNow: true
+                                            });
+                                        });
+                                    } else {
+                                        //Check if the room is available.
+                                        error.status = 401;
+                                        error.message = 'La sala ya está completa.';
+                                        error.code = 'ROOM_COMPLETED';
+                                        next(error);
+                                    }
+                                });
+                            } else {
+                                //Check if the room is available.
+                                error.status = 401;
+                                error.message = 'La sala ya está completa.';
+                                error.code = 'ROOM_COMPLETED';
+                                next(error);
+                            }
                         } else {
                             app.models.RoomUser.upsertWithWhere({ userId : accessToken.userId, roomId : room.id }, { userId : accessToken.userId, roomId : room.id });
                             if(app.socketHandler != null) {
                                 setTimeout(() => {
                                     app.socketHandler.onJoinedToRoom(room, accessToken.userId);
                                 }, 2000);
-                                next(null, room);
+
+                                if(process.env.GAME_VERSION) {
+                                    app.socketHandler.getDetailsForRoom(room.id, (data) => {
+                                        next(null, {
+                                            room: room,
+                                            players: data,
+                                            startNow: false
+                                        });
+                                    });
+                                } else {
+                                    next(null, room);
+                                }
                             }
                         }
                     });
@@ -242,6 +281,7 @@ module.exports = function(Room) {
                         }
                     }
                 }, (err, accounts) => {
+
                     for(var idx in accounts) {
                         const account = accounts[idx];
                         const probabilityCorrectAnswer = _.random(0, 10) >= 5;
@@ -403,9 +443,9 @@ module.exports = function(Room) {
                                             userRoom.save();
                                         }
 
-                                        if(app.socketHandler != null) {
+                                        /* if(app.socketHandler != null) {
                                             app.socketHandler.onSendRoundStats(data.roomId);
-                                        }
+                                        } */
 
                                         next(null, userRoom);
                                     }
@@ -495,7 +535,7 @@ module.exports = function(Room) {
     /* Remote hooks */
     Room.afterRemote('create', function(ctx, result, next) {
 
-        if(result.challengeTo !== undefined) {
+        /* if(result.challengeTo !== undefined) {
             app.models.Account.findOne({ where : { id : result.challengeTo }}, (err, account) => {
                 Room.invite({
                     roomId: result.id,
@@ -508,7 +548,7 @@ module.exports = function(Room) {
             if(app.socketHandler != null) {
                 app.socketHandler.onRoomCreated(result, false); //Created by an user
             }
-        }
+        } */
 
         next();
     });
