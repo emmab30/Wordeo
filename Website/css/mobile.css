@@ -1,0 +1,4038 @@
+/********************************************************************************************
+ 0. STYLES FOR MOBILE DEVICES - media screen max-width: 1024px (removes animation for mobile devices) (line 24)
+ 1. STYLES FOR MOBILE DEVICES - media screen max width: 400px (line 55)
+ 2. STYLES FOR MOBILE DEVICES - media screen min width: 400px / max width: 568px (line 295)
+ 3. STYLES FOR MOBILE DEVICES - media screen min width: 568px / max width: 600px (line 541)
+ 4. STYLES FOR MOBILE DEVICES - media screen min width: 600px / max width: 700px (line 809)
+ 5. STYLES FOR MOBILE DEVICES - media screen min width: 700px / max width: 768px (line 1118)
+ 6. STYLES FOR MOBILE DEVICES - media screen min width: 768px / max width: 900px (line 1423)
+ 7. STYLES FOR MOBILE DEVICES - media screen min width: 900px / max width: 1024px (line 1747)
+ 8. STYLES FOR MOBILE DEVICES - media screen min width: 1024px / max width: 1200px (line 2077)
+ 9. STYLES FOR MOBILE DEVICES - media screen min width: 1200px / max width: 1280px (line 2472)
+ 10. STYLES FOR MOBILE DEVICES - media screen min width: 1280px / max width: 1366px (line 2574)
+ 11. STYLES FOR MOBILE DEVICES - media screen min width: 1336px / max width: 1536px (line 2806) 
+ 12. STYLES FOR MOBILE DEVICES - media screen min width: 1536px / max width: 1680px (line 3141)
+ 13. STYLES FOR MOBILE DEVICES - media screen min width: 1680px / max width: 1900px (line 3471) 
+ ---
+ 14. NAVIGATION MEDIA QUERIES (line 3801)
+ 15. FEATURES MEDIA QUERIES (line 3810)
+ 16. TIMELINE MEDIA QUERIES (line 3859)
+*********************************************************************************************/
+
+
+
+/*-- 0. STYLES FOR MOBILE DEVICES - media screen max-width: 1000px --*/
+/* -- removes animation for mobile devices --*/
+@media screen and (max-width: 1000px) {
+
+	.animated {
+		-webkit-animation-fill-mode: none !important;
+		-moz-animation-fill-mode: none !important;
+		-ms-animation-fill-mode: none !important;
+		-o-animation-fill-mode: none !important;
+		animation-fill-mode: none !important;
+		-webkit-animation-duration: 0s !important;
+		-moz-animation-duration: 0s !important;
+		-ms-animation-duration: 0s !important;
+		-o-animation-duration: 0s !important;
+		animation-duration: 0s !important;
+	}
+		
+	.flash, .shake, .bounce, .tada, .swing, .wobble, .pulse, .animated.flip, .flipInX, .flipOutX, .flipInY, .flipOutY, .fadeIn, .fadeInUp, .fadeInDown, .fadeInLeft, .fadeInRight, .fadeInUpBig, .fadeInDownBig, .fadeInLeftBig, .fadeInRightBig, .fadeOut, .fadeOutUp, .fadeOutDown, .fadeOutLeft, .fadeOutRight, .fadeOutUpBig, .fadeOutDownBig, .fadeOutLeftBig, .fadeOutRightBig, .slideInDown, .slideInLeft, .slideInRight, .slideOutUp, .slideOutLeft, .slideOutRight, .bounceIn, .bounceInUp, .bounceInDown, .bounceInLeft, .bounceInRight, .bounceOut, .bounceOutUp, .bounceOutDown, .bounceOutLeft, .bounceOutRight, .rotateIn, .rotateInUpLeft, .rotateInDownLeft, .rotateInUpRight, .rotateInDownRight, .rotateOut, .rotateOutUpLeft, .rotateOutDownLeft, .rotateOutUpRight, .rotateOutDownRight, .lightSpeedIn, .lightSpeedOut, .hinge, .rollIn, .rollOut, .zoomIn, .bounce-in  {
+		-webkit-animation-name: none !important;
+		-moz-animation-name: none !important;
+		-o-animation-name: none !important;
+		animation-name: none !important;
+	}
+
+	.animate-in, .description, .presentation h3, .move, .device, .arrow-fast, .fast h3, .arrow-intuitive, .intuitive h3, .arrow-simple, .simple h3, .arrow-secure, .secure h3, .arrow-awesome, .awesome h3, .arrow-free, .free h3, .award h3, .cbp-ig-grid-li, .rating, .grid figure, .patches h3, .price h3, .cd-timeline-icon, .cd-timeline-content, .plans, .cbp-qtrotator, .view, .team, .social, .form-inline, #map {
+		visibility: visible !important;
+	}
+}
+
+
+
+/*-- 1. STYLES FOR MOBILE DEVICES - media screen max width: 400px --*/
+@media only screen and (max-width: 400px) {
+
+	body {
+		overflow-x: hidden;
+		font-size: 12px;
+	}
+	
+	h2 {
+		font-size: 3em;
+	}	
+	
+	h3 {
+		font-size: 1.6em;
+	}
+	
+	.bt-menu-trigger {
+		width: 25px;
+		height: 25px;
+		left: 7%;
+		top: 3.7%;
+	}
+	
+	.bt-menu.bt-menu-open {
+		border-width: 20px 20px 20px 65px;
+	}
+	
+	.bt-menu ul {
+		width: 65px;
+	}
+	
+	.bt-menu ul li a:before {
+		font-size: 30px;
+	}
+	
+	.bt-menu ul li {
+		padding: 14px 0;
+	}
+	
+	.logo {
+		padding-top: 1.5%;
+		margin-left: -5%;
+		width: 120%;
+	}
+	
+	.description h2 {
+		margin: 25% auto 0;
+	}
+	
+	.col-md-6 {
+		text-align: center;
+	}
+	
+	.appstore-btn, .appstore-btn a{
+		float: none !important;
+		margin: -20% 0 0.5% 0;
+		text-align: center;
+	}
+	
+	.android-btn, .android-btn a  {
+		float: none !important;
+		margin: 0.5% 0 20% 0;
+	}
+
+	#sequence .model {
+		left: 20%;
+		min-width: 90%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 90%; 
+		bottom: -32%;
+	}
+	
+	#sequence .animate-in .model {
+		left: 50%;
+		margin-left: -42%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 50%;
+		margin-left: -42%; 
+	}
+	
+	#sequence .title {
+		font-size: 3.6em;
+		background: transparent;
+		bottom: 0;
+		left: 100%;
+		padding: 0;
+		width: 100%;
+		z-index: 10; 
+	}
+	
+	#sequence .animate-in .title {
+		left: 0%; 
+	}
+	
+	#sequence .animate-out .title {
+		left: -100%; 
+	}
+	
+	#sequence .subtitle {
+		visibility: hidden; 
+	}
+	
+	#sequence > .sequence-canvas > li {
+		top: -55%;
+	}
+	
+	.sequence-next, .sequence-prev {
+		display: none !important;
+	}
+	
+	#sequence .sequence-pagination, #sequence .sequence-pagination li img { 
+		display: none;
+	}
+	
+	.area-title {
+		margin: 22% auto 10%;
+	}
+	
+	.presentation h3 {
+		padding: 15% 0;
+	}
+	
+	.fast h3, .arrow-fast, .intuitive h3, .arrow-intuitive, .simple h3, .arrow-simple, .secure h3, .arrow-secure, .awesome h3, .arrow-awesome,  .free h3, .arrow-free {
+		display: none;
+	}
+	
+	.device {
+		background: none;
+	}
+	
+	.video-bg {
+		padding-bottom: 25%;
+	}
+	
+	.award-icon:before,
+	.award-icon-alt:before {
+		padding: 0 4% 0.5% 0;
+	}
+
+	.award h3 {
+		padding: 35% 0;
+	}
+	
+	.grid a {
+		float: none;
+	}
+
+	.cbp-ig-grid {
+		margin: 15% auto;
+		width: 80%;
+	}
+	
+	.cbp-ig-grid li {
+		width: auto;
+	}
+
+	.cbp-ig-grid .cbp-ig-category {
+		font-size: 1.6em;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+2) {
+		border-top: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+3) {
+		border-top: none;
+	}
+	
+	.rating-img {
+		padding: 6% 0;
+		margin: 20% auto 0;
+	}
+	
+	.patches h3 {
+		padding: 32% 0;
+	}
+	
+	#cd-timeline:before, .cd-timeline-icon:before {
+		display: none;
+	}
+	
+	.cd-timeline-content ul {
+		color: #fff;
+		font-size: 1.2em;
+		margin: 3% 6% 0;
+	}
+	
+	.price h3 {
+		padding: 32% 0;
+	}
+	
+	#screens, #plans {
+		padding: 0 0 10%;	
+	}
+	
+	.plan {
+		margin: 5% auto;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 10%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: none;
+	}
+	
+	#about {
+		padding: 0 0 20% 0;
+	}
+	
+	.view {
+		margin-top: 5%;
+	}
+
+	.social {
+		padding: 27% 0 0 0;
+	}
+	
+	.subscribe h3 {
+		font-size: 2em;
+		padding: 5% 0;
+	}
+	
+	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		height: 30px;
+		width: 260px;
+	}
+	
+	.contact-data h3 {
+		font-size: 1.6em !important;
+		padding: 12% 0 2%;
+		line-height: 160%;
+	}
+}
+
+
+
+/*-- 2. STYLES FOR MOBILE DEVICES - media screen min width: 400px / max width: 568px --*/
+@media screen and (min-width: 400px) and (max-width: 568px) {	
+
+	body {
+		overflow-x: hidden;
+		font-size: 12px;
+	}
+	
+	h2 {
+		font-size: 3em;
+	}	
+	
+	h3 {
+		font-size: 1.6em;
+	}
+	
+	.bt-menu-trigger {
+		width: 35px;
+		height: 35px;
+		left: 3.5%;
+		top: 5%;
+	}
+	
+	.bt-menu.bt-menu-open {
+		border-width: 20px 20px 20px 65px;
+	}
+	
+	.bt-menu ul {
+		width: 65px;
+		top: 22%;
+	}
+	
+	.bt-menu ul li a:before {
+		font-size: 22px;
+	}
+	
+	.bt-menu ul li {
+		padding: 3% 0;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -5%;
+		width: 110%;
+	}
+	
+	.description h2 {
+		margin: 15% auto 0;
+	}
+	
+	.col-md-6 {
+		text-align: center;
+	}
+	
+	.appstore-btn, .appstore-btn a{
+		float: none !important;
+		margin: 5% 0 0.5% 0;
+		text-align: center;
+	}
+	
+	.android-btn, .android-btn a  {
+		float: none !important;
+		margin: 0.5% 0 10% 0;
+	}
+
+	#sequence .model {
+		left: 30%;
+		min-width: 80%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 80%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 50%;
+		margin-left: -36%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 50%;
+		margin-left: -36%; 
+	}
+	
+	#sequence .title {
+		font-size: 3.6em;
+		background: transparent;
+		bottom: 0;
+		left: 100%;
+		padding: 0;
+		width: 100%;
+		z-index: 10; 
+	}
+	
+	#sequence .animate-in .title {
+		left: 0%; 
+	}
+	
+	#sequence .animate-out .title {
+		left: -100%; 
+	}
+	
+	#sequence .subtitle {
+		visibility: hidden; 
+	}
+	
+	#sequence > .sequence-canvas > li {
+		top: -55%;
+	}
+	
+	.sequence-next, .sequence-prev {
+		display: none !important;
+	}
+	
+	#sequence .sequence-pagination, #sequence .sequence-pagination li img { 
+		display: none;
+	}
+	
+	.area-title {
+		margin: 20% auto 5%;
+	}
+	
+	.presentation h3 {
+		padding: 15% 0;
+	}
+	
+	.fast h3, .arrow-fast, .intuitive h3, .arrow-intuitive, .simple h3, .arrow-simple, .secure h3, .arrow-secure, .awesome h3, .arrow-awesome,  .free h3, .arrow-free {
+		display: none;
+	}
+	
+	.device {
+		background: none;
+	}
+	
+	.video-bg {
+		padding-bottom: 15%;
+	}
+	
+	.award-icon:before,
+	.award-icon-alt:before {
+		padding: 0 4% 0.5% 0;
+	}
+
+	.award h3 {
+		padding: 23% 0;
+	}
+
+	.cbp-ig-grid {
+		margin: 15% auto 8%;
+		width: 80%;
+	}
+	
+	.cbp-ig-grid li {
+		width: auto;
+	}
+	
+	.rating-img {
+		padding: 6% 0;
+		margin: 10% auto 0;
+	}
+	
+	.grid figure {
+		width: 70%;
+		margin: 0.5% 15%;
+	}
+	
+	.grid figcaption h2 {
+		margin: 0;
+	}
+	
+	.grid a {
+		float: none;
+		width: 70%;
+	}
+	
+	.patches h3 {
+		padding: 22% 0;
+	}
+	
+	#cd-timeline:before, .cd-timeline-icon:before {
+		display: none;
+	}
+	
+	.cd-timeline-content ul {
+		color: #fff;
+		font-size: 1.2em;
+		margin: 3% 6% 0;
+	}
+	
+	.price h3 {
+		padding: 20% 0;
+	}
+	
+	#screens, #plans {
+		padding: 0 0 10%;	
+	}
+	
+	.plan {
+		margin: 5% auto;
+	}
+	
+	.plans {
+		width: 70%;
+	} 
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 5%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: none;
+	}
+	
+	.cbp-qtrotator footer {
+		margin: -3% auto;
+	}
+	
+	.cbp-qtprogress {
+		LEFT: 38.5%;
+	}
+	
+	#about {
+		padding: 0 0 15%;
+	}
+	
+	.social {
+		padding: 15% 0 0 0;
+	}
+	
+	.subscribe h3 {
+		font-size: 2em;
+		padding: 5% 0;
+	}
+	
+	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		height: 30px;
+		width: 260px;
+	}
+	
+	.contact-data h3 {
+		font-size: 1.6em !important;
+		padding: 12% 0 2%;
+		line-height: 160%;
+	}
+}
+
+
+
+/*-- 3. STYLES FOR MOBILE DEVICES - media screen min width: 568px / max width: 600px --*/
+@media screen and (min-width: 568px) and (max-width: 600px) {	
+
+	body {
+		overflow-x: hidden;
+		font-size: 13px;
+	}
+	
+	h2 {
+		font-size: 3em;
+	}	
+	
+	h3 {
+		font-size: 1.6em;
+	}
+	
+	.bt-menu-trigger {
+		width: 35px;
+		height: 35px;
+		left: 3.5%;
+		top: 5%;
+	}
+	
+	.bt-menu.bt-menu-open {
+		border-width: 20px 20px 20px 65px;
+	}
+	
+	.bt-menu ul {
+		width: 65px;
+		top: 22%;
+	}
+	
+	.bt-menu ul li a:before {
+		font-size: 22px;
+	}
+	
+	.bt-menu ul li {
+		padding: 3% 0;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -5%;
+		width: 110%;
+	}
+	
+	.description h2 {
+		margin: 15% auto 0;
+	}
+	
+	.col-md-6 {
+		text-align: center;
+	}
+	
+	.appstore-btn, .appstore-btn a{
+		float: none !important;
+		margin: 5% 0 0.5% 0;
+		text-align: center;
+	}
+	
+	.android-btn, .android-btn a  {
+		float: none !important;
+		margin: 0.5% 0 10% 0;
+	}
+
+	#sequence .model {
+		left: 30%;
+		min-width: 70%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 70%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 50%;
+		margin-left: -34%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 50%;
+		margin-left: -34%; 
+	}
+	
+	#sequence .title {
+		font-size: 3.6em;
+		background: transparent;
+		bottom: 0;
+		left: 100%;
+		padding: 0;
+		width: 100%;
+		z-index: 10; 
+	}
+	
+	#sequence .animate-in .title {
+		left: 0%; 
+	}
+	
+	#sequence .animate-out .title {
+		left: -100%; 
+	}
+	
+	#sequence .subtitle {
+		visibility: hidden; 
+	}
+	
+	#sequence > .sequence-canvas > li {
+		top: -55%;
+	}
+	
+	.sequence-next, .sequence-prev {
+		display: none !important;
+	}
+	
+	#sequence .sequence-pagination, #sequence .sequence-pagination li img { 
+		display: none;
+	}
+	
+	.area-title {
+		margin: 15% auto 5%;
+	}
+	
+	.presentation h3 {
+		padding: 12% 0;
+	}
+	
+	.fast h3, .arrow-fast, .intuitive h3, .arrow-intuitive, .simple h3, .arrow-simple, .secure h3, .arrow-secure, .awesome h3, .arrow-awesome,  .free h3, .arrow-free {
+		display: none;
+	}
+	
+	.device {
+		background: none;
+	}
+	
+	.video-bg {
+		padding-bottom: 10%;
+	}
+	
+	.award-icon:before,
+	.award-icon-alt:before {
+		padding: 0 4% 0.5% 0;
+	}
+
+	.award h3 {
+		padding: 20% 0;
+	}
+	
+	.cbp-ig-grid {
+		margin: 10% auto 8%;
+		width: 70%;
+	}
+	
+	.cbp-ig-grid li {
+		width: auto;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		margin: 10% 15%;
+		padding: 3% 0 0 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title:before {
+		margin: -15px 0 0 -80px;
+	}
+	
+	.cbp-ig-icon {
+		padding: 25% 0 0;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+
+	.cbp-ig-grid .cbp-ig-category {
+		font-size: 1.4em;
+		padding: 0 2% 10%;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+2) {
+		border-top: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+3) {
+		border-top: none;
+	}
+	
+	.rating-img {
+		padding: 6% 0;
+		margin: 6% auto 0;
+	}
+	
+	.grid figure {
+		width: 70%;
+		margin: 0.5% 15%;
+	}
+	
+	.grid figcaption h2 {
+		margin: 0;
+	}
+	
+	.grid a {
+		float: none;
+		width: 70%;
+	}
+	
+	.patches h3 {
+		padding: 18% 0;
+	}
+	
+	#cd-timeline:before, .cd-timeline-icon:before {
+		display: none;
+	}
+	
+	.cd-timeline-content ul {
+		color: #fff;
+		font-size: 1.2em;
+		margin: 3% 6% 0;
+	}
+	
+	.price h3 {
+		padding: 18% 0;
+	}
+	
+	#screens, #plans {
+		padding: 0 0 10%;	
+	}
+	
+	.plan {
+		margin: 5% auto;
+	}
+		
+	.plans {
+		width: 70%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 5%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: none;
+	}
+	
+	.cbp-qtrotator footer {
+		margin: -6% auto;
+	}
+
+	.social {
+		padding: 13% 0 0 0;
+	}
+	
+	.subscribe h3 {
+		font-size: 2em;
+		padding: 5% 0;
+	}
+	
+	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		height: 30px;
+		width: 260px;
+	}
+	
+	.contact-data h3 {
+		font-size: 1.6em !important;
+		padding: 10% 0 2%;
+		line-height: 160%;
+	}
+}
+
+
+
+/*-- 4. STYLES FOR MOBILE DEVICES - media screen min width: 600px / max width: 700px --*/
+@media screen and (min-width: 600px) and (max-width: 700px) {	
+
+	body {
+		overflow-x: hidden;
+		font-size: 13px;
+	}
+	
+	h2 {
+		font-size: 3.6em;
+	}	
+	
+	h3 {
+		font-size: 1.8em;
+	}
+	
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 3.5%;
+		top: 1.3%;
+	}
+	
+	.bt-menu.bt-menu-open {
+		border-width: 20px 20px 20px 85px;
+	}
+	
+	.bt-menu ul {
+		width: 85px;
+		top: 8%;
+	}
+	
+	.bt-menu ul li a:before {
+		font-size: 40px;
+	}
+	
+	.bt-menu ul li {
+		padding: 5% 0;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -8%;
+		width: 110%;
+	}
+	
+	.description h2 {
+		margin: 12% auto 0;
+	}
+	
+	.col-md-6 {
+		text-align: center;
+	}
+	
+	.appstore-btn, .appstore-btn a{
+		float: none !important;
+		margin: 5% 0 0.5% 0;
+		text-align: center;
+	}
+	
+	.android-btn, .android-btn a  {
+		float: none !important;
+		margin: 0.5% 0 10% 0;
+	}
+
+	#sequence .model {
+		left: 30%;
+		min-width: 65%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 65%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 50%;
+		margin-left: -30%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 50%;
+		margin-left: -30%; 
+	}
+	
+	#sequence .title {
+		font-size: 4em;
+		background: transparent;
+		bottom: 0;
+		left: 100%;
+		padding: 0;
+		width: 100%;
+		z-index: 10; 
+	}
+	
+	#sequence .animate-in .title {
+		left: 0%; 
+	}
+	
+	#sequence .animate-out .title {
+		left: -100%; 
+	}
+	
+	#sequence .subtitle {
+		visibility: hidden; 
+	}
+	
+	#sequence > .sequence-canvas > li {
+		top: -55%;
+	}
+	
+	.sequence-next, .sequence-prev {
+		display: none !important;
+	}
+	
+	#sequence .sequence-pagination, #sequence .sequence-pagination li img { 
+		display: none;
+	}
+	
+	.title {
+		top: 67%;
+	}
+	
+	.area-title {
+		margin: 13% auto 3%;
+	}
+	
+	.presentation h3 {
+		padding: 10% 0;
+	}
+	
+	.fast h3, .arrow-fast, .intuitive h3, .arrow-intuitive, .simple h3, .arrow-simple, .secure h3, .arrow-secure, .awesome h3, .arrow-awesome,  .free h3, .arrow-free {
+		display: none;
+	}
+	
+	.device {
+		background: none;
+	}
+	
+	.video-bg {
+		padding-bottom: 10%;
+	}
+	
+	.award-icon:before,
+	.award-icon-alt:before {
+		padding: 0 4% 0.5% 0;
+	}
+
+	.award h3 {
+		padding: 18% 0;
+	}
+
+	.cbp-ig-grid {
+		margin: 10% auto 8%;
+		width: 80%;
+	}
+	
+	.cbp-ig-grid li {
+		width: auto;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		margin: 10% 25%;
+		padding: 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title:before {
+		margin: -15px 0 0 -80px;
+	}
+	
+	.cbp-ig-icon {
+		padding: 15% 0 0;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+
+	.cbp-ig-grid .cbp-ig-category {
+		font-size: 1.6em;
+		padding: 0 5% 10%;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+2) {
+		border-top: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+3) {
+		border-top: none;
+	}
+	
+	.rating-img {
+		padding: 4% 0;
+		margin: 6% auto 0;
+	}
+	
+	#screens {
+		padding: 0 0 10%;	
+	}
+	
+	.grid {
+		margin: 2% auto 6%;
+		text-align: center;
+	}
+	
+	.grid a {
+		float: left;
+		width: 50% !important;
+		margin: 0 !important;
+	}
+	
+	.grid figure {
+		margin: 4% auto;
+		width: 92%;
+	}
+	
+	.patches h3 {
+		padding: 16% 0;
+	}
+	
+	#cd-timeline:before, .cd-timeline-icon:before {
+		display: none;
+	}
+	
+	.cd-timeline-content ul {
+		color: #fff;
+		font-size: 1.2em;
+		margin: 3% 6% 0;
+	}
+	
+	.price h3 {
+		padding: 16% 0;
+	}
+	
+	.cd-timeline-block {
+		width: 90%;
+		margin: 5% auto;
+		text-align: center;
+	}
+	
+	.cd-timeline-content h2 {
+		font-size: 2.2em;
+		font-weight: bold;
+	}
+	
+	#plans {
+		padding: 0 10% 6% 10%;
+	}
+	
+	.plan {
+		margin: 5% auto;
+	}
+	
+	.plans {
+		width: 90%;
+	}
+	
+	.testimonials h3 {
+		padding: 6% 0;
+		font-size: 1.6em;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 4%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: block;
+		margin: 7% 5% 0 5%;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -140px;
+		left: 27%;
+		margin: 0 auto;
+	}
+		
+	.cbp-qtrotator footer {
+		margin: -3% auto;
+	}
+
+	#about {
+		padding: 0 0 15% 0;
+	}
+	
+	.view {
+		margin: 5% auto 0;
+	}
+	
+	.social {
+		padding: 12% 0 0 0;
+	}
+	
+	.subscribe h3 {
+		font-size: 2em;
+		padding: 5% 0;
+	}
+	
+	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		height: 30px;
+		width: 260px;
+	}
+	
+	.contact-data h3 {
+		font-size: 1.6em !important;
+		padding: 8% 0 2%;
+		line-height: 160%;
+	}
+}
+
+
+
+/*-- 5. STYLES FOR MOBILE DEVICES - media screen min width: 700px / max width: 768px --*/
+@media screen and (min-width: 700px) and (max-width: 768px) {	
+
+	body {
+		overflow-x: hidden;
+		font-size: 13px;
+	}
+	
+	h2 {
+		font-size: 3.6em;
+	}	
+	
+	h3 {
+		font-size: 1.8em;
+	}
+	
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 3%;
+		top: 1.3%;
+	}
+	
+	.bt-menu.bt-menu-open {
+		border-width: 20px 20px 20px 85px;
+	}
+	
+	.bt-menu ul {
+		width: 85px;
+		top: 8%;
+	}
+	
+	.bt-menu ul li a:before {
+		font-size: 40px;
+	}
+	
+	.bt-menu ul li {
+		padding: 5% 0;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -8%;
+		width: 110%;
+	}
+	
+	.description h2 {
+		margin: 12% auto 0;
+	}
+	
+	.col-md-6 {
+		text-align: left;
+	}
+	
+	.appstore-btn, .appstore-btn a {
+		float: left;
+		margin: 7% 22% 8%;
+	}
+	
+	.android-btn, .android-btn a  {
+		float: right;
+		margin: -16.2% 22%;
+	}
+
+	#sequence .model {
+		left: 30%;
+		min-width: 50%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 50%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 38%;
+		margin-left: -36%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 38%;
+		margin-left: -36%; 
+	}
+	
+	#sequence .title {
+		font-size: 4em;
+		background: transparent;
+		bottom: 0;
+		left: 100%;
+		padding: 0;
+		width: 100%;
+		z-index: 10; 
+	}
+	
+	#sequence .animate-in .title {
+		left: 0%; 
+	}
+	
+	#sequence .animate-out .title {
+		left: -100%; 
+	}
+	
+	#sequence .subtitle {
+		visibility: visible; 
+		font-size: 2em;
+		width: 46%;
+		right: 1%;
+		padding-top: 5%;
+		line-height: 120%;
+	}
+	
+	#sequence > .sequence-canvas > li {
+		top: -55%;
+	}
+	
+	.sequence-next, .sequence-prev {
+		display: none !important;
+	}
+	
+	#sequence .sequence-pagination, #sequence .sequence-pagination li img { 
+		display: none;
+	}
+	
+	.presentation h3 {
+		padding: 10% 0;
+	}
+	
+	.fast h3, .arrow-fast, .intuitive h3, .arrow-intuitive, .simple h3, .arrow-simple, .secure h3, .arrow-secure, .awesome h3, .arrow-awesome,  .free h3, .arrow-free {
+		display: none;
+	}
+	
+	.device {
+		background: none;
+	}
+	
+	.video-bg {
+		padding-bottom: 8%;
+	}
+	
+	.award-icon:before,
+	.award-icon-alt:before {
+		padding: 0 4% 0.5% 0;
+	}
+
+	.award h3 {
+		padding: 15% 0;
+	}
+
+	.cbp-ig-grid {
+		margin: 5% auto;
+		width: 90%;
+	}
+	
+	.cbp-ig-grid li {
+		width: 49%;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		font-size: 1.7em;
+		margin: 14%;
+		padding: 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title:before {
+		margin: -15px 0 0 -80px;
+	}
+	
+	.cbp-ig-icon {
+		padding: 26% 0 0;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+
+	.cbp-ig-grid .cbp-ig-category {
+		font-size: 1.4em;
+		padding: 0 0 10%;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+2) {
+		border-top: none;
+		box-shadow: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+3) {
+		border-top: none;
+		box-shadow: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(2n-1) {
+		box-shadow: none;
+	}
+	
+	.rating-img {
+		padding: 3% 0;
+		margin: 6% auto 0;
+	}
+	
+	#screens {
+		padding: 0 0 10%;	
+	}
+		
+	.grid {
+		margin: 2% auto 6%;
+		text-align: center;
+	}
+	
+	.grid a {
+		width: 33.3% !important;
+		margin: 0 !important;
+	}
+	
+	.grid figure {
+		margin: 4% auto;
+		width: 92%;
+	}
+	
+	.grid figcaption h2 {
+		margin: -15% 0 6%;
+	}
+	
+	.patches h3 {
+		padding: 15% 0;
+	}
+	
+	#cd-timeline {
+	  padding: 6% 0 0;
+	  width: 80%;
+	}
+	
+	#cd-timeline:before, .cd-timeline-icon:before {
+		display: none;
+	}
+	
+	.cd-timeline-content ul {
+		color: #fff;
+		font-size: 1.2em;
+		margin: 3% 16.5% 0;
+	}
+	
+	.price h3 {
+		padding: 14% 0;
+	}
+	
+	#plans {
+		padding: 0 20% 6% 20%;
+	}
+	
+	.plan {
+		margin: 5% auto;
+	}
+	
+	.testimonials h3 {
+		padding: 5%;
+		font-size: 1.6em;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 4%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: block;
+		margin: 5% 8% 0 5%;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -140px;
+		left: 28.5%;
+		margin: 0 auto;
+	}
+		
+	.cbp-qtrotator footer {
+		margin: -3% auto;
+	}
+	
+	#about {
+		padding: 0 0 10% 0;
+	}
+	
+	.view {
+		margin: 5% auto 0;
+	}
+	
+	.social {
+		padding: 10% 0 0 0;
+	}
+	
+	.subscribe h3 {
+		font-size: 2em;
+		padding: 5% 0;
+	}
+	
+	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		height: 30px;
+		width: 260px;
+	}
+	
+	.contact-data h3 {
+		font-size: 1.6em !important;
+		padding: 6% 0 2%;
+		line-height: 160%;
+	}
+}
+
+
+
+/*-- 6. STYLES FOR MOBILE DEVICES - media screen min width: 768px / max width: 900px --*/
+@media screen and (min-width: 768px) and (max-width: 900px) {	
+
+	body {
+		overflow-x: hidden;
+		font-size: 13px;
+	}
+	
+	h2 {
+		font-size: 3.6em;
+	}	
+	
+	h3 {
+		font-size: 1.7em;
+	}
+	
+	p {
+		margin: 2%;
+	}
+	
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 3%;
+		top: 1.3%;
+	}
+	
+	.bt-menu.bt-menu-open {
+		border-width: 20px 20px 20px 85px;
+	}
+	
+	.bt-menu ul {
+		width: 85px;
+		top: 8%;
+	}
+	
+	.bt-menu ul li a:before {
+		font-size: 40px;
+	}
+	
+	.bt-menu ul li {
+		padding: 5% 0;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -8%;
+		width: 110%;
+	}
+	
+	.description h2 {
+		margin: 12% auto 0;
+	}
+	
+	.col-md-6 {
+		text-align: left;
+	}
+	
+	.container {
+		padding-left: 0;
+		padding-right: 0;
+		width: 100%;
+	}
+	
+	.appstore-btn, .appstore-btn a {
+		float: left;
+		margin: 7% 22% 8%;
+	}
+	
+	.android-btn, .android-btn a  {
+		float: right;
+		margin: -15.5% 22%;
+	}
+
+	#sequence .model {
+		left: 30%;
+		min-width: 50%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 50%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 38%;
+		margin-left: -35%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 38%;
+		margin-left: -36%; 
+	}
+	
+	#sequence .title {
+		font-size: 4em;
+		background: transparent;
+		bottom: 0;
+		left: 100%;
+		padding: 0;
+		width: 100%;
+		z-index: 10; 
+	}
+	
+	#sequence .animate-in .title {
+		left: 0%; 
+	}
+	
+	#sequence .animate-out .title {
+		left: -100%; 
+	}
+	
+	#sequence .subtitle {
+		visibility: visible; 
+		font-size: 2em;
+		width: 42%;
+		right: 1%;
+		padding-top: 10%;
+		line-height: 120%;
+	}
+	
+	#sequence > .sequence-canvas > li {
+		top: -55%;
+	}
+	
+	.sequence-next, .sequence-prev {
+		display: none !important;
+	}
+	
+	#sequence .sequence-pagination, #sequence .sequence-pagination li img { 
+		display: none;
+	}
+	
+	.area-title {
+		margin: 10% auto 3%;
+	}
+	
+	.presentation h3 {
+		padding: 12% 0;
+	}
+	
+	.fast h3, .arrow-fast, .intuitive h3, .arrow-intuitive, .simple h3, .arrow-simple, .secure h3, .arrow-secure, .awesome h3, .arrow-awesome,  .free h3, .arrow-free {
+		display: none;
+	}
+	
+	.device {
+		background: none;
+	}
+	
+	.video-bg {
+		padding-bottom: 5%;
+	}
+	
+	.award-icon:before,
+	.award-icon-alt:before {
+		padding: 0 4% 0.5% 0;
+	}
+
+	.award h3 {
+		padding: 13.5% 0;
+	}
+	
+	.cbp-ig-grid {
+		margin: 2% auto 6%;
+		width: 90%;
+	}
+	
+	.cbp-ig-grid li {
+		width: 49%;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		font-size: 1.7em;
+		margin: 14%;
+		padding: 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title:before {
+		margin: -15px 0 0 -80px;
+	}
+	
+	.cbp-ig-icon {
+		padding: 20% 0 0;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+
+	.cbp-ig-grid .cbp-ig-category {
+		font-size: 1.4em;
+		padding: 0 10%;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+2) {
+		border-top: none;
+		box-shadow: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+3) {
+		border-top: none;
+		box-shadow: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(2n-1) {
+		box-shadow: none;
+	}
+	
+	.rating-img {
+		padding: 3% 0;
+		margin: 6% auto 0;
+	}
+	
+	.grid {
+		margin: 2% auto 6%;
+		text-align: center;
+	}
+	
+	.grid a {
+		width: 33.3% !important;
+		margin: 0 !important;
+	}
+	
+	.grid figure {
+		margin: 4% auto;
+		width: 92%;
+	}
+	
+	.patches h3 {
+		padding: 13.5% 0;
+	}
+	
+	#cd-timeline {
+	  padding: 4% 0 0;
+	  width: 90%;
+	}
+	
+	#cd-timeline:before, .cd-timeline-icon:before {
+		display: none;
+	}
+	
+	.cd-timeline-content ul {
+		color: #fff;
+		font-size: 1.2em;
+		margin: 3% 19.7% 0;
+	}
+	
+	.float {
+		display: block !important;
+	}
+	
+	.cd-timeline-content {
+		padding: 5% 0 2%;
+	}
+	
+	.cd-timeline-content .cd-date {
+		font-size: 1.2em;
+		padding: 2% 5%;
+	}
+	
+	.price h3 {
+		padding: 13.54% 0;
+	}
+	
+	#screens {
+		padding: 0 0 5%;	
+	}
+	
+	#plans {
+		padding: 6% 20% 6% 20%;
+	}
+	
+	.plan {
+		margin: 5% auto;
+	}
+	
+	.testimonials h3 {
+		padding: 4%;
+		font-size: 1.6em;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 4%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: block;
+		margin: 4% 8% 0 5%;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -140px;
+		left: 30%;
+		margin: 0 auto;
+	}
+		
+	.cbp-qtrotator footer {
+		margin: -3% auto;
+	}
+
+	.view {
+		margin: 5% auto 0;
+	}
+	
+	.social {
+		padding: 9% 0 0 0;
+	}
+	
+	.subscribe h3 {
+		font-size: 2em;
+		padding: 5% 0;
+	}
+	
+	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		height: 30px;
+		width: 260px;
+	}
+	
+	.contact-data h3 {
+		font-size: 1.6em !important;
+		padding: 6% 0 2%;
+		line-height: 160%;
+	}
+}
+
+
+
+/*-- 7. STYLES FOR MOBILE DEVICES - media screen min width: 900px / max width: 1024px --*/
+@media screen and (min-width: 900px) and (max-width: 1024px) {	
+
+	body {
+		overflow-x: hidden;
+		font-size: 13px;
+	}
+	
+	h2 {
+		font-size: 3.6em;
+	}	
+	
+	h3 {
+		font-size: 1.7em;
+	}
+	
+	p {
+		margin: 2%;
+	}
+	
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 3%;
+		top: 1.3%;
+	}
+	
+	.bt-menu.bt-menu-open {
+		border-width: 20px 20px 20px 85px;
+	}
+	
+	.bt-menu ul {
+		width: 85px;
+		top: 8%;
+	}
+	
+	.bt-menu ul li a:before {
+		font-size: 40px;
+	}
+	
+	.bt-menu ul li {
+		padding: 5% 0;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -8%;
+		width: 110%;
+	}
+	
+	.description h2 {
+		margin: 12% auto 0;
+	}
+	
+	.row {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	
+	.col-md-6 {
+		text-align: left;
+	}
+	
+	.container {
+		padding-left: 0;
+		padding-right: 0;
+		width: 100%;
+	}
+	
+	.appstore-btn, .appstore-btn a {
+		float: left;
+		margin: 7% 22% 8%;
+	}
+	
+	.android-btn, .android-btn a  {
+		float: right;
+		margin: -15.5% 22%;
+	}
+
+	#sequence .model {
+		left: 30%;
+		min-width: 50%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 50%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 38%;
+		margin-left: -35%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 38%;
+		margin-left: -36%; 
+	}
+	
+	#sequence .title {
+		font-size: 4em;
+		background: transparent;
+		bottom: 0;
+		left: 100%;
+		padding: 0;
+		width: 100%;
+		z-index: 10; 
+	}
+	
+	#sequence .animate-in .title {
+		left: 0%; 
+	}
+	
+	#sequence .animate-out .title {
+		left: -100%; 
+	}
+	
+	#sequence .subtitle {
+		visibility: visible; 
+		font-size: 2em;
+		width: 40%;
+		right: 1%;
+		padding-top: 5%;
+		line-height: 120%;
+	}
+	
+	#sequence > .sequence-canvas > li {
+		top: -55%;
+	}
+	
+	.sequence-next, .sequence-prev {
+		display: none !important;
+	}
+	
+	#sequence .sequence-pagination, #sequence .sequence-pagination li img { 
+		display: none;
+	}
+	
+	.area-title {
+		margin: 10% auto 3%;
+	}
+	
+	.presentation h3 {
+		padding: 10% 0;
+	}
+	
+	.fast h3, .arrow-fast, .intuitive h3, .arrow-intuitive, .simple h3, .arrow-simple, .secure h3, .arrow-secure, .awesome h3, .arrow-awesome,  .free h3, .arrow-free {
+		display: none;
+	}
+	
+	.device {
+		background: none;
+	}
+	
+	.video-bg {
+		padding-bottom: 5%;
+	}
+	
+	.award-icon:before,
+	.award-icon-alt:before {
+		padding: 0 4% 0.5% 0;
+	}
+
+	.award h3 {
+		padding: 11.5% 0;
+	}
+	
+	.cbp-ig-grid {
+		margin: 2% auto 6%;
+		width: 90%;
+	}
+	
+	.cbp-ig-grid li {
+		width: 49%;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		font-size: 1.7em;
+		margin: 14%;
+		padding: 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title:before {
+		margin: -15px 0 0 -80px;
+	}
+	
+	.cbp-ig-icon {
+		padding: 20% 0 0;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+
+	.cbp-ig-grid .cbp-ig-category {
+		font-size: 1.4em;
+		padding: 0 10%;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+2) {
+		border-top: none;
+		box-shadow: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+3) {
+		border-top: none;
+		box-shadow: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(2n-1) {
+		box-shadow: none;
+	}
+	
+	.rating-img {
+		padding: 3% 0;
+		margin: 4% auto 0;
+	}
+	
+	.grid {
+		margin: 2% auto 6%;
+		text-align: center;
+	}
+	
+	.grid a {
+		width: 33.3% !important;
+		margin: 0 !important;
+		max-width: 100%;
+	}
+	
+	.grid figure {
+		margin: 4% auto;
+		width: 92%;
+	}
+	
+	.patches h3 {
+		padding: 11.5% 0;
+	}
+	
+	#cd-timeline {
+	  padding: 4% 0 0;
+	  width: 90%;
+	}
+	
+	#cd-timeline:before, .cd-timeline-icon:before {
+		display: none;
+	}
+	
+	.cd-timeline-content ul {
+		color: #fff;
+		font-size: 1.2em;
+		margin: 3% 19.7% 0;
+	}
+	
+	.float {
+		display: block !important;
+	}
+	
+	.cd-timeline-content {
+		padding: 5% 0 2%;
+	}
+	
+	.cd-timeline-content .cd-date {
+		font-size: 1.2em;
+		padding: 2% 5%;
+	}
+	
+	.price h3 {
+		padding: 13.54% 0;
+	}
+	
+	#screens {
+		padding: 0 0 4%;	
+	}
+	
+	#plans {
+		padding: 6% 20% 6% 20%;
+	}
+	
+	.plan {
+		margin: 5% auto;
+	}
+	
+	.testimonials h3 {
+		padding: 4%;
+		font-size: 1.6em;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 4%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: block;
+		margin: 4% 8% 0 5%;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -150px;
+		left: 32%;
+		margin: 0 auto;
+	}
+		
+	.cbp-qtrotator footer {
+		margin: -3% auto;
+	}
+
+	.view {
+		margin: 5% auto 0;
+	}
+	
+	.social {
+		padding: 9% 0 0 0;
+	}
+	
+	.subscribe h3 {
+		font-size: 2em;
+		padding: 5% 0;
+	}
+	
+	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		height: 30px;
+		width: 260px;
+	}
+	
+	.contact-data h3 {
+		font-size: 1.6em !important;
+		padding: 6% 0 2%;
+		line-height: 160%;
+	}
+}
+
+
+
+/*-- 8. STYLES FOR MOBILE DEVICES - media screen min width: 1024px / max width: 1200px --*/
+@media screen and (min-width: 1024px) and (max-width: 1200px) {	
+
+	body {
+		overflow-x: hidden;
+		font-size: 13px;
+	}
+	
+	h2 {
+		font-size: 3.6em;
+	}	
+	
+	h3 {
+		font-size: 1.7em;
+	}
+	
+	p {
+		margin: 2%;
+	}
+	
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 2%;
+		top: 1.3%;
+	}
+	
+	.bt-menu.bt-menu-open {
+		border-width: 20px 20px 20px 85px;
+	}
+	
+	.bt-menu ul {
+		width: 85px;
+		top: 6%;
+	}
+	
+	.bt-menu ul li a:before {
+		font-size: 40px;
+	}
+	
+	.bt-menu ul li {
+		padding: 10% 0;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -8%;
+		width: 110%;
+	}
+	
+	.description h2 {
+		margin: 10% auto 0;
+	}
+	
+	.container {
+		padding-left: 0;
+		padding-right: 0;
+		width: 100%;
+	}
+	
+	#intro {
+		padding: 0;
+	}
+	
+	.title {
+		top: 65%;
+	}
+	
+	.appstore-btn, .appstore-btn a {
+		float: right;
+		background: url('../images/appstore-btn.png') no-repeat center center;
+		width: 50%;
+		height: 200px;
+		margin: 0 0 5%;
+	}
+
+	.android-btn, .android-btn a {
+		float: left;
+		background: url('../images/android-btn.png') no-repeat center center;
+		width: 50%;
+		height: 200px;
+		margin: 0 0 5%;
+	}
+
+	#sequence .model {
+		left: 30%;
+		min-width: 50%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 50%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 38%;
+		margin-left: -35%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 38%;
+		margin-left: -36%; 
+	}
+	
+	#sequence .title {
+		font-size: 4em;
+		background: transparent;
+		bottom: 0;
+		left: 100%;
+		padding: 0;
+		width: 100%;
+		z-index: 10; 
+	}
+	
+	#sequence .animate-in .title {
+		left: 0%; 
+	}
+	
+	#sequence .animate-out .title {
+		left: -100%; 
+	}
+	
+	#sequence .subtitle {
+		visibility: visible; 
+		font-size: 2em;
+		width: 46%;
+		right: 1%;
+		padding-top: 5%;
+		line-height: 120%;
+	}
+	
+	#sequence > .sequence-canvas > li {
+		top: -48%;
+	}
+	
+	.sequence-next, .sequence-prev {
+		display: none !important;
+	}
+	
+	#sequence .sequence-pagination, #sequence .sequence-pagination li img { 
+		display: none;
+	}
+	
+	.area-title {
+		margin: 10% auto 3%;
+	}
+	
+	.presentation h3 {
+		padding: 8.5% 0;
+	}
+	
+	#overview {
+		padding: 0 0 1%;
+	}
+	
+	.fast h3, .arrow-fast, .intuitive h3, .arrow-intuitive, .simple h3, .arrow-simple, .secure h3, .arrow-secure, .awesome h3, .arrow-awesome,  .free h3, .arrow-free {
+		display: none;
+	}
+	
+	.device {
+		background: url('../images/device.png') 50% no-repeat;
+	}
+	
+	.video-bg {
+		padding-bottom: 7%;
+	}
+	
+	.award-icon:before,
+	.award-icon-alt:before {
+		padding: 0 4% 0.5% 0;
+	}
+
+	.award h3 {
+		padding: 10% 0;
+	}
+	
+	.cbp-ig-grid {
+		margin: 3% auto 3%;
+		width: 80%
+	}
+	
+	.cbp-ig-grid li {
+		width: 49%;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		font-size: 1.7em;
+		margin: 13%;
+		padding: 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title:before {
+		margin: -15px 0 0 -80px;
+	}
+	
+	.cbp-ig-icon {
+		padding: 18% 0 0;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+
+	.cbp-ig-grid .cbp-ig-category {
+		font-size: 1.4em;
+		padding: 0 6%;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+2) {
+		border-top: none;
+		box-shadow: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(-n+3) {
+		border-top: none;
+		box-shadow: none;
+	}
+	
+	.cbp-ig-grid li:nth-child(2n-1) {
+		box-shadow: none;
+	}
+	
+	.rating-img {
+		padding: 2.5% 0;
+		margin: 2.5% auto 0;
+	}
+	
+	.grid {
+		max-width: 1200px;
+		width: 90%;
+	}
+	
+	.grid a {
+		width: 32%;
+		margin: 0 1%;
+	}
+	
+	#screens {
+		padding: 0 0 1%;	
+	}
+	
+	.patches h3 {
+		padding: 10% 0;
+	}
+	
+	#cd-timeline {
+	  position: relative;
+	  padding: 6% 0;
+	  margin: 6% auto;
+	}
+
+	#cd-timeline::before {
+	  /* this is the vertical line */
+	  display: block;
+	  content: '';
+	  position: absolute;
+	  top: 0;
+	  left: 51%;
+	  height: 100%;
+	  width: 6px;
+	  background: #07B7AB;
+	}	
+	
+	.cd-timeline-icon:before {
+		display: block;
+	}
+	
+	.cd-timeline-icon {
+		left: 50%;
+	}
+
+	.cd-container {
+	  /* this class is used to give a max-width to the element it is applied to, and center it horizontally when it reaches that max-width */
+	  width: 96%;
+	}
+		
+	.cd-timeline-content ul {
+		color: #fff;
+		font-size: 1.2em;
+		margin: 3% 19.7% 0;
+	}
+	
+	.float {
+		display: block !important;
+	}
+	
+	.cd-timeline-content .cd-date {
+		font-size: 1.2em;
+		left: 140%;
+	}
+	
+	.price h3 {
+		padding: 10% 0;
+	}
+	
+	#plans {
+		padding: 6% 5% 2% 5%;
+	}
+	
+	.plan {
+		margin: 4% auto;
+	}
+	
+	.testimonials h3 {
+		padding: 5%;
+		font-size: 1.6em;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 3.5%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: block;
+		margin: 3.5% 8% 0 5%;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -140px;
+		left: 28%;
+		margin: 0 auto;
+	}
+		
+	.cbp-qtrotator footer {
+		margin: -3% auto;
+	}
+	
+	.view {
+		width: 230px;
+		height: 100%;
+		margin: 0 auto;
+		border: none;
+	}
+
+	.view img {
+		width: 230px;
+		height: 100%;
+	}
+
+	.view .mask, .view .content {
+		width: 230px;
+		height: 100%;
+	}
+	
+	.view h2 {
+		font-size: 2em;
+		margin: 15% 0 2%;
+	}
+	
+	.view h3 {
+		font-size: 1.4em;
+		margin: 0 auto 2%;
+	}
+	
+	.view-team p {
+		font-size: 1.1em;
+	}
+	
+	.team-icon-bg {
+		margin: 1% auto;
+	}
+
+	.flip-container, .front, .back {
+		height: 350px;
+	}
+	
+	.team h3 {
+		padding: 2% 0 2%;
+	}
+	
+	.team h4 {
+		padding: 0 0 10%;
+		width: 60%;
+	}
+	
+	.social {
+		padding: 6% 0 0 0;
+	}
+	
+	.subscribe h3 {
+		font-size: 2em;
+		padding: 2% 0;
+	}
+	
+	textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		height: 30px;
+		width: 260px;
+	}
+	
+	.contact-data h3 {
+		font-size: 1.6em !important;
+		padding: 6% 0 2%;
+		line-height: 160%;
+	}
+}
+
+
+
+/*-- 9. STYLES FOR MOBILE DEVICES - media screen min width: 1200px / max width: 1280px --*/
+@media screen and (min-width: 1200px) and (max-width: 1280px) {	
+	
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 2%;
+		top: 0.6%;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -6%;
+		width: 110%;
+	}	
+
+	#sequence .model {
+		left: 45%;
+		min-width: 42%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 42%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 45%;
+		margin-left: -35%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 45%;
+		margin-left: -36%; 
+	}
+	
+	.presentation h3 {
+		padding: 8% 0;
+	}
+	
+	.award h3 {
+		padding: 9% 0;
+	}
+	
+	.rating-img {
+		padding: 2% 0;
+		margin: 2% auto 0;
+	}
+	
+	.grid {
+		max-width: 1200px;
+		width: 76%;
+	}
+	
+	.grid a {
+		width: 32%;
+		margin: 0 1%;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		font-size: 2.2em;
+	}
+	
+	.patches h3 {
+		padding: 8.5% 0;
+	}
+	
+	.cd-timeline-icon {
+		left: 51%;
+	}
+	
+	.price h3 {
+		padding: 8.5% 0;
+	}
+	
+	#plans {
+		padding: 6% 5% 6% 5%;
+	}
+	
+	.plan {
+		margin: 4% auto;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -140px;
+		left: 30%;
+		margin: 0 auto;
+	}
+		
+	.team-bg {
+		margin: 4% auto;
+		width: 90%;
+	}
+	
+	.flip-container, .front, .back {
+		height: 400px;
+	}
+	
+	.social {
+		padding: 4.5% 0 0 0;
+	}
+}
+
+
+
+/*-- 10. STYLES FOR MOBILE DEVICES - media screen min width: 1280px / max width: 1366px --*/
+@media screen and (min-width: 1280px) and (max-width: 1366px) {	
+		
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 2%;
+		top: 1.8%;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: -6%;
+		width: 110%;
+	}	
+	
+	.description h2 {
+		margin: 8% auto 0;
+	}
+
+	#sequence .model {
+		left: 45%;
+		min-width: 42%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 42%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 45%;
+		margin-left: -35%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 45%;
+		margin-left: -36%; 
+	}
+	
+	.presentation h3 {
+		padding: 7% 0;
+	}
+	
+	.fast h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 0%;
+		left: 5%;
+		visibility: hidden;
+	}
+
+	.arrow-fast {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 3%;
+		left: 20%;
+		visibility: hidden;
+	}
+
+	.intuitive h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 17.3%;
+		left: 7%;
+		visibility: hidden;
+	}
+
+	.arrow-intuitive {
+		position: absolute;
+		width: 100%;
+		max-width: 120px;
+		height: auto;
+		max-height: 30px;
+		padding-top: 17.6%;
+		left: 15%;
+		visibility: hidden;
+	}
+
+	.simple h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 32.8%;
+		left: 13.6%;
+		visibility: hidden;
+	}
+
+	.arrow-simple {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 32%;
+		left: 20%;
+		visibility: hidden;
+	}
+
+	.secure h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 2.5%;
+		left: 80%;
+		visibility: hidden;
+	}
+
+	.arrow-secure {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 3%;
+		left: 64%;
+		visibility: hidden;
+	}
+
+	.awesome h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 17.4%;
+		left: 86%;
+		visibility: hidden;
+	}
+
+	.arrow-awesome {
+		position: absolute;
+		width: 100%;
+		max-width: 120px;
+		height: auto;
+		max-height: 30px;
+		padding-top: 17.6%;
+		left: 76%;
+		visibility: hidden;
+	}
+
+	.free h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 33%;
+		left: 80%;
+		visibility: hidden;
+	}
+
+	.arrow-free {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 32%;
+		left: 64%;
+		visibility: hidden;
+	}
+	
+	.award h3 {
+		padding: 8.5% 0;
+	}
+	
+	.cbp-ig-grid li {
+		height: 370px;
+	}
+	
+	.cbp-ig-icon {
+		padding: 35% 0 0;
+	}
+	
+	.rating-img {
+		padding: 1.5% 0;
+		margin: 1.5% auto 0;
+	}
+	
+	.grid {
+		max-width: 1280px;
+		width: 100%;
+	}
+	
+	.grid a {
+		width: 23%;
+		margin: 0.5% 1%;
+	}
+	
+	.price h3 {
+		padding: 8.5% 0;
+	}
+	
+	#plans {
+		padding: 0 0 3%;
+	}
+	
+	#about {
+		padding: 0 0 6% 0;
+	}
+	
+	.team h3 {
+		padding: 2% 0;
+	}
+	
+	.cbp-qtrotator footer {
+		margin: -7%;
+	}
+	
+	.contact-data h3 {
+		padding: 5% 0;
+	}
+}
+
+
+/*-- 11 .STYLES FOR MOBILE DEVICES - media screen min width: 1366px / max width: 1536px --*/
+@media screen and (min-width: 1366px) and (max-width: 1536px) {	
+
+	body {
+		font-size: 13px;
+	}
+
+	h1 {
+		font-size: 4em;
+	}
+
+	h2 {
+		font-size: 3.4em;
+	}
+
+	h3 {
+		font-size: 2em;
+	}
+
+	h4 {
+		font-size: 1.2em;
+	}
+
+	h5 {
+		font-size: 1em;
+	}
+
+	p {
+		font-size: 1.4em;
+	}
+
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 2%;
+		top: 1.8%;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: 0;
+		width: 100%;
+	}	
+	
+	.description h2 {
+		margin: 8% auto 3%;
+		font-size: 3.8em;
+	}
+	
+	.title {
+		top: 68%;
+	}
+	
+	.subtitle {
+		font-size: 2.2em;
+	}
+	
+	.appstore-btn, .appstore-btn a, .android-btn, .android-btn a {
+		margin: 4% 1% 8%;
+	}
+
+	#sequence .model {
+		left: 45%;
+		min-width: 42%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 42%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 45%;
+		margin-left: -35%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 45%;
+		margin-left: -36%; 
+	}
+	
+	.presentation h3 {
+		padding: 6.7% 0;
+	}
+	
+	.area-title {
+		margin: 6% auto 3%;
+	}
+	
+	.device {
+		margin: 9% auto;
+	}
+	
+	.fast h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 0%;
+		left: 5%;
+		visibility: hidden;
+	}
+
+	.arrow-fast {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 3%;
+		left: 20%;
+		visibility: hidden;
+	}
+
+	.intuitive h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 17.3%;
+		left: 7%;
+		visibility: hidden;
+	}
+
+	.arrow-intuitive {
+		position: absolute;
+		width: 100%;
+		max-width: 120px;
+		height: auto;
+		max-height: 30px;
+		padding-top: 17.6%;
+		left: 15%;
+		visibility: hidden;
+	}
+
+	.simple h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 32.8%;
+		left: 13.6%;
+		visibility: hidden;
+	}
+
+	.arrow-simple {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 32%;
+		left: 20%;
+		visibility: hidden;
+	}
+
+	.secure h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 2.5%;
+		left: 80%;
+		visibility: hidden;
+	}
+
+	.arrow-secure {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 3%;
+		left: 64%;
+		visibility: hidden;
+	}
+
+	.awesome h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 17.4%;
+		left: 86%;
+		visibility: hidden;
+	}
+
+	.arrow-awesome {
+		position: absolute;
+		width: 100%;
+		max-width: 120px;
+		height: auto;
+		max-height: 30px;
+		padding-top: 17.6%;
+		left: 76%;
+		visibility: hidden;
+	}
+
+	.free h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 33%;
+		left: 80%;
+		visibility: hidden;
+	}
+
+	.arrow-free {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 32%;
+		left: 64%;
+		visibility: hidden;
+	}
+	
+	.award h3 {
+		padding: 8.5% 0;
+	}
+	
+	.cbp-ig-grid {
+		margin: 1% auto 0;
+	}
+	
+	.cbp-ig-grid li {
+		height: 370px;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+	
+	.cbp-ig-icon {
+		padding: 35% 0 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		font-size: 2.2em;
+	}
+	
+	.rating-img {
+		padding: 1.5% 0;
+		margin: 1.5% auto 0;
+	}
+	
+	#screens {
+		padding: 0 0 2% 0;
+	}
+	
+	.grid {
+		max-width: 1280px;
+		width: 100%;
+		margin: 3% auto 6%;
+	}
+	
+	.grid figcaption h2 {
+		margin: 0;
+	}	
+	
+	.price h3 {
+		padding: 8.5% 0;
+	}
+	
+	#plans {
+		padding: 0 0 3%;
+	}
+	
+	.plans {
+		margin: 4% auto;
+	}
+	
+	.testimonials h3 {
+		padding: 5%;
+		font-size: 1.6em;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 3.5%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: block;
+		margin: 3.5% 8% 0 5%;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -142px;
+		left: 30%;
+		margin: 0 auto;
+	}
+		
+	.cbp-qtrotator footer {
+		margin: -4% auto;
+	}
+	
+	#about {
+		height: auto;
+		padding: 0 0 6% 0;
+	}
+	
+	.team-bg {
+		margin: 3% auto;
+	}
+	
+	.team {
+		width: 92%;
+	}
+	
+	.team h3 {
+		padding: 2% 0;
+	}
+	
+	.social {
+		padding: 4%;
+	}
+	
+	.contact-data h3 {
+		padding: 5% 0;
+	}
+}
+
+
+
+/*-- 12. STYLES FOR MOBILE DEVICES - media screen min width: 1536px / max width: 1680px --*/
+@media screen and (min-width: 1536px) and (max-width: 1680px) {	
+
+	body {
+		font-size: 13px;
+	}
+
+	h1 {
+		font-size: 4em;
+	}
+
+	h2 {
+		font-size: 3.4em;
+	}
+
+	h3 {
+		font-size: 2em;
+	}
+
+	h4 {
+		font-size: 1.2em;
+	}
+
+	h5 {
+		font-size: 1em;
+	}
+
+	p {
+		font-size: 1.4em;
+	}
+
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 1.5%;
+		top: 0.6%;
+	}
+	
+	.bt-menu ul {
+		top: 4%;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: 0;
+		width: 100%;
+	}	
+	
+	.description h2 {
+		margin: 6% auto 3%;
+		font-size: 3.8em;
+	}
+	
+	.title {
+		top: 68%;
+	}
+	
+	.subtitle {
+		font-size: 2.2em;
+	}
+	
+	.appstore-btn, .appstore-btn a, .android-btn, .android-btn a {
+		margin: 4% 1% 8%;
+	}
+
+	#sequence .model {
+		left: 45%;
+		min-width: 42%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 42%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 45%;
+		margin-left: -35%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 45%;
+		margin-left: -36%; 
+	}
+	
+	.presentation h3 {
+		padding: 6.7% 0;
+	}
+	
+	.area-title {
+		margin: 8% auto 4%;
+	}
+	
+	.device {
+		margin: 9% auto;
+	}
+	
+	.fast h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 0%;
+		left: 5%;
+		visibility: hidden;
+	}
+
+	.arrow-fast {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 3%;
+		left: 25%;
+		visibility: hidden;
+	}
+
+	.intuitive h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 15.4%;
+		left: 10%;
+		visibility: hidden;
+	}
+
+	.arrow-intuitive {
+		position: absolute;
+		width: 100%;
+		max-width: 120px;
+		height: auto;
+		max-height: 30px;
+		padding-top: 15.6%;
+		left: 20%;
+		visibility: hidden;
+	}
+
+	.simple h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 28.8%;
+		left: 10%;
+		visibility: hidden;
+	}
+
+	.arrow-simple {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 28%;
+		left: 25%;
+		visibility: hidden;
+	}
+
+	.secure h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 2.5%;
+		left: 75%;
+		visibility: hidden;
+	}
+
+	.arrow-secure {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 3%;
+		left: 61%;
+		visibility: hidden;
+	}
+
+	.awesome h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 15.4%;
+		left: 81%;
+		visibility: hidden;
+	}
+
+	.arrow-awesome {
+		position: absolute;
+		width: 100%;
+		max-width: 120px;
+		height: auto;
+		max-height: 30px;
+		padding-top: 15.6%;
+		left: 72%;
+		visibility: hidden;
+	}
+
+	.free h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 28.8%;
+		left: 75%;
+		visibility: hidden;
+	}
+
+	.arrow-free {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 28%;
+		left: 61%;
+		visibility: hidden;
+	}
+	
+	.award h3 {
+		padding: 8.5% 0;
+	}
+	
+	.rating-img {
+		padding: 1.5% 0;
+		margin: 1.5% auto 0;
+	}
+	
+	.cbp-ig-grid {
+		margin: 1% auto 0;
+	}
+
+	.cbp-ig-grid li {
+		height: 350px;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+	
+	.cbp-ig-icon {
+		padding: 30% 0 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		font-size: 2.2em;
+	}
+	
+	.grid {
+		max-width: 1280px;
+		width: 100%;
+		margin: 3% auto 8%;
+	}
+	
+	.grid figcaption h2 {
+		margin: 0;
+	}	
+	
+	.price h3 {
+		padding: 8.5% 0;
+	}
+	
+	#plans {
+		padding: 0 0 3%;
+	}
+	
+	.plans {
+		margin: 4% auto;
+	}
+	
+	.testimonials h3 {
+		padding: 5%;
+		font-size: 1.6em;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 3.5%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: block;
+		margin: 3.5% 8% 0 5%;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -142px;
+		left: 30%;
+		margin: 0 auto;
+	}
+		
+	.cbp-qtrotator footer {
+		margin: -4% auto;
+	}
+	
+	#about {
+		min-height: auto;
+	}
+
+	.team {
+		width: 92%;
+	}
+	
+	.team h3 {
+		padding: 2% 0;
+	}
+	
+	.social {
+		padding: 4%;
+	}
+	
+	.contact-data h3 {
+		padding: 5% 0;
+	}
+}
+
+
+
+/*-- 13. STYLES FOR MOBILE DEVICES - media screen min width: 1680px / max width: 1900px --*/
+@media screen and (min-width: 1680px) and (max-width: 1800px) {	
+
+	body {
+		font-size: 13px;
+	}
+
+	h1 {
+		font-size: 4em;
+	}
+
+	h2 {
+		font-size: 3.4em;
+	}
+
+	h3 {
+		font-size: 2em;
+	}
+
+	h4 {
+		font-size: 1.2em;
+	}
+
+	h5 {
+		font-size: 1em;
+	}
+
+	p {
+		font-size: 1.4em;
+	}
+
+	.bt-menu-trigger {
+		width: 45px;
+		height: 45px;
+		left: 1.5%;
+		top: 0.6%;
+	}
+	
+	.bt-menu ul {
+		top: 4%;
+	}
+	
+	.logo {
+		padding-top: 0;
+		margin-left: 0;
+		width: 100%;
+	}	
+	
+	.description h2 {
+		margin: 6% auto 3%;
+		font-size: 3.8em;
+	}
+	
+	.title {
+		top: 68%;
+	}
+	
+	.subtitle {
+		font-size: 2.2em;
+	}
+	
+	.appstore-btn, .appstore-btn a, .android-btn, .android-btn a {
+		margin: 4% 1% 8%;
+	}
+
+	#sequence .model {
+		left: 45%;
+		min-width: 42%;
+		/*prevents the model from shrinking when the browser is resized*/
+		width: 42%; 
+	}
+	
+	#sequence .animate-in .model {
+		left: 45%;
+		margin-left: -35%; 
+	}
+	
+	#sequence .animate-out .model {
+		left: 45%;
+		margin-left: -36%; 
+	}
+	
+	.presentation h3 {
+		padding: 6.7% 0;
+	}
+	
+	.area-title {
+		margin: 8% auto 4%;
+	}
+	
+	.device {
+		margin: 11% auto;
+	}
+	
+	.fast h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 2.5%;
+		left: 21%;
+		visibility: hidden;
+	}
+
+	.arrow-fast {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 3%;
+		left: 25%;
+		visibility: hidden;
+	}
+
+	.intuitive h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 15.4%;
+		left: 13%;
+		visibility: hidden;
+	}
+
+	.arrow-intuitive {
+		position: absolute;
+		width: 100%;
+		max-width: 120px;
+		height: auto;
+		max-height: 30px;
+		padding-top: 15.6%;
+		left: 20%;
+		visibility: hidden;
+	}
+
+	.simple h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 28.8%;
+		left: 19.5%;
+		visibility: hidden;
+	}
+
+	.arrow-simple {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 28%;
+		left: 25%;
+		visibility: hidden;
+	}
+
+	.secure h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 2.5%;
+		left: 75%;
+		visibility: hidden;
+	}
+
+	.arrow-secure {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 3%;
+		left: 61%;
+		visibility: hidden;
+	}
+
+	.awesome h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 15.4%;
+		left: 81%;
+		visibility: hidden;
+	}
+
+	.arrow-awesome {
+		position: absolute;
+		width: 100%;
+		max-width: 120px;
+		height: auto;
+		max-height: 30px;
+		padding-top: 15.6%;
+		left: 72%;
+		visibility: hidden;
+	}
+
+	.free h3 {
+		font-size: 2em;
+		font-weight: 700;
+		color: #FFF;
+		text-transform: none;
+		position: absolute;
+		z-index: 9000;
+		padding-top: 28.8%;
+		left: 75%;
+		visibility: hidden;
+	}
+
+	.arrow-free {
+		position: absolute;
+		width: 100%;
+		max-width: 200px;
+		height: auto;
+		max-height: 40px;
+		padding-top: 28%;
+		left: 61%;
+		visibility: hidden;
+	}
+	
+	.award h3 {
+		padding: 8.5% 0;
+	}
+	
+	.rating-img {
+		padding: 1.5% 0;
+		margin: 1.5% auto 0;
+	}
+	
+	.cbp-ig-grid {
+		margin: 1% auto 0;
+	}
+	
+	.cbp-ig-grid li {
+		height: 350px;
+	}
+	
+	.cbp-ig-icon:before {
+		font-size: 5em;
+	}
+	
+	.cbp-ig-icon {
+		padding: 30% 0 0;
+	}
+	
+	.cbp-ig-grid .cbp-ig-title {
+		font-size: 2.2em;
+	}
+	
+	.grid {
+		max-width: 1280px;
+		width: 100%;
+		margin: 3% auto 8%;
+	}
+	
+	.grid figcaption h2 {
+		margin: 0;
+	}	
+	
+	.price h3 {
+		padding: 8.5% 0;
+	}
+	
+	#plans {
+		padding: 0 0 3%;
+	}
+	
+	.plans {
+		margin: 4% auto;
+	}
+	
+	.testimonials h3 {
+		padding: 5%;
+		font-size: 1.6em;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent {
+		margin-top: 3.5%;
+	}
+	
+	.cbp-qtrotator .cbp-qtcontent img {
+		display: block;
+		margin: 3.5% 8% 0 5%;
+	}
+	
+	.cbp-qtprogress {
+		bottom: -142px;
+		left: 30%;
+		margin: 0 auto;
+	}
+		
+	.cbp-qtrotator footer {
+		margin: -4% auto;
+	}
+	
+	#about {
+		min-height: auto;
+	}
+	
+	.team {
+		width: 92%;
+	}
+	
+	.team h3 {
+		padding: 2% 0;
+	}
+	
+	.social {
+		padding: 3%;
+	}
+	
+	.contact-data h3 {
+		padding: 5% 0;
+	}
+}
+
+
+
+/* -- 14. NAVIGATION MEDIA QUERIES -- */
+@media screen and (max-height: 31.125em) {
+	.bt-menu ul li a:before {
+		font-size: 32px;
+	}
+}
+
+
+
+/*-- 15. FEATURES MEDIA QUERIES--*/
+@media screen and (max-width: 62.75em) {
+
+	/* reset the grid lines */
+	.cbp-ig-grid li:nth-child(-n+3){
+		border-top: none;
+	}
+
+	.cbp-ig-grid li:nth-child(3n-1),
+	.cbp-ig-grid li:nth-child(3n-2) {
+		box-shadow: none;
+	}
+
+	.cbp-ig-grid li:nth-child(-n+2){
+		border-top: none;
+	}
+
+	.cbp-ig-grid li:nth-child(2n-1) {
+		box-shadow: none;
+	}
+}
+
+@media screen and (max-width: 41.6em) { 
+
+	.cbp-ig-grid li:nth-child(-n+2){
+		border-top: none;
+	}
+
+	.cbp-ig-grid li:nth-child(2n-1) {
+		box-shadow: none
+	}
+
+	.cbp-ig-grid li:first-child {
+		border-top: none;
+	}
+}
+
+@media screen and (max-width: 25em) { 
+	.cbp-ig-grid {
+		font-size: 80%;
+	}
+
+	.cbp-ig-grid .cbp-ig-category {
+		margin-top: 20px;
+	}
+}
+
+
+
+/* -- 16. TIMELINE MEDIA QUERIES --*/
+@media only screen and (min-width: 1000px) {
+
+	#cd-timeline {
+		margin: 0 auto;
+	}
+
+	#cd-timeline::before {
+		left: 50%;
+		margin: 0 auto;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+
+	.cd-timeline-block { 
+		margin: 8% 0; 
+	}
+	
+	.cd-timeline-block:first-child { 
+		margin-top: 0; 
+	}
+
+	.cd-timeline-block:last-child { 
+		margin-bottom: 0; 
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+
+	.cd-timeline-icon {
+		width: 100px;
+		height: 100px;
+		left: 50%;
+		margin-left: -4%;
+		/* Force Hardware Acceleration in WebKit */
+		-webkit-transform: translateZ(0);
+		-webkit-backface-visibility: hidden;
+	}
+
+	.cssanimations .cd-timeline-icon.is-hidden { 
+		visibility: hidden; 
+	}
+
+	.cssanimations .cd-timeline-icon.bounce-in {
+		visibility: visible !important;
+		-webkit-animation: cd-bounce-1 0.6s;
+		-moz-animation: cd-bounce-1 0.6s;
+		animation: cd-bounce-1 0.6s;
+	}
+
+	.cd-timeline-content {
+		position: relative;
+		margin: 0 auto;
+		background: #07B7AB;
+		padding: 5%;
+	}
+
+	.cd-timeline-content:before,
+	.cd-timeline-content:after {
+		content: " ";
+		display: table;
+	}
+
+	.cd-timeline-content:after { 
+		clear: both; 
+	}
+
+	.cd-timeline-content .cd-date { 
+		display:	inline-block; 
+	}
+
+	.cd-timeline-content p {
+		line-height: 130%;
+	}
+
+	.no-touch .cd-timeline-content .cd-read-more:hover { 
+		background-color: #3D3E45; 
+	}
+
+	.cd-timeline-content .cd-date {
+		float: left;
+		padding: 2% 0;
+		opacity: .7;
+	}
+
+	.cd-timeline-content::before {
+		content: '';
+		position: absolute;
+		top: 6%;
+		right: 100%;
+		height: 0;
+		width: 0;
+		border: 7px solid transparent;
+		border-right: 7px solid #07B7AB;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+
+	.cd-timeline-content h2 {
+		font-size: 2.2em;
+		font-weight: 600;
+		color: #FFF;
+	}
+
+	.cd-timeline-content p {
+		font-size: 1.2em;
+		padding: 0 3%;
+	}
+
+	.cd-timeline-content ul {
+		font-size: 1.2em;
+		color: #FFF;
+		margin: 3% 6% 0;
+	}
+
+	.cd-timeline-content .cd-date {
+	  font-size: 1.2em;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+
+	.cd-timeline-content {
+		margin-left: 0;
+		padding: 2% 1%;
+		width: 40%;
+	}
+
+	.cd-timeline-content::before {
+		top: 25%;
+		left: 100%;
+		border-color: transparent;
+		border-left-color: #07B7AB;
+	}
+
+	.cd-timeline-content .cd-date {
+		position: absolute;
+		width: 100%;
+		left: 140%;
+		top: 17%;
+		font-size: 1.6em;
+		font-weight: 700;
+	}
+
+	.cd-timeline-block:nth-child(even) .cd-timeline-content { 
+		float: right; 
+	}
+
+	.cd-timeline-block:nth-child(even) .cd-timeline-content::before {
+		top: 25%;
+		left: auto;
+		right: 100%;
+		border-color: transparent;
+		border-right-color: #07B7AB;
+	}
+
+	.cd-timeline-block:nth-child(even) .cd-timeline-content .cd-read-more { 
+		float: right; 
+	}
+
+	.cd-timeline-block:nth-child(even) .cd-timeline-content .cd-date {
+		left: auto;
+		right: 135%;
+		top: 20%;
+		text-align: right;
+	}
+
+	.cssanimations .cd-timeline-content.is-hidden { 
+		visibility: hidden; 
+	}
+
+	.cssanimations .cd-timeline-content.bounce-in {
+		visibility: visible;
+		-webkit-animation: cd-bounce-2 0.6s;
+		-moz-animation: cd-bounce-2 0.6s;
+		animation: cd-bounce-2 0.6s;
+	}
+}
