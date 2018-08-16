@@ -587,13 +587,18 @@
 			<div class="container">
 					<div class="area-title">
 						<h2>¿Quieres contactarnos?</h2>
+						<h3 style="text-align: center; color: white;">Escríbenos a <a style="color: #222;" href="mailto:hello@qroom.biz">hello@qroom.biz</a></h3>
+						<h1 style="text-align: center;">Y también...</h1>
 					</div>
 
-				<form class="form-inline" method="POST" id="subscribe" action="subscribe.php">
-					<div class="subscribe"><h3>¡Únete a nuestro buzón de noticias, usando el e-mail de Wordeo y te premiaremos inmediatamente!</h3></div>
+				<form class="form-inline" method="POST" id="subscribe" action="subscribe.php" style="margin-top: 0 !important;">
+					<div class="subscribe"><h3>¡Únete a nuestro buzón y recibe noticias de lanzamiento, premios, y demás!</h3></div>
 					<div class="input-append">
-					<input type="email" name="email" required="required" placeholder="Ingresa tu e-mail">
-					<button type="submit" class="btn btn-success">Suscribirme</button>
+						<input type="text" name="name" required="required" placeholder="Tu nombre">
+						<input type="email" name="email" required="required" placeholder="Tu e-mail">
+						<button
+							data-loading-text="<i class='icon-spinner icon-spin icon-large'></i> Enviando.."
+							type="submit" class="btn btn-success">Suscribirme</button>
 					</div>
 				</form>
 
@@ -636,6 +641,8 @@
 		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="js/toucheffects.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script> !-->
 
 		<script type="text/javascript">
@@ -645,6 +652,38 @@
 			/*global google:false*/
 			/*jshint unused: vars */
 			/*jshint unused: false */
+
+			$('form#subscribe').on('submit', function(e) {
+				e.preventDefault();
+
+				var data = $(this).serialize();
+
+				$("button[type=submit]").button('loading');
+				$.ajax({
+					type: 'POST',
+					url: 'Subscribe.php',
+					data: data,
+					success: function(e) {
+						$("button[type=submit]").button('reset');
+						swal({
+							type: 'success',
+							icon: 'success',
+							title: 'ÉXITO!',
+							text: '¡Te has suscripto exitósamente a nuestro buzón de noticias. Te enviaremos un premio cuando estemos listos..'
+						});
+						$('#contact').slideUp();
+					},
+					error: function(i) {
+						$("button[type=submit]").button('reset');
+						swal({
+							type: 'error',
+							icon: 'error',
+							title: 'Oops!',
+							text: 'Algo ha sucedido. Estamos trabajando para mejorar nuestra experiencia.'
+						})
+					}
+				})
+			});
 
 
 			/* -- SCROLLSPY --*/
