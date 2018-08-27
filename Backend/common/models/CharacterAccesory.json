@@ -8,34 +8,34 @@
   "mixins": {},
   "properties": {
     "characterId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "category": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "name": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "image": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "image_placeholder": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "price": {
-        "type": "number",
-        "required": false,
-        "default": 0
+      "type": "number",
+      "required": false,
+      "default": 0
     },
     "zIndex": {
-        "type": "number",
-        "required": false,
-        "default": 0
+      "type": "number",
+      "required": false,
+      "default": 0
     }
   },
   "validations": [],
@@ -43,17 +43,24 @@
   "acls": [],
   "methods": {
     "availableAccesories": {
-        "accepts": [
-            {"arg": "characterId", "type": "string", "required": false, "http": { "source": "query" }}
-        ],
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/availableAccesories"
+      "accepts": [
+        {
+          "arg": "characterId",
+          "type": "string",
+          "required": false,
+          "http": {
+            "source": "query"
+          }
         }
+      ],
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/availableAccesories"
+      }
     }
   }
 }

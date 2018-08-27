@@ -20,6 +20,7 @@ module.exports = function(Account) {
     Account.getFriends = getFriends;
     Account.getPeople = getPeople;
     Account.me = getMe;
+    Account.updateMe = updateMe;
     Account.uploadAvatar = uploadAvatar;
     Account.getRankingByUserId = getRankingByUserId;
     Account.getUserStatus = getUserStatus;
@@ -292,19 +293,19 @@ module.exports = function(Account) {
 
                         if(err) {
                             next(null, {
-                                result: false,
+                                success: false,
                                 error: err
                             });
                         } else {
                             if(user) {
                                 next(null, {
-                                    result: true,
-                                    user: user
+                                    success: true,
+                                    data: user
                                 });
                             } else {
                                 next(null, {
-                                    result: false,
-                                    user: null
+                                    success: false,
+                                    data: null
                                 });
                             }
                         }
@@ -370,42 +371,31 @@ module.exports = function(Account) {
                             });
                         }
                     })
+                });
+            })
+        } else {
+            next();
+        }
+    }
 
-                    //Check if the user has any available character
-                    /* if(profile.character) {
-                        const character = JSON.parse(profile.character);
-                        var promises = [];
-                        for(var idx in character.accesories) {
-                            const accesoryId = character.accesories[idx];
-                            promises.push(new Promise((resolve, reject) => {
-                                app.models.CharacterAccesory.findOne({ where : { id : accesoryId }}, (e, result) => {
-                                    if(!err && result) {
-                                        resolve(result.image);
-                                    }
-                                })
-                            }));
-                        }
+    function updateMe(data, next) {
+        console.log(data);
+        console.log(next);
+        var ctx = loopbackContext.getCurrentContext();
+        // Get the current access token
+        var accessToken = ctx && ctx.get('accessToken');
+        if(accessToken != null && accessToken.userId > -1) {
+            app.models.Account.findOne({ include: 'profile', where : { id : accessToken.userId  }}, function(err, user) {
 
-                        Promise.all(promises).then((value) => {
-                            let arr = [];
-                            arr.push(__dirname + '/../../assets/images/character_set/monster_' + character.characterId + '.png');
-
-                            for(var idx in value) {
-                                arr.push({
-                                    src: __dirname + '/../../assets/images/character_set/' + value[idx],
-                                    x: 0,
-                                    y: 0
-                                });
-                            }
-                            mergeImages(arr, {
-                                Canvas: Canvas
-                            }).then((b64) => {
-                                fnNext(b64);
-                            });
+                user.profile.get().then((profile) => {
+                    profile.name = data.name;
+                    profile.lastName = data.lastName;
+                    profile.save({}, (err, profile) => {
+                        next(null, {
+                            success: true,
+                            data: profile
                         })
-                    } else {
-                        fnNext();
-                    } */
+                    });
                 });
             })
         } else {

@@ -7,17 +7,18 @@
   },
   "properties": {
     "name": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "value": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
   "relations": {},
-  "acls": [{
+  "acls": [
+    {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -25,35 +26,36 @@
       "property": [
         "getLastVersion"
       ]
-    }],
+    }
+  ],
   "methods": {
     "userStatistics": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/user_statistics"
-        }
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/user_statistics"
+      }
     },
     "getLastVersion": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/last_version"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/last_version"
+      }
     }
   }
 }

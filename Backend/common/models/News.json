@@ -7,21 +7,22 @@
   },
   "properties": {
     "payload": {
-        "type": "string",
-        "required": false
+      "type": "string",
+      "required": false
     },
     "isActive": {
-        "type": "boolean",
-        "default": false
+      "type": "boolean",
+      "default": false
     },
     "toAppVersion": {
-        "type": "string",
-        "default": false
+      "type": "string",
+      "default": false
     }
   },
   "validations": [],
   "relations": {},
-  "acls": [{
+  "acls": [
+    {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -30,20 +31,11 @@
         "me",
         "onTapButton"
       ]
-  }],
+    }
+  ],
   "methods": {
-    "me": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/me"
-        }
-    },
     "onTapButton": {
-        "accepts": [
+      "accepts": [
         {
           "arg": "data",
           "type": "object",

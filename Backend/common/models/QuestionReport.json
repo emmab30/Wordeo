@@ -7,16 +7,16 @@
   },
   "properties": {
     "questionId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "userId": {
-        "type": "number",
-        "required": false
+      "type": "number",
+      "required": false
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],
@@ -24,22 +24,22 @@
   "acls": [],
   "methods": {
     "createReport": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": false,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": false,
         "http": {
-            "verb": "post",
-            "path": "/create"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/create"
+      }
     }
   }
 }

@@ -8,20 +8,20 @@
   "mixins": {},
   "properties": {
     "userCharacterId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "accesoryId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "isEquipped": {
-        "type": "boolean",
-        "required": true
+      "type": "boolean",
+      "required": true
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],

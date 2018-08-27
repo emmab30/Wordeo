@@ -7,43 +7,43 @@
   },
   "properties": {
     "question": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "option1": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "option2": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "option3": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "option4": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "accountId": {
-        "type": "number"
+      "type": "number"
     },
     "profitExp": {
-        "type": "number",
-        "required": false
+      "type": "number",
+      "required": false
     },
     "profitTuls": {
-        "type": "number",
-        "required": false
+      "type": "number",
+      "required": false
     },
     "isApproved": {
-        "type": "boolean",
-        "default": 0
+      "type": "boolean",
+      "default": 0
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],
@@ -61,50 +61,50 @@
   ],
   "methods": {
     "addPendingQuestion": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": false,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": false,
         "http": {
-            "verb": "post",
-            "path": "/add_pending_question"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/add_pending_question"
+      }
     },
     "getMyPendingQuestions": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/me"
-        }
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/me"
+      }
     },
     "changeQuestionStatus": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": false,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": false,
         "http": {
-            "verb": "post",
-            "path": "/changeQuestionStatus"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/changeQuestionStatus"
+      }
     }
   }
 }

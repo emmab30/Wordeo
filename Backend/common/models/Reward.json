@@ -7,28 +7,29 @@
   },
   "properties": {
     "userId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "title": {
-        "type": "string"
+      "type": "string"
     },
     "text": {
-        "type": "string"
+      "type": "string"
     },
     "profitTuls": {
-        "type": "string"
+      "type": "string"
     },
     "profitExp": {
-        "type": "string"
+      "type": "string"
     },
     "wasNotified": {
-        "type": "boolean"
+      "type": "boolean"
     }
   },
   "validations": [],
   "relations": {},
-  "acls": [{
+  "acls": [
+    {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -36,17 +37,18 @@
       "property": [
         "me"
       ]
-  }],
+    }
+  ],
   "methods": {
     "me": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/me"
-        }
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/me"
+      }
     }
   }
 }

@@ -7,19 +7,19 @@
   },
   "properties": {
     "questionId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "name": {
       "type": "string",
       "required": true
     },
     "profitExp": {
-        "type": "number"
+      "type": "number"
     },
     "isCorrect": {
-        "type": "boolean",
-        "default": false
+      "type": "boolean",
+      "default": false
     }
   },
   "validations": [],

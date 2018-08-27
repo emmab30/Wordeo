@@ -9,58 +9,58 @@
   "mixins": {},
   "properties": {
     "password": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "socketId": {
-        "type": "string",
-        "required": false
+      "type": "string",
+      "required": false
     },
     "isOnline": {
-        "type": "boolean",
-        "default": false
+      "type": "boolean",
+      "default": false
     },
     "username": {
-        "type": "string",
-        "required": false
+      "type": "string",
+      "required": false
     },
     "lastLogin": {
-        "type": "date"
+      "type": "date"
     },
     "appVersion": {
-        "type": "string",
-        "required": false
+      "type": "string",
+      "required": false
     },
     "notificationId": {
-        "type": "string",
-        "required": false
+      "type": "string",
+      "required": false
     },
     "platform": {
-        "type": "string",
-        "required": false
+      "type": "string",
+      "required": false
     },
     "isBot": {
-        "type": "boolean",
-        "default": false
+      "type": "boolean",
+      "default": false
     },
     "facebookId": {
-        "type": "string",
-        "required": null
+      "type": "string",
+      "required": null
     },
     "facebookAccessToken": {
-        "type": "string",
-        "required": null
+      "type": "string",
+      "required": null
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],
   "relations": {
     "profile": {
-        "type": "hasOne",
-        "model": "Profile"
+      "type": "hasOne",
+      "model": "Profile"
     }
   },
   "acls": [
@@ -73,8 +73,10 @@
         "loginFacebook",
         "loginAdmin",
         "me",
+        "updateMe",
         "uploadAvatar",
         "getFriends",
+        "me",
         "getPeople",
         "getUserStatus",
         "find",
@@ -99,110 +101,134 @@
     }
   ],
   "methods": {
-    "me": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/me"
-        }
-    },
     "loginAdmin": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/login/admin"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/login/admin"
+      }
     },
     "loginFacebook": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/login/facebook"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/login/facebook"
+      }
+    },
+    "me": {
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/me"
+      }
+    },
+    "updateMe": {
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
+        "http": {
+          "source": "body"
+        }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/me"
+      }
     },
     "getFriends": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/me/friends"
-        }
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/me/friends"
+      }
     },
     "getPeople": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/people"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/people"
+      }
     },
     "getUserStatus": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/status"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/status"
+      }
     },
     "uploadAvatar": {
-        "accepts": [
-            { "arg": "req", "type": "object", "http": { "source": "req" } }
-        ],
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "post",
-            "path": "/me/uploadAvatar"
+      "accepts": [
+        {
+          "arg": "req",
+          "type": "object",
+          "http": {
+            "source": "req"
+          }
         }
+      ],
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/me/uploadAvatar"
+      }
     }
   }
 }

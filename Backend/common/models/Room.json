@@ -8,57 +8,57 @@
   "mixins": {},
   "properties": {
     "name": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "code": {
-        "type": "string",
-        "required": false
+      "type": "string",
+      "required": false
     },
     "userId": {
-        "type": "number"
+      "type": "number"
     },
     "players": {
-        "type": "number",
-        "required": false
+      "type": "number",
+      "required": false
     },
     "isProtected": {
-        "type": "boolean",
-        "default": false
+      "type": "boolean",
+      "default": false
     },
     "password": {
-        "type": "string"
+      "type": "string"
     },
     "duration": {
-        "type": "number",
-        "default": 90
+      "type": "number",
+      "default": 90
     },
     "isActive": {
-        "type": "boolean",
-        "default": true
+      "type": "boolean",
+      "default": true
     },
     "hasStarted": {
-        "type": "boolean",
-        "default": false
+      "type": "boolean",
+      "default": false
     },
     "multiplierExp": {
-        "type": "number",
-        "default": 1
+      "type": "number",
+      "default": 1
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     },
     "deletedAt": {
-        "type": "date",
-        "required": false
+      "type": "date",
+      "required": false
     }
   },
   "validations": [],
   "relations": {
     "users": {
-        "type": "hasMany",
-        "model": "RoomUser"
+      "type": "hasMany",
+      "model": "RoomUser"
     }
   },
   "acls": [
@@ -91,124 +91,124 @@
   ],
   "methods": {
     "invite": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/invite"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/invite"
+      }
     },
     "join": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/join"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/join"
+      }
     },
     "finish": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/finish"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/finish"
+      }
     },
     "getRoomStats": {
-        "accepts": {
-            "arg": "roomId",
-            "type": "number",
-            "required": true
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/:roomId/stats"
-        }
+      "accepts": {
+        "arg": "roomId",
+        "type": "number",
+        "required": true
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/:roomId/stats"
+      }
     },
     "getQuestionStats": {
-        "accepts": {
-            "arg": "roomId",
-            "type": "number",
-            "required": true
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/:roomId/questions"
-        }
+      "accepts": {
+        "arg": "roomId",
+        "type": "number",
+        "required": true
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/:roomId/questions"
+      }
     },
     "postStats": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/stats"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/stats"
+      }
     },
     "getPeopleBy": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/find_people"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/find_people"
+      }
     }
   }
 }

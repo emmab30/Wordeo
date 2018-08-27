@@ -8,16 +8,16 @@
   "mixins": {},
   "properties": {
     "name": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "price": {
-        "type": "number",
-        "required": false
+      "type": "number",
+      "required": false
     },
     "image_base": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
@@ -25,106 +25,106 @@
   "acls": [],
   "methods": {
     "make": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/make"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/make"
+      }
     },
     "availableCharacters": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/availableCharacters"
-        }
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/availableCharacters"
+      }
     },
     "buyAccesories": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/buy_accesories"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/buy_accesories"
+      }
     },
     "buyCharacter": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/buy_character"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/buy_character"
+      }
     },
     "buyElementalLife": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": true,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
         "http": {
-            "verb": "post",
-            "path": "/buy_elemental_life_accesory"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/buy_elemental_life_accesory"
+      }
     },
     "getMyCharacters": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/me"
-        }
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/me"
+      }
     },
     "getRankingTopPlayers": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/ranking_top_players"
-        }
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/ranking_top_players"
+      }
     }
   }
 }

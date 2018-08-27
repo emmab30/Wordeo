@@ -7,12 +7,12 @@
   },
   "properties": {
     "userId": {
-        "type": "number",
-        "required": false
+      "type": "number",
+      "required": false
     },
     "newsId": {
-        "type": "number",
-        "default": false
+      "type": "number",
+      "default": false
     }
   },
   "validations": [],

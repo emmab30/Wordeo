@@ -11,7 +11,7 @@
       "required": true
     },
     "image": {
-        "type": "string"
+      "type": "string"
     },
     "createdAt": {
       "type": "date"
@@ -35,22 +35,22 @@
   ],
   "methods": {
     "randomQuestions": {
-        "accepts": {
-            "arg": "data",
-            "type": "object",
-            "required": false,
-            "http": {
-                "source": "body"
-            }
-        },
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": false,
         "http": {
-            "verb": "post",
-            "path": "/random_questions"
+          "source": "body"
         }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/random_questions"
+      }
     }
   }
 }

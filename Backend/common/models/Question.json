@@ -7,41 +7,41 @@
   },
   "properties": {
     "question": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "photoURL": {
-        "type": "string"
+      "type": "string"
     },
     "audioURL": {
-        "type": "string"
+      "type": "string"
     },
     "videoURL": {
-        "type": "string"
+      "type": "string"
     },
     "questionCategoryId": {
-        "type": "number"
+      "type": "number"
     },
     "profitExp": {
-        "type": "number"
+      "type": "number"
     },
     "createdAt": {
-        "type": "date"
+      "type": "date"
     },
     "lastModifiedAt": {
-        "type": "date"
+      "type": "date"
     }
   },
   "validations": [],
   "relations": {
     "options": {
-        "type": "hasMany",
-        "model": "QuestionOption"
+      "type": "hasMany",
+      "model": "QuestionOption"
     },
     "category": {
-        "type": "belongsTo",
-        "model": "QuestionCategory",
-        "foreignKey": "questionCategoryId"
+      "type": "belongsTo",
+      "model": "QuestionCategory",
+      "foreignKey": "questionCategoryId"
     }
   },
   "acls": [],

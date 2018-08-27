@@ -8,16 +8,16 @@
   "mixins": {},
   "properties": {
     "characterId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "elementLifeAccesoryId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],

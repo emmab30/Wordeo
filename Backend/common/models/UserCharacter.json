@@ -8,31 +8,31 @@
   "mixins": {},
   "properties": {
     "profileId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "characterId": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "life": {
-        "type": "number",
-        "default" : 100
+      "type": "number",
+      "default": 100
     },
     "isDead": {
-        "type": "boolean",
-        "default": false
+      "type": "boolean",
+      "default": false
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],
   "relations": {
     "character": {
-        "type": "belongsTo",
-        "model": "Character"
+      "type": "belongsTo",
+      "model": "Character"
     }
   },
   "acls": [],

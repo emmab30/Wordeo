@@ -10,9 +10,9 @@
     "userId": {
       "type": "number"
     },
-    "category":{
-        "type": "number",
-        "required": false
+    "category": {
+      "type": "number",
+      "required": false
     },
     "message": {
       "type": "string",
@@ -31,12 +31,12 @@
     "payload": {
       "type": "string",
       "required": false,
-      "length": 10000,
-      "description": "Payload sent to the device"
+      "description": "Payload sent to the device",
+      "length": 10000
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],
@@ -57,17 +57,6 @@
     }
   ],
   "methods": {
-    "me": {
-      "returns": {
-        "root": true,
-        "type": "object"
-      },
-      "description": "Get my push notifications",
-      "http": {
-        "verb": "get",
-        "path": "/me"
-      }
-    },
     "send": {
       "accepts": [
         {

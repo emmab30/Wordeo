@@ -8,24 +8,24 @@
   "mixins": {},
   "properties": {
     "name": {
-        "type": "string",
-        "required": true
+      "type": "string",
+      "required": true
     },
     "price": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
     "life": {
-        "type": "number",
-        "required": true
+      "type": "number",
+      "required": true
     },
-    "image":{
-        "type": "string",
-        "required": true
+    "image": {
+      "type": "string",
+      "required": true
     },
     "createdAt": {
-        "type": "date",
-        "defaultFn": "now"
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],
@@ -33,14 +33,14 @@
   "acls": [],
   "methods": {
     "availableElements": {
-        "returns": {
-            "root": true,
-            "type": "object"
-        },
-        "http": {
-            "verb": "get",
-            "path": "/availableElements"
-        }
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/availableElements"
+      }
     }
   }
 }

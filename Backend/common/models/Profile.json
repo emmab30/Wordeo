@@ -23,38 +23,38 @@
       "required": true
     },
     "level": {
-        "type": "number"
+      "type": "number"
     },
     "balance_tuls": {
-        "type": "number",
-        "required": false,
-        "default": 0
+      "type": "number",
+      "required": false,
+      "default": 0
     },
     "totalGames": {
-        "type": "number",
-        "required": false,
-        "default": 0
+      "type": "number",
+      "required": false,
+      "default": 0
     },
     "totalWins": {
-        "type": "number",
-        "required": false,
-        "default": 0
+      "type": "number",
+      "required": false,
+      "default": 0
     },
     "totalLost": {
-        "type": "number",
-        "required": false,
-        "default": 0
+      "type": "number",
+      "required": false,
+      "default": 0
     },
     "experience_points": {
       "type": "number"
     },
     "avatar": {
-        "type": "string",
-        "required": false
+      "type": "string",
+      "required": false
     },
     "isBot": {
-        "type": "boolean",
-        "default": false
+      "type": "boolean",
+      "default": false
     },
     "createdAt": {
       "type": "date"
@@ -66,9 +66,9 @@
   "validations": [],
   "relations": {
     "userCharacters": {
-        "type": "hasMany",
-        "model": "Character",
-        "through": "UserCharacter"
+      "type": "hasMany",
+      "model": "Character",
+      "through": "UserCharacter"
     }
   },
   "acls": [],
