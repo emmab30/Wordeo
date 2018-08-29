@@ -69,6 +69,7 @@
       "permission": "ALLOW",
       "property": [
         "create",
+        "getRooms",
         "finishRound"
       ]
     },
@@ -90,6 +91,24 @@
     }
   ],
   "methods": {
+    "getRooms": {
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
+        "http": {
+          "source": "body"
+        }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/list"
+      }
+    },
     "invite": {
       "accepts": {
         "arg": "data",

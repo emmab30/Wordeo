@@ -14,10 +14,27 @@ module.exports = function(Room) {
     Room.finish = finish;
     Room.join = join;
     Room.invite = invite;
+    Room.getRooms = getRooms;
     Room.getRoomStats = getRoomStats;
     Room.getQuestionStats = getQuestionStats;
     Room.postStats = postStats;
     Room.getPeopleBy = getPeopleBy;
+
+    function getRooms(data, next) {
+        var filter = {
+            where: {
+                isActive: true,
+                hasStarted: false
+            },
+            include: 'users'
+        };
+        Room.find(filter, (err, rooms) => {
+            next(null, {
+                success: true,
+                data: rooms
+            });
+        });
+    }
 
     function join(data, next) {
 
