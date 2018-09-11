@@ -13,6 +13,7 @@ module.exports = function(Room) {
 
     Room.finish = finish;
     Room.join = join;
+    Room.pair = pair;
     Room.invite = invite;
     Room.getRooms = getRooms;
     Room.getRoomStats = getRoomStats;
@@ -32,6 +33,56 @@ module.exports = function(Room) {
             next(null, {
                 success: true,
                 data: rooms
+            });
+        });
+    }
+
+    function pair(data, next) {
+        let error = new Error();
+        let ctx = loopbackContext.getCurrentContext();
+        let accessToken = ctx && ctx.get('accessToken');
+
+        app.models.Account.findOne({ where : { id : accessToken.userId }}, (err, user) => {
+            //Create the room
+            app.models.Room.create({
+                name: 'Generada por ' + user.id,
+                multiplierExp: 1,
+                code: null,
+                userId: user.id,
+                players: 2,
+                isProtected: false,
+                password: null,
+                duration: 60,
+                isActive: true,
+                hasStarted: true
+            }, (err, room) => {
+                if(room != null) {
+                    //Get random bot and assign it to the current room.
+                    app.models.Account.find({ include: 'profile', where : { isBot : true }}, function(err, bot) {
+                        console.log(bot);
+                        if(bot != null) {
+                            app.models.RoomUser.upsertWithWhere({ userId : accessToken.userId, roomId : room.id }, { userId : accessToken.userId, roomId : room.id }, (err, roomUser) => {
+                                app.models.RoomUser.upsertWithWhere({ userId : bot.id, roomId : room.id }, { userId : bot.id, roomId : room.id }, (err, roomUserBot) => {
+                                    console.log(err);
+                                    if(app.socketHandler != null) {
+                                        setTimeout(() => {
+                                            app.socketHandler.onJoinedToRoom(room, bot.id, true);
+                                            app.socketHandler.onJoinedToRoom(room, accessToken.userId);
+
+                                            app.socketHandler.getDetailsForRoom(room.id, (data) => {
+                                                next(null, {
+                                                    room: room,
+                                                    players: data,
+                                                    startNow: false
+                                                });
+                                            });
+                                        }, 2000);
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
             });
         });
     }
@@ -464,6 +515,7 @@ module.exports = function(Room) {
                                             app.socketHandler.onSendRoundStats(data.roomId);
                                         } */
 
+                                        userRoom.gainedTuls = sumTuls;
                                         next(null, userRoom);
                                     }
                                 }

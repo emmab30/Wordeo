@@ -127,6 +127,24 @@
         "path": "/invite"
       }
     },
+    "pair": {
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
+        "http": {
+          "source": "body"
+        }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/pair"
+      }
+    },
     "join": {
       "accepts": {
         "arg": "data",

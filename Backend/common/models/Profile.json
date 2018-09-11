@@ -64,13 +64,7 @@
     }
   },
   "validations": [],
-  "relations": {
-    "userCharacters": {
-      "type": "hasMany",
-      "model": "Character",
-      "through": "UserCharacter"
-    }
-  },
+  "relations": {},
   "acls": [],
   "methods": {}
 }

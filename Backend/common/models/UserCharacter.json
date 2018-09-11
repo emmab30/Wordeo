@@ -7,21 +7,18 @@
   },
   "mixins": {},
   "properties": {
-    "profileId": {
+    "accountId": {
       "type": "number",
       "required": true
     },
-    "characterId": {
+    "colorId": {
       "type": "number",
-      "required": true
+      "required": false,
+      "default": -1
     },
     "life": {
       "type": "number",
       "default": 100
-    },
-    "isDead": {
-      "type": "boolean",
-      "default": false
     },
     "createdAt": {
       "type": "date",
@@ -29,12 +26,36 @@
     }
   },
   "validations": [],
-  "relations": {
-    "character": {
-      "type": "belongsTo",
-      "model": "Character"
-    }
-  },
   "acls": [],
-  "methods": {}
+  "relations": {},
+  "methods": {
+    "getMyCharacter": {
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/me"
+      }
+    },
+    "updateMyCharacter": {
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
+        "http": {
+          "source": "body"
+        }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/me"
+      }
+    }
+  }
 }

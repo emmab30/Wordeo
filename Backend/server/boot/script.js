@@ -78,7 +78,7 @@ module.exports = function(server) {
             });
         });
 
-        var monsters = [
+        /* var monsters = [
             { name: 'Mixi', price: 4000, imageBase: 'monster_1.png' },
             { name: 'Tukipo', price: 2000, imageBase: 'monster_2.png' },
             { name: 'Mavertin', price: 3000, imageBase: 'monster_3.png' },
@@ -139,10 +139,10 @@ module.exports = function(server) {
 
         Promise.all(promises).then((result) => {
             console.log('-------- Migrated monsters -------');
-        });
+        }); */
 
         //Character accesories
-        const commonAccesories = [
+        /* const commonAccesories = [
             { zIndex: 1, characterId: 1, category: 'MANOS', name: 'Manos 1', image: 'monster_1_hands_1.png', image_placeholder: 'monster_1_hands_1_ph.png', price: 3000},
             { zIndex: 1, characterId: 1, category: 'MANOS', name: 'Manos 2', image: 'monster_1_hands_2.png', image_placeholder: 'monster_1_hands_2_ph.png', price: 3000},
             { zIndex: 1, characterId: 1, category: 'MANOS', name: 'Manos 3', image: 'monster_1_hands_3.png', image_placeholder: 'monster_1_hands_3_ph.png', price: 3500},
@@ -193,21 +193,88 @@ module.exports = function(server) {
             { zIndex: -1, characterId: -1, category: 'ALAS', name: 'Ala basica', image: 'wings_1.png', image_placeholder: 'wings_1_ph.png', price: 30000},
             { zIndex: -1, characterId: -1, category: 'ALAS', name: 'Ala de angel', image: 'wings_2.png', image_placeholder: 'wings_2_ph.png', price: 50000},
             { zIndex: -1, characterId: -1, category: 'ALAS', name: 'Ala legendaria', image: 'wings_3.png', image_placeholder: 'wings_3_ph.png', price: 70000},
+        ]; */
+        var accesories = [
+            //Pelos
+            { name: 'Sin pelo', listId: 0, partId: 0, price: 0 },
+            { name: 'Pelo largo', listId: 0, partId: 1, price: 8000 },
+            { name: 'Pelo corto', listId: 0, partId: 2, price: 3500 },
+            { name: 'Pelo rockero', listId: 0, partId: 3, price: 5000 },
+            { name: 'Pelo hoja', listId: 0, partId: 4, price: 2500 },
+            { name: 'Pelo aplastado', listId: 0, partId: 5, price: 2500 },
+            //Cuernos
+            { name: 'Sin cuernos', listId: 1, partId: 0, price: 0 },
+            { name: 'Cuernos 1', listId: 1, partId: 1, price: 8000 },
+            { name: 'Cuernos 2', listId: 1, partId: 2, price: 3500 },
+            { name: 'Cuernos 3', listId: 1, partId: 3, price: 5000 },
+            //Ojos
+            { name: 'Sin ojos', listId: 2, partId: 0, price: 0 },
+            { name: 'Ojos saltones', listId: 2, partId: 1, price: 8000 },
+            { name: 'Ojos de orco', listId: 2, partId: 2, price: 3500 },
+            { name: 'Ojos negros', listId: 2, partId: 3, price: 5000 },
+            { name: 'Tres ojos', listId: 2, partId: 4, price: 2500 },
+            { name: 'Ojos malvadiscos', listId: 2, partId: 5, price: 2500 },
+            { name: 'Ojos coqueta', listId: 2, partId: 6, price: 2500 },
+            { name: 'Ojos dulces', listId: 2, partId: 7, price: 2500 },
+            { name: 'Ojos dulces 2', listId: 2, partId: 8, price: 2500 },
+            { name: 'Cuatro ojos', listId: 2, partId: 9, price: 2500 },
+            { name: 'Lentes de sol', listId: 2, partId: 10, price: 2500 },
+            //Bocas
+            { name: 'Sin boca', listId: 3, partId: 0, price: 0 },
+            { name: 'Bigote', listId: 3, partId: 1, price: 8000 },
+            { name: 'Sonrisa', listId: 3, partId: 2, price: 3500 },
+            { name: 'Cloy', listId: 3, partId: 3, price: 5000 },
+            { name: 'Boca Shrek', listId: 3, partId: 4, price: 5000 },
+            { name: 'Babosa', listId: 3, partId: 5, price: 5000 },
+            { name: 'Boca de conejo', listId: 3, partId: 6, price: 5000 },
+            { name: 'Gruñon', listId: 3, partId: 7, price: 5000 },
+            { name: 'Lenguetazo', listId: 3, partId: 8, price: 5000 },
+            //Brazos
+            { name: 'Sin brazos', listId: 4, partId: 0, price: 0 },
+            { name: 'Brazos de mariposa', listId: 4, partId: 1, price: 8000 },
+            { name: 'Brazos de Gorila', listId: 4, partId: 2, price: 3500 },
+            { name: 'Brazos largos', listId: 4, partId: 3, price: 5000 },
+            { name: 'Brazos cortos', listId: 4, partId: 4, price: 5000 },
+            { name: 'Tentáculos', listId: 4, partId: 5, price: 5000 },
+            //Top
+            { name: 'Top 1', listId: 5, partId: 0, price: 0 },
+            { name: 'Top 2', listId: 5, partId: 1, price: 2000 },
+            { name: 'Top 3', listId: 5, partId: 2, price: 3000 },
+            { name: 'Top 4', listId: 5, partId: 3, price: 4000 },
+            //Bottom
+            { name: 'Base 1', listId: 6, partId: 0, price: 0 },
+            { name: 'Base 2', listId: 6, partId: 1, price: 2000 },
+            { name: 'Base 3', listId: 6, partId: 2, price: 3000 },
+            { name: 'Base 4', listId: 6, partId: 3, price: 4000 },
+            { name: 'Base 5', listId: 6, partId: 4, price: 5000 },
+            //Pies
+            { name: 'Sin patas', listId: 7, partId: 0, price: 0 },
+            { name: 'Patas de pollo', listId: 7, partId: 1, price: 8000 },
+            { name: 'Patas de elefante', listId: 7, partId: 2, price: 8000 },
+            { name: 'Patas de monito', listId: 7, partId: 3, price: 3500 },
+            { name: 'Patas de gorila', listId: 7, partId: 4, price: 5000 },
+            { name: 'Tentáculos', listId: 7, partId: 5, price: 5000 },
+            { name: 'Patas de zebra', listId: 7, partId: 6, price: 5000 },
+            //Alas
+            { name: 'Sin alas', listId: 8, partId: 0, price: 0 },
+            { name: 'Alas de murciélago', listId: 8, partId: 1, price: 8000 },
+            { name: 'Alas de mariposa', listId: 8, partId: 2, price: 8000 },
+            { name: 'Alas de dragon', listId: 8, partId: 3, price: 3500 },
+            //Orejas
+            { name: 'Sin orejas', listId: 9, partId: 0, price: 0 },
+            { name: 'Orejas peludas', listId: 9, partId: 1, price: 8000 },
+            { name: 'Orejas de orco', listId: 9, partId: 2, price: 8000 }
         ];
-        var accesories = commonAccesories;
 
         var promisesAccesories = [];
         for(var idx in accesories) {
             const accesory = accesories[idx];
             promisesAccesories.push(new Promise((resolve, reject) => {
-                server.models.CharacterAccesory.upsertWithWhere({ characterId: accesory.characterId, name: accesory.name }, {
-                    characterId: accesory.characterId,
+                server.models.CharacterAccesory.upsertWithWhere({ listId: accesory.listId, partId: accesory.partId, name: accesory.name }, {
                     name: accesory.name,
-                    category: accesory.category,
-                    image: accesory.image,
-                    image_placeholder: accesory.image_placeholder,
+                    listId: accesory.listId,
+                    partId: accesory.partId,
                     price: accesory.price,
-                    zIndex: accesory.zIndex
                 }, (err, result) => { resolve() });
             }));
         }

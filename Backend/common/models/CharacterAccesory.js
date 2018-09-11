@@ -1,41 +1,52 @@
 'use strict';
 
 const app = require('../../server/server');
-const mergeImages = require('merge-images');
-const Canvas = require('canvas');
+const loopbackContext = require("loopback-context");
+const log = require('fancy-log');
 
 module.exports = function(CharacterAccesory) {
 
-    CharacterAccesory.availableAccesories = getAvailableAccesories;
+    CharacterAccesory.availableAccesories = availableAccesories;
 
-    function getAvailableAccesories(characterId, next) {
-        var query = {
-            order: 'price ASC'
-        };
-        if(characterId != null && characterId > -1) {
-            query.where = {
-                or: [
-                    { characterId : -1 },
-                    { characterId : characterId }
-                ]
-            }
-        };
-        app.models.CharacterAccesory.find(query, (e, accesories) => {
-            var promises = [];
-            for(var idx in accesories) {
-                const accesory = accesories[idx];
-                promises.push(new Promise((resolve, reject) => {
-                    mergeImages([__dirname + '/../../assets/images/character_set/' + accesory.image_placeholder], {
-                        Canvas: Canvas
-                    }).then((b64) => {
-                        resolve(Object.assign(accesory, { imageb64: b64 }));
+    function availableAccesories(next) {
+        let error = new Error();
+        let ctx = loopbackContext.getCurrentContext();
+        let accessToken = ctx && ctx.get('accessToken');
+
+        if(accessToken != null && accessToken.userId) {
+            app.models.UserCharacter.findOne({ accountId : accessToken.userId}, (e, userCharacter) => {
+                if(userCharacter) {
+                    app.models.CharacterAccesory.find({}, (e, accesories) => {
+
+                        //Check items if they are buyables by the current user
+                        app.models.Profile.findOne({ where : { accountId : accessToken.userId }}, (err, profile) => {
+
+                            var promises = [];
+                            for(const idx in accesories) {
+                                promises.push(new Promise((resolve, reject) => {
+                                    let accesory = accesories[idx];
+                                    app.models.UserCharacterAccesory.count({ accesoryId: accesory.id, userCharacterId: userCharacter.id }, (err, acc) => {
+                                        accesory.isBuyable = accesory.price <= profile.balance_tuls;
+                                        if(acc > 0) {
+                                            accesory.isEquipped = true;
+                                        } else {
+                                            accesory.isEquipped = false;
+                                        }
+                                        resolve(accesory);
+                                    });
+                                }));
+                            }
+
+                            Promise.all(promises).then((data) => {
+                                next(null, {
+                                    success: true,
+                                    data: data
+                                });
+                            });
+                        });
                     });
-                }));
-            }
-
-            Promise.all(promises).then((values) => {
-                next(null, values);
-            })
-        });
+                }
+            });
+        }
     }
 };

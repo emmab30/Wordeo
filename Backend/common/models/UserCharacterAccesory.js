@@ -1,8 +1,8 @@
 'use strict';
 
 const app = require('../../server/server');
-const mergeImages = require('merge-images');
-const Canvas = require('canvas');
+const loopbackContext = require("loopback-context");
+const log = require('fancy-log');
 
 module.exports = function(UserCharacterAccesory) {
 

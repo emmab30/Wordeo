@@ -22,7 +22,7 @@ var models = [
     'QuestionCategory',
     'Notification',
     'PendingQuestion',
-    'Contact', */
+    'Contact',
     'ElementalLifeAccesory',
     'UserElementalLifeAccesory',
     'UserCharacter',
@@ -33,7 +33,9 @@ var models = [
     'QuestionReport',
     'Reward',
     'News',
-    'NewsUser'
+    'NewsUser' */
+    'CharacterAccesory',
+    'UserCharacter'
 ];
 ds.isActual(models, function(err, actual) {
     if (!actual) {

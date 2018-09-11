@@ -1,7 +1,6 @@
 'use strict';
 
 const app = require('../../server/server');
-const mergeImages = require('merge-images');
 const Canvas = require('canvas');
 
 module.exports = function(ElementalLifeAccesory) {
@@ -9,7 +8,7 @@ module.exports = function(ElementalLifeAccesory) {
     ElementalLifeAccesory.availableElements = getAvailableElements;
 
     function getAvailableElements(next) {
-        app.models.ElementalLifeAccesory.find({ order : 'price ASC' }, (e, accesories) => {
+        /* app.models.ElementalLifeAccesory.find({ order : 'price ASC' }, (e, accesories) => {
             var promises = [];
             for(var idx in accesories) {
                 const accesory = accesories[idx];
@@ -25,7 +24,7 @@ module.exports = function(ElementalLifeAccesory) {
             Promise.all(promises).then((values) => {
                 next(null, values);
             })
-        });
+        }); */
     }
 
 };

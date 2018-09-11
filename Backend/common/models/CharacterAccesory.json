@@ -7,32 +7,23 @@
   },
   "mixins": {},
   "properties": {
-    "characterId": {
-      "type": "number",
-      "required": true
-    },
-    "category": {
-      "type": "string",
-      "required": true
-    },
     "name": {
       "type": "string",
       "required": true
     },
-    "image": {
-      "type": "string",
+    "listId": {
+      "type": "number",
       "required": true
     },
-    "image_placeholder": {
-      "type": "string",
+    "partId": {
+      "type": "number",
       "required": true
     },
     "price": {
       "type": "number",
-      "required": false,
-      "default": 0
+      "required": true
     },
-    "zIndex": {
+    "minLevel": {
       "type": "number",
       "required": false,
       "default": 0
@@ -43,16 +34,6 @@
   "acls": [],
   "methods": {
     "availableAccesories": {
-      "accepts": [
-        {
-          "arg": "characterId",
-          "type": "string",
-          "required": false,
-          "http": {
-            "source": "query"
-          }
-        }
-      ],
       "returns": {
         "root": true,
         "type": "object"

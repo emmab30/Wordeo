@@ -6,7 +6,6 @@ const multiparty = require('multiparty');
 const { join, extname } = require('path');
 const { readFileSync } = require('fs');
 const AWS = require('aws-sdk');
-var mergeImages = require('merge-images');
 var Canvas = require('canvas');
 var _ = require('lodash');
 const s3 = new AWS.S3({
@@ -283,104 +282,20 @@ module.exports = function(Account) {
         if(accessToken != null && accessToken.userId > -1) {
             app.models.Account.findOne({ include: 'profile', where : { id : accessToken.userId  }}, function(err, user) {
 
-                var fnNext = (character = null, characterId = -1, life = -1) => {
-                    user.profile.get().then((profile) => {
-                        if(character){
-                            user.__data.profile.characterId = characterId;
-                            user.__data.profile.character = character;
-                            user.__data.profile.characterLife = life;
-                        }
-
-                        if(err) {
-                            next(null, {
-                                success: false,
-                                error: err
-                            });
-                        } else {
-                            if(user) {
-                                next(null, {
-                                    success: true,
-                                    data: user
-                                });
-                            } else {
-                                next(null, {
-                                    success: false,
-                                    data: null
-                                });
-                            }
-                        }
-                    });
-                }
-
-                user.profile.get().then((profile) => {
-
-                    //Get characters for user
-                    app.models.UserCharacter.find({ include : 'character', where : { profileId: profile.id, isDead: false }, order: 'createdAt DESC' }, (err, userCharacters) => {
-                        if(userCharacters != null && userCharacters.length > 0) {
-                            const userCharacter = userCharacters[0];
-                            userCharacter.character.get().then((character) => {
-                                //Load accesories for character!
-
-                                app.models.UserCharacterAccesory.find({ where : { userCharacterId : userCharacter.id }}, (err, userCharacterAccesories) => {
-                                    var promises = [];
-
-                                    if(!err && userCharacterAccesories) {
-                                        for(var idx in userCharacterAccesories) {
-                                            promises.push(new Promise((resolve, reject) => {
-                                                app.models.CharacterAccesory.findOne({ where : { id : userCharacterAccesories[idx].accesoryId }}, (e, result) => {
-                                                    if(!err && result) {
-                                                        resolve(result);
-                                                    }
-                                                })
-                                            }));
-                                        }
-
-                                        Promise.all(promises).then((value) => {
-                                            let arr = [];
-                                            arr.push({
-                                                src: (__dirname + '/../../assets/images/character_set/monster_' + userCharacter.characterId + '.png'),
-                                                zIndex: 0
-                                            });
-
-                                            for(var idx in value) {
-                                                arr.push({
-                                                    src: __dirname + '/../../assets/images/character_set/' + value[idx].image,
-                                                    x: 0,
-                                                    y: 0,
-                                                    zIndex: value[idx].zIndex
-                                                });
-                                            }
-
-                                            arr.sort((a,b) => {
-                                                return a.zIndex > b.zIndex;
-                                            });
-                                            mergeImages(arr, {
-                                                Canvas: Canvas
-                                            }).then((b64) => {
-                                                fnNext(b64, userCharacter.characterId, userCharacter.life);
-                                            });
-                                        })
-                                    }
-                                });
-                            });
-                        } else {
-                            mergeImages([__dirname + '/../../assets/images/character_set/monster_default.png'], {
-                                Canvas: Canvas
-                            }).then((b64) => {
-                                fnNext(b64);
-                            });
-                        }
-                    })
+                next(null, {
+                    success: true,
+                    data: user
                 });
             })
         } else {
-            next();
+            next(null, {
+                success: false,
+                errorMessage: 'Lamentablemente no pudimos obtener tu perfil.'
+            });
         }
     }
 
     function updateMe(data, next) {
-        console.log(data);
-        console.log(next);
         var ctx = loopbackContext.getCurrentContext();
         // Get the current access token
         var accessToken = ctx && ctx.get('accessToken');
@@ -512,7 +427,6 @@ module.exports = function(Account) {
                                 } else {
                                     status.statusRoundString = "Perdiendo (" + max.points + " p)";
                                 }
-                                console.log("Current user", status);
                                 next(null, status);
                             } else {
                                 next(null, status);

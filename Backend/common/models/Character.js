@@ -1,7 +1,6 @@
 'use strict';
 
 const app = require('../../server/server');
-const mergeImages = require('merge-images');
 const Canvas = require('canvas');
 const loopbackContext = require("loopback-context");
 
@@ -21,7 +20,7 @@ module.exports = function(Character) {
     }
 
     function availableCharacters(next) {
-        var ctx = loopbackContext.getCurrentContext();
+        /* var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
         var promises = [];
 
@@ -52,7 +51,7 @@ module.exports = function(Character) {
                     });
                 });
             })
-        }
+        } */
     }
 
     function getRankingTopPlayers(next) {
@@ -86,7 +85,7 @@ module.exports = function(Character) {
 
     function make(data, next) {
 
-        var ctx = loopbackContext.getCurrentContext();
+        /* var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
 
         if(accessToken.userId > -1) {
@@ -94,10 +93,6 @@ module.exports = function(Character) {
                 if(profile) {
                     app.models.UserCharacter.find({ where : { profileId : profile.id }, order: 'createdAt DESC' }, (err, results) => {
                         let characterId = data.characterId;
-                        /* if(results.length > 0) {
-                            characterId = results[0].characterId;
-                        } */
-
                         let accesories = data.accesories;
                         let mergedItems = [];
                         mergedItems.push({
@@ -193,7 +188,7 @@ module.exports = function(Character) {
     }
 
     function buyCharacter(data, next) {
-        var ctx = loopbackContext.getCurrentContext();
+        /* var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
 
         if(accessToken.userId > -1) {
@@ -232,11 +227,11 @@ module.exports = function(Character) {
                 });
                 }
             });
-        }
+        } */
     }
 
     function buyElementalLife(data, next) {
-        var ctx = loopbackContext.getCurrentContext();
+        /* var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
 
         var error = new Error();
@@ -282,11 +277,11 @@ module.exports = function(Character) {
                     }
                 });
             });
-        }
+        } */
     }
 
     function buyAccesories(data, next) {
-        var ctx = loopbackContext.getCurrentContext();
+        /* var ctx = loopbackContext.getCurrentContext();
         var accessToken = ctx && ctx.get('accessToken');
 
         if(accessToken != null && accessToken.userId > -1) {
@@ -339,11 +334,11 @@ module.exports = function(Character) {
                     });
                 });
             });
-        }
+        } */
     }
 
     function getCharacterByUserId(userId, callback) {
-        app.models.Profile.findOne({ where : { accountId : userId }}, (err, profile) => {
+        /* app.models.Profile.findOne({ where : { accountId : userId }}, (err, profile) => {
             if(profile) {
                 app.models.UserCharacter.find({ where : { profileId : profile.id, isDead: false }, order: 'createdAt DESC' }, (err, results) => {
                     if(results.length > 0) {
@@ -409,6 +404,6 @@ module.exports = function(Character) {
             } else {
                 callback(null);
             }
-        })
+        }) */
     }
 };
