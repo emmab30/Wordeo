@@ -13,11 +13,19 @@ module.exports = function(Reward) {
         var accessToken = ctx && ctx.get('accessToken');
         if(accessToken != null && accessToken.userId > -1) {
             Reward.findOne({ where : { userId : accessToken.userId, wasNotified: false }}, (err, result) => {
-                next(null, [result]);
-
                 if(result != null) {
+                    next(null, {
+                        success: true,
+                        data: [result]
+                    })
+
                     result.wasNotified = true;
                     result.save();
+                } else {
+                    next(null, {
+                        success: true,
+                        data: []
+                    })
                 }
             });
         }

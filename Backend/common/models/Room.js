@@ -140,8 +140,6 @@ module.exports = function(Room) {
 
                             if(process.env.GAME_VERSION) {
 
-                                console.log(count);
-                                console.log("asking for room " , room);
                                 app.models.RoomUser.find({ where : { roomId : room.id }}, (err, roomUsers) => {
                                     console.log(roomUsers);
                                     let some = _.some(roomUsers, { userId : accessToken.userId });
@@ -179,10 +177,24 @@ module.exports = function(Room) {
 
                                 if(process.env.GAME_VERSION) {
                                     app.socketHandler.getDetailsForRoom(room.id, (data) => {
-                                        next(null, {
-                                            room: room,
-                                            players: data,
-                                            startNow: false
+
+                                        var promises = [];
+                                        for(var idx in data) {
+                                            let player = data[idx];
+                                            promises.push((new Promise(resolve, reject) => {
+                                                app.models.Character.getCharacterByUserId(data[idx].id, (character) => {
+                                                    player.character = character;
+                                                    resolve(player);
+                                                });
+                                            }));
+                                        }
+
+                                        Promise.all(promises).then((players) => {
+                                            next(null, {
+                                                room: room,
+                                                players: players,
+                                                startNow: false
+                                            });
                                         });
                                     });
                                 } else {

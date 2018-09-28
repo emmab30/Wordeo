@@ -75,8 +75,10 @@ module.exports = function(Character) {
             Promise.all(promises).then((values) => {
                 app.models.Account.getRankingByUserId(accessToken.userId, (rank) => {
                     next(null, {
-                        myPosition: rank,
-                        players: values
+                        success: true,
+                        data: values
+                        /* myPosition: rank,
+                        players:  */
                     });
                 });
             });
@@ -338,72 +340,44 @@ module.exports = function(Character) {
     }
 
     function getCharacterByUserId(userId, callback) {
-        /* app.models.Profile.findOne({ where : { accountId : userId }}, (err, profile) => {
-            if(profile) {
-                app.models.UserCharacter.find({ where : { profileId : profile.id, isDead: false }, order: 'createdAt DESC' }, (err, results) => {
-                    if(results.length > 0) {
-                        app.models.UserCharacterAccesory.find({ where : { userCharacterId : results[0].id }}, (err, accesories) => {
-                            let characterId = 1;
-                            if(results.length > 0) {
-                                characterId = results[0].characterId;
-                            } else {
-                                characterId = 'default';
-                            }
+        var jsonCharacter = {
+            parts: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            color: 0
+        };
 
-                            let mergedItems = [];
-                            mergedItems.push({
-                                src: __dirname + '/../../assets/images/character_set/monster_' + characterId + '.png',
-                                zIndex: 0
-                            });
+        var promises = [];
 
-                            let promises = [];
-                            for(var idx in accesories) {
-                                const accesoryId = accesories[idx].accesoryId;
-                                promises.push(new Promise((resolve, reject) => {
-                                    app.models.CharacterAccesory.findOne({ where : { id : accesoryId }}, (err, result) => {
-                                        if(!err && result) {
-                                            resolve(result);
-                                        }
-                                    })
-                                }));
-                            }
+        promises.push(new Promise((resolve, reject) => {
+            //Get first character by user Id
+            app.models.UserCharacter.findOne({ where : { accountId : userId }}, (err, character) => {
+                if(character != null) {
 
-                            Promise.all(promises).then((value) => {
-                                for(var idx in value) {
-                                    mergedItems.push({
-                                        src: __dirname + '/../../assets/images/character_set/' + value[idx].image,
-                                        x: 0,
-                                        y: 0,
-                                        zIndex: value[idx].zIndex
-                                    });
-                                }
+                    app.models.UserCharacterAccesory.find({ where : { userCharacterId : character.id }}, (err, characterAccesories) => {
 
-                                mergedItems.sort((a,b) => {
-                                    return a.zIndex > b.zIndex;
+                        if(characterAccesories != null && characterAccesories.length > 0) {
+                            for(var idx in characterAccesories) {
+                                const characterAccesory = characterAccesories[idx];
+                                app.models.CharacterAccesory.findOne({ where : { id : characterAccesory.accesoryId }}, (err, accesory) => {
+                                    if(accesory != null) {
+                                        jsonCharacter.parts[accesory.listId] = accesory.partId;
+                                        resolve();
+                                    } else {
+                                        resolve();
+                                    }
                                 });
-                                mergeImages(mergedItems, {
-                                    Canvas: Canvas
-                                }).then((b64) => {
-                                    callback(b64);
-                                });
-                            });
-                        });
-                    } else {
-                        let mergedItems = [];
-                        mergedItems.push({
-                            src: __dirname + '/../../assets/images/character_set/monster_default.png',
-                            zIndex: 0
-                        });
-                        mergeImages(mergedItems, {
-                            Canvas: Canvas
-                        }).then((b64) => {
-                            callback(b64);
-                        });
-                    }
-                });
-            } else {
-                callback(null);
-            }
-        }) */
+                            }
+                        } else {
+                            resolve();
+                        }
+                    });
+                } else {
+                    resolve();
+                }
+            });
+        }));
+
+        Promise.all(promises).then((e) => {
+            callback(jsonCharacter);
+        });
     }
 };
