@@ -181,7 +181,7 @@ module.exports = function(Room) {
                                         var promises = [];
                                         for(var idx in data) {
                                             let player = data[idx];
-                                            promises.push((new Promise(resolve, reject) => {
+                                            promises.push(new Promise((resolve, reject) => {
                                                 app.models.Character.getCharacterByUserId(data[idx].id, (character) => {
                                                     player.character = character;
                                                     resolve(player);
