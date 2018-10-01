@@ -143,21 +143,21 @@ module.exports = function(Room) {
                                 app.models.RoomUser.find({ where : { roomId : room.id }}, (err, roomUsers) => {
                                     let some = _.some(roomUsers, { userId : accessToken.userId });
                                     if(some) {
-                                        //New version implementation
-                                        var promises = [];
-                                        for(var idx in data.accounts) {
-                                            let player = data.accounts[idx];
-                                            promises.push(new Promise((resolve, reject) => {
-                                                app.models.Character.getCharacterByUserId(data[idx].id, (character) => {
-                                                    player.character = character;
-                                                    resolve(player);
-                                                });
-                                            }));
-                                        }
+                                        app.socketHandler.getDetailsForRoom(room.id, (data) => {
 
-                                        Promise.all(promises).then((players) => {
-                                            app.socketHandler.getDetailsForRoom(room.id, (data) => {
-                                                console.log("Players", players);
+                                            //New version implementation
+                                            var promises = [];
+                                            for(var idx in data.accounts) {
+                                                let player = data.accounts[idx];
+                                                promises.push(new Promise((resolve, reject) => {
+                                                    app.models.Character.getCharacterByUserId(player.id, (character) => {
+                                                        player.character = character;
+                                                        resolve(player);
+                                                    });
+                                                }));
+                                            }
+
+                                            Promise.all(promises).then((players) => {
                                                 next(null, {
                                                     room: room,
                                                     players: players,
