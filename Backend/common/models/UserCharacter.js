@@ -7,6 +7,7 @@ var _ = require('lodash');
 
 module.exports = function(UserCharacter) {
 	UserCharacter.getMyCharacter = getMyCharacter;
+	UserCharacter.getCharacterByUserId = getCharacterByUserId;
 	UserCharacter.updateMyCharacter = updateMyCharacter;
 
 	function getMyCharacter(next) {
@@ -49,7 +50,50 @@ module.exports = function(UserCharacter) {
 	        		});
 	        	}
 	        });
-        }
+        };
+	}
+
+	function getCharacterByUserId(userId, next) {
+		let error = new Error();
+		let ctx = loopbackContext.getCurrentContext();
+        let accessToken = ctx && ctx.get('accessToken');
+
+        if(accessToken != null && accessToken.userId) {
+        	UserCharacter.findOne({ where : { accountId : userId }}, function(err, character) {
+	        	if(character != null) {
+
+	        		app.models.UserCharacterAccesory.find({ where : { userCharacterId : character.id }}, (err, userCharacterAccesories) => {
+	        			app.models.CharacterAccesory.find({ where : { id : { inq: userCharacterAccesories.map((e) => { return e.accesoryId }) } }}, (err, accesories) => {
+
+	        				app.models.Profile.findOne({ where : { accountId : userId }}, (err, profile) => {
+		                        for(var idx in userCharacterAccesories) {
+		                            let accesory = accesories[idx];
+		                            accesories[idx].isBuyable = accesory.price <= profile.balance_tuls;
+		                            accesories[idx].isEquipped = userCharacterAccesories[idx].isEquipped;
+		                        }
+
+		                        character.accesories = accesories;
+		                        next(null, {
+				        			success: true,
+				        			data: character
+				        		});
+	                        });
+	        			});
+	        		});
+	        	} else {
+	        		UserCharacter.create({
+	        			accountId: accessToken.userId,
+	        			life: 100,
+	        			colorId: 0
+	        		}, (err, created) => {
+	        			next(null, {
+		        			success: true,
+		        			data: created
+		        		})
+	        		});
+	        	}
+	        });
+        };
 	}
 
 	function updateMyCharacter(data, next) {

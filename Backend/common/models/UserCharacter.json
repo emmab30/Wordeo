@@ -39,6 +39,21 @@
         "path": "/me"
       }
     },
+    "getCharacterByUserId": {
+      "accepts": {
+        "arg": "userId",
+        "type": "number",
+        "required": true
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/:userId"
+      }
+    },
     "updateMyCharacter": {
       "accepts": {
         "arg": "data",
