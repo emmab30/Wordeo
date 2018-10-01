@@ -51,7 +51,7 @@
       },
       "http": {
         "verb": "get",
-        "path": "/:userId"
+        "path": "/user/:userId"
       }
     },
     "updateMyCharacter": {
