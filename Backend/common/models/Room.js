@@ -146,7 +146,7 @@ module.exports = function(Room) {
                                         //New version implementation
                                         var promises = [];
                                         for(var idx in data.accounts) {
-                                            let player = data[idx];
+                                            let player = data.accounts[idx];
                                             promises.push(new Promise((resolve, reject) => {
                                                 app.models.Character.getCharacterByUserId(data[idx].id, (character) => {
                                                     player.character = character;
@@ -157,7 +157,7 @@ module.exports = function(Room) {
 
                                         Promise.all(promises).then((players) => {
                                             app.socketHandler.getDetailsForRoom(room.id, (data) => {
-                                                console.log(data);
+                                                console.log("Players", players);
                                                 next(null, {
                                                     room: room,
                                                     players: players,
