@@ -141,16 +141,28 @@ module.exports = function(Room) {
                             if(process.env.GAME_VERSION) {
 
                                 app.models.RoomUser.find({ where : { roomId : room.id }}, (err, roomUsers) => {
-                                    console.log(roomUsers);
                                     let some = _.some(roomUsers, { userId : accessToken.userId });
                                     if(some) {
                                         //New version implementation
-                                        app.socketHandler.getDetailsForRoom(room.id, (data) => {
-                                            console.log(data);
-                                            next(null, {
-                                                room: room,
-                                                players: data.accounts,
-                                                startNow: true
+                                        var promises = [];
+                                        for(var idx in data.accounts) {
+                                            let player = data[idx];
+                                            promises.push(new Promise((resolve, reject) => {
+                                                app.models.Character.getCharacterByUserId(data[idx].id, (character) => {
+                                                    player.character = character;
+                                                    resolve(player);
+                                                });
+                                            }));
+                                        }
+
+                                        Promise.all(promises).then((players) => {
+                                            app.socketHandler.getDetailsForRoom(room.id, (data) => {
+                                                console.log(data);
+                                                next(null, {
+                                                    room: room,
+                                                    players: players,
+                                                    startNow: true
+                                                });
                                             });
                                         });
                                     } else {
