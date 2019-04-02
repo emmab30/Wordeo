@@ -71,6 +71,8 @@
       "permission": "ALLOW",
       "property": [
         "loginFacebook",
+        "loginWithCredentials",
+        "signupWithCredentials",
         "loginAdmin",
         "me",
         "updateMe",
@@ -135,6 +137,52 @@
       "http": {
         "verb": "post",
         "path": "/login/facebook"
+      }
+    },
+    "me": {
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/me"
+      }
+    },
+    "loginWithCredentials": {
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
+        "http": {
+          "source": "body"
+        }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/login/credentials"
+      }
+    },
+    "signupWithCredentials": {
+      "accepts": {
+        "arg": "data",
+        "type": "object",
+        "required": true,
+        "http": {
+          "source": "body"
+        }
+      },
+      "returns": {
+        "root": true,
+        "type": "object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/signup/credentials"
       }
     },
     "me": {

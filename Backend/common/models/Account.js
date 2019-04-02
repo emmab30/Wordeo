@@ -16,6 +16,8 @@ const s3 = new AWS.S3({
 module.exports = function(Account) {
     Account.loginAdmin = loginAdmin;
     Account.loginFacebook = loginFacebook;
+    Account.loginWithCredentials = loginWithCredentials;
+    Account.signupWithCredentials = signupWithCredentials;
     Account.getFriends = getFriends;
     Account.getPeople = getPeople;
     Account.me = getMe;
@@ -188,7 +190,115 @@ module.exports = function(Account) {
                 error.code = 'AUTH_UNAUTHORIZED';
                 next(error);
             }
-        })
+        });
+    }
+
+    function loginWithCredentials(data, next) {
+        let email = data.email;
+        let password = data.password;
+
+        console.log("Login with [email=" + email + ", password=" + password + "]");
+
+        Account.login({ email : data.email, password: data.password }, function(err, token) {
+            if(!err) {
+                Account.findOne({ where : { email : data.email }}, function(err, account) {
+                    let obj = {
+                        session: token,
+                        user: account,
+                        success: true
+                    };
+
+                    next(null, obj);
+                });
+            } else {
+                next(null, {
+                    success: false,
+                    message: 'La cuenta ingresada no es correcta'
+                });
+            }
+        });
+    }
+
+    function signupWithCredentials(data, next) {
+
+        //Validate data
+        if(!data.username || !data.email || !data.password || !data.name) {
+            next(null, {
+                success: false,
+                message: 'Parece que falta información. Por favor, completa toda la información disponible.'
+            });
+            return;
+        } else if(data.name.split(' ').length < 2) {
+            next(null, {
+                success: false,
+                message: 'Tu nombre completo debe tener nombre y apellido :)'
+            });
+            return;
+        }
+
+        //If everything is ok, login the user
+        let user = new Account;
+        user.email = data.email;
+        user.password = data.password;
+        /*user.appVersion = data.appVersion;
+        user.notificationId = data.notificationId;*/
+        user.platform = 'ios';
+        user.lastLogin = new Date();
+        //user.facebookId = dataGraph.id;
+        //var username = (dataGraph.name.toUpperCase().substr(0, 4) + dataGraph.last_name.toUpperCase().substr(0, 4) + _.random(0, 2000).toString());
+        user.username = data.email;
+        //user.facebookAccessToken = data.accessToken;
+
+        let profile = new app.models.Profile;
+        profile.name = data.name.split(' ')[0];
+        profile.lastName = data.name.split(' ')[1];
+        //profile.avatar = dataGraph.picture.data.url;
+        profile.birthday = '2019/01/01';
+        profile.createdAt = new Date();
+        profile.lastModifiedAt = new Date();
+        profile.level = 1;
+        profile.experience_points = 0;
+
+        user.save({}, function(err, userCreated) {
+            if(err) {
+                console.log("Error 1");
+                console.log(err);
+                next(null, {
+                    success: false,
+                    message: 'La cuenta ya parece estar registrada. Intenta con otro nombre de usuario y otro e-mail.'
+                });
+            } else {
+                profile.accountId = userCreated.id;
+                profile.save({}, function(err, profile) {
+                    if(err) {
+                        console.log("Error 2");
+                        console.log(err);
+                        next(null, {
+                            success: false,
+                            message: 'Error al crear el perfil de usuario. Inténtalo nuevamente.'
+                        });
+                    } else {
+                        //app.models.Notification.updateTagsDevice(userCreated.id);
+                        onUserCreated(userCreated, function(){
+                            Account.findOne({ where : { email : userCreated.email } }, function(err, user) {
+                                user.createAccessToken(12096000, function (error, token) {
+                                    let obj = {
+                                        session: token,
+                                        user: user,
+                                        success: true
+                                    };
+                                    obj.version = {
+                                        isOldVersion: false,
+                                    };
+
+                                    next(null, obj);
+                                });
+                            });
+                        });
+                    }
+                });
+            }
+        });
     }
 
     function getFriends(next) {
@@ -257,7 +367,7 @@ module.exports = function(Account) {
                             if(profile && profile.length > 0) {
                                 account.profile = profile[0];
                                 app.models.Character.getCharacterByUserId(account.id, (character) => {
-                                    account.character = character;
+                                    account.profile.character = character;
                                     resolve(account);
                                 });
                             } else {
@@ -270,7 +380,10 @@ module.exports = function(Account) {
 
             Promise.all(promises).then((values) => {
                 var filtered = _.filter(values, (e) => { return e != null && e.username != null });
-                next(null, filtered)
+                next(null, {
+                    success: true,
+                    data: filtered
+                });
             })
         });
     }
