@@ -1,0 +1,221 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/navigation/CustomNavbarNotification.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../localization/strings');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _default = require('../../styles/default');
+
+var _global = require('../common/global');
+
+var _BaseService = require('../../services/BaseService.js');
+
+var _AuthService = require('../../services/AuthService.js');
+
+var _AuthService2 = _interopRequireDefault(_AuthService);
+
+var _Helper = require('../common/Helper');
+
+var _Helper2 = _interopRequireDefault(_Helper);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _DialogConfirmation = require('../DialogConfirmation');
+
+var _DialogConfirmation2 = _interopRequireDefault(_DialogConfirmation);
+
+var _AnalyticsService = require('../../services/AnalyticsService.js');
+
+var _AnalyticsService2 = _interopRequireDefault(_AnalyticsService);
+
+var _reactNativeCachedImage = require('react-native-cached-image');
+
+var _reactNativeAnimatable = require('react-native-animatable');
+
+var Animatable = _interopRequireWildcard(_reactNativeAnimatable);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    CustomNavbarNotification: {
+        displayName: 'CustomNavbarNotification'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/navigation/CustomNavbarNotification.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var CustomNavbarNotification = _wrapComponent('CustomNavbarNotification')(function (_Component) {
+    _inherits(CustomNavbarNotification, _Component);
+
+    function CustomNavbarNotification(props) {
+        _classCallCheck(this, CustomNavbarNotification);
+
+        var _this = _possibleConstructorReturn(this, (CustomNavbarNotification.__proto__ || Object.getPrototypeOf(CustomNavbarNotification)).call(this, props));
+
+        _this.state = {
+            height: new _reactNative.Animated.Value(0),
+            text: '',
+            options: {},
+            isComponentReleased: false,
+            animation: "rubberBand",
+            animationDuration: 500,
+            onPress: null,
+            backgroundColor: null
+        };
+        return _this;
+    }
+
+    _createClass(CustomNavbarNotification, [{
+        key: 'onNavigatorEvent',
+        value: function onNavigatorEvent(event) {
+            switch (event.id) {
+                case 'willAppear':
+                    break;
+                case 'didAppear':
+                    break;
+                case 'willDisappear':
+                    break;
+                case 'didDisappear':
+                    break;
+            }
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
+        key: 'showMessage',
+        value: function showMessage(message) {
+            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            this.setState({ text: message, options: options, backgroundColor: options.backgroundColor, isComponentReleased: false, animation: options.animation || "fadeIn", animationDuration: options.animationDuration || 500, onPress: options.onPress || null });
+
+            _reactNative.Animated.spring(this.state.height, {
+                toValue: 70,
+                duration: options.duration || 3000
+            }).start();
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            var _this2 = this;
+
+            _reactNative.Animated.timing(this.state.height, {
+                toValue: 0,
+                duration: 250
+            }).start(function () {
+                _this2.setState({ backgroundColor: null, options: null, height: new _reactNative.Animated.Value(0), text: null, isComponentReleased: true, animation: "fadeIn", animationDuration: 500, onPress: null });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            if (this.state.isComponentReleased) return null;
+
+            var containerTextStyle = this.state.options.containerTextStyle;
+
+
+            return _react3.default.createElement(
+                _reactNative.Animated.View,
+                { style: [styles.container, { height: this.state.height, backgroundColor: this.state.backgroundColor || '#eb2e28' }], __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 103
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.TouchableOpacity,
+                    {
+                        activeOpacity: .9,
+                        onPress: function onPress() {
+                            if (_this3.state.onPress) _this3.state.onPress();
+                        },
+                        style: [styles.inner], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 104
+                        }
+                    },
+                    _react3.default.createElement(
+                        Animatable.Text,
+                        { animation: this.state.animation, delay: 0, duration: this.state.animationDuration, iterationCount: 1, style: [styles.text, containerTextStyle], __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 111
+                            }
+                        },
+                        this.state.text
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CustomNavbarNotification;
+}(_react2.Component));
+
+exports.default = CustomNavbarNotification;
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        width: '100%',
+        overflow: 'hidden'
+    },
+    inner: {
+        padding: 0,
+        margin: 0,
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    text: {
+        marginHorizontal: 10,
+        fontFamily: _default.Font.PTSansRegular,
+        fontSize: 12,
+        color: 'white',
+        textAlign: 'center'
+    }
+});

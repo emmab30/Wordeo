@@ -1,0 +1,298 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createImageProgress = undefined;
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-image-progress/index.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactNative = require('react-native');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+  ImageProgress: {
+    displayName: 'ImageProgress',
+    isInFunction: true
+  }
+};
+
+var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+  filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-image-progress/index.js',
+  components: _components,
+  locals: [module],
+  imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+  return function (Component) {
+    return _reactTransformHmrLibIndexJs2(Component, id);
+  };
+}
+
+var styles = _reactNative.StyleSheet.create({
+  centered: _extends({}, _reactNative.StyleSheet.absoluteFillObject, {
+    alignItems: 'center',
+    justifyContent: 'center'
+  })
+});
+
+var DefaultIndicator = _reactNative.ActivityIndicator;
+
+var createImageProgress = function createImageProgress(ImageComponent) {
+  var _class, _temp;
+
+  return _wrapComponent('ImageProgress')((_temp = _class = function (_Component) {
+    _inherits(ImageProgress, _Component);
+
+    function ImageProgress(props) {
+      _classCallCheck(this, ImageProgress);
+
+      var _this = _possibleConstructorReturn(this, (ImageProgress.__proto__ || Object.getPrototypeOf(ImageProgress)).call(this, props));
+
+      _this.ref = null;
+
+      _this.handleRef = function (ref) {
+        _this.ref = ref;
+      };
+
+      _this.handleLoadStart = function () {
+        if (!_this.state.loading && _this.state.progress !== 1) {
+          _this.setState({
+            error: null,
+            loading: true,
+            progress: 0
+          });
+        }
+        _this.bubbleEvent('onLoadStart');
+      };
+
+      _this.handleProgress = function (event) {
+        var progress = event.nativeEvent.loaded / event.nativeEvent.total;
+
+        if (progress !== _this.state.progress && _this.state.progress !== 1) {
+          _this.setState({
+            loading: progress < 1,
+            progress: progress
+          });
+        }
+        _this.bubbleEvent('onProgress', event);
+      };
+
+      _this.handleError = function (event) {
+        _this.setState({
+          loading: false,
+          error: event.nativeEvent
+        });
+        _this.bubbleEvent('onError', event);
+      };
+
+      _this.handleLoad = function (event) {
+        if (_this.state.progress !== 1) {
+          _this.setState({
+            error: null,
+            loading: false,
+            progress: 1
+          });
+        }
+        _this.bubbleEvent('onLoad', event);
+      };
+
+      _this.state = {
+        error: null,
+        loading: false,
+        progress: 0,
+        thresholdReached: !props.threshold
+      };
+      return _this;
+    }
+
+    _createClass(ImageProgress, [{
+      key: 'componentDidMount',
+      value: function componentDidMount() {
+        var _this2 = this;
+
+        if (this.props.threshold) {
+          this.thresholdTimer = setTimeout(function () {
+            _this2.setState({ thresholdReached: true });
+            _this2.thresholdTimer = null;
+          }, this.props.threshold);
+        }
+      }
+    }, {
+      key: 'componentWillReceiveProps',
+      value: function componentWillReceiveProps(props) {
+        if (!this.props.source || !props.source || this.props.source.uri !== props.source.uri) {
+          this.setState({
+            error: null,
+            loading: false,
+            progress: 0
+          });
+        }
+      }
+    }, {
+      key: 'componentWillUnmount',
+      value: function componentWillUnmount() {
+        if (this.thresholdTimer) {
+          clearTimeout(this.thresholdTimer);
+        }
+      }
+    }, {
+      key: 'setNativeProps',
+      value: function setNativeProps(nativeProps) {
+        if (this.ref) {
+          this.ref.setNativeProps(nativeProps);
+        }
+      }
+    }, {
+      key: 'bubbleEvent',
+      value: function bubbleEvent(propertyName, event) {
+        if (typeof this.props[propertyName] === 'function') {
+          this.props[propertyName](event);
+        }
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        var _props = this.props,
+            children = _props.children,
+            errorContainerStyle = _props.errorContainerStyle,
+            indicator = _props.indicator,
+            indicatorContainerStyle = _props.indicatorContainerStyle,
+            indicatorProps = _props.indicatorProps,
+            renderError = _props.renderError,
+            renderIndicator = _props.renderIndicator,
+            source = _props.source,
+            style = _props.style,
+            threshold = _props.threshold,
+            props = _objectWithoutProperties(_props, ['children', 'errorContainerStyle', 'indicator', 'indicatorContainerStyle', 'indicatorProps', 'renderError', 'renderIndicator', 'source', 'style', 'threshold']);
+
+        if (!source || !source.uri) {
+          return _react3.default.createElement(
+            ImageComponent,
+            _extends({ source: source, style: style }, props, {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 158
+              }
+            }),
+            children
+          );
+        }
+        var _state = this.state,
+            progress = _state.progress,
+            thresholdReached = _state.thresholdReached,
+            loading = _state.loading,
+            error = _state.error;
+
+
+        var indicatorElement = void 0;
+
+        if (error) {
+          if (renderError) {
+            indicatorElement = _react3.default.createElement(
+              _reactNative.View,
+              { style: errorContainerStyle, __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 170
+                }
+              },
+              renderError(error)
+            );
+          }
+        } else if ((loading || progress < 1) && thresholdReached) {
+          if (renderIndicator) {
+            indicatorElement = renderIndicator(progress, !loading || !progress);
+          } else {
+            var IndicatorComponent = typeof indicator === 'function' ? indicator : DefaultIndicator;
+            indicatorElement = _react3.default.createElement(IndicatorComponent, _extends({
+              progress: progress,
+              indeterminate: !loading || !progress
+            }, indicatorProps, {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 181
+              }
+            }));
+          }
+          indicatorElement = _react3.default.createElement(
+            _reactNative.View,
+            { style: indicatorContainerStyle, __source: {
+                fileName: _jsxFileName,
+                lineNumber: 189
+              }
+            },
+            indicatorElement
+          );
+        }
+
+        return _react3.default.createElement(
+          _reactNative.View,
+          { style: style, ref: this.handleRef, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 194
+            }
+          },
+          _react3.default.createElement(ImageComponent, _extends({}, props, {
+            key: source && source.uri,
+            onLoadStart: this.handleLoadStart,
+            onProgress: this.handleProgress,
+            onError: this.handleError,
+            onLoad: this.handleLoad,
+            source: source,
+            style: _reactNative.StyleSheet.absoluteFill,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 195
+            }
+          })),
+          indicatorElement,
+          children
+        );
+      }
+    }]);
+
+    return ImageProgress;
+  }(_react2.Component), _class.propTypes = {
+    children: _propTypes2.default.node,
+    errorContainerStyle: _propTypes2.default.any,
+    indicator: _propTypes2.default.func,
+    indicatorContainerStyle: _propTypes2.default.any,
+    indicatorProps: _propTypes2.default.object,
+    renderIndicator: _propTypes2.default.func,
+    renderError: _propTypes2.default.func,
+    source: _propTypes2.default.any,
+    style: _propTypes2.default.any,
+    threshold: _propTypes2.default.number.isRequired
+  }, _class.defaultProps = {
+    indicatorContainerStyle: styles.centered,
+    errorContainerStyle: styles.centered,
+    threshold: 50
+  }, _class.prefetch = _reactNative.Image.prefetch, _class.getSize = _reactNative.Image.getSize, _temp));
+};
+
+exports.createImageProgress = createImageProgress;
+exports.default = createImageProgress(_reactNative.Image);

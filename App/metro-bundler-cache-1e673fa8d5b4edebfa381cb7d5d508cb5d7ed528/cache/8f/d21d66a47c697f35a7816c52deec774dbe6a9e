@@ -1,0 +1,4 @@
+
+module.exports = require('./socket');
+
+module.exports.parser = require('react-native-engine.io-parser');

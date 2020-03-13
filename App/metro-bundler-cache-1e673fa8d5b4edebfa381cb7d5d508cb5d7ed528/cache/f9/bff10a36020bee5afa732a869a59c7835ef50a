@@ -1,0 +1,20 @@
+
+
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function AuthError(problem) {
+    var error = Error.call(this, problem.title);
+
+    this.name = 'AuthError';
+    this.message = error.message;
+    this.stack = error.stack;
+
+    _extends(this, problem);
+}
+
+AuthError.__proto__ = Error;
+AuthError.prototype.__proto__ = Error.prototype;
+
+exports['AuthError'] = AuthError;

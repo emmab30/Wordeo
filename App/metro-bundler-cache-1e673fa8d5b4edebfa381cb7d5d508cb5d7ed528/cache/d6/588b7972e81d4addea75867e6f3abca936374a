@@ -1,0 +1,46 @@
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DocumentPicker = _reactNative.NativeModules.RNDocumentPicker;
+
+var DocumentPickerUtil = function () {
+  function DocumentPickerUtil() {
+    _classCallCheck(this, DocumentPickerUtil);
+  }
+
+  _createClass(DocumentPickerUtil, null, [{
+    key: 'allFiles',
+    value: function allFiles() {
+      return _reactNative.Platform.OS === 'android' ? "*/*" : "public.content";
+    }
+  }, {
+    key: 'images',
+    value: function images() {
+      return _reactNative.Platform.OS === 'android' ? "image/*" : "public.image";
+    }
+  }, {
+    key: 'plainText',
+    value: function plainText() {
+      return _reactNative.Platform.OS === 'android' ? "text/plain" : "public.plain-text";
+    }
+  }, {
+    key: 'audio',
+    value: function audio() {
+      return _reactNative.Platform.OS === 'android' ? "audio/*" : "public.audio";
+    }
+  }, {
+    key: 'pdf',
+    value: function pdf() {
+      return _reactNative.Platform.OS === 'android' ? "application/pdf" : "com.adobe.pdf";
+    }
+  }]);
+
+  return DocumentPickerUtil;
+}();
+
+module.exports = { DocumentPickerUtil: DocumentPickerUtil, DocumentPicker: DocumentPicker };

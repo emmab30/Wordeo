@@ -1,0 +1,42 @@
+'use strict';
+
+var has = Object.prototype.hasOwnProperty;
+
+function decode(input) {
+  return decodeURIComponent(input.replace(/\+/g, ' '));
+}
+
+function querystring(query) {
+  var parser = /([^=?&]+)=?([^&]*)/g,
+      result = {},
+      part;
+
+  while (part = parser.exec(query)) {
+    var key = decode(part[1]),
+        value = decode(part[2]);
+
+    if (key in result) continue;
+    result[key] = value;
+  }
+
+  return result;
+}
+
+function querystringify(obj, prefix) {
+  prefix = prefix || '';
+
+  var pairs = [];
+
+  if ('string' !== typeof prefix) prefix = '?';
+
+  for (var key in obj) {
+    if (has.call(obj, key)) {
+      pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
+    }
+  }
+
+  return pairs.length ? prefix + pairs.join('&') : '';
+}
+
+exports.stringify = querystringify;
+exports.parse = querystring;

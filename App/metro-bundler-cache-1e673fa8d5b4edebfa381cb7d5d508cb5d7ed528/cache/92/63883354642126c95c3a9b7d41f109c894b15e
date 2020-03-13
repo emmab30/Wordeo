@@ -1,0 +1,43 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _reactNative = require('react-native');
+
+var _reactNativeConfig = require('react-native-config');
+
+var _reactNativeConfig2 = _interopRequireDefault(_reactNativeConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Helper = {
+    isTelcelFlow: function isTelcelFlow() {
+        return false;
+        return _reactNativeConfig2.default.TELCEL_FLOW == 'true';
+    },
+    isDebugMode: function isDebugMode() {
+        return _reactNativeConfig2.default.DEBUG_MODE == 'true';
+    },
+    isStaging: function isStaging() {
+        return _reactNativeConfig2.default.API_URL != null && _reactNativeConfig2.default.API_URL.indexOf('megachat') > -1;
+    },
+    isProduction: function isProduction() {
+        return _reactNativeConfig2.default.API_URL != null && _reactNativeConfig2.default.API_URL.indexOf('chat.openenglish.com:12003') > -1;
+    },
+    isAnalyticsEnabled: function isAnalyticsEnabled() {
+        return _reactNativeConfig2.default.ANALYTICS_ENABLED == 'true';
+    },
+    getPrototype: function getPrototype() {
+        return -1;
+        var prototype = parseInt(_reactNativeConfig2.default.PROTOTYPE);
+        return prototype;
+    },
+    isFirstLaunch: function isFirstLaunch(callback) {
+        _reactNative.AsyncStorage.getItem('Launched').then(function (value) {
+            _reactNative.AsyncStorage.setItem('Launched', 'true');
+            callback(value == null);
+        });
+    }
+};
+
+exports.default = Helper;

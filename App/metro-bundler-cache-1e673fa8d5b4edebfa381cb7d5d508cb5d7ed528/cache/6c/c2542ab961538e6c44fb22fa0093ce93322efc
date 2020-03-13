@@ -1,0 +1,242 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/DialogError.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _default = require('../styles/default');
+
+var _global = require('../components/common/global');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    DialogError: {
+        displayName: 'DialogError'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/DialogError.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var width = _reactNative.Dimensions.get('window').width;
+var height = _reactNative.Dimensions.get('window').height;
+
+var DialogError = _wrapComponent('DialogError')(function (_Component) {
+    _inherits(DialogError, _Component);
+
+    function DialogError(props) {
+        _classCallCheck(this, DialogError);
+
+        var _this = _possibleConstructorReturn(this, (DialogError.__proto__ || Object.getPrototypeOf(DialogError)).call(this, props));
+
+        _this.show = function (type, message) {
+            _this.setState({ visible: true, dialogType: type, message: message });
+        };
+
+        _this.state = {
+            height: height,
+            isLandscape: false,
+            visible: false,
+            dialogType: 'success',
+            message: '',
+            heightInnerViewContent: 0
+        };
+        return _this;
+    }
+
+    _createClass(DialogError, [{
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate() {}
+    }, {
+        key: 'onLayout',
+        value: function onLayout(e) {
+            var _this2 = this;
+
+            this.setState({ height: _reactNative.Dimensions.get('window').height });
+
+            _global.Global.getOrientation(function (orientation) {
+                _this2.setState({
+                    isLandscape: orientation == 'LANDSCAPE'
+                });
+            });
+        }
+    }, {
+        key: 'onLayoutTextMessage',
+        value: function onLayoutTextMessage(e) {
+            var _e$nativeEvent$layout = e.nativeEvent.layout,
+                x = _e$nativeEvent$layout.x,
+                y = _e$nativeEvent$layout.y,
+                width = _e$nativeEvent$layout.width,
+                height = _e$nativeEvent$layout.height;
+
+            if (height != null) {
+                this.setState({ heightInnerViewContent: height + 100 });
+            }
+        }
+    }, {
+        key: 'reset',
+        value: function reset() {
+            this.setState({ dialogType: 'success', message: '', visible: false });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            if (!this.state.visible) return null;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    onLayout: this.onLayout.bind(this), __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 78
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    { visible: this.state.visible,
+                        closeOnTouchOutside: true,
+                        animationType: 'fadeInDown',
+                        animationOutType: 'fadeOut',
+                        animationDuration: 300,
+                        onClose: function onClose() {
+                            _this3.setState({ visible: false });
+                        },
+                        containerStyle: { backgroundColor: 'rgba(255, 255, 255, 0.9)', flex: 1, width: '100%' },
+                        childrenWrapperStyle: [styles.overlayChildren, { backgroundColor: "#fff", borderRadius: 10, width: this.state.isLandscape ? '60%' : '100%', maxHeight: this.state.heightInnerViewContent > 0 ? this.state.heightInnerViewContent : 180, height: this.state.height - 100, paddingBottom: this.props.paddingBottom !== undefined ? this.props.paddingBottom : 0 }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 80
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.TouchableOpacity,
+                        {
+                            onPress: function onPress(e) {
+                                if (_this3.props.onDismissPress) {
+                                    _this3.props.onDismissPress();
+                                }
+                                _this3.reset();
+                            },
+                            style: styles.closeButtonContainer, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 90
+                            }
+                        },
+                        _react3.default.createElement(_reactNative.Image, { source: require("../images/close.png"), __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 98
+                            }
+                        })
+                    ),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.innerView, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 100
+                            }
+                        },
+                        this.state.dialogType == 'success' && _react3.default.createElement(_reactNative.Image, {
+                            style: { display: this.state.dialogType == 'success' ? 'flex' : 'none' },
+                            source: require("../images/check-fill.png"), __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 102
+                            }
+                        }),
+                        this.state.dialogType == 'error' && _react3.default.createElement(_reactNative.Image, {
+                            style: { display: this.state.dialogType == 'error' ? 'flex' : 'none' },
+                            source: require("../images/dialog_error.png"), __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 108
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { onLayout: this.onLayoutTextMessage.bind(this), style: styles.errorMessage, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 113
+                                }
+                            },
+                            this.state.message
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return DialogError;
+}(_react2.Component));
+
+exports.default = DialogError;
+
+
+var styles = _reactNative.StyleSheet.create({
+    errorMessage: {
+        color: '#000000',
+        fontFamily: _default.Font.NunitoSemiBold,
+        fontSize: 16,
+        marginBottom: 20,
+        marginTop: 20,
+        textAlign: 'center'
+    },
+    closeButtonContainer: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        color: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 15,
+        width: 27,
+        height: 27,
+        zIndex: 9999
+    },
+    overlayChildren: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 6,
+        alignSelf: 'center'
+    },
+    innerView: {
+        flex: 1,
+        zIndex: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+});

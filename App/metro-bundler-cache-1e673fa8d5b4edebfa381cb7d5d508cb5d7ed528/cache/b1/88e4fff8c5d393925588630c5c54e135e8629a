@@ -1,0 +1,11 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _firebase = require('./modules/core/firebase');
+
+var _firebase2 = _interopRequireDefault(_firebase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _firebase2.default;

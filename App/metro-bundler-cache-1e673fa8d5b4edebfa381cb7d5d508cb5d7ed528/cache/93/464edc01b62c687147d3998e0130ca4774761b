@@ -1,0 +1,269 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.statics = exports.NAMESPACE = exports.MODULE_NAME = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _events = require('../../utils/events');
+
+var _ModuleBase2 = require('../../utils/ModuleBase');
+
+var _ModuleBase3 = _interopRequireDefault(_ModuleBase2);
+
+var _RemoteMessage = require('./RemoteMessage');
+
+var _RemoteMessage2 = _interopRequireDefault(_RemoteMessage);
+
+var _native = require('../../utils/native');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EVENT_TYPE = {
+  RefreshToken: 'messaging_token_refreshed',
+  Notification: 'messaging_notification_received'
+};
+
+var NOTIFICATION_TYPE = {
+  Remote: 'remote_notification',
+  NotificationResponse: 'notification_response',
+  WillPresent: 'will_present_notification',
+  Local: 'local_notification'
+};
+
+var REMOTE_NOTIFICATION_RESULT = {
+  NewData: 'UIBackgroundFetchResultNewData',
+  NoData: 'UIBackgroundFetchResultNoData',
+  ResultFailed: 'UIBackgroundFetchResultFailed'
+};
+
+var WILL_PRESENT_RESULT = {
+  All: 'UNNotificationPresentationOptionAll',
+  None: 'UNNotificationPresentationOptionNone'
+};
+
+var NATIVE_EVENTS = [EVENT_TYPE.RefreshToken, EVENT_TYPE.Notification];
+
+var FirebaseMessaging = _reactNative.NativeModules.RNFirebaseMessaging;
+
+function finish(data) {
+  if (_reactNative.Platform.OS !== 'ios') {
+    return;
+  }
+
+  if (!this._finishCalled && this._completionHandlerId) {
+    var result = data;
+
+    this._finishCalled = true;
+
+    switch (this._notificationType) {
+      case NOTIFICATION_TYPE.Remote:
+        result = result || REMOTE_NOTIFICATION_RESULT.NoData;
+        if (!Object.values(REMOTE_NOTIFICATION_RESULT).includes(result)) {
+          throw new Error('Invalid REMOTE_NOTIFICATION_RESULT value, use messaging().REMOTE_NOTIFICATION_RESULT');
+        }
+
+        FirebaseMessaging.finishRemoteNotification(this._completionHandlerId, result);
+        return;
+      case NOTIFICATION_TYPE.NotificationResponse:
+        FirebaseMessaging.finishNotificationResponse(this._completionHandlerId);
+        return;
+      case NOTIFICATION_TYPE.WillPresent:
+        result = result || (this.show_in_foreground ? WILL_PRESENT_RESULT.All : WILL_PRESENT_RESULT.None);
+        if (!Object.values(WILL_PRESENT_RESULT).includes(result)) {
+          throw new Error('Invalid WILL_PRESENT_RESULT value, use messaging().WILL_PRESENT_RESULT');
+        }
+
+        FirebaseMessaging.finishWillPresentNotification(this._completionHandlerId, result);
+        break;
+      default:
+    }
+  }
+}
+
+var MODULE_NAME = exports.MODULE_NAME = 'RNFirebaseMessaging';
+var NAMESPACE = exports.NAMESPACE = 'messaging';
+
+var Messaging = function (_ModuleBase) {
+  _inherits(Messaging, _ModuleBase);
+
+  function Messaging(app) {
+    _classCallCheck(this, Messaging);
+
+    return _possibleConstructorReturn(this, (Messaging.__proto__ || Object.getPrototypeOf(Messaging)).call(this, app, {
+      events: NATIVE_EVENTS,
+      moduleName: MODULE_NAME,
+      multiApp: false,
+      namespace: NAMESPACE
+    }));
+  }
+
+  _createClass(Messaging, [{
+    key: 'getInitialNotification',
+    value: function getInitialNotification() {
+      return (0, _native.getNativeModule)(this).getInitialNotification();
+    }
+  }, {
+    key: 'getToken',
+    value: function getToken() {
+      return (0, _native.getNativeModule)(this).getToken();
+    }
+  }, {
+    key: 'deleteInstanceId',
+    value: function deleteInstanceId() {
+      return (0, _native.getNativeModule)(this).deleteInstanceId();
+    }
+  }, {
+    key: 'createLocalNotification',
+    value: function createLocalNotification(notification) {
+      var _notification = _extends({}, notification);
+      _notification.id = _notification.id || new Date().getTime().toString();
+      _notification.local_notification = true;
+      return (0, _native.getNativeModule)(this).createLocalNotification(_notification);
+    }
+  }, {
+    key: 'scheduleLocalNotification',
+    value: function scheduleLocalNotification(notification) {
+      var _notification = _extends({}, notification);
+      if (!notification.id) return Promise.reject(new Error('An id is required to schedule a local notification.'));
+      _notification.local_notification = true;
+      return (0, _native.getNativeModule)(this).scheduleLocalNotification(_notification);
+    }
+  }, {
+    key: 'getScheduledLocalNotifications',
+    value: function getScheduledLocalNotifications() {
+      return (0, _native.getNativeModule)(this).getScheduledLocalNotifications();
+    }
+  }, {
+    key: 'cancelLocalNotification',
+    value: function cancelLocalNotification(id) {
+      if (!id) return Promise.reject(new Error('Missing notification id'));
+      if (id === '*') return (0, _native.getNativeModule)(this).cancelAllLocalNotifications();
+      return (0, _native.getNativeModule)(this).cancelLocalNotification(id);
+    }
+  }, {
+    key: 'removeDeliveredNotification',
+    value: function removeDeliveredNotification(id) {
+      if (!id) return Promise.reject(new Error('Missing notification id'));
+      if (id === '*') return (0, _native.getNativeModule)(this).removeAllDeliveredNotifications();
+      return (0, _native.getNativeModule)(this).removeDeliveredNotification(id);
+    }
+  }, {
+    key: 'requestPermissions',
+    value: function requestPermissions() {
+      return (0, _native.getNativeModule)(this).requestPermissions();
+    }
+  }, {
+    key: 'setBadgeNumber',
+    value: function setBadgeNumber(n) {
+      (0, _native.getNativeModule)(this).setBadgeNumber(n);
+    }
+  }, {
+    key: 'getBadgeNumber',
+    value: function getBadgeNumber() {
+      return (0, _native.getNativeModule)(this).getBadgeNumber();
+    }
+  }, {
+    key: 'onMessage',
+    value: function onMessage(listener) {
+      var _this2 = this;
+
+      var rnListener = _events.SharedEventEmitter.addListener(EVENT_TYPE.Notification, function _callee(event) {
+        var data;
+        return regeneratorRuntime.async(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                data = _extends({}, event, {
+                  finish: finish
+                });
+                _context.next = 3;
+                return regeneratorRuntime.awrap(listener(data));
+
+              case 3:
+
+                if (!data._finishCalled) {
+                  data.finish();
+                }
+
+              case 4:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, null, _this2);
+      });
+      return function () {
+        return rnListener.remove();
+      };
+    }
+  }, {
+    key: 'onTokenRefresh',
+    value: function onTokenRefresh(listener) {
+      var rnListener = _events.SharedEventEmitter.addListener(EVENT_TYPE.RefreshToken, listener);
+      return function () {
+        return rnListener.remove();
+      };
+    }
+  }, {
+    key: 'subscribeToTopic',
+    value: function subscribeToTopic(topic) {
+      (0, _native.getNativeModule)(this).subscribeToTopic(topic);
+    }
+  }, {
+    key: 'unsubscribeFromTopic',
+    value: function unsubscribeFromTopic(topic) {
+      (0, _native.getNativeModule)(this).unsubscribeFromTopic(topic);
+    }
+  }, {
+    key: 'send',
+    value: function send(remoteMessage) {
+      if (!(remoteMessage instanceof _RemoteMessage2.default)) {
+        throw new Error('messaging().send requires an instance of RemoteMessage as the first argument.');
+      }
+
+      return (0, _native.getNativeModule)(this).send(remoteMessage.toJSON());
+    }
+  }, {
+    key: 'EVENT_TYPE',
+    get: function get() {
+      return EVENT_TYPE;
+    }
+  }, {
+    key: 'NOTIFICATION_TYPE',
+    get: function get() {
+      return NOTIFICATION_TYPE;
+    }
+  }, {
+    key: 'REMOTE_NOTIFICATION_RESULT',
+    get: function get() {
+      return REMOTE_NOTIFICATION_RESULT;
+    }
+  }, {
+    key: 'WILL_PRESENT_RESULT',
+    get: function get() {
+      return WILL_PRESENT_RESULT;
+    }
+  }]);
+
+  return Messaging;
+}(_ModuleBase3.default);
+
+exports.default = Messaging;
+var statics = exports.statics = {
+  EVENT_TYPE: EVENT_TYPE,
+  NOTIFICATION_TYPE: NOTIFICATION_TYPE,
+  REMOTE_NOTIFICATION_RESULT: REMOTE_NOTIFICATION_RESULT,
+  WILL_PRESENT_RESULT: WILL_PRESENT_RESULT,
+  RemoteMessage: _RemoteMessage2.default
+};

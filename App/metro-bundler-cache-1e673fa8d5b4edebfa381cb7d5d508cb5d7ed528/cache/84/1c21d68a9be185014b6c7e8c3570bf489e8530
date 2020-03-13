@@ -1,0 +1,276 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/componentsJs/RankingItem.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _global = require('../../components/common/global');
+
+var _general = require('../../styles/general');
+
+var _default = require('../../styles/default');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    RankingItem: {
+        displayName: 'RankingItem'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/componentsJs/RankingItem.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var RankingItem = _wrapComponent('RankingItem')(function (_Component) {
+    _inherits(RankingItem, _Component);
+
+    function RankingItem(props) {
+        _classCallCheck(this, RankingItem);
+
+        var _this = _possibleConstructorReturn(this, (RankingItem.__proto__ || Object.getPrototypeOf(RankingItem)).call(this, props));
+
+        _this.state = {
+            player: null,
+            width: new _reactNative.Animated.Value(0),
+            height: new _reactNative.Animated.Value(100),
+            opacity: new _reactNative.Animated.Value(0)
+        };
+        return _this;
+    }
+
+    _createClass(RankingItem, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.player) {
+                nextProps.player.index = nextProps.index;
+                this.setState({ player: nextProps.player });
+            }
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setState({ spinner: false });
+
+            _reactNative.Animated.parallel([_reactNative.Animated.timing(this.state.width, {
+                toValue: width,
+                duration: 400,
+                easing: _reactNative.Easing.Ease
+            }), _reactNative.Animated.timing(this.state.opacity, {
+                toValue: 1,
+                duration: 1000,
+                easing: _reactNative.Easing.Ease
+            })]).start();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (this.state.player == null) return null;
+
+            if (this.state.player.character != null) {
+                console.log(this.state.player.character);
+            }
+
+            return _react3.default.createElement(
+                _reactNativeLinearGradient2.default,
+                { colors: [_default.Color.VioletPrimary, _default.Color.VioletSecondary], style: styles.roomContainer, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 85
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.View,
+                    { style: { justifyContent: 'center', alignItems: 'center', position: 'absolute', top: -10, right: -10, borderRadius: 20, width: 40, height: 40, backgroundColor: _default.Color.GoldenPrimary }, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 86
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.Text,
+                        { style: { fontFamily: _default.Font.TitanOne, fontSize: 20, color: 'white' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 87
+                            }
+                        },
+                        this.state.player.index + 1
+                    )
+                ),
+                _react3.default.createElement(
+                    _reactNative.TouchableOpacity,
+                    {
+                        activeOpacity: 1,
+                        style: { flex: 1, flexDirection: 'row', height: '100%', width: '100%' }, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 89
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.roomInfoContainer, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 92
+                            }
+                        },
+                        _react3.default.createElement(_reactNative.Image, { source: { uri: this.state.player.character != null ? this.state.player.character : 'https://images.pexels.com/photos/34591/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
+                            style: { flex: 0.5, height: '100%', resizeMode: 'cover' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 93
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { flexDirection: 'column', flex: 1, justifyContent: 'center', alignItems: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 95
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: [styles.roomText, { fontSize: 18, fontFamily: _default.Font.TitanOne }], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 96
+                                    }
+                                },
+                                this.state.player.name
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: [styles.roomText, { fontSize: 12, fontFamily: _default.Font.PTSansBold }], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 97
+                                    }
+                                },
+                                this.state.player.experience_points || 0,
+                                ' puntos de exp.'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: [styles.roomText, { fontSize: 12, fontFamily: _default.Font.PTSansBold }], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 98
+                                    }
+                                },
+                                _global.Global.formatPrice(this.state.player.balance_tuls || 0),
+                                ' tuls.'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: [styles.roomText, { fontSize: 12, fontFamily: _default.Font.PTSansBold }], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 99
+                                    }
+                                },
+                                this.state.player.totalWins,
+                                ' partidas ganadas de ',
+                                this.state.player.totalGames,
+                                ' jugadas.'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'renderLoading',
+        value: function renderLoading() {
+            return _react3.default.createElement(
+                _reactNativeLinearGradient2.default,
+                { colors: [_default.Color.OrangePrimary, _default.Color.OrangeSecondary], style: styles.roomContainer, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 109
+                    }
+                },
+                _react3.default.createElement(_reactNative.ActivityIndicator, { color: 'white', size: 1, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 110
+                    }
+                })
+            );
+        }
+    }]);
+
+    return RankingItem;
+}(_react2.Component));
+
+exports.default = RankingItem;
+
+
+var styles = _reactNative.StyleSheet.create({
+    roomContainer: {
+        flex: 1,
+        maxWidth: '85%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        height: 100,
+        backgroundColor: 'transparent',
+        marginHorizontal: 5,
+        marginVertical: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5
+    },
+    roomInfoContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden'
+    },
+    roomText: {
+        color: _default.Color.LightPrimary,
+        fontFamily: _default.Font.PTSansRegular,
+        fontSize: 16,
+        flex: 0
+    },
+    basicRoomInfo: {
+        flex: 1,
+        flexDirection: 'row',
+        maxHeight: '100%'
+    }
+});

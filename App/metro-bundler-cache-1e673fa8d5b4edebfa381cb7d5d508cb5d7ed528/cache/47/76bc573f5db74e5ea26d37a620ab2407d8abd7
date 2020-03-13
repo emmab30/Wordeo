@@ -1,0 +1,401 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/account/login.js';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _EntranceAfterLaunchScreen = require('../../components/navigation/EntranceAfterLaunchScreen');
+
+var _EntranceAfterLaunchScreen2 = _interopRequireDefault(_EntranceAfterLaunchScreen);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _DialogError = require('../../components/DialogError');
+
+var _DialogError2 = _interopRequireDefault(_DialogError);
+
+var _Services = require('../../services/Services');
+
+var _reactNativeOnesignal = require('react-native-onesignal');
+
+var _reactNativeOnesignal2 = _interopRequireDefault(_reactNativeOnesignal);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _global = require('../../components/common/global');
+
+var _login = require('../../styles/login');
+
+var _default = require('../../styles/default');
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _FontAwesome = require('react-native-vector-icons/FontAwesome');
+
+var _FontAwesome2 = _interopRequireDefault(_FontAwesome);
+
+var _reactNativeDeviceInfo = require('react-native-device-info');
+
+var _reactNativeDeviceInfo2 = _interopRequireDefault(_reactNativeDeviceInfo);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    Login: {
+        displayName: 'Login'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/account/login.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var FBSDK = require('react-native-fbsdk');
+var LoginButton = FBSDK.LoginButton,
+    AccessToken = FBSDK.AccessToken,
+    LoginManager = FBSDK.LoginManager,
+    GraphRequest = FBSDK.GraphRequest,
+    GraphRequestManager = FBSDK.GraphRequestManager;
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var Login = _wrapComponent('Login')(function (_Component) {
+    _inherits(Login, _Component);
+
+    function Login(props) {
+        _classCallCheck(this, Login);
+
+        var _this = _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this, props));
+
+        _this._checkLogin = function () {
+            _reactNative.AsyncStorage.getItem("userFacebookToken").then(function (value) {
+                if (value != null) {
+                    _this.onSigninFacebook();
+                }
+            });
+        };
+
+        _this.onSigninFacebook = _this.onSigninFacebook.bind(_this);
+        _this.state = {
+            register: {
+                name: '',
+                email: '',
+                password: ''
+            },
+            email: '',
+            password: '',
+            behavior: 'padding',
+            modalOpen: false,
+            spinner: false,
+            errorVisible: false,
+            errorMessage: '',
+            appState: _reactNative.AppState.currentState,
+            hidePassword: true,
+            isLandscape: false,
+            height: height,
+            width: width,
+            isEntranceAfterLaunchScreen: false
+        };
+
+        _Services.AnalyticsService.trackScreenView('home');
+        return _this;
+    }
+
+    _createClass(Login, [{
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            _reactNativeOrientation2.default.unlockAllOrientations();
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this._checkLogin();
+
+            _reactNativeOrientation2.default.lockToPortrait();
+
+            if (this.refs.entrance != null) {
+                this.refs.entrance.show();
+                setTimeout(function () {
+                    if (_this2.refs.entrance != null) _this2.refs.entrance.hide();
+                }, 2500);
+            }
+        }
+    }, {
+        key: 'onSigninFacebook',
+        value: function onSigninFacebook() {
+            var _this3 = this;
+
+            var ctx = this;
+
+            AccessToken.getCurrentAccessToken().then(function (data) {
+                var currentDate = new Date();
+                if (data && data.expirationTime != null && currentDate < new Date(data.expirationTime)) {
+                    ctx.setState({ spinner: true });
+
+                    _reactNative.AsyncStorage.getItem('IdOneSignal').then(function (notificationId) {
+                        var info = {
+                            platform: _reactNative.Platform.OS,
+                            preferredLanguage: _strings.strings.getLanguage(),
+                            accessToken: data.accessToken
+                        };
+
+                        if (notificationId != null) {
+                            info.notificationId = notificationId;
+                        }
+                        info.appVersion = _reactNativeDeviceInfo2.default.getReadableVersion();
+
+                        _this3.refs.spinner.show();
+                        _Services.AuthService.loginFacebook(info, function (token) {
+                            _this3.refs.spinner.hide(function () {
+                                _Services.AuthService.user = token.user;
+                                _reactNative.AsyncStorage.setItem('user', JSON.stringify(token), function () {
+                                    _reactNative.AsyncStorage.setItem('userFacebookToken', JSON.stringify(data), function () {
+                                        ctx.setState({ spinner: false });
+                                        _axios2.default.defaults.headers.common['Authorization'] = token.session.id;
+
+                                        var home = {};
+                                        home.screen = _extends({}, _global.Global.Screen.Dashboard.Home);
+                                        _reactNativeNavigation.Navigation.startSingleScreenApp(home);
+                                    });
+                                });
+                            });
+                        }, function (error) {
+                            ctx.setState({ spinner: false });
+                        });
+                    });
+                } else {
+                    LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(function (result) {
+                        if (result.isCancelled) {} else {
+                            ctx.setState({ spinner: true });
+                            AccessToken.getCurrentAccessToken().then(function (data) {
+                                _reactNative.AsyncStorage.getItem('IdOneSignal').then(function (notificationId) {
+                                    var info = {
+                                        platform: _reactNative.Platform.OS,
+                                        preferredLanguage: _strings.strings.getLanguage(),
+                                        accessToken: data.accessToken
+                                    };
+
+                                    if (notificationId != null) {
+                                        info.notificationId = notificationId;
+                                    }
+                                    info.appVersion = _reactNativeDeviceInfo2.default.getReadableVersion();
+
+                                    _this3.refs.spinner.show();
+                                    _Services.AuthService.loginFacebook(info, function (token) {
+
+                                        _this3.refs.spinner.hide(function () {
+                                            _reactNative.AsyncStorage.setItem('user', JSON.stringify(token), function () {
+                                                _reactNative.AsyncStorage.setItem('userFacebookToken', JSON.stringify(data), function () {
+                                                    ctx.setState({ spinner: false });
+                                                    _axios2.default.defaults.headers.common['Authorization'] = token.session.id;
+
+                                                    var home = {};
+                                                    home.screen = _extends({}, _global.Global.Screen.Dashboard.Home);
+                                                    _reactNativeNavigation.Navigation.startSingleScreenApp(home);
+                                                });
+                                            });
+                                        });
+                                    }, function (error) {
+                                        ctx.setState({ spinner: false });
+                                    });
+                                });
+                            });
+                        }
+                    }, function (error) {});
+                }
+            });
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+
+            _reactNativeOnesignal2.default.configure();
+            _reactNativeOnesignal2.default.inFocusDisplaying(2);
+            _reactNativeOnesignal2.default.addEventListener('ids', this.onIds);
+        }
+    }, {
+        key: 'onIds',
+        value: function onIds(device) {
+            _reactNative.AsyncStorage.setItem("IdOneSignal", device.userId, function () {});
+        }
+    }, {
+        key: 'onLayout',
+        value: function onLayout(e) {
+            var context = this;
+            _global.Global.getOrientation(function (orientation) {
+                context.setState({
+                    isLandscape: orientation == 'LANDSCAPE',
+                    width: _reactNative.Dimensions.get('window').width,
+                    height: _reactNative.Dimensions.get('window').height
+                });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this4 = this;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                { style: { flex: 1 }, onLayout: this.onLayout.bind(this), __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 235
+                    }
+                },
+                _react3.default.createElement(_SpinnerComponent2.default, {
+                    ref: 'spinner', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 236
+                    }
+                }),
+                _react3.default.createElement(_DialogError2.default, {
+                    ref: 'dialog', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 239
+                    }
+                }),
+                _react3.default.createElement(
+                    _reactNative.KeyboardAvoidingView,
+                    { behavior: this.state.behavior, style: [_login.LoginStyle.keyboardContainer, { height: this.state.height }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 242
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.ImageBackground,
+                        {
+                            source: require('../../images/wordeo/login/background.jpg'),
+                            style: { flex: 1, height: '100%', width: this.state.width }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 243
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { flex: 1, justifyContent: 'center', alignItems: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 246
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: [{ justifyContent: 'center', alignItems: 'center', flex: 1, marginBottom: 0 }], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 247
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        style: _login.LoginStyle.loginButtonFacebook,
+                                        onPress: function onPress() {
+                                            _Services.AnalyticsService.trackEvent('login_facebook');
+                                            _this4.onSigninFacebook();
+                                        }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 248
+                                        }
+                                    },
+                                    _react3.default.createElement(_FontAwesome2.default, { name: 'facebook-f', size: 20, color: 'white', __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 254
+                                        }
+                                    }),
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: _login.LoginStyle.loginButtonFacebookText, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 255
+                                            }
+                                        },
+                                        _strings.strings.LoginWithFacebook
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                _react3.default.createElement(_EntranceAfterLaunchScreen2.default, {
+                    ref: 'entrance',
+                    navigator: this.props.navigator,
+                    isVisible: this.state.isEntranceAfterLaunchScreen, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 262
+                    }
+                })
+            );
+        }
+    }]);
+
+    return Login;
+}(_react2.Component));
+
+exports.default = Login;
+
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    inputIcon: {
+        width: 19,
+        height: 25,
+        marginRight: 5
+    },
+    containerForm: {
+        alignSelf: 'center',
+        width: width / 1.2,
+        height: height / 2.8
+    },
+    forgotPasswordText: {
+        fontSize: 14,
+        color: '#b7b7b7'
+    }
+});
+
+_reactNative.BackHandler.addEventListener('hardwareBackPress', function () {
+    return true;
+});

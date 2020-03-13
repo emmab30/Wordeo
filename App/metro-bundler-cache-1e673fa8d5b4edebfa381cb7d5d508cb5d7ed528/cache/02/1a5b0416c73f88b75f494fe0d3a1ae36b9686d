@@ -1,0 +1,135 @@
+
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var localization = _reactNative.NativeModules.ReactLocalization;
+if (!localization) {
+    console.error("Something went wrong initializing the native ReactLocalization module.\nPlease check your configuration.\nDid you run 'react-native link'?");
+}
+
+var interfaceLanguage = localization.language.replace(/_/g, '-');
+
+var LocalizedStrings = function () {
+    _createClass(LocalizedStrings, [{
+        key: '_getBestMatchingLanguage',
+        value: function _getBestMatchingLanguage(language, props) {
+            if (props[language]) return language;
+
+            var idx = language.lastIndexOf("-");
+            if (idx >= 0) {
+                language = language.substring(0, idx);
+                return this._getBestMatchingLanguage(language, props);
+            }
+
+            return Object.keys(props)[0];
+        }
+    }]);
+
+    function LocalizedStrings(props) {
+        _classCallCheck(this, LocalizedStrings);
+
+        this.props = props;
+
+        this.setLanguage(interfaceLanguage);
+    }
+
+    _createClass(LocalizedStrings, [{
+        key: 'setLanguage',
+        value: function setLanguage(language) {
+            var bestLanguage = this._getBestMatchingLanguage(language, this.props);
+            var defaultLanguage = Object.keys(this.props)[0];
+            this.language = bestLanguage;
+
+            if (this.props[bestLanguage]) {
+                var localizedStrings = _extends({}, this.props[defaultLanguage], this.props[this.language]);
+                for (var key in localizedStrings) {
+                    if (localizedStrings.hasOwnProperty(key)) {
+                        this[key] = localizedStrings[key];
+                    }
+                }
+
+                if (defaultLanguage !== this.language) {
+                    localizedStrings = this.props[defaultLanguage];
+                    this._fallbackValues(localizedStrings, this);
+                }
+            }
+        }
+    }, {
+        key: '_fallbackValues',
+        value: function _fallbackValues(defaultStrings, strings) {
+            for (var key in defaultStrings) {
+                if (defaultStrings.hasOwnProperty(key) && !strings[key]) {
+                    strings[key] = defaultStrings[key];
+                    console.log("Missing localization for language '" + this.language + "' and key '" + key + "'.");
+                } else {
+                    if (typeof strings[key] != "string") {
+                        this._fallbackValues(defaultStrings[key], strings[key]);
+                    }
+                }
+            }
+        }
+    }, {
+        key: 'getLanguage',
+        value: function getLanguage() {
+            return this.language;
+        }
+    }, {
+        key: 'getInterfaceLanguage',
+        value: function getInterfaceLanguage() {
+            return interfaceLanguage;
+        }
+    }, {
+        key: 'getAvailableLanguages',
+        value: function getAvailableLanguages() {
+            if (!this.availableLanguages) {
+                this.availableLanguages = [];
+                for (var language in this.props) {
+                    this.availableLanguages.push(language);
+                }
+            }
+            return this.availableLanguages;
+        }
+    }, {
+        key: 'formatString',
+        value: function formatString(str) {
+            var res = str;
+
+            for (var _len = arguments.length, values = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                values[_key - 1] = arguments[_key];
+            }
+
+            for (var i = 0; i < values.length; i++) {
+                res = this._replaceAll("{" + i + "}", values[i], res);
+            }
+            return res;
+        }
+    }, {
+        key: 'getString',
+        value: function getString(key, language) {
+            try {
+                return this.props[language][key];
+            } catch (ex) {
+                console.log("No localization found for key " + key + " and language " + language);
+            }
+            return null;
+        }
+    }, {
+        key: '_replaceAll',
+        value: function _replaceAll(original, replacement, str) {
+            original = original.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+            replacement = ('' + replacement).replace(/([$])/g, '$$$$');
+            return str.replace(new RegExp(original, 'g'), replacement);
+        }
+    }]);
+
+    return LocalizedStrings;
+}();
+
+module.exports = LocalizedStrings;

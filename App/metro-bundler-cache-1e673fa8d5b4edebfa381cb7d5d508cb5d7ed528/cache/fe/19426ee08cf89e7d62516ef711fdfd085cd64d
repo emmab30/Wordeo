@@ -1,0 +1,264 @@
+
+
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var URL = require('url-parse');
+
+var getOwnPropertyDescriptors = Object.getOwnPropertyDescriptors || function (obj) {
+    return Object.getOwnPropertyNames(obj).reduce(function (descriptors, name) {
+        descriptors[name] = Object.getOwnPropertyDescriptor(obj, name);
+        return descriptors;
+    }, {});
+};
+
+function setConstructorOnPrototype(klass) {
+    if (klass.prototype.constructor !== klass) {
+        Object.defineProperty(klass.prototype, 'constructor', { value: klass, configurable: true, writable: true });
+    }
+}
+
+function waitForDownloadConfig(config) {
+    if (!config) {
+        return { _cache: false };
+    }
+
+    if (typeof config == 'string') {
+        return { path: config, _cache: false };
+    }
+
+    if (typeof config == 'object') {
+        return _extends({}, config, { schema: undefined, schemaVersion: undefined, _cache: false });
+    }
+
+    return config;
+}
+
+module.exports = function (realmConstructor) {
+    Object.defineProperties(realmConstructor.Collection.prototype, require('./collection-methods'));
+
+    setConstructorOnPrototype(realmConstructor.Collection);
+    setConstructorOnPrototype(realmConstructor.List);
+    setConstructorOnPrototype(realmConstructor.Results);
+    setConstructorOnPrototype(realmConstructor.Object);
+
+    Object.defineProperties(realmConstructor, getOwnPropertyDescriptors({
+        open: function open(config) {
+            if (!("sync" in config)) {
+                var _promise = Promise.resolve(new realmConstructor(config));
+                _promise.progress = function (callback) {};
+                return _promise;
+            }
+
+            var syncSession = void 0;
+            var promise = new Promise(function (resolve, reject) {
+                var realm = new realmConstructor(waitForDownloadConfig(config));
+                realm._waitForDownload(function (session) {
+                    syncSession = session;
+                }, function (error) {
+                    realm.close();
+                    if (error) {
+                        setTimeout(function () {
+                            reject(error);
+                        }, 1);
+                    } else {
+                        try {
+                            var syncedRealm = new realmConstructor(config);
+                            setTimeout(function () {
+                                resolve(syncedRealm);
+                            }, 1);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    }
+                });
+            });
+
+            promise.progress = function (callback) {
+                if (syncSession) {
+                    syncSession.addProgressNotification('download', 'forCurrentlyOutstandingWork', callback);
+                }
+
+                return promise;
+            };
+            return promise;
+        },
+        openAsync: function openAsync(config, callback, progressCallback) {
+            var message = "Realm.openAsync is now deprecated in favor of Realm.open. This function will be removed in future versions.";
+            (console.warn || console.log).call(console, message);
+
+            var promise = this.open(config);
+            if (progressCallback) {
+                promise.progress(progressCallback);
+            }
+
+            promise.then(function (realm) {
+                callback(null, realm);
+            }).catch(function (error) {
+                callback(error);
+            });
+        }
+    }));
+
+    if (realmConstructor.Sync) {
+        var userMethods = require('./user-methods');
+        Object.defineProperties(realmConstructor.Sync.User, getOwnPropertyDescriptors(userMethods.static));
+        Object.defineProperties(realmConstructor.Sync.User.prototype, getOwnPropertyDescriptors(userMethods.instance));
+        Object.defineProperty(realmConstructor.Sync.User, '_realmConstructor', { value: realmConstructor });
+
+        realmConstructor.Sync.AuthError = require('./errors').AuthError;
+
+        if (realmConstructor.Sync.removeAllListeners) {
+            process.on('exit', realmConstructor.Sync.removeAllListeners);
+            process.on('SIGINT', function () {
+                realmConstructor.Sync.removeAllListeners();
+                process.exit(2);
+            });
+            process.on('uncaughtException', function (e) {
+                realmConstructor.Sync.removeAllListeners();
+
+                console.log(e.stack);
+                process.exit(99);
+            });
+        }
+
+        setConstructorOnPrototype(realmConstructor.Sync.User);
+        setConstructorOnPrototype(realmConstructor.Sync.Session);
+
+        realmConstructor.automaticSyncConfiguration = function () {
+            var user = void 0;
+
+            if (arguments.length === 0) {
+                var users = this.Sync.User.all;
+                var identities = Object.keys(users);
+                if (identities.length === 1) {
+                    user = users[identities[0]];
+                } else {
+                    new Error('One and only one user should be logged in but found ' + users.length + ' users.');
+                }
+            } else if (arguments.length === 1) {
+                user = arguments[0];
+            } else {
+                new Error('Zero or one argument expected.');
+            }
+
+            var url = new URL(user.server);
+            var secure = url.protocol === 'https:' ? 's' : '';
+            var port = url.port === undefined ? '9080' : url.port;
+            var realmUrl = 'realm' + secure + '://' + url.hostname + ':' + port + '/default';
+
+            var config = {
+                sync: {
+                    user: user,
+                    url: realmUrl,
+                    partial: true
+                }
+            };
+            return config;
+        };
+
+        if (realmConstructor.Sync._setFeatureToken) {
+            realmConstructor.Sync.setFeatureToken = function (featureToken) {
+                console.log('Realm.Sync.setFeatureToken() is deprecated and you can remove any calls to it.');
+            };
+        }
+
+        realmConstructor.Sync.SubscriptionState = {
+            Error: -1,
+            Creating: 2,
+            Pending: 0,
+            Complete: 1,
+            Invalidated: 3 };
+
+        var permissionsSchema = Object.freeze({
+            Class: function Class() {},
+            Permission: function Permission() {},
+            Realm: function Realm() {},
+            Role: function Role() {},
+            User: function User() {}
+        });
+        permissionsSchema.Permission.schema = Object.freeze({
+            name: '__Permission',
+            properties: {
+                role: '__Role',
+                canRead: { type: 'bool', default: false },
+                canUpdate: { type: 'bool', default: false },
+                canDelete: { type: 'bool', default: false },
+                canSetPermissions: { type: 'bool', default: false },
+                canQuery: { type: 'bool', default: false },
+                canCreate: { type: 'bool', default: false },
+                canModifySchema: { type: 'bool', default: false }
+            }
+        });
+
+        permissionsSchema.User.schema = Object.freeze({
+            name: '__User',
+            primaryKey: 'id',
+            properties: {
+                id: 'string',
+                role: '__Role'
+            }
+        });
+
+        permissionsSchema.Role.schema = Object.freeze({
+            name: '__Role',
+            primaryKey: 'name',
+            properties: {
+                name: 'string',
+                members: '__User[]'
+            }
+        });
+
+        permissionsSchema.Class.schema = Object.freeze({
+            name: '__Class',
+            primaryKey: 'class_name',
+            properties: {
+                class_name: 'string',
+                permissions: '__Permission[]'
+            }
+        });
+
+        permissionsSchema.Realm.schema = Object.freeze({
+            name: '__Realm',
+            primaryKey: 'id',
+            properties: {
+                id: 'int',
+                permissions: '__Permission[]'
+            }
+        });
+        if (!realmConstructor.Permissions) {
+            Object.defineProperty(realmConstructor, 'Permissions', {
+                value: permissionsSchema,
+                configurable: false
+            });
+        }
+    }
+
+    var types = Object.freeze({
+        'BOOL': 'bool',
+        'INT': 'int',
+        'FLOAT': 'float',
+        'DOUBLE': 'double',
+        'STRING': 'string',
+        'DATE': 'date',
+        'DATA': 'data',
+        'OBJECT': 'object',
+        'LIST': 'list'
+    });
+    Object.defineProperty(realmConstructor, 'Types', {
+        get: function get() {
+            if (typeof console != 'undefined') {
+                var stack = new Error().stack.split("\n").slice(2).join("\n");
+                var msg = '`Realm.Types` is deprecated! Please specify the type name as lowercase string instead!\n' + stack;
+                if (console.warn != undefined) {
+                    console.warn(msg);
+                } else {
+                    console.log(msg);
+                }
+            }
+            return types;
+        },
+        configurable: true
+    });
+};

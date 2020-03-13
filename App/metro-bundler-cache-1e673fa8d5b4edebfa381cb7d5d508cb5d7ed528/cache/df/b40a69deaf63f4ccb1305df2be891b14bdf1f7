@@ -1,0 +1,396 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/shop.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _strings = require('../../components/localization/strings');
+
+var _global = require('../../components/common/global');
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _CustomMenu = require('../../components/navigation/CustomMenu');
+
+var _CustomMenu2 = _interopRequireDefault(_CustomMenu);
+
+var _Room = require('../../components/componentsJs/Room');
+
+var _Room2 = _interopRequireDefault(_Room);
+
+var _NewRoomWizard = require('../../components/modals/NewRoomWizard');
+
+var _NewRoomWizard2 = _interopRequireDefault(_NewRoomWizard);
+
+var _ProtectedRoomPassword = require('../../components/modals/ProtectedRoomPassword');
+
+var _ProtectedRoomPassword2 = _interopRequireDefault(_ProtectedRoomPassword);
+
+var _Services = require('../../services/Services');
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _CommonDialog = require('../../components/dialogs/CommonDialog');
+
+var _CommonDialog2 = _interopRequireDefault(_CommonDialog);
+
+var _reactNativeOnesignal = require('react-native-onesignal');
+
+var _reactNativeOnesignal2 = _interopRequireDefault(_reactNativeOnesignal);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _general = require('../../styles/general');
+
+var _default = require('../../styles/default');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    Shop: {
+        displayName: 'Shop'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/shop.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var Shop = _wrapComponent('Shop')(function (_Component) {
+    _inherits(Shop, _Component);
+
+    function Shop(props) {
+        _classCallCheck(this, Shop);
+
+        var _this = _possibleConstructorReturn(this, (Shop.__proto__ || Object.getPrototypeOf(Shop)).call(this, props));
+
+        _this.state = {
+            rooms: [],
+            isNewRoomWizard: false,
+            spinner: true,
+            usersStatistics: {
+                online: 0
+            },
+            isPullingRooms: false
+        };
+
+        rootNavigator = _this.props.navigator;
+        return _this;
+    }
+
+    _createClass(Shop, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            _reactNativeOrientation2.default.lockToPortrait();
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setState({ spinner: false });
+        }
+    }, {
+        key: 'pullRooms',
+        value: function pullRooms() {
+            var _this2 = this;
+
+            this.setState({ isPullingRooms: true });
+            _Services.RoomService.get({}, function (rooms) {
+                _this2.setState({ rooms: rooms, isPullingRooms: false });
+            }, function (err) {});
+        }
+    }, {
+        key: 'renderNavbar',
+        value: function renderNavbar() {
+            var _this3 = this;
+
+            return _react3.default.createElement(_CustomNavbar2.default, {
+                ref: function ref(e) {
+                    _this3.customNavbar = e;
+                },
+                navigator: this.props.navigator,
+                backButton: false,
+                gradientColors: [_default.Color.OrangePrimary, _default.Color.OrangeSecondary],
+                customLeftView: function customLeftView() {
+                    return _react3.default.createElement(
+                        _reactNative.TouchableOpacity,
+                        { onPress: function onPress() {
+                                _this3.setState({ menuOpened: true });
+                            }, style: { flex: 1, paddingLeft: 0, justifyContent: 'center', width: '100%', height: '100%' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 101
+                            }
+                        },
+                        _react3.default.createElement(_reactNative.Image, {
+                            style: { alignSelf: 'flex-start', resizeMode: 'contain', height: 15 },
+                            source: require('../../images/wordeo/navbar/hamburguer.png'), __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 104
+                            }
+                        })
+                    );
+                },
+                customCenterView: function customCenterView() {
+                    return _react3.default.createElement(
+                        _reactNative.TouchableOpacity,
+                        {
+                            style: { flex: 1, flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 112
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: _general.GeneralStyle.customNavbarTitle, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 114
+                                }
+                            },
+                            'SHOP'
+                        )
+                    );
+                },
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 94
+                }
+            });
+        }
+    }, {
+        key: 'renderCustomMenu',
+        value: function renderCustomMenu() {
+            var _this4 = this;
+
+            return _react3.default.createElement(_CustomMenu2.default, {
+                isOpened: this.state.menuOpened,
+                onClose: function onClose() {
+                    _this4.setState({ menuOpened: false });
+                },
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 125
+                }
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this5 = this;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                { style: styles.container, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 135
+                    }
+                },
+                _react3.default.createElement(_SpinnerComponent2.default, {
+                    isVisible: this.state.spinner, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 137
+                    }
+                }),
+                _react3.default.createElement(_CommonDialog2.default, {
+                    ref: function ref(e) {
+                        _this5.commonDialog = e;
+                    }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 140
+                    }
+                }),
+                this.renderNavbar(),
+                this.renderCustomMenu(),
+                _react3.default.createElement(
+                    _reactNative.View,
+                    { style: styles.expBlocksContainer, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 146
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.expBlock, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 147
+                            }
+                        },
+                        _react3.default.createElement(_reactNative.Image, { style: styles.expBlockImage, source: { uri: 'https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/money-256.png' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 148
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: styles.expBlockText, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 149
+                                }
+                            },
+                            '5000'
+                        )
+                    )
+                ),
+                _react3.default.createElement(_reactNative.FlatList, {
+                    centerContent: false,
+                    numColumns: 3,
+                    snapToAlignment: 'start',
+                    data: this.state.items,
+                    ListFooterComponent: function ListFooterComponent() {
+                        return _react3.default.createElement(
+                            _reactNative.TouchableOpacity,
+                            {
+                                onPress: function onPress() {
+                                    _this5.setState({ isNewRoomWizard: true });
+                                },
+                                style: { flex: 1, paddingLeft: 0, justifyContent: 'center', width: '98%', height: 50, backgroundColor: _default.Color.BluePrimary, alignSelf: 'center', marginVertical: 15, borderRadius: 5, shadowColor: 'rgba(255,255,255,.5)', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 1 }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 162
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { marginRight: 5, fontFamily: _default.Font.TitanOne, fontSize: 24, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 167
+                                    }
+                                },
+                                'CREAR SALA'
+                            )
+                        );
+                    },
+                    renderItem: function renderItem(rowData) {
+                        return _this5.renderRoom(rowData.item);
+                    },
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 155
+                    }
+                })
+            );
+        }
+    }, {
+        key: 'renderRoom',
+        value: function renderRoom(item) {
+            var _this6 = this;
+
+            return _react3.default.createElement(_Room2.default, {
+                room: item,
+                onTapRoom: function onTapRoom(room) {
+                    if (room.isProtected) {
+                        _this6.setState({ selectedRoom: room });
+                    } else {
+                        var joinReq = { roomId: room.id };
+                        _Services.RoomService.join(joinReq, function (success) {
+                            _this6.onJoinRoomSuccess(room);
+                        }, function (err) {
+                            if (err.message) {
+                                _this6.commonDialog.show('error', err.message);
+                            }
+                        });
+                    }
+                },
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 182
+                }
+            });
+        }
+    }]);
+
+    return Shop;
+}(_react2.Component));
+
+exports.default = Shop;
+
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#2a3a4b'
+    },
+    expBlocksContainer: {
+        backgroundColor: _default.Color.BluePrimary,
+        maxWidth: '33%',
+        margin: 5,
+        borderRadius: 10,
+        alignSelf: 'center',
+        width: 100,
+        height: 100,
+        padding: 10,
+        shadowColor: 'rgba(255,255,255,.5)',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+        marginVertical: 10
+    },
+    expBlock: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-around'
+    },
+    expBlockText: {
+        flex: 1,
+        fontFamily: _default.Font.TitanOne,
+        fontSize: 18,
+        color: 'white',
+        textAlign: 'center',
+        backgroundColor: 'transparent'
+    },
+    expBlockImage: {
+        tintColor: 'white',
+        flex: 2,
+        alignSelf: 'center',
+        width: '100%',
+        resizeMode: 'contain',
+        marginVertical: 5
+    }
+});

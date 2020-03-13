@@ -1,0 +1,241 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _constants = require('./constants');
+
+var _collections = require('./collections');
+
+var collections = _interopRequireWildcard(_collections);
+
+var _lists = require('./lists');
+
+var _lists2 = _interopRequireDefault(_lists);
+
+var _results = require('./results');
+
+var _results2 = _interopRequireDefault(_results);
+
+var _objects = require('./objects');
+
+var objects = _interopRequireWildcard(_objects);
+
+var _user = require('./user');
+
+var _user2 = _interopRequireDefault(_user);
+
+var _session = require('./session');
+
+var _session2 = _interopRequireDefault(_session);
+
+var _subscription = require('./subscription');
+
+var _subscription2 = _interopRequireDefault(_subscription);
+
+var _rpc = require('./rpc');
+
+var rpc = _interopRequireWildcard(_rpc);
+
+var _util = require('./util');
+
+var util = _interopRequireWildcard(_util);
+
+var _userMethods = require('../user-methods');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _NativeModules$Realm = _reactNative.NativeModules.Realm,
+    debugHosts = _NativeModules$Realm.debugHosts,
+    debugPort = _NativeModules$Realm.debugPort;
+
+
+rpc.registerTypeConverter(_constants.objectTypes.LIST, _lists.createList);
+rpc.registerTypeConverter(_constants.objectTypes.RESULTS, _results.createResults);
+rpc.registerTypeConverter(_constants.objectTypes.OBJECT, objects.createObject);
+rpc.registerTypeConverter(_constants.objectTypes.REALM, createRealm);
+rpc.registerTypeConverter(_constants.objectTypes.USER, _user.createUser);
+rpc.registerTypeConverter(_constants.objectTypes.SESSION, _session.createSession);
+rpc.registerTypeConverter(_constants.objectTypes.SUBSCRIPTION, _subscription.createSubscription);
+
+function createRealm(_, info) {
+    var realm = Object.create(Realm.prototype);
+
+    setupRealm(realm, info.id);
+    return realm;
+}
+
+function setupRealm(realm, realmId) {
+    realm[_constants.keys.id] = realmId;
+    realm[_constants.keys.realm] = realmId;
+    realm[_constants.keys.type] = _constants.objectTypes.REALM;
+
+    ['empty', 'path', 'readOnly', 'inMemory', 'schema', 'schemaVersion', 'syncSession', 'isInTransaction', 'isClosed'].forEach(function (name) {
+        Object.defineProperty(realm, name, { get: util.getterForProperty(name) });
+    });
+}
+
+function getObjectType(realm, type) {
+    if (typeof type == 'function') {
+        return objects.typeForConstructor(realm[_constants.keys.realm], type);
+    }
+    return type;
+}
+
+var Realm = function () {
+    function Realm(config) {
+        _classCallCheck(this, Realm);
+
+        var schemas = typeof config == 'object' && config.schema;
+        var constructors = schemas ? {} : null;
+
+        for (var i = 0, len = schemas ? schemas.length : 0; i < len; i++) {
+            var item = schemas[i];
+
+            if (typeof item == 'function') {
+                var schema = item.schema;
+                if (!schema || typeof schema != 'object') {
+                    throw new Error("Realm object constructor must have a 'schema' property.");
+                }
+
+                var name = schema.name,
+                    properties = schema.properties;
+
+                if (!name || typeof name != 'string') {
+                    throw new Error('Failed to read ObjectSchema: name must be of type \'string\', got (' + typeof name + ')');
+                } else if (!properties || typeof properties != 'object') {
+                    throw new Error('Failed to read ObjectSchema: properties must be of type \'object\', got (' + typeof properties + ')');
+                }
+
+                schemas.splice(i, 1, schema);
+                constructors[name] = item;
+            }
+        }
+
+        var realmId = rpc.createRealm(Array.from(arguments));
+        setupRealm(this, realmId);
+
+        objects.registerConstructors(realmId, this.path, constructors);
+    }
+
+    _createClass(Realm, [{
+        key: 'create',
+        value: function create(type) {
+            var method = util.createMethod(_constants.objectTypes.REALM, 'create', true);
+
+            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                args[_key - 1] = arguments[_key];
+            }
+
+            return method.apply(this, [getObjectType(this, type)].concat(args));
+        }
+    }, {
+        key: 'objects',
+        value: function objects(type) {
+            var method = util.createMethod(_constants.objectTypes.REALM, 'objects');
+
+            for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+                args[_key2 - 1] = arguments[_key2];
+            }
+
+            return method.apply(this, [getObjectType(this, type)].concat(args));
+        }
+    }, {
+        key: 'objectForPrimaryKey',
+        value: function objectForPrimaryKey(type) {
+            var method = util.createMethod(_constants.objectTypes.REALM, 'objectForPrimaryKey');
+
+            for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+                args[_key3 - 1] = arguments[_key3];
+            }
+
+            return method.apply(this, [getObjectType(this, type)].concat(args));
+        }
+    }]);
+
+    return Realm;
+}();
+
+exports.default = Realm;
+
+util.createMethods(Realm.prototype, _constants.objectTypes.REALM, ['addListener', 'removeListener', 'removeAllListeners', 'close', '_waitForDownload', '_objectForObjectId']);
+
+util.createMethods(Realm.prototype, _constants.objectTypes.REALM, ['delete', 'deleteModel', 'deleteAll', 'write', 'compact', 'beginTransaction', 'commitTransaction', 'cancelTransaction'], true);
+
+var Sync = {
+    User: _user2.default,
+    Session: _session2.default,
+    Subscription: _subscription2.default
+};
+
+Object.defineProperties(Realm, {
+    Collection: {
+        value: collections.default
+    },
+    List: {
+        value: _lists2.default
+    },
+    Results: {
+        value: _results2.default
+    },
+    Object: {
+        value: objects.default
+    },
+    Sync: {
+        value: Sync
+    },
+    defaultPath: {
+        get: util.getterForProperty('defaultPath'),
+        set: util.setterForProperty('defaultPath')
+    },
+    schemaVersion: {
+        value: function value(_path, _encryptionKey) {
+            return rpc.callMethod(undefined, Realm[_constants.keys.id], 'schemaVersion', Array.from(arguments));
+        }
+    },
+    deleteFile: {
+        value: function value(config) {
+            return rpc.callMethod(undefined, Realm[_constants.keys.id], 'deleteFile', Array.from(arguments));
+        }
+    },
+    copyBundledRealmFiles: {
+        value: function value() {
+            return rpc.callMethod(undefined, Realm[_constants.keys.id], 'copyBundledRealmFiles', []);
+        }
+    },
+    clearTestState: {
+        value: function value() {
+            collections.clearMutationListeners();
+            objects.clearRegisteredConstructors();
+            rpc.clearTestState();
+        }
+    }
+});
+
+for (var i = 0, len = debugHosts.length; i < len; i++) {
+    try {
+        var refreshAccessTokenCallback = _userMethods.static._refreshAccessToken.bind(_user2.default);
+
+        Realm[_constants.keys.id] = rpc.createSession(refreshAccessTokenCallback, debugHosts[i] + ':' + debugPort);
+        break;
+    } catch (e) {
+        if (i < len - 1) {
+            continue;
+        }
+
+        console.error(e);
+
+        throw new Error('Realm failed to connect to the embedded debug server inside the app. ' + 'If attempting to use Chrome debugging from a device, ensure the device is ' + 'reachable on the same network as this machine.');
+    }
+}

@@ -1,0 +1,32 @@
+<div class="animated fadeIn list-students">
+    <div class="card" id="new">
+        <div class="card-body">
+
+            <table datatable="ng" ng-if="news" class="row-border hover">
+                <thead>
+                    <td class="text-center">ID</td>
+                    <td class="text-center">Título</td>
+                    <td class="text-center">Texto</td>
+                    <td class="text-center">Vista por</td>
+                    <td class="text-center">Acciones</td>
+                </thead>
+                <tr ng-repeat="newItem in news">
+                    <td class="text-center">{{ newItem.id }}</td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ newItem.payload.title }}</p>
+                    </td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ newItem.payload.texto }}</p>
+                    </td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ newItem.viewBy }}</p>
+                    </td>
+                    <td class="text-center">
+                        <a ng-click="giveReward(player.id)" href="#">[ Dar premio ]</a>
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

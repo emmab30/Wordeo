@@ -1,0 +1,68 @@
+{
+  "name": "Wordeo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "patches": "echo \"Executing patches for dependencies..\" && ./custom_patches"
+  },
+  "dependencies": {
+    "@expo/react-native-action-sheet": "^1.0.1",
+    "@remobile/react-native-cordova": "^1.1.1",
+    "@remobile/react-native-file-transfer": "^1.0.8",
+    "axios": "^0.16.1",
+    "lodash": "^4.17.10",
+    "moment": "^2.18.1",
+    "moment-with-locales-es6": "^1.0.1",
+    "react": "16.2.0",
+    "react-native": "0.51.1",
+    "react-native-actionsheet": "^2.4.2",
+    "react-native-animatable": "^1.2.4",
+    "react-native-cached-image": "^1.4.3",
+    "react-native-config": "^0.5.0",
+    "react-native-device-info": "^0.11.0",
+    "react-native-elements": "^0.19.1",
+    "react-native-fabric": "^0.5.0",
+    "react-native-fbsdk": "^0.6.3",
+    "react-native-file-picker": "0.0.8",
+    "react-native-firebase": "^3.2.2",
+    "react-native-fs": "^2.9.0",
+    "react-native-i18n": "^2.0.4",
+    "react-native-image-progress": "^1.0.1",
+    "react-native-interactable": "^0.1.10",
+    "react-native-keyboard-aware-scroll-view": "^0.2.9",
+    "react-native-linear-gradient": "^2.4.0",
+    "react-native-localization": "^0.1.31",
+    "react-native-mimetype": "0.0.7",
+    "react-native-modal-dropdown": "^0.6.1",
+    "react-native-modal-overlay": "^1.2.3",
+    "react-native-modalbox": "^1.4.0",
+    "react-native-navigation": "^1.1.397",
+    "react-native-onesignal": "^3.0.5",
+    "react-native-orientation": "^3.1.3",
+    "react-native-queue": "^1.2.1",
+    "react-native-share": "^1.0.26",
+    "react-native-slider": "^0.11.0",
+    "react-native-socket.io-client": "^1.4.8",
+    "react-native-sound": "git+https://github.com/zmxv/react-native-sound.git",
+    "react-native-spinkit": "^1.1.1",
+    "react-native-vector-icons": "^4.5.0",
+    "socket.io-client": "^2.1.1",
+    "socketgd": "^1.0.12"
+  },
+  "devDependencies": {
+    "babel-jest": "20.0.3",
+    "babel-preset-react-native": "1.9.2",
+    "jest": "20.0.4",
+    "react-test-renderer": "16.0.0-alpha.6"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
+  }
+}

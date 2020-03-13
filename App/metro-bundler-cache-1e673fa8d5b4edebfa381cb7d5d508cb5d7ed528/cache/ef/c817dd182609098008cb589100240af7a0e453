@@ -1,0 +1,266 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/InviteFriendEmail.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _Services = require('../../services/Services');
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _FontAwesome = require('react-native-vector-icons/FontAwesome');
+
+var _FontAwesome2 = _interopRequireDefault(_FontAwesome);
+
+var _reactNativeElements = require('react-native-elements');
+
+var _login = require('../../styles/login');
+
+var _reactNativeCachedImage = require('react-native-cached-image');
+
+var _default = require('../../styles/default');
+
+var _general = require('../../styles/general');
+
+var _global = require('../../components/common/global');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    InviteFriendEmail: {
+        displayName: 'InviteFriendEmail'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/InviteFriendEmail.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var width = _reactNative.Dimensions.get('window').width;
+var height = _reactNative.Dimensions.get('window').height;
+
+var InviteFriendEmail = _wrapComponent('InviteFriendEmail')(function (_Component) {
+    _inherits(InviteFriendEmail, _Component);
+
+    function InviteFriendEmail(props) {
+        _classCallCheck(this, InviteFriendEmail);
+
+        var _this = _possibleConstructorReturn(this, (InviteFriendEmail.__proto__ || Object.getPrototypeOf(InviteFriendEmail)).call(this, props));
+
+        _this.state = {
+            height: height,
+            width: width,
+            isLandscape: false,
+            isInvitingFriend: false,
+            email: null
+        };
+        return _this;
+    }
+
+    _createClass(InviteFriendEmail, [{
+        key: 'onLayout',
+        value: function onLayout(e) {
+            _global.Global.getOrientation(function (orientation) {
+                this.setState({
+                    isLandscape: orientation == 'LANDSCAPE',
+                    width: _reactNative.Dimensions.get('window').width,
+                    height: _reactNative.Dimensions.get('window').height
+                });
+            }.bind(this));
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            if (!this.props.isVisible) return null;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    onLayout: this.onLayout.bind(this), __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 73
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    { visible: this.props.isVisible,
+                        closeOnTouchOutside: true,
+                        animationType: 'slideInDown',
+                        animationOutType: 'none',
+                        animationDuration: 300,
+                        onClose: function onClose() {
+                            _this2.props.onClose();
+                        },
+                        containerStyle: { backgroundColor: 'rgba(140, 140, 140, 0.8)', flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' },
+                        childrenWrapperStyle: [styles.overlayChildren, { overflow: 'hidden', paddingTop: 0, marginTop: 0, backgroundColor: "#fff", paddingHorizontal: 0, borderRadius: 10, width: this.state.isLandscape ? '80%' : '100%', maxHeight: 300 }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 75
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: { width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 86
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.formContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 87
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: _general.GeneralStyle.header, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 88
+                                    }
+                                },
+                                'COLOCA EL EMAIL DE TU AMIGO'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { width: 100, height: 100, borderRadius: 50, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', backgroundColor: '#1aba5d' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 89
+                                    }
+                                },
+                                _react3.default.createElement(_FontAwesome2.default, { style: { alignSelf: 'center' }, name: 'share-square', size: 50, color: '#fff', __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 90
+                                    }
+                                })
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: styles.inputContainer, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 92
+                                    }
+                                },
+                                _react3.default.createElement(_FontAwesome2.default, { style: styles.formIcon, name: 'user-circle', size: 20, color: '#0088ff', __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 93
+                                    }
+                                }),
+                                _react3.default.createElement(_reactNative.TextInput, {
+                                    editable: true,
+                                    placeholder: 'Email',
+                                    style: styles.formInput,
+                                    onChangeText: function onChangeText(text) {
+                                        _this2.setState({ email: text });
+                                    },
+                                    value: this.state.email,
+                                    __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 94
+                                    }
+                                })
+                            ),
+                            _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 105
+                                }
+                            }),
+                            _react3.default.createElement(_reactNativeElements.Button, {
+                                loading: this.state.isInvitingFriend,
+                                onPress: function onPress() {},
+                                containerViewStyle: { width: '100%', marginLeft: 0, flex: 1, marginVertical: 10 },
+                                buttonStyle: styles.buttonUpdate,
+                                icon: this.state.isInvitingFriend ? null : { name: 'share-square', type: 'font-awesome' },
+                                title: 'INVITAR AHORA', __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 107
+                                }
+                            })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return InviteFriendEmail;
+}(_react2.Component));
+
+exports.default = InviteFriendEmail;
+
+
+var styles = _reactNative.StyleSheet.create({
+    overlayChildren: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.7,
+        shadowRadius: 20,
+        elevation: 6
+    },
+    loadingContainer: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formContainer: {
+        width: '90%',
+        maxWidth: '90%',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    inputContainer: {
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formInput: {
+        fontFamily: _default.Font.PTSansRegular,
+        height: 40,
+        flex: 1
+    },
+    formIcon: {
+        marginRight: 10
+    },
+    buttonUpdate: {
+        minWidth: '100%',
+        width: '100%',
+        borderRadius: 10,
+        backgroundColor: '#1aba5d',
+        height: 50
+    }
+});

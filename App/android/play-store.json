@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "wordeo-171901",
+  "private_key_id": "ce8dd26ae926f68b065f9bf89ddc38612b1ce833",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nwordeo+BG\nnVrQE5onkwqXlNqLZHeM/4ZVwfJhYA33uaAg8kijv4iebrLGn/ebbrPhhFdIvLmC\n47ekIMW31fmWOwQKHHN1tCKAXjjFl7H01NjL3E3AYt9P50urXrSW+Jhu3Fi4dnpg\nwQzeTHQS1gtaPmL6iVbO3eHDkwsODeucV1AuT9vjbpvtE0WDdM4wmQ2gC8jrT6E8\nFJTaiCmOWk+4zS67UPnaguB0EY/liqSREWx3PW7qrYbQX/LNLpx0yjIEpTLRzi8N\nUcFKxtF8JNpFTPJW0SPTXd4ABksN31B+9wIKbrNk8e9si68I5XWGMC4t+g7o5Qk2\nAI07+ZxLAgMBAAECggEAYHSHBuNUal+2NaUNdkHDRsggTA2BDy9r5S7OF5FjEQW6\neYC8qLe6Wp8JXyTD6rlYcmqmrDi82sLylriqxGGorYM52BLzKnGWMdCcqEkvKySf\nFfecrucF0JmgnCkpNeBzVUKwFHHgBZsxkscghOwaqn8D3NK5ZIPAZuyZpBJlOnpF\nFOqbah9GQOFbFXwOXhpI66aU3e1IwsvQ5IQhW0QnWr7PEvh2lB8F9K8+Er39YGQ2\nyp8pJ+NiXWM+RzCGyFtGOU2tMYxYa8z9qQQbkEfbjbvD/3V8YctWA3wTAqN8UjU6\nkbFTEFdw1EJfkSqJ5czPHoG8Rvi6p/a4L0PYCUeyMQKBgQD/C1ZKrRbQfbDd5bz0\n+EsJnK61wI4GtGXEHFnpxqCZ4ARwM5uUxS2CEuL6BBFxIcGXaQAAMsEAjounidC5\nOGJeJuaxB1qtp5uPhar8IWo4++WYfNffXq8OSBOzpWMZdqpxHy6iOkG2KBdLlI8N\nySkDchj2C6hm0wD+e3WLNrxNkQKBgQDKTrhVQdxrTLwjgR1AuDbKbTjEWs6OZz8M\nc11TGtBazVB3j/BuykPbAPWefImOkt0RbUCn/KtUdWG1ZjLHQImRixY1W/ppNzrL\nQ4OV72KYrPt7qRPIwknUBr6eJ90TzwhVGKo8nJbxfpmlBM0nLJLD5TUTKTZHbOLc\nehF+EieOGwKBgQDmNEN1L/qRwYGtKDqAGsUQLf58Swtm/dmFQ9ncas53VX5sEAj0\nJW3IJGf/J0DfDosAsWOwyh7u87sWRAzDwiL3vMEpNOwiJlEBILOO1FJekO9Rzg3D\nrmDv0RsHYdarGzMI3A5pm4/IbTNpovPki5ebZpclLqyX8wjIqoMUXxlkIQKBgQCv\nbf/OfqQir5Hdv9KcEqIAeyHks1G2jrVPmKJutCvE8ZE7fKfjiqW4vWZAHoIyDgyB\nVhnhEeuH+5nU8WBLBB3HBbMmZjIJFwl2xX7Pf5wiBK62lvE+/6uBnq+g+bRtvvPc\nxtyoXqlNlJirTjSQKcjC8nlJuk0FNtiqk3ejuR5vzQKBgFynEUqaU1RkFHr4C8nj\nP1QbQ3OGvbMc18nIpFGZczHuonakcATB0tWQF/hUPVwGiSpRG7l8Q2ssqY5CxmD5\nsvQ0HkvT8VoUoCHy0HlRTRncxsB+EjUfGP787L2tReRCh3clSiQu/Mqc5Puw/Tzp\nA4dZhtIlE9UM+M57iu2qNWQz\n-----END PRIVATE KEY-----\n",
+  "client_email": "qroom-848@open-wordeo-171901.iam.gserviceaccount.com",
+  "client_id": "wordeo",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/qroom-848%40open-english-171901.iam.gserviceaccount.com"
+}

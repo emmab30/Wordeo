@@ -1,0 +1,57 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ScreenVisibilityListener = function () {
+  function ScreenVisibilityListener(listeners) {
+    _classCallCheck(this, ScreenVisibilityListener);
+
+    this.emitter = _reactNative.Platform.OS === 'android' ? _reactNative.DeviceEventEmitter : _reactNative.NativeAppEventEmitter;
+    this.listeners = listeners;
+  }
+
+  _createClass(ScreenVisibilityListener, [{
+    key: 'register',
+    value: function register() {
+      var _listeners = this.listeners,
+          willAppear = _listeners.willAppear,
+          didAppear = _listeners.didAppear,
+          willDisappear = _listeners.willDisappear,
+          didDisappear = _listeners.didDisappear;
+
+      this.willAppearSubscription = willAppear && this.emitter.addListener('willAppear', willAppear);
+      this.didAppearSubscription = didAppear && this.emitter.addListener('didAppear', didAppear);
+      this.willDisappearSubscription = willDisappear && this.emitter.addListener('willDisappear', willDisappear);
+      this.didDisappearSubscription = didDisappear && this.emitter.addListener('didDisappear', didDisappear);
+    }
+  }, {
+    key: 'unregister',
+    value: function unregister() {
+      if (this.willAppearSubscription) {
+        this.willAppearSubscription.remove();
+      }
+
+      if (this.didAppearSubscription) {
+        this.didAppearSubscription.remove();
+      }
+
+      if (this.willDisappearSubscription) {
+        this.willDisappearSubscription.remove();
+      }
+
+      if (this.didDisappearSubscription) {
+        this.didDisappearSubscription.remove();
+      }
+    }
+  }]);
+
+  return ScreenVisibilityListener;
+}();
+
+exports.default = ScreenVisibilityListener;

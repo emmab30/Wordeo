@@ -1,0 +1,887 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Global = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _EventEmitter = require('EventEmitter');
+
+var _EventEmitter2 = _interopRequireDefault(_EventEmitter);
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _default = require('../../styles/default');
+
+var _reactNative = require('react-native');
+
+var _strings = require('../localization/strings');
+
+var _reactNativeDocumentPicker = require('react-native-document-picker');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ImagePicker = require('react-native-image-picker');
+
+
+var FilePickerManager = require('NativeModules').FilePickerManager;
+
+var Global = exports.Global = function () {
+    function Global() {
+        _classCallCheck(this, Global);
+    }
+
+    _createClass(Global, null, [{
+        key: 'getBucketImage',
+        value: function getBucketImage(relativePath) {
+            return 'https://s3-sa-east-1.amazonaws.com/wordeo/' + relativePath;
+        }
+    }, {
+        key: 'formatPrice',
+        value: function formatPrice(price) {
+            var inK = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+            price = parseFloat(price);
+            price = price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+            if (inK) {
+                if (parseFloat(price) >= 1000) {
+                    return price / 1000 + 'k';
+                }
+            }
+
+            return price;
+        }
+    }, {
+        key: 'normalizeFontSize',
+        value: function normalizeFontSize(size) {
+            var _Dimensions$get = _reactNative.Dimensions.get('window'),
+                SCREEN_WIDTH = _Dimensions$get.width,
+                SCREEN_HEIGHT = _Dimensions$get.height;
+
+            var scale = SCREEN_WIDTH / 320;
+
+            if (_reactNative.Platform.OS === 'ios') {
+                return Math.round(_reactNative.PixelRatio.roundToNearestPixel(size));
+            } else {
+                return Math.round(_reactNative.PixelRatio.roundToNearestPixel(size)) - 2;
+            }
+        }
+    }]);
+
+    return Global;
+}();
+
+Global.Screen = {
+    Home: {
+        screen: 'OpenEnglish.Home',
+        path: 'home',
+        title: '',
+        navigatorStyle: {
+            navBarHidden: true,
+            statusBarHidden: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    Login: {
+        screen: 'OpenEnglish.Login',
+        path: 'login',
+        title: '',
+        navigatorStyle: {
+            navBarHidden: true,
+            statusBarHidden: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    Register: {
+        screen: 'OpenEnglish.Register',
+        path: 'register',
+        title: 'New Account',
+        overrideBackPress: true,
+        backButtonHidden: true,
+        navigatorStyle: {
+            statusBarHidden: true,
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    RegisterFirst: {
+        screen: 'OpenEnglish.RegisterFirst',
+        path: 'register_first',
+        title: 'New Account',
+        overrideBackPress: true,
+        backButtonHidden: true,
+        navigatorStyle: {
+            statusBarHidden: true,
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    RegisterSecond: {
+        screen: 'OpenEnglish.RegisterSecond',
+        path: 'register_second',
+        title: 'New Account',
+        overrideBackPress: true,
+        backButtonHidden: true,
+        navigatorStyle: {
+            statusBarHidden: true,
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    PhoneVerification: {
+        screen: 'OpenEnglish.PhoneVerification',
+        path: 'phone_verification',
+        title: 'Verify your phone number',
+        navigatorStyle: {
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    ForgotPassword: {
+        screen: 'OpenEnglish.ForgotPassword',
+        path: 'forgot_password',
+        title: 'Forgot Password',
+        animationType: 'fade',
+        backButtonHidden: true,
+        navigatorStyle: {
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    ChangePhoneNumber: {
+        screen: 'OpenEnglish.ChangePhoneNumber',
+        path: 'change_phone_number',
+        title: 'Change Phone Number',
+        backButtonHidden: true,
+        navigatorStyle: {
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    ChangePassword: {
+        screen: 'OpenEnglish.ChangePassword',
+        path: 'change_password',
+        title: 'Change password',
+        backButtonHidden: true,
+        navigatorStyle: {
+            statusBarHidden: true,
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    Tutorial: {
+        screen: 'OpenEnglish.Tutorial',
+        path: 'tutorial',
+        title: 'Tutorial',
+        animationType: 'fade',
+        navigatorStyle: {
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    Demo: {
+        screen: 'OpenEnglish.Demo',
+        path: 'demo',
+        title: 'Demo',
+        animationType: 'fade',
+        navigatorStyle: {
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    Welcome: {
+        screen: 'OpenEnglish.Welcome',
+        path: 'welcome',
+        title: 'Welcome',
+        animationType: 'fade',
+        navigatorStyle: {
+            navBarHidden: true,
+            navBarBackgroundColor: _default.Color.blue,
+            navBarButtonColor: _default.Color.white,
+            navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+            navBarTextColor: _default.Color.white,
+            navBarTitleTextCentered: true,
+            statusBarTextColorScheme: 'light'
+        },
+        navigatorButtons: {}
+    },
+    Dashboard: {
+        Home: {
+            screen: 'OpenEnglish.Dashboard.Home',
+            path: 'home',
+            title: '',
+            navigatorStyle: {
+                statusBarHidden: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            },
+            navigatorButtons: {
+                leftButtons: [{
+                    icon: require('../../images/common/menu_toggle.png'),
+                    id: 'openMenu',
+                    buttonFontSize: 1
+                }]
+            }
+        },
+        Round: {
+            screen: 'OpenEnglish.Dashboard.Round',
+            path: 'round',
+            title: '',
+            navigatorStyle: {
+                statusBarHidden: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            },
+            navigatorButtons: {
+                leftButtons: [{
+                    icon: require('../../images/common/menu_toggle.png'),
+                    id: 'openMenu',
+                    buttonFontSize: 1
+                }]
+            }
+        },
+        InRoundCategories: {
+            screen: 'OpenEnglish.Dashboard.InRoundCategories',
+            path: 'in-round-categories',
+            title: '',
+            overrideBackPress: true,
+            navigatorStyle: {
+                statusBarHidden: true,
+                disabledBackGesture: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            },
+            navigatorButtons: {
+                leftButtons: [{
+                    icon: require('../../images/common/menu_toggle.png'),
+                    id: 'openMenu',
+                    buttonFontSize: 1
+                }]
+            }
+        },
+        InRoundQuestion: {
+            screen: 'OpenEnglish.Dashboard.InRoundQuestion',
+            path: 'in-round-questions',
+            title: '',
+            overrideBackPress: true,
+            navigatorStyle: {
+                statusBarHidden: true,
+                disabledBackGesture: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            },
+            navigatorButtons: {
+                leftButtons: [{
+                    icon: require('../../images/common/menu_toggle.png'),
+                    id: 'openMenu',
+                    buttonFontSize: 1
+                }]
+            }
+        },
+        Shop: {
+            screen: 'OpenEnglish.Dashboard.Shop',
+            path: 'shop',
+            title: '',
+            navigatorStyle: {
+                statusBarHidden: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            },
+            navigatorButtons: {
+                leftButtons: [{
+                    icon: require('../../images/common/menu_toggle.png'),
+                    id: 'openMenu',
+                    buttonFontSize: 1
+                }]
+            }
+        },
+        Trivia: {
+            screen: 'OpenEnglish.Dashboard.Trivia',
+            path: 'trivia',
+            title: '',
+            navigatorStyle: {
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            },
+            navigatorButtons: {
+                leftButtons: [{
+                    icon: require('../../images/common/menu_toggle.png'),
+                    id: 'openMenu',
+                    buttonFontSize: 1
+                }]
+            }
+        },
+        Profile: {
+            screen: 'OpenEnglish.Dashboard.Profile',
+            path: 'profile',
+            title: _strings.strings.MyProfile,
+            navigatorStyle: {
+                statusBarHidden: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            },
+            navigatorButtons: {
+                leftButtons: [{
+                    icon: require('../../images/common/menu_toggle.png'),
+                    id: 'openMenu',
+                    buttonFontSize: 1
+                }]
+            },
+            passProps: {
+                activeView: 'OpenEnglish.Dashboard.Profile'
+            }
+        },
+        Ranking: {
+            screen: 'OpenEnglish.Dashboard.Ranking',
+            path: 'profile',
+            navigatorStyle: {
+                statusBarHidden: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            }
+        },
+        AddQuestion: {
+            screen: 'OpenEnglish.Dashboard.AddQuestion',
+            path: 'profile',
+            navigatorStyle: {
+                statusBarHidden: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            }
+        },
+        Contact: {
+            screen: 'OpenEnglish.Dashboard.Contact',
+            path: 'profile',
+            navigatorStyle: {
+                statusBarHidden: true,
+                navBarHideOnScroll: false,
+                navBarTranslucent: false,
+                navBarTransparent: false,
+                drawUnderNavBar: false,
+                navBarHidden: true,
+                navBarBackgroundColor: _default.Color.blue,
+                navBarButtonColor: _default.Color.white,
+                navBarTextFontFamily: _default.Font.PTSansRegularRegular,
+                navBarTextColor: _default.Color.white,
+                navBarTitleTextCentered: true,
+                statusBarTextColorScheme: 'light'
+            }
+        }
+    }
+};
+
+Global.FilePicker = function (success, error) {
+    if (_reactNative.Platform.OS === 'ios') {
+        _reactNativeDocumentPicker.DocumentPicker.show({
+            filetype: [_reactNativeDocumentPicker.DocumentPickerUtil.allFiles()]
+        }, function (error, res) {
+            success(res);
+        });
+    } else {
+        _reactNative.PermissionsAndroid.check(_reactNative.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE).then(function (hasPermission) {
+            if (hasPermission) {
+                FilePickerManager.showFilePicker(null, function (response) {
+                    if (response.didCancel) {} else if (response.error) {
+                        error(response.error);
+                    } else {
+                        success(response);
+                    }
+                });
+            } else {
+                _reactNative.PermissionsAndroid.requestMultiple([_reactNative.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE]).then(function (permissionsGranted) {
+                    if (permissionsGranted != null && permissionsGranted.length > 0) {
+                        var grantedPerms = 0;
+                        var keysLength = 0;
+                        for (var idx in permissionsGranted) {
+                            if (permissionsGranted[idx] == 'granted') {
+                                grantedPerms++;
+                            }
+                            keysLength++;
+                        }
+
+                        if (grantedPerms == keysLength) {
+                            setTimeout(function () {
+                                Global.FilePicker(success, error);
+                            }, 500);
+                        }
+                    }
+                });
+            }
+        });
+    }
+};
+
+Global.getFileExtension = function (url) {
+    try {
+        var extension = url.split('.').pop();
+        return { extension: extension };
+    } catch (error) {
+        console.warn("getFileExtension error: ", error);
+        return { extension: null };
+    }
+};
+
+Global.ImagePickerOnlyCamera = function (success, error) {
+    var options = {
+        title: 'Selecciona una imagen',
+        storageOptions: {
+            skipBackup: true,
+            path: 'images'
+        },
+        allowsEditing: true,
+        mediaType: 'photo',
+        maxWidth: 1200,
+        quality: 1 };
+
+    if (_reactNative.Platform.OS === 'android') {
+        _reactNative.PermissionsAndroid.check(_reactNative.PermissionsAndroid.PERMISSIONS.CAMERA).then(function (hasPermission) {
+            if (hasPermission) {
+                if (ImagePicker !== undefined) {
+
+                    ImagePicker.launchCamera(options, function (response) {
+
+                        if (response.didCancel) {} else if (response.error) {
+                            error(response.error);
+                        } else if (response.customButton) {} else {
+                            var source = { uri: response.uri };
+
+                            success(source);
+                        }
+                    });
+                } else {
+                    error("Error");
+                }
+            } else {
+                _reactNative.PermissionsAndroid.requestMultiple([_reactNative.PermissionsAndroid.PERMISSIONS.CAMERA, _reactNative.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE]).then(function (permissionsGranted) {
+                    if (permissionsGranted != null && permissionsGranted.length > 0) {
+                        var grantedPerms = 0;
+                        var keysLength = 0;
+                        for (var idx in permissionsGranted) {
+                            if (permissionsGranted[idx] == 'granted') {
+                                grantedPerms++;
+                            }
+                            keysLength++;
+                        }
+
+                        if (grantedPerms == keysLength) {
+                            setTimeout(function () {
+                                Global.ImagePickerOnlyCamera(success, error);
+                            }, 500);
+                        }
+                    }
+                });
+            }
+        });
+    } else {
+        if (ImagePicker !== undefined) {
+
+            ImagePicker.launchCamera(options, function (response) {
+
+                if (response.didCancel) {} else if (response.error) {
+                    error(response.error);
+                } else if (response.customButton) {} else {
+                    var source = { uri: response.uri };
+                    console.log(source);
+
+                    success(source);
+                }
+            });
+        } else {
+            error("Error");
+        }
+    }
+};
+
+Global.ImagePickerOnlyCameraVideo = function (success, error) {
+    var options = {
+        title: 'Selecciona un video',
+        storageOptions: {
+            skipBackup: true,
+            path: 'videos'
+        },
+        videoQuality: _reactNative.Platform.OS === 'ios' ? 'medium' : 'high',
+        allowsEditing: true,
+        mediaType: 'video',
+        maxWidth: 300,
+        maxHeight: 300,
+        quality: 0.7 };
+
+    if (_reactNative.Platform.OS === 'android') {
+        _reactNative.PermissionsAndroid.check(_reactNative.PermissionsAndroid.PERMISSIONS.CAMERA).then(function (hasPermission) {
+            if (hasPermission) {
+                if (ImagePicker !== undefined) {
+
+                    ImagePicker.launchCamera(options, function (response) {
+
+                        if (response.didCancel) {} else if (response.error) {
+                            error(response.error);
+                        } else if (response.customButton) {} else {
+                            var source = { uri: response.uri, path: response.path };
+
+                            success(source);
+                        }
+                    });
+                } else {
+                    error("Error");
+                }
+            } else {
+                _reactNative.PermissionsAndroid.requestMultiple([_reactNative.PermissionsAndroid.PERMISSIONS.CAMERA, _reactNative.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE]).then(function (permissionsGranted) {
+                    if (permissionsGranted != null && permissionsGranted.length > 0) {
+                        var grantedPerms = 0;
+                        var keysLength = 0;
+                        for (var idx in permissionsGranted) {
+                            if (permissionsGranted[idx] == 'granted') {
+                                grantedPerms++;
+                            }
+                            keysLength++;
+                        }
+
+                        if (grantedPerms == keysLength) {
+                            setTimeout(function () {
+                                Global.ImagePickerOnlyCameraVideo(success, error);
+                            }, 1000);
+                        }
+                    }
+                });
+            }
+        });
+    } else {
+        if (ImagePicker !== undefined) {
+
+            ImagePicker.launchCamera(options, function (response) {
+
+                if (response.didCancel) {} else if (response.error) {
+                    error(response.error);
+                } else if (response.customButton) {} else {
+                    var source = { uri: response.uri, path: response.path };
+
+                    success(source);
+                }
+            });
+        } else {
+            error("Error");
+        }
+    }
+};
+
+Global.ImagePickerOnlyGallery = function (success, error) {
+    var options = {
+        title: 'Pick an avatar',
+        storageOptions: {
+            skipBackup: true,
+            path: 'images'
+        },
+        allowsEditing: true,
+        mediaType: 'photo',
+        maxWidth: 1200,
+        quality: 1 };
+
+    if (_reactNative.Platform.OS === 'android') {
+        _reactNative.PermissionsAndroid.check(_reactNative.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE).then(function (hasPermission) {
+            if (hasPermission) {
+                if (ImagePicker !== undefined) {
+                    ImagePicker.launchImageLibrary(options, function (response) {
+
+                        if (response.didCancel) {} else if (response.error) {
+                            error(response.error);
+                        } else if (response.customButton) {} else {
+                            var source = { uri: response.uri };
+
+                            success(source);
+                        }
+                    });
+                } else {
+                    error("Error");
+                }
+            } else {
+                _reactNative.PermissionsAndroid.requestMultiple([_reactNative.PermissionsAndroid.PERMISSIONS.CAMERA, _reactNative.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE]).then(function (permissionsGranted) {
+                    if (permissionsGranted != null && permissionsGranted.length > 0) {
+                        var grantedPerms = 0;
+                        var keysLength = 0;
+                        for (var idx in permissionsGranted) {
+                            if (permissionsGranted[idx] == 'granted') {
+                                grantedPerms++;
+                            }
+                            keysLength++;
+                        }
+
+                        if (grantedPerms == keysLength) {
+                            setTimeout(function () {
+                                Global.ImagePickerOnlyGallery(success, error);
+                            }, 1000);
+                        }
+                    }
+                });
+            }
+        });
+    } else {
+        if (ImagePicker !== undefined) {
+
+            ImagePicker.launchImageLibrary(options, function (response) {
+
+                if (response.didCancel) {} else if (response.error) {
+                    error(response.error);
+                } else if (response.customButton) {} else {
+                    var source = { uri: response.uri };
+
+                    success(source);
+                }
+            });
+        } else {
+            error("Error");
+        }
+    }
+};
+
+Global.ImagePicker = function (success, error) {
+    var options = {
+        title: 'Pick an avatar',
+        storageOptions: {
+            skipBackup: true,
+            path: 'images'
+        },
+        allowsEditing: true,
+        mediaType: 'photo',
+        maxWidth: 400,
+        maxHeight: 400,
+        quality: 0.9 };
+
+    if (ImagePicker !== undefined) {
+
+        ImagePicker.showImagePicker(options, function (response) {
+
+            if (response.didCancel) {} else if (response.error) {
+                error(response.error);
+            } else if (response.customButton) {} else {
+                var source = { uri: response.uri };
+
+                success(source);
+            }
+        });
+    } else {
+        error("Error");
+    }
+};
+
+Global.eventEmitter = {
+    instance: null,
+    getInstance: function getInstance() {
+        if (Global.eventEmitter.instance === null) {
+            Global.eventEmitter.instance = new _EventEmitter2.default();
+        }
+        return Global.eventEmitter.instance;
+    },
+    addListener: function addListener(nameListener, callback) {
+        return Global.eventEmitter.getInstance().addListener(nameListener, callback);
+    },
+    emit: function emit(nameListener, message) {
+        return Global.eventEmitter.getInstance().emit(nameListener, message);
+    }
+};
+
+Global.validatePassword = function (password) {
+    if (password.length < 8) {
+        return { result: false, message: _strings.strings.PasswordCriteriaMinLength };
+    }
+    return { result: true };
+};
+
+Global.validatePhoneNumberForCountry = function (number, country) {
+    if (country == 'MX') {
+        var re = /^52-([1-9]\d{1}-\d{4}-\d{4}|[1-9]\d{2}-\d{3}-\d{4})$/;
+        return re.test(number);
+    }
+};
+
+Global.validateEmail = function (email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+};
+
+Global.validateAge = function (age) {
+    var valid = age != null && age != '';
+    valid = valid && !isNaN(age) && parseInt(age) > 0;
+    return valid;
+};
+
+Global.validateMinimumAge = function (age) {
+    var valid = parseInt(age) > 0;
+    valid = parseInt(age) >= 18;
+    return valid;
+};
+
+Global.validateOnlyString = function (str) {
+    var matches = str.match(/\d+/g);
+    var valid = matches == null;
+    valid = valid && str.replace(/ /g, '').length > 0;
+    return valid;
+};
+
+Global.msToTime = function (s) {
+    function pad(n, z) {
+        z = z || 2;
+        return ('00' + n).slice(-z);
+    }
+
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+
+    return pad(mins) + ':' + pad(secs);
+};
+
+Global.toUppercase = function (str) {
+    if (str != null && str != '') {
+        return str.toUpperCase();
+    }
+};
+
+Global.getOrientation = function (callback) {
+    return _reactNativeOrientation2.default.getOrientation(function (err, orientation) {
+        if (callback != null) callback(orientation);
+    });
+};

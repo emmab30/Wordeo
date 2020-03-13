@@ -39,6 +39,7 @@
                     <td class="text-center">ID</td>
                     <td class="text-center">Pregunta</td>
                     <td class="text-center">Opciones</td>
+                    <td class="text-center">Usuario</td>
                     <td class="text-center">Acciones</td>
                 </thead>
                 <tr ng-repeat="pendingQuestion in pendingQuestions">
@@ -53,9 +54,12 @@
                         <p style="font-size: 12px;">{{ pendingQuestion.option4 }}</p>
                     </td>
                     <td class="text-center">
+                        <p style="font-size: 12px;">{{ pendingQuestion.user.email }}</p>
+                    </td>
+                    <td class="text-center">
                         <a ng-click="approve(pendingQuestion.id)" href="#">[ Aprobar ]</a>
                         &nbsp;
-                        <a ng-click="approve(pendingQuestion.id)" href="#">[ Rechazar ]</a>
+                        <a ng-click="reject(pendingQuestion.id)" href="#">[ Rechazar ]</a>
                         &nbsp;
                     </td>
                 </tr>

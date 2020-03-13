@@ -1,0 +1,7 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi/ic_launcher.png",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi/ic_launcher.png",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
+}];

@@ -1,0 +1,43 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.createSession = createSession;
+
+var _constants = require('./constants');
+
+var _util = require('./util');
+
+var _rpc = require('./rpc');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Session = function Session() {
+    _classCallCheck(this, Session);
+};
+
+exports.default = Session;
+
+
+Object.defineProperties(Session.prototype, {
+    url: { get: (0, _util.getterForProperty)('url') },
+    state: { get: (0, _util.getterForProperty)('state') }
+});
+
+(0, _util.createMethods)(Session.prototype, _constants.objectTypes.SESSION, ['_refreshAccessToken', '_simulateError', 'addProgressNotification', 'removeProgressNotification']);
+
+function createSession(realmId, info) {
+    var sessionProxy = Object.create(Session.prototype);
+
+    sessionProxy[_constants.keys.realm] = "(Session object)";
+
+    sessionProxy[_constants.keys.id] = info.id;
+    sessionProxy[_constants.keys.type] = _constants.objectTypes.SESSION;
+    sessionProxy.user = (0, _rpc.deserialize)(realmId, info.data.user);
+    sessionProxy.config = (0, _rpc.deserialize)(realmId, info.data.config);
+
+    return sessionProxy;
+}

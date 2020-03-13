@@ -1,0 +1,99 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _FieldPath = require('./FieldPath');
+
+var _FieldPath2 = _interopRequireDefault(_FieldPath);
+
+var _utils = require('./utils');
+
+var _serialize = require('./utils/serialize');
+
+var _utils2 = require('../../utils');
+
+var _native = require('../../utils/native');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var WriteBatch = function () {
+  function WriteBatch(firestore) {
+    _classCallCheck(this, WriteBatch);
+
+    this._firestore = firestore;
+    this._writes = [];
+  }
+
+  _createClass(WriteBatch, [{
+    key: 'commit',
+    value: function commit() {
+      return (0, _native.getNativeModule)(this._firestore).documentBatch(this._writes);
+    }
+  }, {
+    key: 'delete',
+    value: function _delete(docRef) {
+      this._writes.push({
+        path: docRef.path,
+        type: 'DELETE'
+      });
+
+      return this;
+    }
+  }, {
+    key: 'set',
+    value: function set(docRef, data, writeOptions) {
+      var nativeData = (0, _serialize.buildNativeMap)(data);
+      this._writes.push({
+        data: nativeData,
+        options: writeOptions,
+        path: docRef.path,
+        type: 'SET'
+      });
+
+      return this;
+    }
+  }, {
+    key: 'update',
+    value: function update(docRef) {
+      var data = {};
+      if ((arguments.length <= 1 ? 0 : arguments.length - 1) === 1) {
+        if (!(0, _utils2.isObject)(arguments.length <= 1 ? undefined : arguments[1])) {
+          throw new Error('WriteBatch.update failed: If using two arguments, the second must be an object.');
+        }
+
+        data = arguments.length <= 1 ? undefined : arguments[1];
+      } else if ((arguments.length <= 1 ? 0 : arguments.length - 1) % 2 === 1) {
+        throw new Error('WriteBatch.update failed: Must have a document reference, followed by either a single object argument, or equal numbers of key/value pairs.');
+      } else {
+        for (var i = 0; i < (arguments.length <= 1 ? 0 : arguments.length - 1); i += 2) {
+          var key = arguments.length <= i + 1 ? undefined : arguments[i + 1];
+          var value = arguments.length <= i + 1 + 1 ? undefined : arguments[i + 1 + 1];
+          if ((0, _utils2.isString)(key)) {
+            data[key] = value;
+          } else if (key instanceof _FieldPath2.default) {
+            data = (0, _utils.mergeFieldPathData)(data, key._segments, value);
+          } else {
+            throw new Error('WriteBatch.update failed: Argument at index ' + i + ' must be a string or FieldPath');
+          }
+        }
+      }
+
+      var nativeData = (0, _serialize.buildNativeMap)(data);
+      this._writes.push({
+        data: nativeData,
+        path: docRef.path,
+        type: 'UPDATE'
+      });
+
+      return this;
+    }
+  }]);
+
+  return WriteBatch;
+}();
+
+exports.default = WriteBatch;

@@ -1,0 +1,57 @@
+
+
+'use strict';
+
+var arrayPrototype = Array.prototype;
+
+var iteratorPrototype = {};
+
+Object.defineProperty(iteratorPrototype, typeof Symbol === 'function' ? Symbol.iterator : '@@iterator', {
+    value: function () {
+        return this;
+    }
+});
+
+['toString', 'toLocaleString', 'concat', 'join', 'slice', 'lastIndexOf', 'every', 'some', 'forEach', 'find', 'findIndex', 'map', 'filter', 'reduce', 'reduceRight'].forEach(function (methodName) {
+    var method = arrayPrototype[methodName];
+    if (method) {
+        exports[methodName] = { value: method, configurable: true, writable: true };
+    }
+});
+
+['entries', 'keys', 'values'].forEach(function (methodName) {
+    var method = function method() {
+        var self = this.snapshot();
+        var index = 0;
+
+        return Object.create(iteratorPrototype, {
+            next: {
+                value: function value() {
+                    if (!self || index >= self.length) {
+                        self = null;
+                        return { done: true, value: undefined };
+                    }
+
+                    var value;
+                    switch (methodName) {
+                        case 'entries':
+                            value = [index, self[index]];
+                            break;
+                        case 'keys':
+                            value = index;
+                            break;
+                        default:
+                            value = self[index];
+                    }
+
+                    index++;
+                    return { done: false, value: value };
+                }
+            }
+        });
+    };
+
+    exports[methodName] = { value: method, configurable: true, writable: true };
+});
+
+exports[typeof Symbol === 'function' ? Symbol.iterator : '@@iterator'] = exports.values;

@@ -1,0 +1,147 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Worker = function () {
+  function Worker() {
+    _classCallCheck(this, Worker);
+  }
+
+  _createClass(Worker, [{
+    key: 'addWorker',
+    value: function addWorker(jobName, worker) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      if (!jobName || !worker) {
+        throw new Error('Job name and associated worker function must be supplied.');
+      }
+
+      worker.options = {
+        concurrency: options.concurrency || 1,
+        onStart: options.onStart || null,
+        onSuccess: options.onSuccess || null,
+        onFailure: options.onFailure || null,
+        onFailed: options.onFailed || null,
+        onComplete: options.onComplete || null
+      };
+
+      Worker.workers[jobName] = worker;
+    }
+  }, {
+    key: 'removeWorker',
+    value: function removeWorker(jobName) {
+      delete Worker.workers[jobName];
+    }
+  }, {
+    key: 'getConcurrency',
+    value: function getConcurrency(jobName) {
+      if (!Worker.workers[jobName]) {
+        throw new Error('Job ' + jobName + ' does not have a worker assigned to it.');
+      }
+
+      return Worker.workers[jobName].options.concurrency;
+    }
+  }, {
+    key: 'executeJob',
+    value: function executeJob(job) {
+      var jobId, jobName, jobTimeout, jobPayload, timeoutPromise;
+      return regeneratorRuntime.async(function executeJob$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (Worker.workers[job.name]) {
+                _context.next = 2;
+                break;
+              }
+
+              throw new Error('Job ' + job.name + ' does not have a worker assigned to it.');
+
+            case 2:
+              jobId = job.id;
+              jobName = job.name;
+              jobTimeout = job.timeout;
+              jobPayload = JSON.parse(job.payload);
+
+              if (!(jobTimeout > 0)) {
+                _context.next = 12;
+                break;
+              }
+
+              timeoutPromise = new Promise(function (resolve, reject) {
+
+                setTimeout(function () {
+                  reject(new Error('TIMEOUT: Job id: ' + jobId + ' timed out in ' + jobTimeout + 'ms.'));
+                }, jobTimeout);
+              });
+              _context.next = 10;
+              return regeneratorRuntime.awrap(Promise.race([timeoutPromise, Worker.workers[jobName](jobId, jobPayload)]));
+
+            case 10:
+              _context.next = 14;
+              break;
+
+            case 12:
+              _context.next = 14;
+              return regeneratorRuntime.awrap(Worker.workers[jobName](jobId, jobPayload));
+
+            case 14:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, null, this);
+    }
+  }, {
+    key: 'executeJobLifecycleCallback',
+    value: function executeJobLifecycleCallback(callbackName, jobName, jobId, jobPayload) {
+      var validCallbacks;
+      return regeneratorRuntime.async(function executeJobLifecycleCallback$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              validCallbacks = ['onStart', 'onSuccess', 'onFailure', 'onFailed', 'onComplete'];
+
+              if (validCallbacks.includes(callbackName)) {
+                _context2.next = 3;
+                break;
+              }
+
+              throw new Error('Invalid job lifecycle callback name.');
+
+            case 3:
+              if (!Worker.workers[jobName].options[callbackName]) {
+                _context2.next = 12;
+                break;
+              }
+
+              _context2.prev = 4;
+              _context2.next = 7;
+              return regeneratorRuntime.awrap(Worker.workers[jobName].options[callbackName](jobId, jobPayload));
+
+            case 7:
+              _context2.next = 12;
+              break;
+
+            case 9:
+              _context2.prev = 9;
+              _context2.t0 = _context2['catch'](4);
+
+              console.error(_context2.t0);
+            case 12:
+            case 'end':
+              return _context2.stop();
+          }
+        }
+      }, null, this, [[4, 9]]);
+    }
+  }]);
+
+  return Worker;
+}();
+
+Worker.workers = {};
+exports.default = Worker;

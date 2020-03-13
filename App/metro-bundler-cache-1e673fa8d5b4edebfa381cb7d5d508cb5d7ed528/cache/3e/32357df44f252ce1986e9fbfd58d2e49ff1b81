@@ -1,0 +1,13 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/menu/search_item.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/OpenEnglish/react-native-navigation/unspecified/res/menu/search_item.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/menu/stub.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/OpenEnglish/react-native-navigation/unspecified/res/menu/stub.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/menu/stub.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/Wordeo/react-native-navigation/unspecified/res/menu/stub.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/menu/search_item.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/Wordeo/react-native-navigation/unspecified/res/menu/search_item.xml"
+}];

@@ -1,0 +1,160 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.statics = exports.NAMESPACE = exports.MODULE_NAME = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _events = require('../../utils/events');
+
+var _ModuleBase2 = require('../../utils/ModuleBase');
+
+var _ModuleBase3 = _interopRequireDefault(_ModuleBase2);
+
+var _CollectionReference = require('./CollectionReference');
+
+var _CollectionReference2 = _interopRequireDefault(_CollectionReference);
+
+var _DocumentReference = require('./DocumentReference');
+
+var _DocumentReference2 = _interopRequireDefault(_DocumentReference);
+
+var _FieldPath = require('./FieldPath');
+
+var _FieldPath2 = _interopRequireDefault(_FieldPath);
+
+var _FieldValue = require('./FieldValue');
+
+var _FieldValue2 = _interopRequireDefault(_FieldValue);
+
+var _GeoPoint = require('./GeoPoint');
+
+var _GeoPoint2 = _interopRequireDefault(_GeoPoint);
+
+var _Path = require('./Path');
+
+var _Path2 = _interopRequireDefault(_Path);
+
+var _WriteBatch = require('./WriteBatch');
+
+var _WriteBatch2 = _interopRequireDefault(_WriteBatch);
+
+var _internals = require('../../utils/internals');
+
+var _internals2 = _interopRequireDefault(_internals);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NATIVE_EVENTS = ['firestore_collection_sync_event', 'firestore_document_sync_event'];
+
+var MODULE_NAME = exports.MODULE_NAME = 'RNFirebaseFirestore';
+var NAMESPACE = exports.NAMESPACE = 'firestore';
+
+var Firestore = function (_ModuleBase) {
+  _inherits(Firestore, _ModuleBase);
+
+  function Firestore(app) {
+    _classCallCheck(this, Firestore);
+
+    var _this = _possibleConstructorReturn(this, (Firestore.__proto__ || Object.getPrototypeOf(Firestore)).call(this, app, {
+      events: NATIVE_EVENTS,
+      moduleName: MODULE_NAME,
+      multiApp: true,
+      namespace: NAMESPACE
+    }));
+
+    _this._referencePath = new _Path2.default([]);
+
+    _events.SharedEventEmitter.addListener((0, _events.getAppEventName)(_this, 'firestore_collection_sync_event'), _this._onCollectionSyncEvent.bind(_this));
+
+    _events.SharedEventEmitter.addListener((0, _events.getAppEventName)(_this, 'firestore_document_sync_event'), _this._onDocumentSyncEvent.bind(_this));
+    return _this;
+  }
+
+  _createClass(Firestore, [{
+    key: 'batch',
+    value: function batch() {
+      return new _WriteBatch2.default(this);
+    }
+  }, {
+    key: 'collection',
+    value: function collection(collectionPath) {
+      var path = this._referencePath.child(collectionPath);
+      if (!path.isCollection) {
+        throw new Error('Argument "collectionPath" must point to a collection.');
+      }
+
+      return new _CollectionReference2.default(this, path);
+    }
+  }, {
+    key: 'doc',
+    value: function doc(documentPath) {
+      var path = this._referencePath.child(documentPath);
+      if (!path.isDocument) {
+        throw new Error('Argument "documentPath" must point to a document.');
+      }
+
+      return new _DocumentReference2.default(this, path);
+    }
+  }, {
+    key: 'enablePersistence',
+    value: function enablePersistence() {
+      throw new Error('Persistence is enabled by default on the Firestore SDKs');
+    }
+  }, {
+    key: 'runTransaction',
+    value: function runTransaction() {
+      throw new Error('firebase.firestore().runTransaction() coming soon');
+    }
+  }, {
+    key: 'setLogLevel',
+    value: function setLogLevel() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_MODULE_METHOD('firestore', 'setLogLevel'));
+    }
+  }, {
+    key: 'settings',
+    value: function settings() {
+      throw new Error('firebase.firestore().settings() coming soon');
+    }
+  }, {
+    key: '_onCollectionSyncEvent',
+    value: function _onCollectionSyncEvent(event) {
+      if (event.error) {
+        _events.SharedEventEmitter.emit((0, _events.getAppEventName)(this, 'onQuerySnapshotError:' + event.listenerId), event.error);
+      } else {
+        _events.SharedEventEmitter.emit((0, _events.getAppEventName)(this, 'onQuerySnapshot:' + event.listenerId), event.querySnapshot);
+      }
+    }
+  }, {
+    key: '_onDocumentSyncEvent',
+    value: function _onDocumentSyncEvent(event) {
+      if (event.error) {
+        _events.SharedEventEmitter.emit((0, _events.getAppEventName)(this, 'onDocumentSnapshotError:' + event.listenerId), event.error);
+      } else {
+        _events.SharedEventEmitter.emit((0, _events.getAppEventName)(this, 'onDocumentSnapshot:' + event.listenerId), event.documentSnapshot);
+      }
+    }
+  }]);
+
+  return Firestore;
+}(_ModuleBase3.default);
+
+exports.default = Firestore;
+var statics = exports.statics = {
+  FieldPath: _FieldPath2.default,
+  FieldValue: _FieldValue2.default,
+  GeoPoint: _GeoPoint2.default,
+  enableLogging: function enableLogging(enabled) {
+    if (_reactNative.NativeModules[MODULE_NAME]) {
+      _reactNative.NativeModules[MODULE_NAME].enableLogging(enabled);
+    }
+  }
+};

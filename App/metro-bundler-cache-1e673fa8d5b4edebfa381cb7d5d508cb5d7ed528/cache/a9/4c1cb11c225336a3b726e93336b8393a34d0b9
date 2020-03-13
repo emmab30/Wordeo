@@ -1,0 +1,27 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _constants = require('./constants');
+
+var _util = require('./util');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Subscription = function Subscription() {
+    _classCallCheck(this, Subscription);
+};
+
+exports.default = Subscription;
+
+
+Object.defineProperties(Subscription.prototype, {
+    error: { get: (0, _util.getterForProperty)('error') },
+    state: { get: (0, _util.getterForProperty)('state') }
+});
+
+(0, _util.createMethods)(Subscription.prototype, _constants.objectTypes.SUBSCRIPTION, ['unsubscribe', 'addListener', 'removeListener']);

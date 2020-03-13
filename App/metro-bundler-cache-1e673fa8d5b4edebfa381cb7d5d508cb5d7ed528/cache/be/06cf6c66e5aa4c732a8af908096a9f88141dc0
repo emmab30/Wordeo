@@ -1,0 +1,19 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.isset = isset;
+exports.merge = merge;
+function isset(prop) {
+  return typeof prop !== 'undefined';
+}
+
+function merge(target, source) {
+  Object.keys(source).forEach(function (key) {
+    if (Object.prototype.toString.call(source).slice(8, -1) === 'Object') {
+      target[key] = merge(target[key] || {}, source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  });
+  return target;
+}

@@ -1,0 +1,68 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.createUser = createUser;
+
+var _rpc = require('./rpc');
+
+var _constants = require('./constants');
+
+var _util = require('./util');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var User = function () {
+    function User() {
+        _classCallCheck(this, User);
+    }
+
+    _createClass(User, null, [{
+        key: 'createUser',
+        value: function createUser(server, identity, token, isAdminToken, isAdminUser) {
+            return (0, _rpc.createUser)(Array.from(arguments));
+        }
+    }, {
+        key: '_adminUser',
+        value: function _adminUser(adminToken, server) {
+            return (0, _rpc._adminUser)(Array.from(arguments));
+        }
+    }, {
+        key: '_getExistingUser',
+        value: function _getExistingUser(server, identity) {
+            return (0, _rpc._getExistingUser)(Array.from(arguments));
+        }
+    }, {
+        key: 'all',
+        get: function get() {
+            return (0, _rpc.getAllUsers)();
+        }
+    }]);
+
+    return User;
+}();
+
+exports.default = User;
+
+
+(0, _util.createMethods)(User.prototype, _constants.objectTypes.USER, ['_logout', '_sessionForOnDiskPath']);
+
+function createUser(realmId, info) {
+    var userProxy = Object.create(User.prototype);
+
+    userProxy[_constants.keys.realm] = "(User object)";
+
+    userProxy[_constants.keys.id] = info.id;
+    userProxy[_constants.keys.type] = _constants.objectTypes.USER;
+    _extends(userProxy, info.data);
+
+    return userProxy;
+}

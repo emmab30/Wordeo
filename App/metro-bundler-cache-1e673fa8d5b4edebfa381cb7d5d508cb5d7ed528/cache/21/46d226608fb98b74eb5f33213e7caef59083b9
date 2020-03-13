@@ -1,0 +1,105 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _BaseService = require('./BaseService.js');
+
+var _reactNative = require('react-native');
+
+var CharacterService = {
+    getCharacters: function getCharacters(data, success, error) {
+        (0, _BaseService.ApiService)().post('/characters/filter', data).then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    getMyCharacters: function getMyCharacters(success, error) {
+        (0, _BaseService.ApiService)().get('/characters/me').then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    getAvailableCharacters: function getAvailableCharacters(success, error) {
+        (0, _BaseService.ApiService)().get('/Characters/availableCharacters').then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    getAvailableAccesories: function getAvailableAccesories(data, success, error) {
+        var url = '/character-accesories/availableAccesories';
+        if (data && data.characterId != null && data.characterId > -1) {
+            url += '?characterId=' + data.characterId;
+        };
+        (0, _BaseService.ApiService)().get(url).then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    buyCharacter: function buyCharacter(data, success, error) {
+        (0, _BaseService.ApiService)().post('/characters/buy_character', data).then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    buyAccesories: function buyAccesories(data, success, error) {
+        (0, _BaseService.ApiService)().post('/characters/buy_accesories', data).then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    make: function make(data, success, error) {
+        (0, _BaseService.ApiService)().post('/characters/make', data).then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    getRankingTopPlayers: function getRankingTopPlayers(data, success, error) {
+        (0, _BaseService.ApiService)().get('/characters/ranking_top_players').then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    }
+};
+
+exports.default = CharacterService;

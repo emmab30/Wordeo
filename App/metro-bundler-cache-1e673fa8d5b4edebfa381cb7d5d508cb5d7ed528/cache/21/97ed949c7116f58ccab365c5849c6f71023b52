@@ -1,0 +1,662 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/celebration/FinishedRound.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../../components/localization/strings');
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _Services = require('../../../services/Services');
+
+var _default = require('../../../styles/default');
+
+var _general = require('../../../styles/general');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    FinishedRound: {
+        displayName: 'FinishedRound'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/celebration/FinishedRound.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var Sound = require('react-native-sound');
+Sound.setCategory('Playback');
+
+var width = _reactNative.Dimensions.get('window').width;
+var height = _reactNative.Dimensions.get('window').height;
+
+var FinishedRound = _wrapComponent('FinishedRound')(function (_Component) {
+    _inherits(FinishedRound, _Component);
+
+    function FinishedRound(props) {
+        _classCallCheck(this, FinishedRound);
+
+        var _this = _possibleConstructorReturn(this, (FinishedRound.__proto__ || Object.getPrototypeOf(FinishedRound)).call(this, props));
+
+        _this.state = {
+            height: height,
+            user: _Services.AuthService.getUser(),
+            absoluteTop: new _reactNative.Animated.Value(height),
+            opacityOverlay: new _reactNative.Animated.Value(0),
+            questions: null,
+            reportQuestionId: null,
+            reportedQuestions: []
+        };
+
+        _this.winnerSound = new Sound('finish_round_success.mp3', Sound.MAIN_BUNDLE, function (err) {});
+        _this.losserSound = new Sound('finish_round_lost.mp3', Sound.MAIN_BUNDLE, function (err) {});
+        return _this;
+    }
+
+    _createClass(FinishedRound, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'onLayout',
+        value: function onLayout(e) {
+            this.setState({ height: _reactNative.Dimensions.get('window').height });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _props = this.props,
+                levelFrom = _props.levelFrom,
+                levelTo = _props.levelTo;
+
+            var gradientColors = ['#ff6000', '#ff7800'];
+            var translatedLevelUp = '';
+            var image = null;
+            var players = this.props.players;
+
+            if (!this.props.isVisible) return null;
+
+            var winner = players.find(function (e) {
+                return e.isWinner;
+            });
+            var me = players.find(function (e) {
+                return e.id == _this2.state.user.id;
+            });
+
+            if (me == winner) {
+                this.winnerSound.play();
+            } else {
+                this.losserSound.play();
+            }
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    onLayout: this.onLayout.bind(this), __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 89
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    { visible: this.props.isVisible,
+                        closeOnTouchOutside: true,
+                        animationType: 'fadeInDown',
+                        animationOutType: 'fadeOut',
+                        animationDuration: 300,
+                        onClose: function onClose() {
+                            if (_this2.props.onClose) _this2.props.onClose();
+                        },
+                        containerStyle: { backgroundColor: 'rgba(250, 250, 250, 0.90)', flex: 1, width: '100%' },
+                        childrenWrapperStyle: [styles.overlayChildren, { padding: 0, borderRadius: 10, width: '100%', height: 'auto', overflow: 'hidden' }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 91
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: { width: '100%', height: '100%', overflow: 'hidden' }, onStartShouldSetResponder: function onStartShouldSetResponder() {
+                                return true;
+                            }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 102
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNativeLinearGradient2.default,
+                            { style: [styles.innerView], colors: gradientColors, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 103
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                {
+                                    style: { position: 'relative', width: '100%', height: '100%' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 104
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        onPress: function onPress() {
+                                            _reactNative.Animated.parallel([_reactNative.Animated.spring(_this2.state.absoluteTop, {
+                                                toValue: height,
+                                                duration: 10
+                                            }), _reactNative.Animated.timing(_this2.state.opacityOverlay, {
+                                                toValue: 0,
+                                                duration: 35
+                                            })]).start(function () {
+                                                _this2.setState({ questions: null });
+                                            });
+                                        },
+                                        style: { width: '100%', height: 'auto' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 107
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.View,
+                                        { style: popupStyle.ImageContainer, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 123
+                                            }
+                                        },
+                                        _react3.default.createElement(_reactNative.Image, {
+                                            style: popupStyle.Image,
+                                            source: { uri: 'https://cdn0.iconfinder.com/data/icons/geek-2/24/Domo_Kun_character-256.png' },
+                                            __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 124
+                                            }
+                                        })
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.View,
+                                    { style: popupStyle.TopTextContainer, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 130
+                                        }
+                                    },
+                                    winner.id == this.state.user.id ? _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: [popupStyle.TopText, _general.GeneralStyle.transparentText], __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 132
+                                            }
+                                        },
+                                        'GANASTE!'
+                                    ) : _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: [popupStyle.TopText, _general.GeneralStyle.transparentText], __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 134
+                                            }
+                                        },
+                                        'GAN\xD3 ',
+                                        winner.profile.name.toUpperCase(),
+                                        '!'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.View,
+                                    { style: popupStyle.BottomTextContainer, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 137
+                                        }
+                                    },
+                                    players.length == 1 ? _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: [popupStyle.BottomText, _general.GeneralStyle.transparentText], __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 139
+                                            }
+                                        },
+                                        'Parece que todos tus enemigos se han desconectado! Ser\xE1 que tienen miedo de ti?'
+                                    ) : _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: [popupStyle.BottomText, _general.GeneralStyle.transparentText], __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 143
+                                            }
+                                        },
+                                        'Mira la tabla de resultados!'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.ScrollView,
+                                    { style: popupStyle.BottomPointsContainer, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 148
+                                        }
+                                    },
+                                    players.map(function (e, idx) {
+                                        var isLastItem = players.length - 1 == idx;
+                                        return _react3.default.createElement(
+                                            _reactNative.View,
+                                            {
+                                                onStartShouldSetResponder: function onStartShouldSetResponder() {
+                                                    return true;
+                                                },
+                                                style: { flex: 0, paddingVertical: 20, justifyContent: 'center', alignItems: 'center', marginLeft: 3, marginBottom: 3, marginRight: isLastItem ? 3 : 0, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 5 }, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 152
+                                                }
+                                            },
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: [popupStyle.BottomText, { fontSize: 23, fontFamily: _default.Font.TitanOne }, _general.GeneralStyle.transparentText], __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 155
+                                                    }
+                                                },
+                                                e.profile.name.toUpperCase()
+                                            ),
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: [popupStyle.BottomText, { fontSize: 22, fontFamily: _default.Font.PTSansRegular }, _general.GeneralStyle.transparentText], __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 158
+                                                    }
+                                                },
+                                                e.stats.points,
+                                                ' PUNTOS'
+                                            ),
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: [popupStyle.BottomText, { fontSize: 22, fontFamily: _default.Font.PTSansRegular }, _general.GeneralStyle.transparentText], __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 161
+                                                    }
+                                                },
+                                                e.stats.tulsProfit,
+                                                ' TULS GANADOS'
+                                            ),
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: [popupStyle.BottomText, { fontSize: 12, fontFamily: _default.Font.PTSansRegular }, _general.GeneralStyle.transparentText], __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 164
+                                                    }
+                                                },
+                                                _react3.default.createElement(
+                                                    _reactNative.Text,
+                                                    { style: { fontFamily: _default.Font.PTSansBold }, __source: {
+                                                            fileName: _jsxFileName,
+                                                            lineNumber: 165
+                                                        }
+                                                    },
+                                                    e.stats.totalQuestions
+                                                ),
+                                                ' preguntas respondidas'
+                                            ),
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: [popupStyle.BottomText, { fontSize: 12, fontFamily: _default.Font.PTSansRegular }, _general.GeneralStyle.transparentText], __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 167
+                                                    }
+                                                },
+                                                _react3.default.createElement(
+                                                    _reactNative.Text,
+                                                    { style: { fontFamily: _default.Font.PTSansBold }, __source: {
+                                                            fileName: _jsxFileName,
+                                                            lineNumber: 168
+                                                        }
+                                                    },
+                                                    e.stats.totalCorrect
+                                                ),
+                                                ' correctas'
+                                            ),
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: [popupStyle.BottomText, { fontSize: 12, fontFamily: _default.Font.PTSansRegular }, _general.GeneralStyle.transparentText], __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 170
+                                                    }
+                                                },
+                                                _react3.default.createElement(
+                                                    _reactNative.Text,
+                                                    { style: { fontFamily: _default.Font.PTSansBold }, __source: {
+                                                            fileName: _jsxFileName,
+                                                            lineNumber: 171
+                                                        }
+                                                    },
+                                                    e.stats.totalIncorrect
+                                                ),
+                                                ' incorrectas'
+                                            )
+                                        );
+                                    })
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        onPress: function onPress(e) {
+                                            _reactNative.Animated.parallel([_reactNative.Animated.spring(_this2.state.absoluteTop, {
+                                                toValue: 100,
+                                                duration: 10
+                                            }), _reactNative.Animated.timing(_this2.state.opacityOverlay, {
+                                                toValue: 1,
+                                                duration: 35
+                                            })]).start(function () {
+                                                _Services.RoomService.getQuestionsForRoom(_this2.props.roomId, function (results) {
+                                                    _this2.setState({ questions: results });
+                                                }, function (err) {});
+                                            });
+                                        },
+                                        style: { flex: 0, marginVertical: 10, minHeight: 40, height: 35, marginVertical: 10, width: '100%' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 179
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { backgroundColor: 'transparent', fontFamily: _default.Font.TitanOne, fontSize: 12, color: '#222', textAlign: 'center', alignSelf: 'center' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 199
+                                            }
+                                        },
+                                        'TOCA PARA VER LAS PREGUNTAS'
+                                    )
+                                )
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Animated.View,
+                                {
+                                    style: { position: 'absolute', width: '100%', height: '100%', top: this.state.absoluteTop, backgroundColor: '#cd03ff', padding: 10, borderTopColor: 'white', borderTopWidth: 2 }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 209
+                                    }
+                                },
+                                this.state.questions == null && _react3.default.createElement(_reactNative.ActivityIndicator, {
+                                    color: 'white', __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 213
+                                    }
+                                }),
+                                this.state.questions != null && this.state.questions.length > 0 && _react3.default.createElement(
+                                    _reactNative.View,
+                                    {
+                                        style: { height: '90%', width: '100%' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 218
+                                        }
+                                    },
+                                    _react3.default.createElement(_reactNative.FlatList, {
+                                        data: this.state.questions,
+                                        extraData: this.state,
+                                        keyExtractor: function keyExtractor(item, index) {
+                                            return 'itemQuestion-' + item.id;
+                                        },
+                                        renderItem: function renderItem(rowData) {
+                                            return _react3.default.createElement(
+                                                _reactNative.View,
+                                                {
+                                                    key: 'questionId-' + rowData.item.id,
+                                                    style: { marginVertical: 5, backgroundColor: '#333', padding: 10, borderRadius: 5 },
+                                                    onStartShouldSetResponder: function onStartShouldSetResponder() {
+                                                        return true;
+                                                    }, __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 228
+                                                    }
+                                                },
+                                                _react3.default.createElement(
+                                                    _reactNative.Text,
+                                                    { style: popupStyle.QuestionTitle, __source: {
+                                                            fileName: _jsxFileName,
+                                                            lineNumber: 232
+                                                        }
+                                                    },
+                                                    '(',
+                                                    rowData.index + 1,
+                                                    ') Pregunta: ',
+                                                    rowData.item.question
+                                                ),
+                                                rowData.item.options.map(function (e) {
+
+                                                    var backgroundColor = null;
+                                                    var isCorrect = e.isCorrect && rowData.item.selectedOption == e.id;
+                                                    if (isCorrect) {
+                                                        backgroundColor = '#81db00';
+                                                    } else if (e.isCorrect && rowData.item.selectedOption != e.id) {
+                                                        backgroundColor = '#81db00';
+                                                    } else if (!e.isCorrect && rowData.item.selectedOption != e.id) {
+                                                        backgroundColor = 'rgba(0,0,0,.1)';
+                                                    } else if (!e.isCorrect && rowData.item.selectedOption == e.id) {
+                                                        backgroundColor = '#db2e00';
+                                                    }
+
+                                                    return _react3.default.createElement(
+                                                        _reactNative.View,
+                                                        { key: 'questionOption' + e.id, style: [popupStyle.QuestionOptionContainer, { backgroundColor: backgroundColor }], __source: {
+                                                                fileName: _jsxFileName,
+                                                                lineNumber: 249
+                                                            }
+                                                        },
+                                                        _react3.default.createElement(
+                                                            _reactNative.Text,
+                                                            { style: [popupStyle.QuestionOptionText], __source: {
+                                                                    fileName: _jsxFileName,
+                                                                    lineNumber: 250
+                                                                }
+                                                            },
+                                                            e.name
+                                                        )
+                                                    );
+                                                }),
+                                                _react3.default.createElement(
+                                                    _reactNative.TouchableOpacity,
+                                                    { onPress: function onPress() {
+                                                            if (_this2.state.reportedQuestions.indexOf(rowData.item.id) > -1) return;
+
+                                                            _this2.setState({ reportQuestionId: rowData.item.id });
+
+                                                            _Services.QuestionService.reportQuestion({
+                                                                questionId: rowData.item.id
+                                                            }, function (success) {
+                                                                var reportedQuestions = _this2.state.reportedQuestions;
+                                                                reportedQuestions.push(rowData.item.id);
+                                                                _this2.setState({ reportedQuestions: reportedQuestions, reportQuestionId: null });
+                                                            }, function (err) {
+                                                                _this2.setState({ reportQuestionId: null });
+                                                            });
+                                                        }, __source: {
+                                                            fileName: _jsxFileName,
+                                                            lineNumber: 255
+                                                        }
+                                                    },
+                                                    _this2.state.reportQuestionId == rowData.item.id && _this2.state.reportedQuestions.indexOf(rowData.item.id) == -1 && _react3.default.createElement(_reactNative.ActivityIndicator, {
+                                                        style: { marginVertical: 10 },
+                                                        color: 'white', __source: {
+                                                            fileName: _jsxFileName,
+                                                            lineNumber: 274
+                                                        }
+                                                    }),
+                                                    _this2.state.reportedQuestions.indexOf(rowData.item.id) > -1 && _react3.default.createElement(
+                                                        _reactNative.Text,
+                                                        { style: [popupStyle.QuestionTitle, { color: _default.Color.GoldenPrimary, marginVertical: 10 }], __source: {
+                                                                fileName: _jsxFileName,
+                                                                lineNumber: 280
+                                                            }
+                                                        },
+                                                        '\xA1Pregunta enviada a revisi\xF3n!'
+                                                    ),
+                                                    _this2.state.reportQuestionId != rowData.item.id && _this2.state.reportedQuestions.indexOf(rowData.item.id) == -1 && _react3.default.createElement(
+                                                        _reactNative.Text,
+                                                        { style: [popupStyle.QuestionTitle, { color: _default.Color.GoldenPrimary, marginVertical: 10 }], __source: {
+                                                                fileName: _jsxFileName,
+                                                                lineNumber: 284
+                                                            }
+                                                        },
+                                                        'Reportar pregunta'
+                                                    )
+                                                )
+                                            );
+                                        },
+                                        __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 220
+                                        }
+                                    })
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return FinishedRound;
+}(_react2.Component));
+
+exports.default = FinishedRound;
+
+
+var styles = _reactNative.StyleSheet.create({
+    closeButtonContainer: {
+        width: '100%',
+        position: 'absolute',
+        top: 5,
+        left: 10,
+        color: 'black',
+        padding: 15
+    },
+    overlayChildren: {
+        shadowColor: '#222',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 6
+    },
+    innerView: {
+        width: '100%',
+        alignItems: 'center',
+        flexDirection: 'column',
+        flex: 1,
+        borderRadius: 10,
+        paddingVertical: 20
+    }
+});
+
+var popupStyle = _reactNative.StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '100%',
+        height: '100%'
+    },
+    TopTextContainer: {
+        justifyContent: 'center',
+        flex: 0,
+        marginVertical: 10
+    },
+    TopText: {
+        color: 'white',
+        fontFamily: _default.Font.TitanOne,
+        fontSize: 30,
+        textAlign: 'center'
+    },
+    BottomTextContainer: {
+        justifyContent: 'flex-start',
+        alignSelf: 'center',
+        maxWidth: '70%',
+        marginTop: 0,
+        flex: 0,
+        marginVertical: 10
+    },
+    BottomText: {
+        color: 'white',
+        fontFamily: _default.Font.PTSansRegular,
+        fontSize: 20,
+        textAlign: 'center'
+    },
+    BottomPointsContainer: {
+        marginVertical: 20,
+        flex: 1,
+        flexDirection: 'column'
+    },
+    ImageContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 0,
+        marginVertical: 0
+    },
+    Image: {
+        width: 80,
+        height: 80,
+        resizeMode: 'contain',
+        marginTop: 10
+    },
+    WhiteText: {
+        color: '#eee',
+        fontSize: 18,
+        marginVertical: 15
+    },
+    QuestionTitle: {
+        fontFamily: _default.Font.TitanOne,
+        textAlign: 'center',
+        fontSize: 16,
+        color: 'white',
+        marginVertical: 10
+    },
+    QuestionOptionContainer: {
+        width: '80%',
+        alignSelf: 'center',
+        paddingVertical: 10,
+        marginVertical: 1,
+        borderRadius: 5,
+        borderWidth: .5,
+        borderColor: 'white',
+        shadowColor: '#222',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 6
+    },
+    QuestionOptionText: {
+        fontFamily: _default.Font.TitanOne,
+        textAlign: 'center',
+        fontSize: 13,
+        color: 'white'
+    }
+});

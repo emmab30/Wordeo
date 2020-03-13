@@ -1,0 +1,132 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _DocumentReference = require('./DocumentReference');
+
+var _DocumentReference2 = _interopRequireDefault(_DocumentReference);
+
+var _Query = require('./Query');
+
+var _Query2 = _interopRequireDefault(_Query);
+
+var _utils = require('../../utils');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CollectionReference = function () {
+  function CollectionReference(firestore, collectionPath) {
+    _classCallCheck(this, CollectionReference);
+
+    this._collectionPath = collectionPath;
+    this._firestore = firestore;
+    this._query = new _Query2.default(firestore, collectionPath);
+  }
+
+  _createClass(CollectionReference, [{
+    key: 'add',
+    value: function add(data) {
+      var documentRef = this.doc();
+      return documentRef.set(data).then(function () {
+        return Promise.resolve(documentRef);
+      });
+    }
+  }, {
+    key: 'doc',
+    value: function doc(documentPath) {
+      var newPath = documentPath || (0, _utils.firestoreAutoId)();
+
+      var path = this._collectionPath.child(newPath);
+      if (!path.isDocument) {
+        throw new Error('Argument "documentPath" must point to a document.');
+      }
+
+      return new _DocumentReference2.default(this._firestore, path);
+    }
+  }, {
+    key: 'endAt',
+    value: function endAt() {
+      for (var _len = arguments.length, snapshotOrVarArgs = Array(_len), _key = 0; _key < _len; _key++) {
+        snapshotOrVarArgs[_key] = arguments[_key];
+      }
+
+      return this._query.endAt(snapshotOrVarArgs);
+    }
+  }, {
+    key: 'endBefore',
+    value: function endBefore() {
+      for (var _len2 = arguments.length, snapshotOrVarArgs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        snapshotOrVarArgs[_key2] = arguments[_key2];
+      }
+
+      return this._query.endBefore(snapshotOrVarArgs);
+    }
+  }, {
+    key: 'get',
+    value: function get() {
+      return this._query.get();
+    }
+  }, {
+    key: 'limit',
+    value: function limit(_limit) {
+      return this._query.limit(_limit);
+    }
+  }, {
+    key: 'onSnapshot',
+    value: function onSnapshot(optionsOrObserverOrOnNext, observerOrOnNextOrOnError, onError) {
+      return this._query.onSnapshot(optionsOrObserverOrOnNext, observerOrOnNextOrOnError, onError);
+    }
+  }, {
+    key: 'orderBy',
+    value: function orderBy(fieldPath, directionStr) {
+      return this._query.orderBy(fieldPath, directionStr);
+    }
+  }, {
+    key: 'startAfter',
+    value: function startAfter() {
+      for (var _len3 = arguments.length, snapshotOrVarArgs = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        snapshotOrVarArgs[_key3] = arguments[_key3];
+      }
+
+      return this._query.startAfter(snapshotOrVarArgs);
+    }
+  }, {
+    key: 'startAt',
+    value: function startAt() {
+      for (var _len4 = arguments.length, snapshotOrVarArgs = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        snapshotOrVarArgs[_key4] = arguments[_key4];
+      }
+
+      return this._query.startAt(snapshotOrVarArgs);
+    }
+  }, {
+    key: 'where',
+    value: function where(fieldPath, opStr, value) {
+      return this._query.where(fieldPath, opStr, value);
+    }
+  }, {
+    key: 'firestore',
+    get: function get() {
+      return this._firestore;
+    }
+  }, {
+    key: 'id',
+    get: function get() {
+      return this._collectionPath.id;
+    }
+  }, {
+    key: 'parent',
+    get: function get() {
+      var parentPath = this._collectionPath.parent();
+      return parentPath ? new _DocumentReference2.default(this._firestore, parentPath) : null;
+    }
+  }]);
+
+  return CollectionReference;
+}();
+
+exports.default = CollectionReference;

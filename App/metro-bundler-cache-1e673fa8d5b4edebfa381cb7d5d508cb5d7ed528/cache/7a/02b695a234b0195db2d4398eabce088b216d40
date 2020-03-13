@@ -1,0 +1,135 @@
+'use strict';
+
+var _ = require('lodash');
+
+var RNFetchBlob = require('react-native-fetch-blob').default;
+
+var fs = RNFetchBlob.fs;
+
+
+var activeDownloads = {};
+
+function getDirPath(path) {
+    if (path.charAt(path.length - 4) === '.' || path.charAt(path.length - 5) === '.') {
+        return _.initial(path.split('/')).join('/');
+    }
+    return path;
+}
+
+function ensurePath(path) {
+    var dirPath = getDirPath(path);
+    return fs.isDir(dirPath).then(function (isDir) {
+        if (!isDir) {
+            return fs.mkdir(dirPath).then(function () {
+                return fs.isDir(dirPath);
+            }).then(function (isDir) {
+                if (!isDir) {
+                    throw new Error('Invalid cacheLocation');
+                }
+            });
+        }
+    }).catch(function (err) {
+        if (err.message.includes('folder already exists')) {
+            return;
+        }
+        throw err;
+    });
+}
+
+function collectFilesInfo(basePath) {
+    return fs.stat(basePath).then(function (info) {
+        if (info.type === 'file') {
+            return [info];
+        }
+        return fs.ls(basePath).then(function (files) {
+            var promises = _.map(files, function (file) {
+                return collectFilesInfo(basePath + '/' + file);
+            });
+            return Promise.all(promises);
+        });
+    }).catch(function (err) {
+        return [];
+    });
+}
+
+module.exports = {
+    getCacheDir: function getCacheDir() {
+        return fs.dirs.CacheDir + '/imagesCacheDir';
+    },
+    downloadFile: function downloadFile(fromUrl, toFile, headers) {
+        var _this = this;
+
+        if (!_.has(activeDownloads, toFile)) {
+            var tmpFile = toFile + '.tmp';
+
+            activeDownloads[toFile] = ensurePath(toFile).then(function () {
+                return RNFetchBlob.config({
+                    path: tmpFile
+                }).fetch('GET', fromUrl, headers).then(function (res) {
+                    if (res.respInfo.status === 304) {
+                        return Promise.resolve(toFile);
+                    }
+                    var status = Math.floor(res.respInfo.status / 100);
+                    if (status !== 2) {
+                        return Promise.reject();
+                    }
+
+                    return RNFetchBlob.fs.stat(tmpFile).then(function (fileStats) {
+                        if (res.respInfo.headers['Content-Length'] && res.respInfo.headers['Content-Length'] != fileStats.size) {
+                            return Promise.reject();
+                        }
+
+                        return fs.mv(tmpFile, toFile);
+                    });
+                }).catch(function (error) {
+                    _this.deleteFile(tmpFile);
+                    delete activeDownloads[toFile];
+                    return Promise.reject('Download failed');
+                }).then(function () {
+                    _this.deleteFile(tmpFile);
+                    delete activeDownloads[toFile];
+                    return toFile;
+                });
+            });
+        }
+        return activeDownloads[toFile];
+    },
+    deleteFile: function deleteFile(filePath) {
+        return fs.stat(filePath).then(function (res) {
+            return res && res.type === 'file';
+        }).then(function (exists) {
+            return exists && fs.unlink(filePath);
+        }).catch(function (err) {});
+    },
+    copyFile: function copyFile(fromFile, toFile) {
+        return ensurePath(toFile).then(function () {
+            return fs.cp(fromFile, toFile);
+        });
+    },
+    cleanDir: function cleanDir(dirPath) {
+        return fs.isDir(dirPath).then(function (isDir) {
+            return isDir && fs.unlink(dirPath);
+        }).catch(function () {}).then(function () {
+            return ensurePath(dirPath);
+        });
+    },
+    getDirInfo: function getDirInfo(dirPath) {
+        return fs.isDir(dirPath).then(function (isDir) {
+            if (isDir) {
+                return collectFilesInfo(dirPath);
+            } else {
+                throw new Error('Dir does not exists');
+            }
+        }).then(function (filesInfo) {
+            var files = _.flattenDeep(filesInfo);
+            var size = _.sumBy(files, 'size');
+            return {
+                files: files,
+                size: size
+            };
+        });
+    },
+    exists: function exists(path) {
+        return fs.exists(path);
+    }
+};

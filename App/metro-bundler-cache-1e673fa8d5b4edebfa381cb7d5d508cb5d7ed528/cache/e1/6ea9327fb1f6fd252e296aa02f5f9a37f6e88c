@@ -1,0 +1,245 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _internals = require('../../utils/internals');
+
+var _internals2 = _interopRequireDefault(_internals);
+
+var _native = require('../../utils/native');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var User = function () {
+  function User(auth, user) {
+    _classCallCheck(this, User);
+
+    this._auth = auth;
+    this._user = user;
+  }
+
+  _createClass(User, [{
+    key: 'delete',
+    value: function _delete() {
+      var _this = this;
+
+      return (0, _native.getNativeModule)(this._auth).delete().then(function () {
+        _this._auth._setUser();
+      });
+    }
+  }, {
+    key: 'getIdToken',
+    value: function getIdToken() {
+      var forceRefresh = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+      return (0, _native.getNativeModule)(this._auth).getToken(forceRefresh);
+    }
+  }, {
+    key: 'getToken',
+    value: function getToken() {
+      var forceRefresh = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+      console.warn('Deprecated firebase.User.prototype.getToken in favor of firebase.User.prototype.getIdToken.');
+      return (0, _native.getNativeModule)(this._auth).getToken(forceRefresh);
+    }
+  }, {
+    key: 'linkWithCredential',
+    value: function linkWithCredential(credential) {
+      var _this2 = this;
+
+      console.warn('Deprecated firebase.User.prototype.linkWithCredential in favor of firebase.User.prototype.linkAndRetrieveDataWithCredential.');
+      return (0, _native.getNativeModule)(this._auth).linkWithCredential(credential.providerId, credential.token, credential.secret).then(function (user) {
+        return _this2._auth._setUser(user);
+      });
+    }
+  }, {
+    key: 'linkAndRetrieveDataWithCredential',
+    value: function linkAndRetrieveDataWithCredential(credential) {
+      var _this3 = this;
+
+      return (0, _native.getNativeModule)(this._auth).linkAndRetrieveDataWithCredential(credential.providerId, credential.token, credential.secret).then(function (userCredential) {
+        return _this3._auth._setUserCredential(userCredential);
+      });
+    }
+  }, {
+    key: 'reauthenticateWithCredential',
+    value: function reauthenticateWithCredential(credential) {
+      var _this4 = this;
+
+      console.warn('Deprecated firebase.User.prototype.reauthenticateWithCredential in favor of firebase.User.prototype.reauthenticateAndRetrieveDataWithCredential.');
+      return (0, _native.getNativeModule)(this._auth).reauthenticateWithCredential(credential.providerId, credential.token, credential.secret).then(function (user) {
+        _this4._auth._setUser(user);
+      });
+    }
+  }, {
+    key: 'reauthenticateAndRetrieveDataWithCredential',
+    value: function reauthenticateAndRetrieveDataWithCredential(credential) {
+      var _this5 = this;
+
+      return (0, _native.getNativeModule)(this._auth).reauthenticateAndRetrieveDataWithCredential(credential.providerId, credential.token, credential.secret).then(function (userCredential) {
+        return _this5._auth._setUserCredential(userCredential);
+      });
+    }
+  }, {
+    key: 'reload',
+    value: function reload() {
+      var _this6 = this;
+
+      return (0, _native.getNativeModule)(this._auth).reload().then(function (user) {
+        _this6._auth._setUser(user);
+      });
+    }
+  }, {
+    key: 'sendEmailVerification',
+    value: function sendEmailVerification(actionCodeSettings) {
+      var _this7 = this;
+
+      return (0, _native.getNativeModule)(this._auth).sendEmailVerification(actionCodeSettings).then(function (user) {
+        _this7._auth._setUser(user);
+      });
+    }
+  }, {
+    key: 'toJSON',
+    value: function toJSON() {
+      return _extends({}, this._user);
+    }
+  }, {
+    key: 'unlink',
+    value: function unlink(providerId) {
+      var _this8 = this;
+
+      return (0, _native.getNativeModule)(this._auth).unlink(providerId).then(function (user) {
+        return _this8._auth._setUser(user);
+      });
+    }
+  }, {
+    key: 'updateEmail',
+    value: function updateEmail(email) {
+      var _this9 = this;
+
+      return (0, _native.getNativeModule)(this._auth).updateEmail(email).then(function (user) {
+        _this9._auth._setUser(user);
+      });
+    }
+  }, {
+    key: 'updatePassword',
+    value: function updatePassword(password) {
+      var _this10 = this;
+
+      return (0, _native.getNativeModule)(this._auth).updatePassword(password).then(function (user) {
+        _this10._auth._setUser(user);
+      });
+    }
+  }, {
+    key: 'updateProfile',
+    value: function updateProfile() {
+      var _this11 = this;
+
+      var updates = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      return (0, _native.getNativeModule)(this._auth).updateProfile(updates).then(function (user) {
+        _this11._auth._setUser(user);
+      });
+    }
+  }, {
+    key: 'linkWithPhoneNumber',
+    value: function linkWithPhoneNumber() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_METHOD('User', 'linkWithPhoneNumber'));
+    }
+  }, {
+    key: 'linkWithPopup',
+    value: function linkWithPopup() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_METHOD('User', 'linkWithPopup'));
+    }
+  }, {
+    key: 'linkWithRedirect',
+    value: function linkWithRedirect() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_METHOD('User', 'linkWithRedirect'));
+    }
+  }, {
+    key: 'reauthenticateWithPhoneNumber',
+    value: function reauthenticateWithPhoneNumber() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_METHOD('User', 'reauthenticateWithPhoneNumber'));
+    }
+  }, {
+    key: 'reauthenticateWithPopup',
+    value: function reauthenticateWithPopup() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_METHOD('User', 'reauthenticateWithPopup'));
+    }
+  }, {
+    key: 'reauthenticateWithRedirect',
+    value: function reauthenticateWithRedirect() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_METHOD('User', 'reauthenticateWithRedirect'));
+    }
+  }, {
+    key: 'updatePhoneNumber',
+    value: function updatePhoneNumber() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_METHOD('User', 'updatePhoneNumber'));
+    }
+  }, {
+    key: 'displayName',
+    get: function get() {
+      return this._user.displayName || null;
+    }
+  }, {
+    key: 'email',
+    get: function get() {
+      return this._user.email || null;
+    }
+  }, {
+    key: 'emailVerified',
+    get: function get() {
+      return this._user.emailVerified || false;
+    }
+  }, {
+    key: 'isAnonymous',
+    get: function get() {
+      return this._user.isAnonymous || false;
+    }
+  }, {
+    key: 'metadata',
+    get: function get() {
+      return this._user.metadata;
+    }
+  }, {
+    key: 'phoneNumber',
+    get: function get() {
+      return this._user.phoneNumber || null;
+    }
+  }, {
+    key: 'photoURL',
+    get: function get() {
+      return this._user.photoURL || null;
+    }
+  }, {
+    key: 'providerData',
+    get: function get() {
+      return this._user.providerData;
+    }
+  }, {
+    key: 'providerId',
+    get: function get() {
+      return this._user.providerId;
+    }
+  }, {
+    key: 'uid',
+    get: function get() {
+      return this._user.uid;
+    }
+  }, {
+    key: 'refreshToken',
+    get: function get() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_PROPERTY('User', 'refreshToken'));
+    }
+  }]);
+
+  return User;
+}();
+
+exports.default = User;

@@ -1,0 +1,12 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var MMDRAWER_DOOR = exports.MMDRAWER_DOOR = 'door';
+var MMDRAWER_PARALLAX = exports.MMDRAWER_PARALLAX = 'parallax';
+var MMDRAWER_SLIDE = exports.MMDRAWER_SLIDE = 'slide';
+var MMDRAWER_SLIDE_AND_SCALE = exports.MMDRAWER_SLIDE_AND_SCALE = 'slide-and-scale';
+
+var THE_SIDEBAR_AIRBNB = exports.THE_SIDEBAR_AIRBNB = 'airbnb';
+var THE_SIDEBAR_FACEBOOK = exports.THE_SIDEBAR_FACEBOOK = 'facebook';
+var THE_SIDEBAR_LUVOCRACY = exports.THE_SIDEBAR_LUVOCRACY = 'luvocracy';
+var THE_SIDEBAR_WUNDER_LIST = exports.THE_SIDEBAR_WUNDER_LIST = 'wunder-list';

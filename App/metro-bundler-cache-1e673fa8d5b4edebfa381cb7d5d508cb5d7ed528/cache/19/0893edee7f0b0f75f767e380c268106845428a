@@ -1,0 +1,180 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../../react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-interactable/lib/src/InteractableView.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _reactNative2 = _interopRequireDefault(_reactNative);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+  WrappedInteractableView: {
+    displayName: 'WrappedInteractableView'
+  },
+  WrappedAnimatedInteractableView: {
+    displayName: 'WrappedAnimatedInteractableView'
+  }
+};
+
+var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+  filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-interactable/lib/src/InteractableView.js',
+  components: _components,
+  locals: [module],
+  imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+  return function (Component) {
+    return _reactTransformHmrLibIndexJs2(Component, id);
+  };
+}
+
+var NativeViewManager = _reactNative.NativeModules.InteractableViewManager;
+
+var NativeInteractableView = (0, _reactNative.requireNativeComponent)('InteractableView', null);
+
+var WrappedInteractableView = _wrapComponent('WrappedInteractableView')(function (_Component) {
+  _inherits(WrappedInteractableView, _Component);
+
+  function WrappedInteractableView() {
+    _classCallCheck(this, WrappedInteractableView);
+
+    return _possibleConstructorReturn(this, (WrappedInteractableView.__proto__ || Object.getPrototypeOf(WrappedInteractableView)).apply(this, arguments));
+  }
+
+  _createClass(WrappedInteractableView, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react3.default.createElement(NativeInteractableView, _extends({}, this.props, {
+        ref: function ref(_ref) {
+          return _this2._nativeViewRef = _ref;
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 12
+        }
+      }));
+    }
+  }, {
+    key: 'getScrollableNode',
+    value: function getScrollableNode() {
+      return _reactNative2.default.findNodeHandle(this._nativeViewRef);
+    }
+  }]);
+
+  return WrappedInteractableView;
+}(_react2.Component));
+
+var AnimatedInteractableView = _reactNative.Animated.createAnimatedComponent(WrappedInteractableView);
+
+var WrappedAnimatedInteractableView = _wrapComponent('WrappedAnimatedInteractableView')(function (_Component2) {
+  _inherits(WrappedAnimatedInteractableView, _Component2);
+
+  function WrappedAnimatedInteractableView(props) {
+    _classCallCheck(this, WrappedAnimatedInteractableView);
+
+    var _this3 = _possibleConstructorReturn(this, (WrappedAnimatedInteractableView.__proto__ || Object.getPrototypeOf(WrappedAnimatedInteractableView)).call(this, props));
+
+    if (_this3.props.animatedValueX || _this3.props.animatedValueY) {
+      _this3._animatedEvent = _reactNative.Animated.event([{
+        nativeEvent: {
+          x: _this3.props.animatedValueX,
+          y: _this3.props.animatedValueY
+        }
+      }], { useNativeDriver: !!_this3.props.animatedNativeDriver });
+    }
+    return _this3;
+  }
+
+  _createClass(WrappedAnimatedInteractableView, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {}
+  }, {
+    key: 'chokeTheBridge',
+    value: function chokeTheBridge() {
+      var j = 0;
+      setInterval(function () {
+        for (var index = 0; index < 1e9; index++) {
+          j++;
+        }
+      }, 500);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react3.default.createElement(AnimatedInteractableView, _extends({
+        dragToss: 0.1
+      }, this.props, {
+        animatedValueX: undefined,
+        animatedValueY: undefined,
+        onAnimatedEvent: this._animatedEvent,
+        reportOnAnimatedEvents: !!this._animatedEvent,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 59
+        }
+      }));
+    }
+  }, {
+    key: 'setVelocity',
+    value: function setVelocity(params) {
+      if (_reactNative.Platform.OS === 'ios') {
+        NativeViewManager.setVelocity(_reactNative2.default.findNodeHandle(this), params);
+      } else if (_reactNative.Platform.OS === 'android') {
+        _reactNative.UIManager.dispatchViewManagerCommand(_reactNative2.default.findNodeHandle(this), _reactNative.UIManager.InteractableView.Commands.setVelocity, [params]);
+      }
+    }
+  }, {
+    key: 'snapTo',
+    value: function snapTo(params) {
+      if (_reactNative.Platform.OS === 'ios') {
+        NativeViewManager.snapTo(_reactNative2.default.findNodeHandle(this), params);
+      } else if (_reactNative.Platform.OS === 'android') {
+        _reactNative.UIManager.dispatchViewManagerCommand(_reactNative2.default.findNodeHandle(this), _reactNative.UIManager.InteractableView.Commands.snapTo, [params]);
+      }
+    }
+  }, {
+    key: 'changePosition',
+    value: function changePosition(params) {
+      if (_reactNative.Platform.OS === 'ios') {
+        NativeViewManager.changePosition(_reactNative2.default.findNodeHandle(this), params);
+      } else if (_reactNative.Platform.OS === 'android') {
+        _reactNative.UIManager.dispatchViewManagerCommand(_reactNative2.default.findNodeHandle(this), _reactNative.UIManager.InteractableView.Commands.changePosition, [params]);
+      }
+    }
+  }, {
+    key: 'bringToFront',
+    value: function bringToFront() {
+      if (_reactNative.Platform.OS === 'android') {
+        _reactNative.UIManager.dispatchViewManagerCommand(_reactNative2.default.findNodeHandle(this), _reactNative.UIManager.InteractableView.Commands.bringToFront, []);
+      }
+    }
+  }]);
+
+  return WrappedAnimatedInteractableView;
+}(_react2.Component));
+
+exports.default = WrappedAnimatedInteractableView;

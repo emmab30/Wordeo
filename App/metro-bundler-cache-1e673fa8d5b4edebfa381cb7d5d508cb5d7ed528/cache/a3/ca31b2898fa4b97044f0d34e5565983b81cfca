@@ -1,0 +1,969 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/src/deprecated/platformSpecificDeprecated.ios.js';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _reactNative = require('react-native');
+
+var _Navigation = require('./../Navigation');
+
+var _Navigation2 = _interopRequireDefault(_Navigation);
+
+var _controllers = require('./controllers');
+
+var _controllers2 = _interopRequireDefault(_controllers);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _PropRegistry = require('../PropRegistry');
+
+var _PropRegistry2 = _interopRequireDefault(_PropRegistry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var React = _controllers2.default.hijackReact();
+var ControllerRegistry = React.ControllerRegistry,
+    TabBarControllerIOS = React.TabBarControllerIOS,
+    NavigationControllerIOS = React.NavigationControllerIOS,
+    DrawerControllerIOS = React.DrawerControllerIOS;
+
+
+function startTabBasedApp(params) {
+  var controllerID, Controller;
+  return regeneratorRuntime.async(function startTabBasedApp$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          if (params.tabs) {
+            _context.next = 3;
+            break;
+          }
+
+          console.error('startTabBasedApp(params): params.tabs is required');
+          return _context.abrupt('return');
+
+        case 3:
+          controllerID = _lodash2.default.uniqueId('controllerID');
+
+          params.tabs.map(function (tab, index) {
+            var navigatorID = controllerID + '_nav' + index;
+            var screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+
+            var components = tab.components;
+            if (!tab.screen && !components) {
+              console.error('startTabBasedApp(params): every tab must include a screen property, take a look at tab#' + (index + 1));
+              return;
+            }
+
+            if (components) {
+              params.tabs[index].components = components;
+              _extends(tab, components[0]);
+              components.shift();
+
+              components.forEach(function (component) {
+                var screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+
+                var _mergeScreenSpecificS = _mergeScreenSpecificSettings(component.screen, screenInstanceID, params),
+                    navigatorStyle = _mergeScreenSpecificS.navigatorStyle,
+                    navigatorButtons = _mergeScreenSpecificS.navigatorButtons,
+                    navigatorEventID = _mergeScreenSpecificS.navigatorEventID;
+
+                _saveNavigatorButtonsProps(navigatorButtons);
+                _saveNavBarComponentProps(navigatorStyle);
+                var passProps = _extends({}, component.passProps);
+                passProps.navigatorID = navigatorID;
+                passProps.screenInstanceID = screenInstanceID;
+                passProps.navigatorEventID = navigatorEventID;
+
+                component.navigationParams = {
+                  screenInstanceID: screenInstanceID,
+                  navigatorStyle: navigatorStyle,
+                  navigatorButtons: navigatorButtons,
+                  navigatorEventID: navigatorEventID,
+                  navigatorID: navigatorID,
+                  passProps: passProps
+                };
+
+                component.subtitle = params.subtitle;
+                component.passProps = passProps;
+                component.navigatorStyle = navigatorStyle;
+
+                savePassProps(component);
+              });
+            }
+
+            var _mergeScreenSpecificS2 = _mergeScreenSpecificSettings(tab.screen, screenInstanceID, tab),
+                navigatorStyle = _mergeScreenSpecificS2.navigatorStyle,
+                navigatorButtons = _mergeScreenSpecificS2.navigatorButtons,
+                navigatorEventID = _mergeScreenSpecificS2.navigatorEventID;
+
+            _saveNavigatorButtonsProps(navigatorButtons);
+            _saveNavBarComponentProps(navigatorStyle);
+            tab.navigationParams = {
+              screenInstanceID: screenInstanceID,
+              navigatorStyle: navigatorStyle,
+              navigatorButtons: navigatorButtons,
+              navigatorEventID: navigatorEventID,
+              navigatorID: navigatorID
+            };
+          });
+
+          Controller = _controllers2.default.createClass({
+            render: function render() {
+              if (!params.drawer || !params.drawer.left && !params.drawer.right) {
+                return this.renderBody();
+              } else {
+                var navigatorID = controllerID + '_drawer';
+
+                var leftScreenId = _lodash2.default.uniqueId('screenInstanceID');
+                var rightScreenId = _lodash2.default.uniqueId('screenInstanceID');
+
+                var _ref = params.drawer.left ? _mergeScreenSpecificSettings(params.drawer.left.screen, leftScreenId, params.drawer.left) : {},
+                    leftNavigatorStyle = _ref.navigatorStyle;
+
+                var _ref2 = params.drawer.right ? _mergeScreenSpecificSettings(params.drawer.right.screen, rightScreenId, params.drawer.right) : {},
+                    rightNavigatorStyle = _ref2.navigatorStyle;
+
+                return React.createElement(
+                  DrawerControllerIOS,
+                  { id: navigatorID,
+                    componentLeft: params.drawer.left ? params.drawer.left.screen : undefined,
+                    styleLeft: leftNavigatorStyle,
+                    passPropsLeft: { navigatorID: navigatorID },
+                    componentRight: params.drawer.right ? params.drawer.right.screen : undefined,
+                    styleRight: rightNavigatorStyle,
+                    passPropsRight: { navigatorID: navigatorID },
+                    disableOpenGesture: params.drawer.disableOpenGesture,
+                    type: params.drawer.type ? params.drawer.type : 'MMDrawer',
+                    animationType: params.drawer.animationType ? params.drawer.animationType : 'slide',
+                    style: params.drawer.style,
+                    appStyle: params.appStyle,
+                    __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 109
+                    }
+                  },
+                  this.renderBody()
+                );
+              }
+            },
+            renderBody: function renderBody() {
+              return React.createElement(
+                TabBarControllerIOS,
+                {
+                  id: controllerID + '_tabs',
+                  style: params.tabsStyle,
+                  appStyle: params.appStyle,
+                  initialTabIndex: params.initialTabIndex, __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 129
+                  }
+                },
+                params.tabs.map(function (tab, index) {
+                  return React.createElement(
+                    TabBarControllerIOS.Item,
+                    _extends({}, tab, { title: tab.label, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 137
+                      }
+                    }),
+                    React.createElement(NavigationControllerIOS, {
+                      id: tab.navigationParams.navigatorID,
+                      title: tab.title,
+                      subtitle: tab.subtitle,
+                      titleImage: tab.titleImage,
+                      component: tab.screen,
+                      components: tab.components,
+                      passProps: {
+                        navigatorID: tab.navigationParams.navigatorID,
+                        screenInstanceID: tab.navigationParams.screenInstanceID,
+                        navigatorEventID: tab.navigationParams.navigatorEventID
+                      },
+                      style: tab.navigationParams.navigatorStyle,
+                      leftButtons: tab.navigationParams.navigatorButtons.leftButtons,
+                      rightButtons: tab.navigationParams.navigatorButtons.rightButtons,
+                      __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 138
+                      }
+                    })
+                  );
+                })
+              );
+            }
+          });
+
+          savePassProps(params);
+          _lodash2.default.set(params, 'passProps.timestamp', Date.now());
+
+          ControllerRegistry.registerController(controllerID, function () {
+            return Controller;
+          });
+          _context.next = 11;
+          return regeneratorRuntime.awrap(ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {}));
+
+        case 11:
+          return _context.abrupt('return', _context.sent);
+
+        case 12:
+        case 'end':
+          return _context.stop();
+      }
+    }
+  }, null, this);
+}
+
+function startSingleScreenApp(params) {
+  var components, screen, controllerID, navigatorID, screenInstanceID, _mergeScreenSpecificS4, navigatorStyle, navigatorButtons, navigatorEventID, passProps, Controller;
+
+  return regeneratorRuntime.async(function startSingleScreenApp$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          components = params.components;
+          screen = params.screen;
+
+          if (!(!screen && !components)) {
+            _context2.next = 5;
+            break;
+          }
+
+          console.error('startSingleScreenApp(params): params.screen is required');
+          return _context2.abrupt('return');
+
+        case 5:
+          controllerID = _lodash2.default.uniqueId('controllerID');
+          navigatorID = controllerID + '_nav';
+
+
+          if (components) {
+            screen = components[0];
+            components.shift();
+
+            components.forEach(function (component) {
+              var screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+
+              var _mergeScreenSpecificS3 = _mergeScreenSpecificSettings(component.screen, screenInstanceID, params),
+                  navigatorStyle = _mergeScreenSpecificS3.navigatorStyle,
+                  navigatorButtons = _mergeScreenSpecificS3.navigatorButtons,
+                  navigatorEventID = _mergeScreenSpecificS3.navigatorEventID;
+
+              _saveNavigatorButtonsProps(navigatorButtons);
+              _saveNavBarComponentProps(navigatorStyle);
+              var passProps = _extends({}, params.passProps);
+              passProps.navigatorID = navigatorID;
+              passProps.screenInstanceID = screenInstanceID;
+              passProps.navigatorEventID = navigatorEventID;
+
+              component.navigationParams = {
+                screenInstanceID: screenInstanceID,
+                navigatorStyle: navigatorStyle,
+                navigatorButtons: navigatorButtons,
+                navigatorEventID: navigatorEventID,
+                navigatorID: navigatorID,
+                passProps: passProps
+              };
+
+              component.subtitle = params.subtitle;
+              component.passProps = passProps;
+
+              savePassProps(component);
+            });
+          }
+
+          if (screen.screen) {
+            _context2.next = 11;
+            break;
+          }
+
+          console.error('startSingleScreenApp(params): screen must include a screen property');
+          return _context2.abrupt('return');
+
+        case 11:
+          screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+          _mergeScreenSpecificS4 = _mergeScreenSpecificSettings(screen.screen, screenInstanceID, screen), navigatorStyle = _mergeScreenSpecificS4.navigatorStyle, navigatorButtons = _mergeScreenSpecificS4.navigatorButtons, navigatorEventID = _mergeScreenSpecificS4.navigatorEventID;
+
+          _saveNavigatorButtonsProps(navigatorButtons);
+          _saveNavBarComponentProps(navigatorStyle);
+          params.navigationParams = {
+            screenInstanceID: screenInstanceID,
+            navigatorStyle: navigatorStyle,
+            navigatorButtons: navigatorButtons,
+            navigatorEventID: navigatorEventID,
+            navigatorID: navigatorID
+          };
+
+          passProps = _extends({
+            navigatorID: navigatorID,
+            screenInstanceID: screenInstanceID,
+            navigatorEventID: navigatorEventID
+          }, screen.passProps);
+          Controller = _controllers2.default.createClass({
+            render: function render() {
+              if (!params.drawer || !params.drawer.left && !params.drawer.right) {
+                return this.renderBody();
+              } else {
+                var _navigatorID = controllerID + '_drawer';
+                return React.createElement(
+                  DrawerControllerIOS,
+                  { id: _navigatorID,
+                    componentLeft: params.drawer.left ? params.drawer.left.screen : undefined,
+                    passPropsLeft: { navigatorID: _navigatorID },
+                    componentRight: params.drawer.right ? params.drawer.right.screen : undefined,
+                    passPropsRight: { navigatorID: _navigatorID },
+                    disableOpenGesture: params.drawer.disableOpenGesture,
+                    type: params.drawer.type ? params.drawer.type : 'MMDrawer',
+                    animationType: params.drawer.animationType ? params.drawer.animationType : 'slide',
+                    style: params.drawer.style,
+                    appStyle: params.appStyle,
+                    __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 253
+                    }
+                  },
+                  this.renderBody()
+                );
+              }
+            },
+            renderBody: function renderBody() {
+              return React.createElement(NavigationControllerIOS, {
+                id: navigatorID,
+                title: screen.title,
+                subtitle: params.subtitle,
+                titleImage: screen.titleImage,
+                component: screen.screen,
+                components: components,
+                passProps: passProps,
+                style: navigatorStyle,
+                leftButtons: navigatorButtons.leftButtons,
+                rightButtons: navigatorButtons.rightButtons,
+                appStyle: params.appStyle,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 271
+                }
+              });
+            }
+          });
+
+          savePassProps(params);
+
+          ControllerRegistry.registerController(controllerID, function () {
+            return Controller;
+          });
+          _context2.next = 22;
+          return regeneratorRuntime.awrap(ControllerRegistry.setRootController(controllerID, params.animationType, params.passProps || {}));
+
+        case 22:
+          return _context2.abrupt('return', _context2.sent);
+
+        case 23:
+        case 'end':
+          return _context2.stop();
+      }
+    }
+  }, null, this);
+}
+
+function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
+  var screenClass = _Navigation2.default.getRegisteredScreen(screenID);
+  if (!screenClass) {
+    console.error('Cannot create screen ' + screenID + '. Are you it was registered with Navigation.registerScreen?');
+    return;
+  }
+  var navigatorStyle = _extends({}, screenClass.navigatorStyle);
+  if (params.navigatorStyle) {
+    _extends(navigatorStyle, params.navigatorStyle);
+  }
+
+  var navigatorEventID = screenInstanceID + '_events';
+  var navigatorButtons = _lodash2.default.cloneDeep(screenClass.navigatorButtons);
+  if (params.navigatorButtons) {
+    navigatorButtons = _lodash2.default.cloneDeep(params.navigatorButtons);
+  }
+  if (navigatorButtons.leftButtons) {
+    for (var i = 0; i < navigatorButtons.leftButtons.length; i++) {
+      navigatorButtons.leftButtons[i].onPress = navigatorEventID;
+    }
+  }
+  if (navigatorButtons.rightButtons) {
+    for (var _i = 0; _i < navigatorButtons.rightButtons.length; _i++) {
+      navigatorButtons.rightButtons[_i].onPress = navigatorEventID;
+    }
+  }
+  return { navigatorStyle: navigatorStyle, navigatorButtons: navigatorButtons, navigatorEventID: navigatorEventID };
+}
+
+function navigatorPush(navigator, params) {
+  if (!params.screen) {
+    console.error('Navigator.push(params): params.screen is required');
+    return;
+  }
+  var previewViewID = void 0;
+  var screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+  if (params.previewView instanceof _react.Component) {
+    previewViewID = (0, _reactNative.findNodeHandle)(params.previewView);
+  } else if (typeof params.previewView === 'number') {
+    previewViewID = params.previewView;
+  } else if (params.previewView) {
+    console.error('Navigator.push(params): params.previewView is not a valid react view');
+  }
+
+  var _mergeScreenSpecificS5 = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params),
+      navigatorStyle = _mergeScreenSpecificS5.navigatorStyle,
+      navigatorButtons = _mergeScreenSpecificS5.navigatorButtons,
+      navigatorEventID = _mergeScreenSpecificS5.navigatorEventID;
+
+  _saveNavigatorButtonsProps(navigatorButtons);
+  _saveNavBarComponentProps(navigatorStyle);
+  var passProps = _extends({}, params.passProps);
+  passProps.navigatorID = navigator.navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+  passProps.previewViewID = previewViewID;
+  passProps.isPreview = !!previewViewID;
+
+  params.navigationParams = {
+    screenInstanceID: screenInstanceID,
+    navigatorStyle: navigatorStyle,
+    navigatorButtons: navigatorButtons,
+    navigatorEventID: navigatorEventID,
+    navigatorID: navigator.navigatorID
+  };
+
+  savePassProps(params);
+
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).push({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    component: params.screen,
+    animated: params.animated,
+    animationType: params.animationType,
+    passProps: passProps,
+    style: navigatorStyle,
+    backButtonTitle: params.backButtonTitle,
+    backButtonHidden: params.backButtonHidden,
+    leftButtons: navigatorButtons.leftButtons,
+    rightButtons: navigatorButtons.rightButtons,
+    previewViewID: previewViewID,
+    previewActions: params.previewActions,
+    previewHeight: params.previewHeight,
+    previewCommit: params.previewCommit,
+    timestamp: Date.now()
+  });
+}
+
+function navigatorPop(navigator, params) {
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).pop({
+    animated: params.animated,
+    animationType: params.animationType,
+    timestamp: Date.now()
+  });
+}
+
+function navigatorPopToRoot(navigator, params) {
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).popToRoot({
+    animated: params.animated,
+    animationType: params.animationType
+  });
+}
+
+function navigatorResetTo(navigator, params) {
+  if (!params.screen) {
+    console.error('Navigator.resetTo(params): params.screen is required');
+    return;
+  }
+  var screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+
+  var _mergeScreenSpecificS6 = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params),
+      navigatorStyle = _mergeScreenSpecificS6.navigatorStyle,
+      navigatorButtons = _mergeScreenSpecificS6.navigatorButtons,
+      navigatorEventID = _mergeScreenSpecificS6.navigatorEventID;
+
+  _saveNavigatorButtonsProps(navigatorButtons);
+  _saveNavBarComponentProps(navigatorStyle);
+  var passProps = _extends({}, params.passProps);
+  passProps.navigatorID = navigator.navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+
+  params.navigationParams = {
+    screenInstanceID: screenInstanceID,
+    navigatorStyle: navigatorStyle,
+    navigatorButtons: navigatorButtons,
+    navigatorEventID: navigatorEventID,
+    navigatorID: navigator.navigatorID
+  };
+
+  savePassProps(params);
+
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).resetTo({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    component: params.screen,
+    animated: params.animated,
+    animationType: params.animationType,
+    passProps: passProps,
+    style: navigatorStyle,
+    leftButtons: navigatorButtons.leftButtons,
+    rightButtons: navigatorButtons.rightButtons
+  });
+}
+
+function navigatorSetDrawerEnabled(navigator, params) {
+  var controllerID = navigator.navigatorID.split('_')[0];
+  _controllers2.default.NavigationControllerIOS(controllerID + '_drawer').setDrawerEnabled(params);
+}
+
+function navigatorSetTitle(navigator, params) {
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).setTitle({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    style: params.navigatorStyle,
+    isSetSubtitle: false
+  });
+}
+
+function navigatorSetSubtitle(navigator, params) {
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).setTitle({
+    title: params.title,
+    subtitle: params.subtitle,
+    titleImage: params.titleImage,
+    style: params.navigatorStyle,
+    isSetSubtitle: true
+  });
+}
+
+function navigatorSetTitleImage(navigator, params) {
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).setTitleImage({
+    titleImage: params.titleImage
+  });
+}
+
+function navigatorToggleNavBar(navigator, params) {
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).setHidden({
+    hidden: params.to === 'hidden' ? true : false,
+    animated: params.animated
+  });
+}
+
+function navigatorSetStyle(navigator, params) {
+  _saveNavBarComponentProps(params);
+  _controllers2.default.NavigationControllerIOS(navigator.navigatorID).setStyle(params);
+}
+
+function navigatorToggleDrawer(navigator, params) {
+  var controllerID = navigator.navigatorID.split('_')[0];
+  if (params.to == 'open') {
+    _controllers2.default.DrawerControllerIOS(controllerID + '_drawer').open({
+      side: params.side,
+      animated: params.animated
+    });
+  } else if (params.to == 'closed') {
+    _controllers2.default.DrawerControllerIOS(controllerID + '_drawer').close({
+      side: params.side,
+      animated: params.animated
+    });
+  } else {
+    _controllers2.default.DrawerControllerIOS(controllerID + '_drawer').toggle({
+      side: params.side,
+      animated: params.animated
+    });
+  }
+}
+
+function navigatorToggleTabs(navigator, params) {
+  var controllerID = navigator.navigatorID.split('_')[0];
+  _controllers2.default.TabBarControllerIOS(controllerID + '_tabs').setHidden({
+    hidden: params.to == 'hidden',
+    animated: !(params.animated === false)
+  });
+}
+
+function navigatorSetTabBadge(navigator, params) {
+  var controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    _controllers2.default.TabBarControllerIOS(controllerID + '_tabs').setBadge({
+      tabIndex: params.tabIndex,
+      badge: params.badge,
+      badgeColor: params.badgeColor
+    });
+  } else {
+    _controllers2.default.TabBarControllerIOS(controllerID + '_tabs').setBadge({
+      contentId: navigator.navigatorID,
+      contentType: 'NavigationControllerIOS',
+      badge: params.badge
+    });
+  }
+}
+
+function navigatorSetTabButton(navigator, params) {
+  var controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    _controllers2.default.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      tabIndex: params.tabIndex,
+      icon: params.icon,
+      selectedIcon: params.selectedIcon,
+      label: params.label
+    });
+  } else {
+    _controllers2.default.TabBarControllerIOS(controllerID + '_tabs').setTabButton({
+      contentId: navigator.navigatorID,
+      contentType: 'NavigationControllerIOS',
+      icon: params.icon,
+      selectedIcon: params.selectedIcon,
+      label: params.label
+    });
+  }
+}
+
+function navigatorSwitchToTab(navigator, params) {
+  var controllerID = navigator.navigatorID.split('_')[0];
+  if (params.tabIndex || params.tabIndex === 0) {
+    _controllers2.default.TabBarControllerIOS(controllerID + '_tabs').switchTo({
+      tabIndex: params.tabIndex
+    });
+  } else {
+    _controllers2.default.TabBarControllerIOS(controllerID + '_tabs').switchTo({
+      contentId: navigator.navigatorID,
+      contentType: 'NavigationControllerIOS'
+    });
+  }
+}
+
+function navigatorSetButtons(navigator, navigatorEventID, params) {
+  _saveNavigatorButtonsProps(params);
+  if (params.leftButtons) {
+    var buttons = params.leftButtons.slice();
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].onPress = navigatorEventID;
+    }
+    _controllers2.default.NavigationControllerIOS(navigator.navigatorID).setLeftButtons(buttons, params.animated);
+  }
+  if (params.rightButtons) {
+    var _buttons = params.rightButtons.slice();
+    for (var _i2 = 0; _i2 < _buttons.length; _i2++) {
+      _buttons[_i2].onPress = navigatorEventID;
+    }
+    _controllers2.default.NavigationControllerIOS(navigator.navigatorID).setRightButtons(_buttons, params.animated);
+  }
+}
+
+function showModal(params) {
+  if (!params.screen) {
+    console.error('showModal(params): params.screen is required');
+    return;
+  }
+  var controllerID = _lodash2.default.uniqueId('controllerID');
+  var navigatorID = controllerID + '_nav';
+  var screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+
+  var _mergeScreenSpecificS7 = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params),
+      navigatorStyle = _mergeScreenSpecificS7.navigatorStyle,
+      navigatorButtons = _mergeScreenSpecificS7.navigatorButtons,
+      navigatorEventID = _mergeScreenSpecificS7.navigatorEventID;
+
+  _saveNavigatorButtonsProps(navigatorButtons);
+  _saveNavBarComponentProps(navigatorStyle);
+  var passProps = _extends({}, params.passProps);
+  passProps.navigatorID = navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+  passProps.timestamp = Date.now();
+
+  params.navigationParams = {
+    screenInstanceID: screenInstanceID,
+    navigatorStyle: navigatorStyle,
+    navigatorButtons: navigatorButtons,
+    navigatorEventID: navigatorEventID,
+    navigatorID: navigator.navigatorID
+  };
+
+  var Controller = _controllers2.default.createClass({
+    render: function render() {
+      return React.createElement(NavigationControllerIOS, {
+        id: navigatorID,
+        title: params.title,
+        subtitle: params.subtitle,
+        titleImage: params.titleImage,
+        component: params.screen,
+        passProps: passProps,
+        style: navigatorStyle,
+        leftButtons: navigatorButtons.leftButtons,
+        rightButtons: navigatorButtons.rightButtons, __source: {
+          fileName: _jsxFileName,
+          lineNumber: 610
+        }
+      });
+    }
+  });
+
+  savePassProps(params);
+
+  ControllerRegistry.registerController(controllerID, function () {
+    return Controller;
+  });
+  _controllers.Modal.showController(controllerID, params.animationType);
+}
+
+function dismissModal(params) {
+  return regeneratorRuntime.async(function dismissModal$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return regeneratorRuntime.awrap(_controllers.Modal.dismissController(params.animationType));
+
+        case 2:
+          return _context3.abrupt('return', _context3.sent);
+
+        case 3:
+        case 'end':
+          return _context3.stop();
+      }
+    }
+  }, null, this);
+}
+
+function dismissAllModals(params) {
+  return regeneratorRuntime.async(function dismissAllModals$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return regeneratorRuntime.awrap(_controllers.Modal.dismissAllControllers(params.animationType));
+
+        case 2:
+          return _context4.abrupt('return', _context4.sent);
+
+        case 3:
+        case 'end':
+          return _context4.stop();
+      }
+    }
+  }, null, this);
+}
+
+function showLightBox(params) {
+  if (!params.screen) {
+    console.error('showLightBox(params): params.screen is required');
+    return;
+  }
+  var controllerID = _lodash2.default.uniqueId('controllerID');
+  var navigatorID = controllerID + '_nav';
+  var screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+
+  var _mergeScreenSpecificS8 = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params),
+      navigatorStyle = _mergeScreenSpecificS8.navigatorStyle,
+      navigatorButtons = _mergeScreenSpecificS8.navigatorButtons,
+      navigatorEventID = _mergeScreenSpecificS8.navigatorEventID;
+
+  var passProps = _extends({}, params.passProps);
+  passProps.navigatorID = navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+
+  params.navigationParams = {
+    screenInstanceID: screenInstanceID,
+    navigatorStyle: navigatorStyle,
+    navigatorButtons: navigatorButtons,
+    navigatorEventID: navigatorEventID,
+    navigatorID: navigatorID
+  };
+
+  savePassProps(params);
+
+  _controllers.Modal.showLightBox({
+    component: params.screen,
+    passProps: passProps,
+    style: params.style
+  });
+}
+
+function dismissLightBox() {
+  _controllers.Modal.dismissLightBox();
+}
+
+function showInAppNotification(params) {
+  if (!params.screen) {
+    console.error('showInAppNotification(params): params.screen is required');
+    return;
+  }
+
+  var controllerID = _lodash2.default.uniqueId('controllerID');
+  var navigatorID = controllerID + '_nav';
+  var screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+
+  var _mergeScreenSpecificS9 = _mergeScreenSpecificSettings(params.screen, screenInstanceID, params),
+      navigatorStyle = _mergeScreenSpecificS9.navigatorStyle,
+      navigatorButtons = _mergeScreenSpecificS9.navigatorButtons,
+      navigatorEventID = _mergeScreenSpecificS9.navigatorEventID;
+
+  var passProps = _extends({}, params.passProps);
+  passProps.navigatorID = navigatorID;
+  passProps.screenInstanceID = screenInstanceID;
+  passProps.navigatorEventID = navigatorEventID;
+
+  params.navigationParams = {
+    screenInstanceID: screenInstanceID,
+    navigatorStyle: navigatorStyle,
+    navigatorButtons: navigatorButtons,
+    navigatorEventID: navigatorEventID,
+    navigatorID: navigatorID
+  };
+
+  savePassProps(params);
+
+  var args = {
+    component: params.screen,
+    passProps: passProps,
+    style: params.style,
+    animation: params.animation || _controllers.Notification.AnimationPresets.default,
+    position: params.position,
+    shadowRadius: params.shadowRadius,
+    dismissWithSwipe: params.dismissWithSwipe || true,
+    autoDismissTimerSec: params.autoDismissTimerSec || 5
+  };
+  if (params.autoDismiss === false) delete args.autoDismissTimerSec;
+  _controllers.Notification.show(args);
+}
+
+function dismissInAppNotification(params) {
+  _controllers.Notification.dismiss(params);
+}
+
+function savePassProps(params) {
+  if (params.navigationParams && params.passProps) {
+    _PropRegistry2.default.save(params.navigationParams.screenInstanceID, params.passProps);
+  }
+
+  if (params.screen && params.screen.passProps) {
+    _PropRegistry2.default.save(params.screen.navigationParams.screenInstanceID, params.screen.passProps);
+  }
+
+  if (_lodash2.default.get(params, 'screen.topTabs')) {
+    _lodash2.default.forEach(params.screen.topTabs, function (tab) {
+      return savePassProps(tab);
+    });
+  }
+
+  if (params.tabs) {
+    _lodash2.default.forEach(params.tabs, function (tab) {
+      if (!tab.passProps) {
+        tab.passProps = params.passProps;
+      }
+      savePassProps(tab);
+    });
+  }
+}
+
+function showContextualMenu() {}
+
+function dismissContextualMenu() {}
+
+function getCurrentlyVisibleScreenId() {
+  return regeneratorRuntime.async(function getCurrentlyVisibleScreenId$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return regeneratorRuntime.awrap(_controllers.ScreenUtils.getCurrentlyVisibleScreenId());
+
+        case 2:
+          return _context5.abrupt('return', _context5.sent);
+
+        case 3:
+        case 'end':
+          return _context5.stop();
+      }
+    }
+  }, null, this);
+}
+
+function _saveNavBarComponentProps(navigatorStyle) {
+  if (navigatorStyle.navBarCustomViewInitialProps) {
+    var passPropsKey = _lodash2.default.uniqueId('navBarComponent');
+    _PropRegistry2.default.save(passPropsKey, navigatorStyle.navBarCustomViewInitialProps);
+    navigatorStyle.navBarCustomViewInitialProps = { passPropsKey: passPropsKey };
+  }
+}
+
+function _saveNavigatorButtonsProps(_ref3) {
+  var rightButtons = _ref3.rightButtons,
+      leftButtons = _ref3.leftButtons;
+
+  _saveNavigatorButtonsPassProps(rightButtons);
+  _saveNavigatorButtonsPassProps(leftButtons);
+}
+
+function _saveNavigatorButtonsPassProps() {
+  var buttons = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+  buttons.forEach(function (button) {
+    if (button.component) {
+      var passPropsKey = _lodash2.default.uniqueId('customButtonComponent');
+      _PropRegistry2.default.save(passPropsKey, button.passProps);
+      button.passProps = { passPropsKey: passPropsKey };
+    }
+  });
+}
+
+function getLaunchArgs() {
+  return regeneratorRuntime.async(function getLaunchArgs$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return regeneratorRuntime.awrap(ControllerRegistry.getLaunchArgs());
+
+        case 2:
+          return _context6.abrupt('return', _context6.sent);
+
+        case 3:
+        case 'end':
+          return _context6.stop();
+      }
+    }
+  }, null, this);
+}
+
+exports.default = {
+  startTabBasedApp: startTabBasedApp,
+  startSingleScreenApp: startSingleScreenApp,
+  navigatorPush: navigatorPush,
+  navigatorPop: navigatorPop,
+  navigatorPopToRoot: navigatorPopToRoot,
+  navigatorResetTo: navigatorResetTo,
+  showModal: showModal,
+  dismissModal: dismissModal,
+  dismissAllModals: dismissAllModals,
+  showLightBox: showLightBox,
+  dismissLightBox: dismissLightBox,
+  showInAppNotification: showInAppNotification,
+  dismissInAppNotification: dismissInAppNotification,
+  navigatorSetButtons: navigatorSetButtons,
+  navigatorSetDrawerEnabled: navigatorSetDrawerEnabled,
+  navigatorSetTitle: navigatorSetTitle,
+  navigatorSetSubtitle: navigatorSetSubtitle,
+  navigatorSetStyle: navigatorSetStyle,
+  navigatorSetTitleImage: navigatorSetTitleImage,
+  navigatorToggleDrawer: navigatorToggleDrawer,
+  navigatorToggleTabs: navigatorToggleTabs,
+  navigatorSetTabBadge: navigatorSetTabBadge,
+  navigatorSetTabButton: navigatorSetTabButton,
+  navigatorSwitchToTab: navigatorSwitchToTab,
+  navigatorToggleNavBar: navigatorToggleNavBar,
+  showContextualMenu: showContextualMenu,
+  dismissContextualMenu: dismissContextualMenu,
+  getCurrentlyVisibleScreenId: getCurrentlyVisibleScreenId,
+  getLaunchArgs: getLaunchArgs
+};

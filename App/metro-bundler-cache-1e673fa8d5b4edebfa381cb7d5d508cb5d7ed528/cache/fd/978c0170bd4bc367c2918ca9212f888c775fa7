@@ -1,0 +1,56 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.initialiseNativeModuleEventEmitter = exports.getAppEventName = exports.SharedEventEmitter = undefined;
+
+var _reactNative = require('react-native');
+
+var _EventEmitter = require('./emitter/EventEmitter');
+
+var _EventEmitter2 = _interopRequireDefault(_EventEmitter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NATIVE_EMITTERS = {};
+var NATIVE_SUBSCRIPTIONS = {};
+
+var SharedEventEmitter = exports.SharedEventEmitter = new _EventEmitter2.default();
+
+var getAppEventName = exports.getAppEventName = function getAppEventName(module, eventName) {
+  return module.app.name + '-' + eventName;
+};
+
+var getNativeEmitter = function getNativeEmitter(moduleName, module) {
+  var name = module.app.name + '-' + moduleName;
+  var nativeModule = _reactNative.NativeModules[moduleName];
+  if (!NATIVE_EMITTERS[name]) {
+    NATIVE_EMITTERS[name] = new _reactNative.NativeEventEmitter(nativeModule);
+  }
+  return NATIVE_EMITTERS[name];
+};
+
+var subscribeToNativeModuleEvents = function subscribeToNativeModuleEvents(moduleName, module, eventName) {
+  if (!NATIVE_SUBSCRIPTIONS[eventName]) {
+    var nativeEmitter = getNativeEmitter(moduleName, module);
+    nativeEmitter.addListener(eventName, function (event) {
+      if (event.appName) {
+        SharedEventEmitter.emit(event.appName + '-' + eventName, event);
+      } else {
+        SharedEventEmitter.emit(eventName, event);
+      }
+    });
+
+    NATIVE_SUBSCRIPTIONS[eventName] = true;
+  }
+};
+
+var initialiseNativeModuleEventEmitter = exports.initialiseNativeModuleEventEmitter = function initialiseNativeModuleEventEmitter(module, config) {
+  var events = config.events,
+      moduleName = config.moduleName;
+
+  if (events && events.length) {
+    for (var i = 0, len = events.length; i < len; i++) {
+      subscribeToNativeModuleEvents(moduleName, module, events[i]);
+    }
+  }
+};

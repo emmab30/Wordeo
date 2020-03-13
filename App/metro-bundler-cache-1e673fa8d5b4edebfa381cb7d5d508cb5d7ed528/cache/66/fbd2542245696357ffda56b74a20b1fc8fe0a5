@@ -1,0 +1,27 @@
+module.exports = after;
+
+function after(count, callback, err_cb) {
+    var bail = false;
+    err_cb = err_cb || noop;
+    proxy.count = count;
+
+    return count === 0 ? callback() : proxy;
+
+    function proxy(err, result) {
+        if (proxy.count <= 0) {
+            throw new Error('after called too many times');
+        }
+        --proxy.count;
+
+        if (err) {
+            bail = true;
+            callback(err);
+
+            callback = err_cb;
+        } else if (proxy.count === 0 && !bail) {
+            callback(null, result);
+        }
+    }
+}
+
+function noop() {}

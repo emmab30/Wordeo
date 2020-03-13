@@ -1,0 +1,272 @@
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _invariant = require('invariant');
+
+var _invariant2 = _interopRequireDefault(_invariant);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _eventBroadcastNames = ['OneSignal-remoteNotificationReceived', 'OneSignal-remoteNotificationOpened', 'OneSignal-remoteNotificationsRegistered', 'OneSignal-idsAvailable'];
+
+var _eventNames = ["received", "opened", "registered", "ids"];
+
+var _notificationHandler = new Map();
+var _notificationCache = new Map();
+var _listeners = [];
+
+for (var i = 0; i < _eventBroadcastNames.length; i++) {
+    var eventBroadcastName = _eventBroadcastNames[i];
+    var eventName = _eventNames[i];
+
+    _listeners[eventName] = handleEventBroadcast(eventName, eventBroadcastName);
+}
+
+var RNOneSignal = _reactNative.NativeModules.OneSignal;
+
+var DEVICE_NOTIF_RECEIVED_EVENT = 'OneSignal-remoteNotificationReceived';
+var DEVICE_NOTIF_OPENED_EVENT = 'OneSignal-remoteNotificationOpened';
+var DEVICE_NOTIF_REG_EVENT = 'OneSignal-remoteNotificationsRegistered';
+var DEVICE_IDS_AVAILABLE = 'OneSignal-idsAvailable';
+
+function handleEventBroadcast(type, broadcast) {
+    return _reactNative.NativeAppEventEmitter.addListener(broadcast, function (notification) {
+        var handler = _notificationHandler.get(type);
+
+        if (handler) {
+            handler(notification);
+        } else {
+            _notificationCache.set(type, notification);
+        }
+    });
+}
+
+function handleConnectionStateChange(isConnected) {
+    if (!isConnected) return;
+
+    OneSignal.configure();
+    _reactNative.NetInfo.isConnected.removeEventListener('connectionChange', handleConnectionStateChange);
+}
+
+_reactNative.NetInfo.isConnected.fetch().then(function (isConnected) {
+    if (isConnected) return OneSignal.configure();
+    _reactNative.NetInfo.isConnected.addEventListener('connectionChange', handleConnectionStateChange);
+}).catch(function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+    }
+
+    return console.warn("Error: ", args);
+});
+
+var OneSignal = function () {
+    function OneSignal() {
+        _classCallCheck(this, OneSignal);
+    }
+
+    _createClass(OneSignal, null, [{
+        key: 'addEventListener',
+        value: function addEventListener(type, handler) {
+
+            (0, _invariant2.default)(type === 'received' || type === 'opened' || type === 'registered' || type === 'ids', 'OneSignal only supports `received`, `opened`, `registered`, and `ids` events');
+
+            _notificationHandler.set(type, handler);
+
+            var cache = _notificationCache.get(type);
+            if (handler && cache) {
+                handler(cache);
+                _notificationCache.delete(type);
+            }
+        }
+    }, {
+        key: 'removeEventListener',
+        value: function removeEventListener(type, handler) {
+            (0, _invariant2.default)(type === 'received' || type === 'opened' || type === 'registered' || type === 'ids', 'OneSignal only supports `received`, `opened`, `registered`, and `ids` events');
+
+            _notificationHandler.delete(type);
+        }
+    }, {
+        key: 'clearListeners',
+        value: function clearListeners() {
+            for (var i = 0; i < _eventNames.length; i++) {
+                _listeners[_eventNames].remove();
+            }
+        }
+    }, {
+        key: 'registerForPushNotifications',
+        value: function registerForPushNotifications() {
+            if (_reactNative.Platform.OS === 'ios') {
+                RNOneSignal.registerForPushNotifications();
+            } else {
+                console.log("This function is not supported on Android");
+            }
+        }
+    }, {
+        key: 'promptForPushNotificationsWithUserResponse',
+        value: function promptForPushNotificationsWithUserResponse(callback) {
+            if (_reactNative.Platform.OS === 'ios') {
+                (0, _invariant2.default)(typeof callback === 'function', 'Must provide a valid callback');
+                RNOneSignal.promptForPushNotificationsWithUserResponse(callback);
+            } else {
+                console.log("This function is not supported on Android");
+            }
+        }
+    }, {
+        key: 'requestPermissions',
+        value: function requestPermissions(permissions) {
+            var requestedPermissions = {};
+            if (_reactNative.Platform.OS === 'ios') {
+                if (permissions) {
+                    requestedPermissions = {
+                        alert: !!permissions.alert,
+                        badge: !!permissions.badge,
+                        sound: !!permissions.sound
+                    };
+                } else {
+                    requestedPermissions = {
+                        alert: true,
+                        badge: true,
+                        sound: true
+                    };
+                }
+                RNOneSignal.requestPermissions(requestedPermissions);
+            } else {
+                console.log("This function is not supported on Android");
+            }
+        }
+    }, {
+        key: 'configure',
+        value: function configure() {
+            RNOneSignal.configure();
+        }
+    }, {
+        key: 'checkPermissions',
+        value: function checkPermissions(callback) {
+            if (_reactNative.Platform.OS === 'ios') {
+                (0, _invariant2.default)(typeof callback === 'function', 'Must provide a valid callback');
+                RNOneSignal.checkPermissions(callback);
+            } else {
+                console.log("This function is not supported on Android");
+            }
+        }
+    }, {
+        key: 'getPermissionSubscriptionState',
+        value: function getPermissionSubscriptionState(callback) {
+            (0, _invariant2.default)(typeof callback === 'function', 'Must provide a valid callback');
+            RNOneSignal.getPermissionSubscriptionState(callback);
+        }
+    }, {
+        key: 'sendTag',
+        value: function sendTag(key, value) {
+            RNOneSignal.sendTag(key, value);
+        }
+    }, {
+        key: 'sendTags',
+        value: function sendTags(tags) {
+            RNOneSignal.sendTags(tags || {});
+        }
+    }, {
+        key: 'getTags',
+        value: function getTags(next) {
+            RNOneSignal.getTags(next);
+        }
+    }, {
+        key: 'deleteTag',
+        value: function deleteTag(key) {
+            RNOneSignal.deleteTag(key);
+        }
+    }, {
+        key: 'enableVibrate',
+        value: function enableVibrate(enable) {
+            if (_reactNative.Platform.OS === 'android') {
+                RNOneSignal.enableVibrate(enable);
+            } else {
+                console.log("This function is not supported on iOS");
+            }
+        }
+    }, {
+        key: 'enableSound',
+        value: function enableSound(enable) {
+            if (_reactNative.Platform.OS === 'android') {
+                RNOneSignal.enableSound(enable);
+            } else {
+                console.log("This function is not supported on iOS");
+            }
+        }
+    }, {
+        key: 'setLocationShared',
+        value: function setLocationShared(shared) {
+            RNOneSignal.setLocationShared(shared);
+        }
+    }, {
+        key: 'setSubscription',
+        value: function setSubscription(enable) {
+            RNOneSignal.setSubscription(enable);
+        }
+    }, {
+        key: 'promptLocation',
+        value: function promptLocation() {
+            RNOneSignal.promptLocation();
+        }
+    }, {
+        key: 'inFocusDisplaying',
+        value: function inFocusDisplaying(displayOption) {
+            if (_reactNative.Platform.OS === 'android') {
+                RNOneSignal.inFocusDisplaying(displayOption);
+            } else {
+                RNOneSignal.setInFocusDisplayType(displayOption);
+            }
+        }
+    }, {
+        key: 'postNotification',
+        value: function postNotification(contents, data, player_id, otherParameters) {
+            if (_reactNative.Platform.OS === 'android') {
+                RNOneSignal.postNotification(JSON.stringify(contents), JSON.stringify(data), player_id, JSON.stringify(otherParameters));
+            } else {
+                RNOneSignal.postNotification(contents, data, player_id, otherParameters);
+            }
+        }
+    }, {
+        key: 'clearOneSignalNotifications',
+        value: function clearOneSignalNotifications() {
+            if (_reactNative.Platform.OS === 'android') {
+                RNOneSignal.clearOneSignalNotifications();
+            } else {
+                console.log("This function is not supported on iOS");
+            }
+        }
+    }, {
+        key: 'cancelNotification',
+        value: function cancelNotification(id) {
+            if (_reactNative.Platform.OS === 'android') {
+                RNOneSignal.cancelNotification(id);
+            } else {
+                console.log("This function is not supported on iOS");
+            }
+        }
+    }, {
+        key: 'syncHashedEmail',
+        value: function syncHashedEmail(email) {
+            RNOneSignal.syncHashedEmail(email);
+        }
+    }, {
+        key: 'setLogLevel',
+        value: function setLogLevel(nsLogLevel, visualLogLevel) {
+            RNOneSignal.setLogLevel(nsLogLevel, visualLogLevel);
+        }
+    }]);
+
+    return OneSignal;
+}();
+
+exports.default = OneSignal;

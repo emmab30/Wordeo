@@ -1,0 +1,70 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.initialiseNativeModule = exports.getNativeModule = undefined;
+
+var _reactNative = require('react-native');
+
+var _events = require('./events');
+
+var _internals = require('./internals');
+
+var _internals2 = _interopRequireDefault(_internals);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NATIVE_MODULES = {};
+
+var nativeWithApp = function nativeWithApp(appName, NativeModule) {
+  var native = {};
+  var methods = Object.keys(NativeModule);
+
+  var _loop = function _loop(i, len) {
+    var method = methods[i];
+    native[method] = function () {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return NativeModule[method].apply(NativeModule, [appName].concat(args));
+    };
+  };
+
+  for (var i = 0, len = methods.length; i < len; i++) {
+    _loop(i, len);
+  }
+
+  return native;
+};
+
+var getModuleKey = function getModuleKey(module) {
+  return module.app.name + ':' + module.namespace;
+};
+
+var getNativeModule = exports.getNativeModule = function getNativeModule(module) {
+  var key = getModuleKey(module);
+  return NATIVE_MODULES[key];
+};
+
+var initialiseNativeModule = exports.initialiseNativeModule = function initialiseNativeModule(module, config) {
+  var moduleName = config.moduleName,
+      multiApp = config.multiApp,
+      namespace = config.namespace;
+
+  var nativeModule = _reactNative.NativeModules[moduleName];
+  var key = getModuleKey(module);
+
+  if (!nativeModule && namespace !== 'utils') {
+    throw new Error(_internals2.default.STRINGS.ERROR_MISSING_MODULE(namespace, moduleName));
+  }
+
+  if (multiApp) {
+    NATIVE_MODULES[key] = nativeWithApp(module.app.name, nativeModule);
+  } else {
+    NATIVE_MODULES[key] = nativeModule;
+  }
+
+  (0, _events.initialiseNativeModuleEventEmitter)(module, config);
+
+  return NATIVE_MODULES[key];
+};

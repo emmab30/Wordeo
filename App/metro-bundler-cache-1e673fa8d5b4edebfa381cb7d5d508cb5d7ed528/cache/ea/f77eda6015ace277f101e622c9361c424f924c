@@ -1,0 +1,219 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.currentScreen = exports.rootNavigator = undefined;
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/index.ios.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.registerScreens = registerScreens;
+
+var _reactNative = require('react-native');
+
+var _Helper = require('./components/common/Helper');
+
+var _Helper2 = _interopRequireDefault(_Helper);
+
+var _login = require('./screens/account/login');
+
+var _login2 = _interopRequireDefault(_login);
+
+var _home = require('./screens/dashboard/home');
+
+var _home2 = _interopRequireDefault(_home);
+
+var _shop = require('./screens/dashboard/shop');
+
+var _shop2 = _interopRequireDefault(_shop);
+
+var _round = require('./screens/dashboard/round');
+
+var _round2 = _interopRequireDefault(_round);
+
+var _in_round_categories = require('./screens/dashboard/in_round_categories');
+
+var _in_round_categories2 = _interopRequireDefault(_in_round_categories);
+
+var _in_round_question = require('./screens/dashboard/in_round_question');
+
+var _in_round_question2 = _interopRequireDefault(_in_round_question);
+
+var _profile = require('./screens/dashboard/profile');
+
+var _profile2 = _interopRequireDefault(_profile);
+
+var _ranking = require('./screens/dashboard/ranking');
+
+var _ranking2 = _interopRequireDefault(_ranking);
+
+var _add_question = require('./screens/dashboard/add_question');
+
+var _add_question2 = _interopRequireDefault(_add_question);
+
+var _contact = require('./screens/dashboard/contact');
+
+var _contact2 = _interopRequireDefault(_contact);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _global = require('./components/common/global');
+
+var _strings = require('./components/localization/strings');
+
+var _Services = require('./services/Services');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    OpenEnglish: {
+        displayName: 'OpenEnglish'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/index.ios.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+_Services.SocketService.connect(function () {
+    _Services.SocketService.subscribe.onUsersOnlineUpdate();
+    _Services.SocketService.subscribe.onRoomCreated();
+    _Services.SocketService.subscribe.onRoomRemoved();
+    _Services.SocketService.subscribe.onDisconnect();
+    _Services.SocketService.subscribe.onRoomActivity();
+    _Services.SocketService.subscribe.onStartRound();
+});
+
+console.disableYellowBox = true;
+
+registerScreens();
+
+_Services.AnalyticsService.configure();
+
+_reactNative.AsyncStorage.getItem('Language').then(function (value) {
+    if (value == 'es') {
+        _strings.strings.setLanguage('es');
+    } else {
+        if (value == 'en') {
+            _strings.strings.setLanguage('en');
+        }
+    }
+}).done();
+
+var initialScreen = _extends({}, _global.Global.Screen.Login);
+_reactNativeNavigation.Navigation.startSingleScreenApp({
+    screen: initialScreen,
+    appStyle: {
+        orientation: 'portrait'
+    },
+    passProps: {},
+    animationType: 'slide-down'
+});
+
+var OpenEnglish = _wrapComponent('OpenEnglish')(function (_Component) {
+    _inherits(OpenEnglish, _Component);
+
+    function OpenEnglish() {
+        _classCallCheck(this, OpenEnglish);
+
+        return _possibleConstructorReturn(this, (OpenEnglish.__proto__ || Object.getPrototypeOf(OpenEnglish)).apply(this, arguments));
+    }
+
+    _createClass(OpenEnglish, [{
+        key: 'render',
+        value: function render() {
+            return _react3.default.createElement(_reactNative.View, { style: styles.container, __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 83
+                }
+            });
+        }
+    }]);
+
+    return OpenEnglish;
+}(_react2.Component));
+
+exports.default = OpenEnglish;
+function registerScreens() {
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Login', function () {
+        return _login2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.Home', function () {
+        return _home2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.Shop', function () {
+        return _shop2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.Round', function () {
+        return _round2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.InRoundCategories', function () {
+        return _in_round_categories2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.InRoundQuestion', function () {
+        return _in_round_question2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.Profile', function () {
+        return _profile2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.Ranking', function () {
+        return _ranking2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.AddQuestion', function () {
+        return _add_question2.default;
+    });
+    _reactNativeNavigation.Navigation.registerComponent('OpenEnglish.Dashboard.Contact', function () {
+        return _contact2.default;
+    });
+}
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF'
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10
+    },
+    instructions: {
+        textAlign: 'center',
+        color: '#333333',
+        marginBottom: 5
+    }
+});
+
+_reactNative.AppRegistry.registerComponent('OpenEnglish', function () {
+    return OpenEnglish;
+});
+
+var rootNavigator = exports.rootNavigator = null;
+var currentScreen = exports.currentScreen = '';

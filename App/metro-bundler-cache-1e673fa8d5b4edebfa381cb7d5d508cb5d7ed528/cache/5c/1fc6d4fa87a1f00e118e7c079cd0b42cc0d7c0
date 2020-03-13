@@ -1,0 +1,36 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _BaseService = require('./BaseService.js');
+
+var _reactNative = require('react-native');
+
+var ConfigurationService = {
+    tulsRate: 0,
+    getTulsRate: function getTulsRate(success, error) {
+        (0, _BaseService.ApiService)().get('/Configurations/findOne?filter=%7B%22where%22%3A%7B%22name%22%3A%22TULS_RATE%22%7D%7D').then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    getUserStatistics: function getUserStatistics(success, error) {
+        (0, _BaseService.ApiService)().get('/Configurations/user_statistics').then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    }
+};
+
+exports.default = ConfigurationService;

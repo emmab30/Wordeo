@@ -1,0 +1,57 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.initialiseLogger = exports.getLogger = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ = require('./');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function (base) {
+  window = base || window;
+
+  if (!window.localStorage) window.localStorage = {};
+})(_.windowOrGlobal);
+
+var NATIVE_LOGGERS = {};
+
+var getModuleKey = function getModuleKey(module) {
+  return module.app.name + ':' + module.namespace;
+};
+
+var getLogger = exports.getLogger = function getLogger(module) {
+  var key = getModuleKey(module);
+  return NATIVE_LOGGERS[key];
+};
+
+var initialiseLogger = exports.initialiseLogger = function initialiseLogger(module, logNamespace) {
+  var key = getModuleKey(module);
+  if (!NATIVE_LOGGERS[key]) {
+    NATIVE_LOGGERS[key] = require('bows')('\uD83D\uDD25 ' + logNamespace.toUpperCase());
+  }
+};
+
+var Log = function () {
+  function Log() {
+    _classCallCheck(this, Log);
+  }
+
+  _createClass(Log, null, [{
+    key: 'createLogger',
+    value: function createLogger(namespace) {
+      return require('bows')(namespace);
+    }
+  }, {
+    key: 'setLevel',
+    value: function setLevel(booleanOrDebugString) {
+      window.localStorage.debug = booleanOrDebugString;
+      window.localStorage.debugColors = !!booleanOrDebugString;
+    }
+  }]);
+
+  return Log;
+}();
+
+exports.default = Log;

@@ -1,0 +1,256 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/DialogConfirmation.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('./localization/strings');
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _default = require('../styles/default');
+
+var _global = require('../components/common/global');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    DialogConfirmation: {
+        displayName: 'DialogConfirmation'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/DialogConfirmation.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var width = _reactNative.Dimensions.get('window').width;
+var height = _reactNative.Dimensions.get('window').height;
+
+var DialogConfirmation = _wrapComponent('DialogConfirmation')(function (_Component) {
+    _inherits(DialogConfirmation, _Component);
+
+    function DialogConfirmation(props) {
+        _classCallCheck(this, DialogConfirmation);
+
+        var _this = _possibleConstructorReturn(this, (DialogConfirmation.__proto__ || Object.getPrototypeOf(DialogConfirmation)).call(this, props));
+
+        _this.state = {
+            height: height,
+            isLandscape: false,
+            heightInnerViewContent: 0
+        };
+        return _this;
+    }
+
+    _createClass(DialogConfirmation, [{
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate() {}
+    }, {
+        key: 'onLayoutTextMessage',
+        value: function onLayoutTextMessage(e) {
+            var _e$nativeEvent$layout = e.nativeEvent.layout,
+                x = _e$nativeEvent$layout.x,
+                y = _e$nativeEvent$layout.y,
+                width = _e$nativeEvent$layout.width,
+                height = _e$nativeEvent$layout.height;
+
+            if (height != null) {
+                this.setState({ heightInnerViewContent: height + 100 });
+            }
+        }
+    }, {
+        key: 'onLayout',
+        value: function onLayout(e) {
+            var _this2 = this;
+
+            this.setState({ height: _reactNative.Dimensions.get('window').height });
+
+            _global.Global.getOrientation(function (orientation) {
+                _this2.setState({
+                    isLandscape: orientation == 'LANDSCAPE'
+                });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            if (!this.props.isVisible) return null;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    onLayout: this.onLayout.bind(this), __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 70
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    { visible: this.props.isVisible,
+                        closeOnTouchOutside: true,
+                        animationType: 'fadeInDown',
+                        animationOutType: 'fadeOut',
+                        animationDuration: 300,
+                        onClose: function onClose() {
+                            _this3.props.onCancelAction();
+                        },
+                        containerStyle: { backgroundColor: 'rgba(255, 255, 255, 0.95)', flex: 1, width: '100%' },
+                        childrenWrapperStyle: [styles.overlayChildren, { backgroundColor: "#fff", borderRadius: 10, width: this.state.isLandscape ? '60%' : '100%', maxHeight: 140, maxHeight: this.state.heightInnerViewContent > 0 ? this.state.heightInnerViewContent : 180, height: this.state.height - 100, paddingBottom: this.props.paddingBottom !== undefined ? this.props.paddingBottom : 0 }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 72
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.Text,
+                        { onLayout: this.onLayoutTextMessage.bind(this), style: styles.errorMessage, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 83
+                            }
+                        },
+                        this.props.message
+                    ),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: { flex: 1, flexDirection: 'row' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 84
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.TouchableOpacity,
+                            {
+                                onPress: function onPress(e) {
+                                    return _this3.props.onCancelAction();
+                                },
+                                style: styles.buttonCancel, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 85
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: styles.buttonCancelText, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 88
+                                    }
+                                },
+                                _strings.strings.Cancel
+                            )
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.TouchableOpacity,
+                            {
+                                onPress: function onPress(e) {
+                                    return _this3.props.onConfirmAction();
+                                },
+                                style: styles.buttonOk, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 91
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: styles.buttonOkText, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 94
+                                    }
+                                },
+                                _strings.strings.Confirm
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return DialogConfirmation;
+}(_react2.Component));
+
+exports.default = DialogConfirmation;
+
+
+var styles = _reactNative.StyleSheet.create({
+    errorTitle: {
+        color: '#ef3300',
+        fontFamily: _default.Font.ProximaNovaRegular,
+        fontSize: 16,
+        marginBottom: 20
+    },
+    errorMessage: {
+        color: 'black',
+        fontFamily: _default.Font.NunitoSemiBold,
+        fontSize: 16,
+        marginBottom: 20
+    },
+    buttonCancel: {
+        flex: 1,
+        marginRight: 5,
+        height: 45,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#e6e7eb',
+        borderRadius: 20
+    },
+    buttonCancelText: {
+        color: '#7f7f7f',
+        fontFamily: _default.Font.NunitoBold,
+        fontSize: 18,
+        textAlign: 'center'
+    },
+    buttonOk: {
+        flex: 1,
+        height: 45,
+        marginLeft: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ff6600',
+        borderRadius: 20
+    },
+    buttonOkText: {
+        fontFamily: _default.Font.NunitoBold,
+        fontSize: 18,
+        color: 'white',
+        textAlign: 'center'
+    },
+    overlayChildren: {
+        shadowColor: '#222',
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: .3,
+        shadowRadius: 10,
+        elevation: 4,
+        alignSelf: 'center'
+    }
+});

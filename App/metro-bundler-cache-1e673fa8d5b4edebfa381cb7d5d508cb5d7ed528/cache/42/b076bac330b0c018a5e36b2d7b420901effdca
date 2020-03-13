@@ -1,0 +1,493 @@
+
+
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[typeof Symbol === 'function' ? Symbol.iterator : '@@iterator'](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if ((typeof Symbol === 'function' ? Symbol.iterator : '@@iterator') in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var AuthError = require('./errors').AuthError;
+var permissionApis = require('./permission-api');
+
+var require_method = require;
+
+function node_require(module) {
+    return require_method(module);
+}
+
+function checkTypes(args, types) {
+    args = Array.prototype.slice.call(args);
+    for (var i = 0; i < types.length; ++i) {
+        if (args.length > i && typeof args[i] !== types[i]) {
+            throw new TypeError('param ' + i + ' must be of type ' + types[i]);
+        }
+    }
+}
+
+var performFetch = function () {
+    var doFetch = typeof fetch === 'undefined' ? node_require('node-fetch') : fetch;
+    var queue = [];
+    var count = 0;
+    var maxCount = 5;
+    var next = function next() {
+        if (count >= maxCount) {
+            return;
+        }
+        var req = queue.shift();
+        if (!req) {
+            return;
+        }
+
+        var _req = _slicedToArray(req, 4),
+            url = _req[0],
+            options = _req[1],
+            resolve = _req[2],
+            reject = _req[3];
+
+        ++count;
+
+        doFetch(url, options).then(function (response) {
+            --count;
+            next();
+            resolve(response);
+        }).catch(function (error) {
+            --count;
+            next();
+            reject(error);
+        });
+    };
+    return function (url, options) {
+        return new Promise(function (resolve, reject) {
+            queue.push([url, options, resolve, reject]);
+            next();
+        });
+    };
+}();
+
+var url_parse = require('url-parse');
+
+var postHeaders = {
+    'content-type': 'application/json;charset=utf-8',
+    'accept': 'application/json'
+};
+
+function append_url(server, path) {
+    return server + (server.charAt(server.length - 1) != '/' ? '/' : '') + path;
+}
+
+function scheduleAccessTokenRefresh(user, localRealmPath, realmUrl, expirationDate) {
+    var refreshBuffer = 10 * 1000;
+    var timeout = expirationDate - Date.now() - refreshBuffer;
+    setTimeout(function () {
+        return refreshAccessToken(user, localRealmPath, realmUrl);
+    }, timeout);
+}
+
+function print_error() {
+    (console.error || console.log).apply(console, arguments);
+}
+
+function validateRefresh(user, localRealmPath, response, json) {
+    var session = user._sessionForOnDiskPath(localRealmPath);
+    if (!session) {
+        print_error('Unhandled session token refresh error: could not look up session for user ' + user.identity + ' at path ' + localRealmPath);
+        return;
+    }
+
+    var errorHandler = session.config.error;
+    if (response.status != 200) {
+        var error = new AuthError(json);
+        if (errorHandler) {
+            errorHandler(session, error);
+        } else {
+            print_error('Unhandled session token refresh error for user ' + user.identity + ' at path ' + localRealmPath, error);
+        }
+        return;
+    }
+    if (session.state === 'invalid') {
+        return;
+    }
+    return session;
+}
+
+function refreshAdminToken(user, localRealmPath, realmUrl) {
+    var token = user.token;
+    var server = user.server;
+
+    var parsedRealmUrl = url_parse(realmUrl);
+    var url = append_url(user.server, 'realms/files/' + encodeURIComponent(parsedRealmUrl.pathname));
+    performFetch(url, { method: 'GET', timeout: 10000.0, headers: { Authorization: user.token } }).then(function (response) {
+        if (response.status === 404 || response.status === 503) {
+            return { response: { status: 200 }, json: { path: parsedRealmUrl.pathname, syncLabel: '_direct' } };
+        } else {
+            return response.json().then(function (json) {
+                return { response: response, json: json };
+            });
+        }
+    }).then(function (responseAndJson) {
+        var response = responseAndJson.response;
+        var json = responseAndJson.json;
+
+        var newUser = user.constructor.adminUser(token, server);
+        var session = validateRefresh(newUser, localRealmPath, response, json);
+        if (session) {
+            parsedRealmUrl.set('pathname', json.path);
+            session._refreshAccessToken(user.token, parsedRealmUrl.href, json.syncLabel);
+        }
+    }).catch(function (e) {
+        print_error(e);
+        setTimeout(function () {
+            return refreshAccessToken(user, localRealmPath, realmUrl);
+        }, 10 * 1000);
+    });
+}
+
+function refreshAccessToken(user, localRealmPath, realmUrl) {
+    if (!user.server) {
+        throw new Error("Server for user must be specified");
+    }
+
+    var parsedRealmUrl = url_parse(realmUrl);
+    if (user.isAdminToken) {
+        return refreshAdminToken(user, localRealmPath, realmUrl);
+    }
+
+    var url = append_url(user.server, 'auth');
+    var options = {
+        method: 'POST',
+        body: JSON.stringify({
+            data: user.token,
+            path: parsedRealmUrl.pathname,
+            provider: 'realm',
+            app_id: ''
+        }),
+        headers: postHeaders,
+
+        timeout: 10000.0
+    };
+    performFetch(url, options).then(function (response) {
+        return response.json().then(function (json) {
+            return { response: response, json: json };
+        });
+    }).then(function (responseAndJson) {
+        var response = responseAndJson.response;
+        var json = responseAndJson.json;
+
+        var newUser = user.constructor._getExistingUser(user.server, user.identity);
+        if (!newUser) {
+            return;
+        }
+
+        var session = validateRefresh(newUser, localRealmPath, response, json);
+        if (!session) {
+            return;
+        }
+
+        var tokenData = json.access_token.token_data;
+
+        parsedRealmUrl.set('pathname', tokenData.path);
+        session._refreshAccessToken(json.access_token.token, parsedRealmUrl.href, tokenData.sync_label);
+
+        var errorHandler = session.config.error;
+        if (errorHandler && errorHandler._notifyOnAccessTokenRefreshed) {
+            errorHandler(session, errorHandler._notifyOnAccessTokenRefreshed);
+        }
+
+        var tokenExpirationDate = new Date(tokenData.expires * 1000);
+        scheduleAccessTokenRefresh(newUser, localRealmPath, realmUrl, tokenExpirationDate);
+    }).catch(function (e) {
+        print_error(e);
+
+        setTimeout(function () {
+            return refreshAccessToken(user, localRealmPath, realmUrl);
+        }, 10 * 1000);
+    });
+}
+
+function _authenticate(userConstructor, server, json, callback) {
+    json.app_id = '';
+    var url = append_url(server, 'auth');
+    var options = {
+        method: 'POST',
+        body: JSON.stringify(json),
+        headers: postHeaders,
+        open_timeout: 5000
+    };
+
+    var promise = performFetch(url, options).then(function (response) {
+        var contentType = response.headers.get('Content-Type');
+        if (contentType.indexOf('application/json') === -1) {
+            return response.text().then(function (body) {
+                throw new AuthError({
+                    title: 'Could not authenticate: Realm Object Server didn\'t respond with valid JSON',
+                    body: body
+                });
+            });
+        } else if (!response.ok) {
+            return response.json().then(function (body) {
+                return Promise.reject(new AuthError(body));
+            });
+        } else {
+            return response.json().then(function (body) {
+                var token = body.refresh_token.token;
+                var identity = body.refresh_token.token_data.identity;
+                var isAdmin = body.refresh_token.token_data.is_admin;
+                return userConstructor.createUser(server, identity, token, false, isAdmin);
+            });
+        }
+    });
+
+    if (callback) {
+        promise.then(function (user) {
+            callback(null, user);
+        }).catch(function (err) {
+            callback(err);
+        });
+    } else {
+        return promise;
+    }
+}
+
+function _updateAccount(userConstructor, server, json) {
+    var url = append_url(server, 'auth/password/updateAccount');
+    var options = {
+        method: 'POST',
+        body: JSON.stringify(json),
+        headers: postHeaders,
+        open_timeout: 5000
+    };
+
+    return performFetch(url, options).then(function (response) {
+        var contentType = response.headers.get('Content-Type');
+        if (contentType.indexOf('application/json') === -1) {
+            return response.text().then(function (body) {
+                throw new AuthError({
+                    title: 'Could not update user account: Realm Object Server didn\'t respond with valid JSON',
+                    body: body
+                });
+            });
+        }
+        if (!response.ok) {
+            return response.json().then(function (body) {
+                return Promise.reject(new AuthError(body));
+            });
+        }
+    });
+}
+
+var staticMethods = {
+    get current() {
+        var allUsers = this.all;
+        var keys = Object.keys(allUsers);
+        if (keys.length === 0) {
+            return undefined;
+        } else if (keys.length > 1) {
+            throw new Error("Multiple users are logged in");
+        }
+
+        return allUsers[keys[0]];
+    },
+
+    adminUser: function adminUser(token, server) {
+        checkTypes(arguments, ['string', 'string']);
+        return this._adminUser(server, token);
+    },
+    register: function register(server, username, password, callback) {
+        checkTypes(arguments, ['string', 'string', 'string', 'function']);
+        var json = {
+            provider: 'password',
+            user_info: { password: password, register: true },
+            data: username
+        };
+
+        if (callback) {
+            var message = "register(..., callback) is now deprecated in favor of register(): Promise<User>. This function argument will be removed in future versions.";
+            (console.warn || console.log).call(console, message);
+        }
+
+        return _authenticate(this, server, json, callback);
+    },
+    login: function login(server, username, password, callback) {
+        checkTypes(arguments, ['string', 'string', 'string', 'function']);
+        var json = {
+            provider: 'password',
+            user_info: { password: password, register: false },
+            data: username
+        };
+
+        if (callback) {
+            var message = "login(..., callback) is now deprecated in favor of login(): Promise<User>. This function argument will be removed in future versions.";
+            (console.warn || console.log).call(console, message);
+        }
+
+        return _authenticate(this, server, json, callback);
+    },
+    registerWithProvider: function registerWithProvider(server, options, callback) {
+        if (arguments.length === 4) {
+            checkTypes(arguments, ['string', 'string', 'string', 'function']);
+            options = {
+                provider: arguments[1],
+                providerToken: arguments[2]
+            };
+            callback = arguments[3];
+        } else {
+            checkTypes(arguments, ['string', 'object', 'function']);
+        }
+
+        var json = {
+            provider: options.provider,
+            data: options.providerToken
+        };
+
+        if (options.userInfo) {
+            json.user_info = options.userInfo;
+        }
+
+        if (callback) {
+            var message = "registerWithProvider(..., callback) is now deprecated in favor of registerWithProvider(): Promise<User>. This function argument will be removed in future versions.";
+            (console.warn || console.log).call(console, message);
+        }
+
+        return _authenticate(this, server, json, callback);
+    },
+    authenticate: function authenticate(server, provider, options) {
+        checkTypes(arguments, ['string', 'string', 'object']);
+
+        var json = {};
+        switch (provider.toLowerCase()) {
+            case 'jwt':
+                json.provider = 'jwt';
+                json.token = options.token;
+                break;
+            case 'password':
+                json.provider = 'password';
+                json.user_info = { password: options.password };
+                json.data = options.username;
+                break;
+            default:
+                _extends(json, options);
+                json.provider = provider;
+        }
+
+        return _authenticate(this, server, json);
+    },
+    requestPasswordReset: function requestPasswordReset(server, email) {
+        checkTypes(arguments, ['string', 'string']);
+        var json = {
+            provider_id: email,
+            data: { action: 'reset_password' }
+        };
+
+        return _updateAccount(this, server, json);
+    },
+    completePasswordReset: function completePasswordReset(server, reset_token, new_password) {
+        checkTypes(arguments, ['string', 'string']);
+        var json = {
+            data: {
+                action: 'complete_reset',
+                token: reset_token,
+                new_password: new_password
+            }
+        };
+
+        return _updateAccount(this, server, json);
+    },
+    requestEmailConfirmation: function requestEmailConfirmation(server, email) {
+        checkTypes(arguments, ['string', 'string']);
+        var json = {
+            provider_id: email,
+            data: { action: 'request_email_confirmation' }
+        };
+
+        return _updateAccount(this, server, json);
+    },
+    confirmEmail: function confirmEmail(server, confirmation_token) {
+        checkTypes(arguments, ['string', 'string']);
+        var json = {
+            data: {
+                action: 'confirm_email',
+                token: confirmation_token
+            }
+        };
+
+        return _updateAccount(this, server, json);
+    },
+
+
+    _refreshAccessToken: refreshAccessToken
+};
+
+var instanceMethods = {
+    logout: function logout() {
+        this._logout();
+        var url = url_parse(this.server);
+        url.set('pathname', '/auth/revoke');
+        var headers = {
+            Authorization: this.token
+        };
+        var body = JSON.stringify({
+            token: this.token
+        });
+        var options = {
+            method: 'POST',
+            headers: headers,
+            body: body,
+            open_timeout: 5000
+        };
+
+        performFetch(url.href, options).then(function () {
+            return console.log('User is logged out');
+        }).catch(function (e) {
+            return print_error(e);
+        });
+    },
+    openManagementRealm: function openManagementRealm() {
+        var url = url_parse(this.server);
+        if (url.protocol === 'http:') {
+            url.set('protocol', 'realm:');
+        } else if (url.protocol === 'https:') {
+            url.set('protocol', 'realms:');
+        } else {
+            throw new Error('Unexpected user auth url: ' + this.server);
+        }
+
+        url.set('pathname', '/~/__management');
+
+        return new this.constructor._realmConstructor({
+            schema: require('./management-schema'),
+            sync: {
+                user: this,
+                url: url.href
+            }
+        });
+    },
+    retrieveAccount: function retrieveAccount(provider, provider_id) {
+        checkTypes(arguments, ['string', 'string']);
+        var url = url_parse(this.server);
+        url.set('pathname', '/auth/users/' + provider + '/' + provider_id);
+        var headers = {
+            Authorization: this.token
+        };
+        var options = {
+            method: 'GET',
+            headers: headers,
+            open_timeout: 5000
+        };
+        return performFetch(url.href, options).then(function (response) {
+            if (response.status !== 200) {
+                return response.json().then(function (body) {
+                    throw new AuthError(body);
+                });
+            } else {
+                return response.json();
+            }
+        });
+    }
+};
+
+_extends(instanceMethods, permissionApis);
+
+module.exports = {
+    static: staticMethods,
+    instance: instanceMethods
+};

@@ -1,0 +1,222 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GoogleAnalyticsTracker = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _NativeBridges = require('./NativeBridges');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DEFAULT_DISPATCH_TIMEOUT = 15000;
+
+function isValidCustomDimension(customDimensionVal) {
+  var customDimensionValType = typeof customDimensionVal;
+  return customDimensionValType === 'string' || customDimensionValType === 'number';
+}
+
+var GoogleAnalyticsTracker = exports.GoogleAnalyticsTracker = function () {
+  function GoogleAnalyticsTracker(trackerId, customDimensionsFieldsIndexMap) {
+    _classCallCheck(this, GoogleAnalyticsTracker);
+
+    this.id = trackerId;
+    this.customDimensionsFieldsIndexMap = customDimensionsFieldsIndexMap;
+  }
+
+  _createClass(GoogleAnalyticsTracker, [{
+    key: 'transformCustomDimensionsFieldsToIndexes',
+    value: function transformCustomDimensionsFieldsToIndexes(customDimensions) {
+      var _this = this;
+
+      if (this.customDimensionsFieldsIndexMap) {
+        return Object.keys(this.customDimensionsFieldsIndexMap).filter(function (key) {
+          return isValidCustomDimension(customDimensions[key]);
+        }).reduce(function (mappedCustomDimensions, key) {
+          var dimensionIndex = _this.customDimensionsFieldsIndexMap[key];
+          mappedCustomDimensions[dimensionIndex] = customDimensions[key];
+          return mappedCustomDimensions;
+        }, {});
+      }
+      return customDimensions;
+    }
+  }, {
+    key: 'trackScreenView',
+    value: function trackScreenView(screenName) {
+      _NativeBridges.GoogleAnalyticsBridge.trackScreenView(this.id, screenName);
+    }
+  }, {
+    key: 'trackCampaignFromUrl',
+    value: function trackCampaignFromUrl(urlString) {
+      _NativeBridges.GoogleAnalyticsBridge.trackCampaignFromUrl(this.id, urlString);
+    }
+  }, {
+    key: 'trackEvent',
+    value: function trackEvent(category, action) {
+      var optionalValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      _NativeBridges.GoogleAnalyticsBridge.trackEvent(this.id, category, action, optionalValues);
+    }
+  }, {
+    key: 'trackScreenViewWithCustomDimensionValues',
+    value: function trackScreenViewWithCustomDimensionValues(screenName, customDimensionValues) {
+      var formattedCustomDimensions = this.transformCustomDimensionsFieldsToIndexes(customDimensionValues);
+      _NativeBridges.GoogleAnalyticsBridge.trackScreenViewWithCustomDimensionValues(this.id, screenName, formattedCustomDimensions);
+    }
+  }, {
+    key: 'trackEventWithCustomDimensionValues',
+    value: function trackEventWithCustomDimensionValues(category, action) {
+      var optionalValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var customDimensionValues = arguments[3];
+
+      var formattedCustomDimensions = this.transformCustomDimensionsFieldsToIndexes(customDimensionValues);
+      _NativeBridges.GoogleAnalyticsBridge.trackEventWithCustomDimensionValues(this.id, category, action, optionalValues, formattedCustomDimensions);
+    }
+  }, {
+    key: 'trackEventWithCustomDimensionAndMetricValues',
+    value: function trackEventWithCustomDimensionAndMetricValues(category, action) {
+      var optionalValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var customDimensionValues = arguments[3];
+      var customMetricValues = arguments[4];
+
+      _NativeBridges.GoogleAnalyticsBridge.trackEventWithCustomDimensionAndMetricValues(this.id, category, action, optionalValues, customDimensionValues, customMetricValues);
+    }
+  }, {
+    key: 'trackTiming',
+    value: function trackTiming(category, value) {
+      var optionalValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      _NativeBridges.GoogleAnalyticsBridge.trackTiming(this.id, category, value, optionalValues);
+    }
+  }, {
+    key: 'trackPurchaseEvent',
+    value: function trackPurchaseEvent() {
+      var product = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var transaction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var eventCategory = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Ecommerce";
+      var eventAction = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "Purchase";
+
+      _NativeBridges.GoogleAnalyticsBridge.trackPurchaseEvent(this.id, product, transaction, eventCategory, eventAction);
+    }
+  }, {
+    key: 'trackMultiProductsPurchaseEvent',
+    value: function trackMultiProductsPurchaseEvent() {
+      var products = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var transaction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var eventCategory = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Ecommerce";
+      var eventAction = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "Purchase";
+
+      _NativeBridges.GoogleAnalyticsBridge.trackMultiProductsPurchaseEvent(this.id, products, transaction, eventCategory, eventAction);
+    }
+  }, {
+    key: 'trackMultiProductsPurchaseEventWithCustomDimensionValues',
+    value: function trackMultiProductsPurchaseEventWithCustomDimensionValues() {
+      var products = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var transaction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var eventCategory = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Ecommerce";
+      var eventAction = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "Purchase";
+      var customDimensions = arguments[4];
+
+      var formattedCustomDimensions = this.transformCustomDimensionsFieldsToIndexes(customDimensions);
+      _NativeBridges.GoogleAnalyticsBridge.trackMultiProductsPurchaseEventWithCustomDimensionValues(this.id, products, transaction, eventCategory, eventAction, formattedCustomDimensions);
+    }
+  }, {
+    key: 'trackException',
+    value: function trackException(error) {
+      var fatal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      _NativeBridges.GoogleAnalyticsBridge.trackException(this.id, error, fatal);
+    }
+  }, {
+    key: 'setUser',
+    value: function setUser(userId) {
+      _NativeBridges.GoogleAnalyticsBridge.setUser(this.id, userId);
+    }
+  }, {
+    key: 'setClient',
+    value: function setClient(clientId) {
+      _NativeBridges.GoogleAnalyticsBridge.setClient(this.id, clientId);
+    }
+  }, {
+    key: 'allowIDFA',
+    value: function allowIDFA() {
+      var enabled = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+      _NativeBridges.GoogleAnalyticsBridge.allowIDFA(this.id, enabled);
+    }
+  }, {
+    key: 'trackSocialInteraction',
+    value: function trackSocialInteraction(network, action, targetUrl) {
+      _NativeBridges.GoogleAnalyticsBridge.trackSocialInteraction(this.id, network, action, targetUrl);
+    }
+  }, {
+    key: 'setTrackUncaughtExceptions',
+    value: function setTrackUncaughtExceptions(enabled) {
+      _NativeBridges.GoogleAnalyticsBridge.setTrackUncaughtExceptions(this.id, enabled);
+    }
+  }, {
+    key: 'setAppName',
+    value: function setAppName(appName) {
+      _NativeBridges.GoogleAnalyticsBridge.setAppName(this.id, appName);
+    }
+  }, {
+    key: 'setAppVersion',
+    value: function setAppVersion(appVersion) {
+      _NativeBridges.GoogleAnalyticsBridge.setAppVersion(this.id, appVersion);
+    }
+  }, {
+    key: 'setAnonymizeIp',
+    value: function setAnonymizeIp(enabled) {
+      _NativeBridges.GoogleAnalyticsBridge.setAnonymizeIp(this.id, enabled);
+    }
+  }, {
+    key: 'setSamplingRate',
+    value: function setSamplingRate(sampleRatio) {
+      _NativeBridges.GoogleAnalyticsBridge.setSamplingRate(this.id, sampleRatio);
+    }
+  }, {
+    key: 'setCurrency',
+    value: function setCurrency(currencyCode) {
+      _NativeBridges.GoogleAnalyticsBridge.setCurrency(this.id, currencyCode);
+    }
+  }, {
+    key: 'createNewSession',
+    value: function createNewSession(screenName) {
+      _NativeBridges.GoogleAnalyticsBridge.createNewSession(this.id, screenName);
+    }
+  }, {
+    key: 'dispatch',
+    value: function dispatch() {
+      return _NativeBridges.GoogleAnalyticsBridge.dispatch();
+    }
+  }, {
+    key: 'dispatchWithTimeout',
+    value: function dispatchWithTimeout() {
+      var timeout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
+
+      if (timeout < 0) {
+        return _NativeBridges.GoogleAnalyticsBridge.dispatch();
+      }
+
+      var timer = null;
+
+      var withTimeout = function withTimeout(timeout) {
+        return new Promise(function (resolve) {
+          timer = setTimeout(function () {
+            timer = null;
+            resolve();
+          }, Math.min(timeout, DEFAULT_DISPATCH_TIMEOUT));
+        });
+      };
+
+      return Promise.race([_NativeBridges.GoogleAnalyticsBridge.dispatch(), withTimeout(timeout)]).then(function (result) {
+        if (timer) {
+          clearTimeout(timer);
+        }
+        return result;
+      });
+    }
+  }]);
+
+  return GoogleAnalyticsTracker;
+}();

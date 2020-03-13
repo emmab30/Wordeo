@@ -1,0 +1,4 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/android/app/build/intermediates/res/merged/release/layout-sw600dp-v13/design_layout_snackbar.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/android/app/build/intermediates/exploded-aar/com.android.support/design/25.3.1/res/layout-sw600dp-v13/design_layout_snackbar.xml"
+}];

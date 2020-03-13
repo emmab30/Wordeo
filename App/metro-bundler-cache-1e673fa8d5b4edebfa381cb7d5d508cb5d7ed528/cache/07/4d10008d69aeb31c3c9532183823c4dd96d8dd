@@ -1,0 +1,143 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _BaseService = require('./BaseService.js');
+
+var _reactNative = require('react-native');
+
+var AuthService = {
+    user: null,
+    getUser: function getUser() {
+        return AuthService.user;
+    },
+    getMe: function getMe(success, error) {
+        (0, _BaseService.ApiService)().get('/accounts/me').then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    },
+    updateMe: function updateMe(id, data, success, error) {
+        (0, _BaseService.ApiService)().post('/users/upsertWithWhere?where={"id":' + id + '}', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    loginFacebook: function loginFacebook(data, success, error) {
+        (0, _BaseService.ApiService)().post('/accounts/login/facebook', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    logout: function logout(success, error) {
+        _reactNative.AsyncStorage.getItem("user").then(function (value) {
+            if (value != null) {
+                var user = JSON.parse(value);
+
+                (0, _BaseService.ApiService)().post('/accounts/logout', { access_token: user.session.id }).then(function (response) {
+                    success(response.data);
+                }).catch(function (err) {
+                    error(err);
+                });
+            }
+        });
+    },
+    register: function register(data, success, error) {
+        (0, _BaseService.ApiService)().post('/users', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    forgot: function forgot(data, success, error) {
+        (0, _BaseService.ApiService)().post('/users/reset', data).then(function (response) {
+            console.log(response);
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    getUserByEmail: function getUserByEmail(email, success, error) {
+        (0, _BaseService.ApiService)().get('/users/findOne?filter={"where": { "email" : "' + email + '"}}').then(function (response) {
+            console.log(response);
+            success(response.data);
+        }).catch(function (err) {
+            console.log(err);
+            error(err);
+        });
+    },
+    verifyEmail: function verifyEmail(email, success, error) {
+        (0, _BaseService.ApiService)().get('/users/email/verify?email=' + email).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    verifyReferralCode: function verifyReferralCode(referralCode, success, error) {
+        (0, _BaseService.ApiService)().get('/users/referralCode/verify?referralCode=' + referralCode).then(function (response) {
+            console.log(response);
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    changePassword: function changePassword(data, success, error) {
+        (0, _BaseService.ApiService)().post('/users/password/change', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    checkAuthentication: function checkAuthentication(success, error) {
+        _reactNative.AsyncStorage.getItem("userCredentials").then(function (value) {
+            if (value != null) {
+                var user = JSON.parse(value);
+                success(user);
+            } else {
+                error();
+            }
+        }).done();
+    },
+    uploadAvatar: function uploadAvatar(uri, success, error) {
+        var formdata = new FormData();
+        formdata.append('file', { uri: uri, name: new Date().getTime() + '.png', type: 'multipart/form-data' }, {
+            contentType: 'multipart/form-data'
+        });
+        (0, _BaseService.ApiService)().post('/accounts/me/uploadAvatar', formdata, {
+            headers: {
+                "Content-Type": 'multipart/form-data'
+            }
+        }).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    updateProfile: function updateProfile(data, callback) {
+        _reactNative.AsyncStorage.getItem("user").then(function (value) {
+            if (value != null) {
+                var user = JSON.parse(value);
+                user.user = data;
+                _reactNative.AsyncStorage.setItem("user", JSON.stringify(user));
+            }
+
+            if (callback) {
+                _reactNative.AsyncStorage.getItem("user").then(function (value) {
+                    if (value != null) {
+                        callback(value);
+                    }
+                });
+            }
+        }).done();
+    }
+};
+
+exports.default = AuthService;

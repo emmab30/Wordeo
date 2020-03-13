@@ -1,0 +1,20 @@
+echo "Applying patches from Qroom to some plugins from React Native"
+
+echo "Replacing line in ios/RCCDrawerController/MMDrawerController/MMDrawerController.m"
+
+#Fix for navigation plugin. The issues is related to the status bar, which is black when the menu is opened (it should be white).
+i=1
+while read line;do
+  if((i==1181));then
+    echo 'return [self childViewControllerForSide:MMDrawerSideNone];'
+  elif((i==1185));then
+    echo 'return [self childViewControllerForSide:MMDrawerSideNone];'
+  else
+    echo "$line"
+  fi
+  ((i++))
+done  < ./node_modules/react-native-navigation/ios/RCCDrawerController/MMDrawerController/MMDrawerController.m > ./node_modules/react-native-navigation/ios/RCCDrawerController/MMDrawerController/MMDrawerController.m.backup
+
+sudo mv ./node_modules/react-native-navigation/ios/RCCDrawerController/MMDrawerController/MMDrawerController.m.backup ./node_modules/react-native-navigation/ios/RCCDrawerController/MMDrawerController/MMDrawerController.m
+
+echo 0

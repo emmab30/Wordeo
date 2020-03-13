@@ -1,0 +1,76 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _DocumentChange = require('./DocumentChange');
+
+var _DocumentChange2 = _interopRequireDefault(_DocumentChange);
+
+var _DocumentSnapshot = require('./DocumentSnapshot');
+
+var _DocumentSnapshot2 = _interopRequireDefault(_DocumentSnapshot);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var QuerySnapshot = function () {
+  function QuerySnapshot(firestore, query, nativeData) {
+    _classCallCheck(this, QuerySnapshot);
+
+    this._changes = nativeData.changes.map(function (change) {
+      return new _DocumentChange2.default(firestore, change);
+    });
+    this._docs = nativeData.documents.map(function (doc) {
+      return new _DocumentSnapshot2.default(firestore, doc);
+    });
+    this._metadata = nativeData.metadata;
+    this._query = query;
+  }
+
+  _createClass(QuerySnapshot, [{
+    key: 'forEach',
+    value: function forEach(callback) {
+
+      this._docs.forEach(function (doc) {
+        callback(doc);
+      });
+    }
+  }, {
+    key: 'docChanges',
+    get: function get() {
+      return this._changes;
+    }
+  }, {
+    key: 'docs',
+    get: function get() {
+      return this._docs;
+    }
+  }, {
+    key: 'empty',
+    get: function get() {
+      return this._docs.length === 0;
+    }
+  }, {
+    key: 'metadata',
+    get: function get() {
+      return this._metadata;
+    }
+  }, {
+    key: 'query',
+    get: function get() {
+      return this._query;
+    }
+  }, {
+    key: 'size',
+    get: function get() {
+      return this._docs.length;
+    }
+  }]);
+
+  return QuerySnapshot;
+}();
+
+exports.default = QuerySnapshot;

@@ -1,0 +1,734 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/in_round_categories.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _strings = require('../../components/localization/strings');
+
+var _global = require('../../components/common/global');
+
+var _general = require('../../styles/general');
+
+var _default = require('../../styles/default');
+
+var _reactNativeCachedImage = require('react-native-cached-image');
+
+var _reactNativeAnimatable = require('react-native-animatable');
+
+var Animatable = _interopRequireWildcard(_reactNativeAnimatable);
+
+var _Services = require('../../services/Services');
+
+var _reactNativeQueue = require('react-native-queue');
+
+var _reactNativeQueue2 = _interopRequireDefault(_reactNativeQueue);
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _FinishedRound = require('../../components/modals/celebration/FinishedRound');
+
+var _FinishedRound2 = _interopRequireDefault(_FinishedRound);
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _CustomMenu = require('../../components/navigation/CustomMenu');
+
+var _CustomMenu2 = _interopRequireDefault(_CustomMenu);
+
+var _CommonDialog = require('../../components/dialogs/CommonDialog');
+
+var _CommonDialog2 = _interopRequireDefault(_CommonDialog);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _RewardToNavbar = require('../../components/modals/celebration/RewardToNavbar');
+
+var _RewardToNavbar2 = _interopRequireDefault(_RewardToNavbar);
+
+var _StreakCorrectReward = require('../../components/modals/celebration/StreakCorrectReward');
+
+var _StreakCorrectReward2 = _interopRequireDefault(_StreakCorrectReward);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    InRoundCategories: {
+        displayName: 'InRoundCategories'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/in_round_categories.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var COUNTDOWN_SECONDS = 10000000;
+
+var QUEUE_NAME = 'send_replies';
+var FBSDK = require('react-native-fbsdk');
+var ShareDialog = FBSDK.ShareDialog;
+
+var InRoundCategories = _wrapComponent('InRoundCategories')(function (_Component) {
+    _inherits(InRoundCategories, _Component);
+
+    function InRoundCategories(props) {
+        var _this2 = this;
+
+        _classCallCheck(this, InRoundCategories);
+
+        var _this = _possibleConstructorReturn(this, (InRoundCategories.__proto__ || Object.getPrototypeOf(InRoundCategories)).call(this, props));
+
+        _this.state = {
+            categories: [],
+            missingTime: '01:00',
+            countDownSeconds: _this.props.duration,
+
+            rewardValue: 0,
+            finishedRoundModal: {
+                visible: false,
+                players: []
+            },
+            opponents: [],
+            user: _Services.AuthService.getUser(),
+            totalEarnedTuls: 0,
+            totalEarnedExp: 0,
+            totalQuestions: 0,
+            totalCorrect: 0,
+            totalConsecutiveCorrects: 0,
+            blockTaps: false
+        };
+
+        _this.onStartCountDown = _this.onStartCountDown.bind(_this);
+        _this.onEndCountDown = _this.onEndCountDown.bind(_this);
+
+        _this.onFinishedRound = _this.onFinishedRound.bind(_this);
+
+        _this.intervalTimer = null;
+        _this.commonDialog = null;
+
+        (0, _reactNativeQueue2.default)().then(function (queue) {
+            _this.repliesQueue = queue;
+            _this.repliesQueue.addWorker(QUEUE_NAME, function _callee(id, payload) {
+                return regeneratorRuntime.async(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+
+                                payload.roomId = _this.props.roomId;
+                                _Services.RoomService.postStats(payload, function (success) {
+                                    console.log(QUEUE_NAME + ' has been completed!');
+                                }, function (err) {
+                                    console.log(QUEUE_NAME + ' errors');
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, null, _this2);
+            });
+        });
+        return _this;
+    }
+
+    _createClass(InRoundCategories, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            _reactNativeOrientation2.default.lockToPortrait();
+            _reactNative.BackHandler.addEventListener('hardwareBackPress', function () {
+                return false;
+            });
+            _Services.SocketService.on('onFinishedRound', this.onFinishedRound.bind(this));
+            _Services.SocketService.on('onRoundStats', this.onRoundStats.bind(this));
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setState({ categories: this.props.categories });
+            this.onStartCountDown();
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            if (this.intervalTimer) {
+                clearInterval(this.intervalTimer);
+                this.intervalTimer = null;
+            }
+
+            _reactNative.BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+            _Services.SocketService.removeListener('onFinishedRound', this.onFinishedRound);
+            _Services.SocketService.removeListener('onRoundStats', this.onRoundStats);
+        }
+    }, {
+        key: 'onStartCountDown',
+        value: function onStartCountDown() {
+            var _this3 = this;
+
+            var roundStarts = (0, _moment2.default)();
+
+            var roundEnds = (0, _moment2.default)(roundStarts).add(this.state.countDownSeconds, 'seconds');
+            var diffInSeconds = roundEnds.diff((0, _moment2.default)(), 'seconds');
+            this.setState({ missingTime: diffInSeconds + "s" });
+
+            var interval = setInterval(function () {
+                var roundEnds = (0, _moment2.default)(roundStarts).add(_this3.state.countDownSeconds, 'seconds');
+                var missingInt = parseInt(roundEnds.diff((0, _moment2.default)(), 'seconds')) + 1;
+                var diffInSeconds = missingInt + "s";
+                if (missingInt <= 0) {
+                    _this3.onEndCountDown();
+                }
+                _this3.setState({ missingTime: diffInSeconds });
+            }, 1000);
+            this.intervalTimer = interval;
+        }
+    }, {
+        key: 'onRoundStats',
+        value: function onRoundStats(data) {
+            var users = data.accounts;
+            users.sort(function (a, b) {
+                return b.stats.points - a.stats.points;
+            });
+
+            this.setState({ opponents: users });
+        }
+    }, {
+        key: 'onFinishedRound',
+        value: function onFinishedRound(data) {
+            var _this4 = this;
+
+            if (this.refs.spinner) this.refs.spinner.show();
+            if (data.isOwnerDisconnected) {
+                var fn = function fn() {
+                    _this4.commonDialog.show('error', 'El creador de la sala se ha desconectado.', function () {
+                        setTimeout(function () {
+                            _this4.props.navigator.dismissModal();
+                        }, 500);
+                    });
+                };
+                if (this.refs.spinner) {
+                    this.refs.spinner.hide(_fn);
+                } else {
+                    _fn();
+                }
+            } else if (data.allUsersDisconnected) {
+                var fn = function fn() {
+                    _this4.refs.spinner.hide(function () {
+                        _this4.onEndCountDown();
+                    });
+                };
+                if (this.refs.spinner) {
+                    this.refs.spinner.hide(_fn);
+                } else {
+                    _fn();
+                }
+            } else if (data.roundTerminatedWithSuccess) {
+                _Services.SocketService.removeListener('onFinishedRound', this.onFinishedRound);
+
+                _Services.RoomService.getStatsForRoom(this.props.roomId, function (data) {
+                    var finishedRoundModal = _this4.state.finishedRoundModal;
+                    finishedRoundModal.visible = true;
+                    finishedRoundModal.players = data;
+                    _this4.setState({ finishedRoundModal: finishedRoundModal });
+                    if (_this4.refs.spinner) _this4.refs.spinner.hide();
+                }, function (err) {
+                    if (_this4.refs.spinner) _this4.refs.spinner.hide();
+                });
+            }
+        }
+    }, {
+        key: 'onReplyQuestion',
+        value: function onReplyQuestion(data) {
+            var _this5 = this;
+
+            var totalQuestions = this.state.totalQuestions;
+            totalQuestions += 1;
+            this.setState({ totalQuestions: totalQuestions, blockTaps: false });
+
+            var totalCorrect = this.state.totalCorrect;
+            if (this.state.totalConsecutiveCorrects == 4 && data.isCorrect) data.isStreakReward = true;
+
+            if (this.repliesQueue != null) {
+                this.repliesQueue.createJob(QUEUE_NAME, data, {}, true);
+                if (data.isCorrect) {
+
+                    var consecutiveCorrects = this.state.totalConsecutiveCorrects;
+                    consecutiveCorrects += 1;
+                    this.setState({ totalConsecutiveCorrects: consecutiveCorrects });
+
+                    var _totalCorrect = this.state.totalCorrect;
+                    _totalCorrect += 1;
+                    this.setState({ totalCorrect: _totalCorrect });
+
+                    if (consecutiveCorrects >= 5) {
+                        this.setState({ consecutiveCorrects: consecutiveCorrects });
+                        this.refs.streakCorrectReward.onEarned({
+                            tulsAccumulated: _totalEarnedTuls,
+                            tulsQuestion: _tulsQuestion,
+                            expAccumulated: _totalEarnedExp,
+                            expQuestion: data.profitExp
+                        });
+
+                        this.setState({ consecutiveCorrects: 0 });
+                    } else if (consecutiveCorrects == 3) {
+                        this.refs.customNavbar.showMessage('2 preguntas correctas seguidas más y obtendrás 100 puntos exp. por la seguidilla!', {
+                            containerTextStyle: {
+                                maxWidth: width / 1.5
+                            },
+                            backgroundColor: '#1aba5d',
+                            duration: 3500,
+                            animation: "bounceInUp",
+                            animationDuration: 1000,
+                            onPress: function onPress() {
+                                _this5.refs.customNavbar.hide();
+                            }
+                        });
+                    }
+
+                    var _totalEarnedExp = this.state.totalEarnedExp;
+                    _totalEarnedExp += parseInt(data.profitExp);
+                    var _totalEarnedTuls = parseFloat(this.state.totalEarnedTuls).toFixed(2);
+                    var _tulsQuestion = Math.round(parseFloat(data.profitExp * _Services.ConfigurationService.tulsRate / 100 * 100)) / 100;
+                    _totalEarnedTuls = parseFloat(_totalEarnedTuls) + parseFloat(_tulsQuestion);
+                    this.setState({ totalEarnedTuls: _totalEarnedTuls, totalEarnedExp: _totalEarnedExp });
+                    if (this.refs.rewardToNavbar) {
+                        this.refs.rewardToNavbar.onEarned({
+                            tulsAccumulated: _totalEarnedTuls,
+                            tulsQuestion: _tulsQuestion,
+                            expAccumulated: _totalEarnedExp,
+                            expQuestion: data.profitExp
+                        });
+                    }
+                } else {
+                    var _consecutiveCorrects = this.state.totalConsecutiveCorrects;
+                    _consecutiveCorrects = 0;
+                    this.setState({ totalConsecutiveCorrects: _consecutiveCorrects });
+                }
+            }
+        }
+    }, {
+        key: 'onEndCountDown',
+        value: function onEndCountDown() {
+            clearInterval(this.intervalTimer);
+
+            _Services.SocketService.emit('onPlayerFinishedRound', {
+                roomId: this.props.roomId
+            });
+            this.refs.spinner.show();
+        }
+    }, {
+        key: 'renderNavbar',
+        value: function renderNavbar() {
+            var _this6 = this;
+
+            return _react3.default.createElement(_CustomNavbar2.default, {
+                ref: 'customNavbar',
+                navigator: this.props.navigator,
+                backButton: false,
+                gradientColors: ['#ED6552', '#ed5e26'],
+                customLeftView: function customLeftView() {
+                    return _react3.default.createElement(
+                        _reactNative.TouchableOpacity,
+                        {
+                            onPress: function onPress() {},
+                            style: { flex: 1, flexDirection: 'row', alignSelf: 'center', justifyContent: 'flex-start', paddingRight: 10, alignItems: 'center', width: '100%', height: '100%' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 304
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: { backgroundColor: 'transparent', fontSize: 18, fontFamily: _default.Font.PTSansRegular, color: '#fff', textAlign: 'right' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 309
+                                }
+                            },
+                            _this6.state.missingTime
+                        )
+                    );
+                },
+                customCenterView: function customCenterView() {
+                    return _react3.default.createElement(
+                        _reactNative.TouchableOpacity,
+                        {
+                            style: { flex: 1, flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 317
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: { backgroundColor: 'transparent', fontSize: 17, fontFamily: _default.Font.TitanOne, color: '#fff', textAlign: 'center', alignSelf: 'center', marginRight: 5 }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 324
+                                }
+                            },
+                            _strings.strings.Categories.toUpperCase()
+                        )
+                    );
+                },
+                customRightView: function customRightView() {
+                    return null;
+                },
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 297
+                }
+            });
+        }
+    }, {
+        key: 'renderCustomMenu',
+        value: function renderCustomMenu() {
+            var _this7 = this;
+
+            return _react3.default.createElement(_CustomMenu2.default, {
+                isOpened: this.state.openedHamburguerMenu,
+                onClose: function onClose() {
+                    _this7.setState({ openedHamburguerMenu: false });
+                },
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 344
+                }
+            });
+        }
+    }, {
+        key: 'renderFinishPopup',
+        value: function renderFinishPopup() {
+            var _this8 = this;
+
+            return _react3.default.createElement(_FinishedRound2.default, {
+                isVisible: this.state.finishedRoundModal.visible,
+                players: this.state.finishedRoundModal.players,
+                roomId: this.props.roomId,
+                onClose: function onClose() {
+                    var finishedRoundModal = _this8.state.finishedRoundModal;
+                    finishedRoundModal.players = [];
+                    finishedRoundModal.visible = false;
+                    _this8.setState({ finishedRoundModal: finishedRoundModal });
+                    setTimeout(function () {
+                        _this8.props.navigator.dismissModal();
+                    }, 500);
+                },
+                onShareFacebook: function onShareFacebook() {
+                    var tmp = _this8;
+                    var content = {
+                        contentType: 'link',
+                        contentUrl: "https://play.google.com/store/apps/details?id=com.openenglish.chatbyoe&hl=en",
+                        quote: 'He ganado respondiendo X preguntas correctas en una ronda de 10! :-)',
+                        contentDescription: 'He ganado respondiendo X preguntas correctas en una ronda de 10! :-)',
+                        hashtag: '#WordeoApp'
+                    };
+                    ShareDialog.canShow(content).then(function (canShow) {
+                        if (canShow) {
+                            return ShareDialog.show(content);
+                        }
+                    }).then(function (result) {
+                        alert(result);
+                        if (result.isCancelled) {
+                            alert('Share cancelled');
+                        } else {
+                            alert('Share success with postId: ' + result.postId);
+                        }
+                    }).catch(function (err) {
+                        alert(JSON.stringify(err));
+                    });
+                },
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 354
+                }
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this9 = this;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                { style: { flex: 1, width: '100%', height: '100%' }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 398
+                    }
+                },
+                this.renderNavbar(),
+                this.renderCustomMenu(),
+                this.renderFinishPopup(),
+                _react3.default.createElement(_RewardToNavbar2.default, {
+                    ref: 'rewardToNavbar', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 403
+                    }
+                }),
+                _react3.default.createElement(_StreakCorrectReward2.default, {
+                    ref: 'streakCorrectReward', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 406
+                    }
+                }),
+                _react3.default.createElement(_CommonDialog2.default, {
+                    ref: function ref(e) {
+                        _this9.commonDialog = e;
+                    }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 409
+                    }
+                }),
+                _react3.default.createElement(_reactNative.FlatList, {
+                    contentContainerStyle: { padding: 2 },
+                    numColumns: 1,
+                    style: styles.container,
+                    centerContent: false,
+                    snapToAlignment: 'start',
+                    data: this.state.categories,
+                    keyExtractor: function keyExtractor(item, index) {
+                        return 'categoryId-' + item.id;
+                    },
+                    ListHeaderComponent: function ListHeaderComponent() {
+                        return _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: { flex: 1, backgroundColor: 'transparent', marginRight: 10, fontFamily: _default.Font.TitanOne, fontSize: 18, color: _default.Color.BluePrimary, marginVertical: 10, textAlign: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 424
+                                }
+                            },
+                            'SELECCIONA UNA CATEGOR\xCDA'
+                        );
+                    },
+                    renderItem: function renderItem(rowData) {
+                        return _react3.default.createElement(
+                            _reactNativeLinearGradient2.default,
+                            { style: { flexDirection: 'row', height: 100, marginBottom: 3, flex: 1, width: '100%', paddingVertical: 5, borderRadius: 10 }, colors: [_default.Color.VioletPrimary, _default.Color.VioletSecondary], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 429
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.TouchableOpacity,
+                                {
+                                    onPress: function onPress() {
+                                        if (_this9.state.blockTaps) return;
+                                        _this9.setState({ blockTaps: true });
+
+                                        var screen = _extends({}, _global.Global.Screen.Dashboard.InRoundQuestion);
+                                        if (rowData.item.questions && rowData.item.questions.length > 0) {
+                                            _Services.QuestionService.getRandomQuestionForCategory(rowData.item.id, function (question) {
+                                                screen.passProps = {
+                                                    question: question,
+                                                    onReplyQuestion: _this9.onReplyQuestion.bind(_this9)
+                                                };
+                                                _this9.props.navigator.push(screen);
+                                            }, function (err) {});
+                                        }
+                                    },
+                                    style: { width: '100%', flexDirection: 'row', alignItems: 'center' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 430
+                                    }
+                                },
+                                _react3.default.createElement(_reactNativeCachedImage.CachedImage, {
+                                    style: { flex: 0.5, resizeMode: 'contain', marginLeft: 5, height: '100%', width: '100%', borderRadius: 0, marginBottom: 5 },
+                                    source: { uri: rowData.item.image }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 448
+                                    }
+                                }),
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, backgroundColor: 'transparent', marginLeft: 20, fontFamily: _default.Font.PTSansBold, fontSize: 16, color: _default.Color.LightPrimary, marginVertical: 10, textAlign: 'left' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 451
+                                        }
+                                    },
+                                    rowData.item.name
+                                ),
+                                false && _react3.default.createElement(
+                                    _reactNative.View,
+                                    { style: { height: '100%', flexDirection: 'column' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 453
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { flex: 1, backgroundColor: 'transparent', marginRight: 10, fontFamily: _default.Font.TitanOne, fontSize: 18, color: _default.Color.LightPrimary, marginVertical: 10, textAlign: 'right' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 454
+                                            }
+                                        },
+                                        '+10'
+                                    ),
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { flex: 1, backgroundColor: 'transparent', marginRight: 10, fontFamily: _default.Font.TitanOne, fontSize: 14, color: _default.Color.LightPrimary, marginVertical: 10, textAlign: 'right' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 455
+                                            }
+                                        },
+                                        'puntos'
+                                    )
+                                )
+                            )
+                        );
+                    },
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 412
+                    }
+                }),
+                this.renderOpponents(),
+                _react3.default.createElement(_SpinnerComponent2.default, {
+                    ref: 'spinner', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 466
+                    }
+                })
+            );
+        }
+    }, {
+        key: 'renderOpponents',
+        value: function renderOpponents() {
+            return _react3.default.createElement(
+                _reactNative.View,
+                { style: { position: 'absolute', height: 'auto', bottom: 20, right: 5, backgroundColor: 'transparent' }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 474
+                    }
+                },
+                _react3.default.createElement(_reactNative.FlatList, {
+                    contentContainerStyle: { padding: 2 },
+                    numColumns: 1,
+                    centerContent: false,
+                    snapToAlignment: 'start',
+                    data: this.state.opponents,
+                    extraData: this.state.opponents,
+                    renderItem: function renderItem(rowData) {
+                        return _react3.default.createElement(
+                            _reactNative.View,
+                            { style: [stylesOpponent.flatListItemContainer, { backgroundColor: rowData.index == 0 ? _default.Color.BluePrimary : 'rgba(0,0,0,.65)', width: rowData.index == 0 ? 80 : 70, height: rowData.index == 0 ? 80 : 70, borderRadius: rowData.index == 0 ? 40 : 35 }], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 484
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { backgroundColor: 'transparent', fontSize: 25, fontFamily: _default.Font.TitanOne, color: '#fff' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 485
+                                    }
+                                },
+                                rowData.index + 1
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { backgroundColor: 'transparent', fontSize: 10, fontFamily: _default.Font.TitanOne, color: '#fff', textAlign: 'right' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 486
+                                    }
+                                },
+                                rowData.item.profile.name
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { backgroundColor: 'transparent', fontSize: 10, fontFamily: _default.Font.TitanOne, color: '#fff', textAlign: 'right' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 487
+                                    }
+                                },
+                                rowData.item.stats.points,
+                                ' pts.'
+                            )
+                        );
+                    },
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 475
+                    }
+                })
+            );
+        }
+    }]);
+
+    return InRoundCategories;
+}(_react2.Component));
+
+exports.default = InRoundCategories;
+
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white'
+    }
+});
+
+var stylesOpponent = _reactNative.StyleSheet.create({
+    flatListItemContainer: {
+        width: 70,
+        height: 70,
+        borderRadius: 35,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        marginVertical: 1,
+        shadowColor: 'white',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        elevation: 4
+    }
+});

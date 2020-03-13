@@ -1,0 +1,2275 @@
+module.exports = [{
+    "outputFile": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ml/values-ml.xml",
+    "map": [{
+        "to": {
+            "startLine": 2,
+            "startColumn": 4,
+            "startOffset": 105,
+            "endColumn": 118,
+            "endOffset": 219
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 2,
+                "startColumn": 4,
+                "startOffset": 55,
+                "endColumn": 118,
+                "endOffset": 169
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 3,
+            "startColumn": 4,
+            "startOffset": 224,
+            "endColumn": 107,
+            "endOffset": 327
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 3,
+                "startColumn": 4,
+                "startOffset": 174,
+                "endColumn": 107,
+                "endOffset": 277
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 4,
+            "startColumn": 4,
+            "startOffset": 332,
+            "endColumn": 122,
+            "endOffset": 450
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 4,
+                "startOffset": 282,
+                "endColumn": 122,
+                "endOffset": 400
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 5,
+            "startColumn": 4,
+            "startOffset": 455,
+            "endColumn": 117,
+            "endOffset": 568
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 5,
+                "startColumn": 4,
+                "startOffset": 405,
+                "endColumn": 117,
+                "endOffset": 518
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 6,
+            "startColumn": 4,
+            "startOffset": 573,
+            "endColumn": 114,
+            "endOffset": 683
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 6,
+                "startColumn": 4,
+                "startOffset": 523,
+                "endColumn": 114,
+                "endOffset": 633
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 7,
+            "startColumn": 4,
+            "startOffset": 688,
+            "endColumn": 92,
+            "endOffset": 776
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 7,
+                "startColumn": 4,
+                "startOffset": 638,
+                "endColumn": 92,
+                "endOffset": 726
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 8,
+            "startColumn": 4,
+            "startOffset": 781,
+            "endColumn": 104,
+            "endOffset": 881
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 8,
+                "startColumn": 4,
+                "startOffset": 731,
+                "endColumn": 104,
+                "endOffset": 831
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 9,
+            "startColumn": 4,
+            "startOffset": 886,
+            "endColumn": 131,
+            "endOffset": 1013
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 9,
+                "startColumn": 4,
+                "startOffset": 836,
+                "endColumn": 131,
+                "endOffset": 963
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 10,
+            "startColumn": 4,
+            "startOffset": 1018,
+            "endColumn": 76,
+            "endOffset": 1090
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 10,
+                "startColumn": 4,
+                "startOffset": 968,
+                "endColumn": 76,
+                "endOffset": 1040
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 11,
+            "startColumn": 4,
+            "startOffset": 1095,
+            "endColumn": 75,
+            "endOffset": 1166
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 11,
+                "startColumn": 4,
+                "startOffset": 1045,
+                "endColumn": 75,
+                "endOffset": 1116
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 12,
+            "startColumn": 4,
+            "startOffset": 1171,
+            "endColumn": 81,
+            "endOffset": 1248
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 12,
+                "startColumn": 4,
+                "startOffset": 1121,
+                "endColumn": 81,
+                "endOffset": 1198
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 13,
+            "startColumn": 4,
+            "startOffset": 1253,
+            "endColumn": 110,
+            "endOffset": 1359
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 13,
+                "startColumn": 4,
+                "startOffset": 1203,
+                "endColumn": 110,
+                "endOffset": 1309
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 14,
+            "startColumn": 4,
+            "startOffset": 1364,
+            "endColumn": 105,
+            "endOffset": 1465
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 14,
+                "startColumn": 4,
+                "startOffset": 1314,
+                "endColumn": 105,
+                "endOffset": 1415
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 15,
+            "startColumn": 4,
+            "startOffset": 1470,
+            "endColumn": 97,
+            "endOffset": 1563
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 15,
+                "startColumn": 4,
+                "startOffset": 1420,
+                "endColumn": 97,
+                "endOffset": 1513
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 16,
+            "startColumn": 4,
+            "startOffset": 1568,
+            "endColumn": 113,
+            "endOffset": 1677
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 16,
+                "startColumn": 4,
+                "startOffset": 1518,
+                "endColumn": 113,
+                "endOffset": 1627
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 17,
+            "startColumn": 4,
+            "startOffset": 1682,
+            "endColumn": 99,
+            "endOffset": 1777
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 17,
+                "startColumn": 4,
+                "startOffset": 1632,
+                "endColumn": 99,
+                "endOffset": 1727
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 18,
+            "startColumn": 4,
+            "startOffset": 1782,
+            "endColumn": 110,
+            "endOffset": 1888
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 18,
+                "startColumn": 4,
+                "startOffset": 1732,
+                "endColumn": 110,
+                "endOffset": 1838
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 19,
+            "startColumn": 4,
+            "startOffset": 1893,
+            "endColumn": 127,
+            "endOffset": 2016
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 19,
+                "startColumn": 4,
+                "startOffset": 1843,
+                "endColumn": 127,
+                "endOffset": 1966
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 20,
+            "startColumn": 4,
+            "startOffset": 2021,
+            "endColumn": 100,
+            "endOffset": 2117
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 20,
+                "startColumn": 4,
+                "startOffset": 1971,
+                "endColumn": 100,
+                "endOffset": 2067
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 21,
+            "startColumn": 4,
+            "startOffset": 2122,
+            "endColumn": 164,
+            "endOffset": 2282
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 2,
+                "startColumn": 4,
+                "startOffset": 55,
+                "endColumn": 164,
+                "endOffset": 215
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 22,
+            "startColumn": 4,
+            "startOffset": 2287,
+            "endColumn": 143,
+            "endOffset": 2426
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 3,
+                "startColumn": 4,
+                "startOffset": 220,
+                "endColumn": 143,
+                "endOffset": 359
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 23,
+            "startColumn": 4,
+            "startOffset": 2431,
+            "endColumn": 142,
+            "endOffset": 2569
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 4,
+                "startOffset": 364,
+                "endColumn": 142,
+                "endOffset": 502
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 24,
+            "startColumn": 4,
+            "startOffset": 2574,
+            "endColumn": 111,
+            "endOffset": 2681
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 5,
+                "startColumn": 4,
+                "startOffset": 507,
+                "endColumn": 111,
+                "endOffset": 614
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 25,
+            "startColumn": 4,
+            "startOffset": 2686,
+            "endColumn": 88,
+            "endOffset": 2770
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 6,
+                "startColumn": 4,
+                "startOffset": 619,
+                "endColumn": 88,
+                "endOffset": 703
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 26,
+            "startColumn": 4,
+            "startOffset": 2775,
+            "endColumn": 93,
+            "endOffset": 2864
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 7,
+                "startColumn": 4,
+                "startOffset": 708,
+                "endColumn": 93,
+                "endOffset": 797
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 27,
+            "startColumn": 4,
+            "startOffset": 2869,
+            "endColumn": 82,
+            "endOffset": 2947
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 8,
+                "startColumn": 4,
+                "startOffset": 802,
+                "endColumn": 82,
+                "endOffset": 880
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 28,
+            "startColumn": 4,
+            "startOffset": 2952,
+            "endColumn": 92,
+            "endOffset": 3040
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 9,
+                "startColumn": 4,
+                "startOffset": 885,
+                "endColumn": 92,
+                "endOffset": 973
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 29,
+            "startColumn": 4,
+            "startOffset": 3045,
+            "endColumn": 96,
+            "endOffset": 3137
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 10,
+                "startColumn": 4,
+                "startOffset": 978,
+                "endColumn": 96,
+                "endOffset": 1070
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 30,
+            "startColumn": 4,
+            "startOffset": 3142,
+            "endColumn": 117,
+            "endOffset": 3255
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 11,
+                "startColumn": 4,
+                "startOffset": 1075,
+                "endColumn": 117,
+                "endOffset": 1188
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 31,
+            "startColumn": 4,
+            "startOffset": 3260,
+            "endColumn": 120,
+            "endOffset": 3376
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 12,
+                "startColumn": 4,
+                "startOffset": 1193,
+                "endColumn": 120,
+                "endOffset": 1309
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 32,
+            "startColumn": 4,
+            "startOffset": 3381,
+            "endColumn": 99,
+            "endOffset": 3476
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 13,
+                "startColumn": 4,
+                "startOffset": 1314,
+                "endColumn": 99,
+                "endOffset": 1409
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 33,
+            "startColumn": 4,
+            "startOffset": 3481,
+            "endColumn": 99,
+            "endOffset": 3576
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 14,
+                "startColumn": 4,
+                "startOffset": 1414,
+                "endColumn": 99,
+                "endOffset": 1509
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 34,
+            "startColumn": 4,
+            "startOffset": 3581,
+            "endColumn": 113,
+            "endOffset": 3690
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 15,
+                "startColumn": 4,
+                "startOffset": 1514,
+                "endColumn": 113,
+                "endOffset": 1623
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 35,
+            "startColumn": 4,
+            "startOffset": 3695,
+            "endColumn": 126,
+            "endOffset": 3817
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 16,
+                "startColumn": 4,
+                "startOffset": 1628,
+                "endColumn": 126,
+                "endOffset": 1750
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 36,
+            "startColumn": 4,
+            "startOffset": 3822,
+            "endColumn": 84,
+            "endOffset": 3902
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 17,
+                "startColumn": 4,
+                "startOffset": 1755,
+                "endColumn": 84,
+                "endOffset": 1835
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 37,
+            "startColumn": 4,
+            "startOffset": 3907,
+            "endColumn": 84,
+            "endOffset": 3987
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 18,
+                "startColumn": 4,
+                "startOffset": 1840,
+                "endColumn": 84,
+                "endOffset": 1920
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 38,
+            "startColumn": 4,
+            "startOffset": 3992,
+            "endColumn": 198,
+            "endOffset": 4186
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 19,
+                "startColumn": 4,
+                "startOffset": 1925,
+                "endColumn": 198,
+                "endOffset": 2119
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 39,
+            "startColumn": 4,
+            "startOffset": 4191,
+            "endColumn": 101,
+            "endOffset": 4288
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 20,
+                "startColumn": 4,
+                "startOffset": 2124,
+                "endColumn": 101,
+                "endOffset": 2221
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 40,
+            "startColumn": 4,
+            "startOffset": 4293,
+            "endColumn": 105,
+            "endOffset": 4394
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 21,
+                "startColumn": 4,
+                "startOffset": 2226,
+                "endColumn": 105,
+                "endOffset": 2327
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 41,
+            "startColumn": 4,
+            "startOffset": 4399,
+            "endColumn": 117,
+            "endOffset": 4512
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 22,
+                "startColumn": 4,
+                "startOffset": 2332,
+                "endColumn": 117,
+                "endOffset": 2445
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 42,
+            "startColumn": 4,
+            "startOffset": 4517,
+            "endColumn": 109,
+            "endOffset": 4622
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 23,
+                "startColumn": 4,
+                "startOffset": 2450,
+                "endColumn": 109,
+                "endOffset": 2555
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 43,
+            "startColumn": 4,
+            "startOffset": 4627,
+            "endColumn": 178,
+            "endOffset": 4801
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 24,
+                "startColumn": 4,
+                "startOffset": 2560,
+                "endColumn": 178,
+                "endOffset": 2734
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 44,
+            "startColumn": 4,
+            "startOffset": 4806,
+            "endColumn": 120,
+            "endOffset": 4922
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 0,
+                "startOffset": 281,
+                "endColumn": 116,
+                "endOffset": 397
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 45,
+            "startColumn": 4,
+            "startOffset": 4927,
+            "endColumn": 210,
+            "endOffset": 5133
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 5,
+                "startColumn": 0,
+                "startOffset": 398,
+                "endColumn": 210,
+                "endOffset": 608
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 46,
+            "startColumn": 4,
+            "startOffset": 5138,
+            "endColumn": 140,
+            "endOffset": 5274
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 6,
+                "startColumn": 0,
+                "startOffset": 609,
+                "endColumn": 136,
+                "endOffset": 745
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 47,
+            "startColumn": 4,
+            "startOffset": 5279,
+            "endColumn": 122,
+            "endOffset": 5397
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 7,
+                "startColumn": 0,
+                "startOffset": 746,
+                "endColumn": 118,
+                "endOffset": 864
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 48,
+            "startColumn": 4,
+            "startOffset": 5402,
+            "endColumn": 222,
+            "endOffset": 5620
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 8,
+                "startColumn": 0,
+                "startOffset": 865,
+                "endColumn": 222,
+                "endOffset": 1087
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 49,
+            "startColumn": 4,
+            "startOffset": 5625,
+            "endColumn": 126,
+            "endOffset": 5747
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 9,
+                "startColumn": 0,
+                "startOffset": 1088,
+                "endColumn": 122,
+                "endOffset": 1210
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 50,
+            "startColumn": 4,
+            "startOffset": 5752,
+            "endColumn": 134,
+            "endOffset": 5882
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 10,
+                "startColumn": 0,
+                "startOffset": 1211,
+                "endColumn": 130,
+                "endOffset": 1341
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 51,
+            "startColumn": 4,
+            "startOffset": 5887,
+            "endColumn": 134,
+            "endOffset": 6017
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 11,
+                "startColumn": 0,
+                "startOffset": 1342,
+                "endColumn": 130,
+                "endOffset": 1472
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 52,
+            "startColumn": 4,
+            "startOffset": 6022,
+            "endColumn": 218,
+            "endOffset": 6236
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 0,
+                "startOffset": 283,
+                "endColumn": 218,
+                "endOffset": 501
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 53,
+            "startColumn": 4,
+            "startOffset": 6241,
+            "endColumn": 240,
+            "endOffset": 6477
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 12,
+                "startColumn": 0,
+                "startOffset": 1473,
+                "endColumn": 240,
+                "endOffset": 1713
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 54,
+            "startColumn": 4,
+            "startOffset": 6482,
+            "endColumn": 117,
+            "endOffset": 6595
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 13,
+                "startColumn": 0,
+                "startOffset": 1714,
+                "endColumn": 113,
+                "endOffset": 1827
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 55,
+            "startColumn": 4,
+            "startOffset": 6600,
+            "endColumn": 204,
+            "endOffset": 6800
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 14,
+                "startColumn": 0,
+                "startOffset": 1828,
+                "endColumn": 204,
+                "endOffset": 2032
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 56,
+            "startColumn": 4,
+            "startOffset": 6805,
+            "endColumn": 137,
+            "endOffset": 6938
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 15,
+                "startColumn": 0,
+                "startOffset": 2033,
+                "endColumn": 133,
+                "endOffset": 2166
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 57,
+            "startColumn": 4,
+            "startOffset": 6943,
+            "endColumn": 207,
+            "endOffset": 7146
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 16,
+                "startColumn": 0,
+                "startOffset": 2167,
+                "endColumn": 207,
+                "endOffset": 2374
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 58,
+            "startColumn": 4,
+            "startOffset": 7151,
+            "endColumn": 190,
+            "endOffset": 7337
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 17,
+                "startColumn": 0,
+                "startOffset": 2375,
+                "endColumn": 186,
+                "endOffset": 2561
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 59,
+            "startColumn": 4,
+            "startOffset": 7342,
+            "endColumn": 93,
+            "endOffset": 7431
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 18,
+                "startColumn": 0,
+                "startOffset": 2562,
+                "endColumn": 89,
+                "endOffset": 2651
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 60,
+            "startColumn": 4,
+            "startOffset": 7436,
+            "endColumn": 98,
+            "endOffset": 7530
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 19,
+                "startColumn": 0,
+                "startOffset": 2652,
+                "endColumn": 94,
+                "endOffset": 2746
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 61,
+            "startColumn": 4,
+            "startOffset": 7535,
+            "endColumn": 120,
+            "endOffset": 7651
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 20,
+                "startColumn": 0,
+                "startOffset": 2747,
+                "endColumn": 116,
+                "endOffset": 2863
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 62,
+            "startColumn": 4,
+            "startOffset": 7656,
+            "endColumn": 99,
+            "endOffset": 7751
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 0,
+                "startOffset": 228,
+                "endColumn": 95,
+                "endOffset": 323
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 63,
+            "startColumn": 4,
+            "startOffset": 7756,
+            "endColumn": 81,
+            "endOffset": 7833
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 21,
+                "startColumn": 4,
+                "startOffset": 2072,
+                "endColumn": 81,
+                "endOffset": 2149
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 64,
+            "startColumn": 4,
+            "startOffset": 7838,
+            "endColumn": 100,
+            "endOffset": 7934
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 22,
+                "startColumn": 4,
+                "startOffset": 2154,
+                "endColumn": 100,
+                "endOffset": 2250
+            }
+        }
+    }]
+}, {
+    "outputFile": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ml/values-ml.xml",
+    "map": [{
+        "to": {
+            "startLine": 2,
+            "startColumn": 4,
+            "startOffset": 105,
+            "endColumn": 118,
+            "endOffset": 219
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 2,
+                "startColumn": 4,
+                "startOffset": 55,
+                "endColumn": 118,
+                "endOffset": 169
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 3,
+            "startColumn": 4,
+            "startOffset": 224,
+            "endColumn": 107,
+            "endOffset": 327
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 3,
+                "startColumn": 4,
+                "startOffset": 174,
+                "endColumn": 107,
+                "endOffset": 277
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 4,
+            "startColumn": 4,
+            "startOffset": 332,
+            "endColumn": 122,
+            "endOffset": 450
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 4,
+                "startOffset": 282,
+                "endColumn": 122,
+                "endOffset": 400
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 5,
+            "startColumn": 4,
+            "startOffset": 455,
+            "endColumn": 117,
+            "endOffset": 568
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 5,
+                "startColumn": 4,
+                "startOffset": 405,
+                "endColumn": 117,
+                "endOffset": 518
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 6,
+            "startColumn": 4,
+            "startOffset": 573,
+            "endColumn": 114,
+            "endOffset": 683
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 6,
+                "startColumn": 4,
+                "startOffset": 523,
+                "endColumn": 114,
+                "endOffset": 633
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 7,
+            "startColumn": 4,
+            "startOffset": 688,
+            "endColumn": 92,
+            "endOffset": 776
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 7,
+                "startColumn": 4,
+                "startOffset": 638,
+                "endColumn": 92,
+                "endOffset": 726
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 8,
+            "startColumn": 4,
+            "startOffset": 781,
+            "endColumn": 104,
+            "endOffset": 881
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 8,
+                "startColumn": 4,
+                "startOffset": 731,
+                "endColumn": 104,
+                "endOffset": 831
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 9,
+            "startColumn": 4,
+            "startOffset": 886,
+            "endColumn": 131,
+            "endOffset": 1013
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 9,
+                "startColumn": 4,
+                "startOffset": 836,
+                "endColumn": 131,
+                "endOffset": 963
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 10,
+            "startColumn": 4,
+            "startOffset": 1018,
+            "endColumn": 76,
+            "endOffset": 1090
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 10,
+                "startColumn": 4,
+                "startOffset": 968,
+                "endColumn": 76,
+                "endOffset": 1040
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 11,
+            "startColumn": 4,
+            "startOffset": 1095,
+            "endColumn": 75,
+            "endOffset": 1166
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 11,
+                "startColumn": 4,
+                "startOffset": 1045,
+                "endColumn": 75,
+                "endOffset": 1116
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 12,
+            "startColumn": 4,
+            "startOffset": 1171,
+            "endColumn": 81,
+            "endOffset": 1248
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 12,
+                "startColumn": 4,
+                "startOffset": 1121,
+                "endColumn": 81,
+                "endOffset": 1198
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 13,
+            "startColumn": 4,
+            "startOffset": 1253,
+            "endColumn": 110,
+            "endOffset": 1359
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 13,
+                "startColumn": 4,
+                "startOffset": 1203,
+                "endColumn": 110,
+                "endOffset": 1309
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 14,
+            "startColumn": 4,
+            "startOffset": 1364,
+            "endColumn": 105,
+            "endOffset": 1465
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 14,
+                "startColumn": 4,
+                "startOffset": 1314,
+                "endColumn": 105,
+                "endOffset": 1415
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 15,
+            "startColumn": 4,
+            "startOffset": 1470,
+            "endColumn": 97,
+            "endOffset": 1563
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 15,
+                "startColumn": 4,
+                "startOffset": 1420,
+                "endColumn": 97,
+                "endOffset": 1513
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 16,
+            "startColumn": 4,
+            "startOffset": 1568,
+            "endColumn": 113,
+            "endOffset": 1677
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 16,
+                "startColumn": 4,
+                "startOffset": 1518,
+                "endColumn": 113,
+                "endOffset": 1627
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 17,
+            "startColumn": 4,
+            "startOffset": 1682,
+            "endColumn": 99,
+            "endOffset": 1777
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 17,
+                "startColumn": 4,
+                "startOffset": 1632,
+                "endColumn": 99,
+                "endOffset": 1727
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 18,
+            "startColumn": 4,
+            "startOffset": 1782,
+            "endColumn": 110,
+            "endOffset": 1888
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 18,
+                "startColumn": 4,
+                "startOffset": 1732,
+                "endColumn": 110,
+                "endOffset": 1838
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 19,
+            "startColumn": 4,
+            "startOffset": 1893,
+            "endColumn": 127,
+            "endOffset": 2016
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 19,
+                "startColumn": 4,
+                "startOffset": 1843,
+                "endColumn": 127,
+                "endOffset": 1966
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 20,
+            "startColumn": 4,
+            "startOffset": 2021,
+            "endColumn": 100,
+            "endOffset": 2117
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 20,
+                "startColumn": 4,
+                "startOffset": 1971,
+                "endColumn": 100,
+                "endOffset": 2067
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 21,
+            "startColumn": 4,
+            "startOffset": 2122,
+            "endColumn": 164,
+            "endOffset": 2282
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 2,
+                "startColumn": 4,
+                "startOffset": 55,
+                "endColumn": 164,
+                "endOffset": 215
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 22,
+            "startColumn": 4,
+            "startOffset": 2287,
+            "endColumn": 143,
+            "endOffset": 2426
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 3,
+                "startColumn": 4,
+                "startOffset": 220,
+                "endColumn": 143,
+                "endOffset": 359
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 23,
+            "startColumn": 4,
+            "startOffset": 2431,
+            "endColumn": 142,
+            "endOffset": 2569
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 4,
+                "startOffset": 364,
+                "endColumn": 142,
+                "endOffset": 502
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 24,
+            "startColumn": 4,
+            "startOffset": 2574,
+            "endColumn": 111,
+            "endOffset": 2681
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 5,
+                "startColumn": 4,
+                "startOffset": 507,
+                "endColumn": 111,
+                "endOffset": 614
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 25,
+            "startColumn": 4,
+            "startOffset": 2686,
+            "endColumn": 88,
+            "endOffset": 2770
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 6,
+                "startColumn": 4,
+                "startOffset": 619,
+                "endColumn": 88,
+                "endOffset": 703
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 26,
+            "startColumn": 4,
+            "startOffset": 2775,
+            "endColumn": 93,
+            "endOffset": 2864
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 7,
+                "startColumn": 4,
+                "startOffset": 708,
+                "endColumn": 93,
+                "endOffset": 797
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 27,
+            "startColumn": 4,
+            "startOffset": 2869,
+            "endColumn": 82,
+            "endOffset": 2947
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 8,
+                "startColumn": 4,
+                "startOffset": 802,
+                "endColumn": 82,
+                "endOffset": 880
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 28,
+            "startColumn": 4,
+            "startOffset": 2952,
+            "endColumn": 92,
+            "endOffset": 3040
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 9,
+                "startColumn": 4,
+                "startOffset": 885,
+                "endColumn": 92,
+                "endOffset": 973
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 29,
+            "startColumn": 4,
+            "startOffset": 3045,
+            "endColumn": 96,
+            "endOffset": 3137
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 10,
+                "startColumn": 4,
+                "startOffset": 978,
+                "endColumn": 96,
+                "endOffset": 1070
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 30,
+            "startColumn": 4,
+            "startOffset": 3142,
+            "endColumn": 117,
+            "endOffset": 3255
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 11,
+                "startColumn": 4,
+                "startOffset": 1075,
+                "endColumn": 117,
+                "endOffset": 1188
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 31,
+            "startColumn": 4,
+            "startOffset": 3260,
+            "endColumn": 120,
+            "endOffset": 3376
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 12,
+                "startColumn": 4,
+                "startOffset": 1193,
+                "endColumn": 120,
+                "endOffset": 1309
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 32,
+            "startColumn": 4,
+            "startOffset": 3381,
+            "endColumn": 99,
+            "endOffset": 3476
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 13,
+                "startColumn": 4,
+                "startOffset": 1314,
+                "endColumn": 99,
+                "endOffset": 1409
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 33,
+            "startColumn": 4,
+            "startOffset": 3481,
+            "endColumn": 99,
+            "endOffset": 3576
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 14,
+                "startColumn": 4,
+                "startOffset": 1414,
+                "endColumn": 99,
+                "endOffset": 1509
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 34,
+            "startColumn": 4,
+            "startOffset": 3581,
+            "endColumn": 113,
+            "endOffset": 3690
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 15,
+                "startColumn": 4,
+                "startOffset": 1514,
+                "endColumn": 113,
+                "endOffset": 1623
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 35,
+            "startColumn": 4,
+            "startOffset": 3695,
+            "endColumn": 126,
+            "endOffset": 3817
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 16,
+                "startColumn": 4,
+                "startOffset": 1628,
+                "endColumn": 126,
+                "endOffset": 1750
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 36,
+            "startColumn": 4,
+            "startOffset": 3822,
+            "endColumn": 84,
+            "endOffset": 3902
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 17,
+                "startColumn": 4,
+                "startOffset": 1755,
+                "endColumn": 84,
+                "endOffset": 1835
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 37,
+            "startColumn": 4,
+            "startOffset": 3907,
+            "endColumn": 84,
+            "endOffset": 3987
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 18,
+                "startColumn": 4,
+                "startOffset": 1840,
+                "endColumn": 84,
+                "endOffset": 1920
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 38,
+            "startColumn": 4,
+            "startOffset": 3992,
+            "endColumn": 198,
+            "endOffset": 4186
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 19,
+                "startColumn": 4,
+                "startOffset": 1925,
+                "endColumn": 198,
+                "endOffset": 2119
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 39,
+            "startColumn": 4,
+            "startOffset": 4191,
+            "endColumn": 101,
+            "endOffset": 4288
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 20,
+                "startColumn": 4,
+                "startOffset": 2124,
+                "endColumn": 101,
+                "endOffset": 2221
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 40,
+            "startColumn": 4,
+            "startOffset": 4293,
+            "endColumn": 105,
+            "endOffset": 4394
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 21,
+                "startColumn": 4,
+                "startOffset": 2226,
+                "endColumn": 105,
+                "endOffset": 2327
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 41,
+            "startColumn": 4,
+            "startOffset": 4399,
+            "endColumn": 117,
+            "endOffset": 4512
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 22,
+                "startColumn": 4,
+                "startOffset": 2332,
+                "endColumn": 117,
+                "endOffset": 2445
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 42,
+            "startColumn": 4,
+            "startOffset": 4517,
+            "endColumn": 109,
+            "endOffset": 4622
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 23,
+                "startColumn": 4,
+                "startOffset": 2450,
+                "endColumn": 109,
+                "endOffset": 2555
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 43,
+            "startColumn": 4,
+            "startOffset": 4627,
+            "endColumn": 178,
+            "endOffset": 4801
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.android/facebook-login/4.28.0/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 24,
+                "startColumn": 4,
+                "startOffset": 2560,
+                "endColumn": 178,
+                "endOffset": 2734
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 44,
+            "startColumn": 4,
+            "startOffset": 4806,
+            "endColumn": 120,
+            "endOffset": 4922
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 0,
+                "startOffset": 281,
+                "endColumn": 116,
+                "endOffset": 397
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 45,
+            "startColumn": 4,
+            "startOffset": 4927,
+            "endColumn": 210,
+            "endOffset": 5133
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 5,
+                "startColumn": 0,
+                "startOffset": 398,
+                "endColumn": 210,
+                "endOffset": 608
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 46,
+            "startColumn": 4,
+            "startOffset": 5138,
+            "endColumn": 140,
+            "endOffset": 5274
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 6,
+                "startColumn": 0,
+                "startOffset": 609,
+                "endColumn": 136,
+                "endOffset": 745
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 47,
+            "startColumn": 4,
+            "startOffset": 5279,
+            "endColumn": 122,
+            "endOffset": 5397
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 7,
+                "startColumn": 0,
+                "startOffset": 746,
+                "endColumn": 118,
+                "endOffset": 864
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 48,
+            "startColumn": 4,
+            "startOffset": 5402,
+            "endColumn": 222,
+            "endOffset": 5620
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 8,
+                "startColumn": 0,
+                "startOffset": 865,
+                "endColumn": 222,
+                "endOffset": 1087
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 49,
+            "startColumn": 4,
+            "startOffset": 5625,
+            "endColumn": 126,
+            "endOffset": 5747
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 9,
+                "startColumn": 0,
+                "startOffset": 1088,
+                "endColumn": 122,
+                "endOffset": 1210
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 50,
+            "startColumn": 4,
+            "startOffset": 5752,
+            "endColumn": 134,
+            "endOffset": 5882
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 10,
+                "startColumn": 0,
+                "startOffset": 1211,
+                "endColumn": 130,
+                "endOffset": 1341
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 51,
+            "startColumn": 4,
+            "startOffset": 5887,
+            "endColumn": 134,
+            "endOffset": 6017
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 11,
+                "startColumn": 0,
+                "startOffset": 1342,
+                "endColumn": 130,
+                "endOffset": 1472
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 52,
+            "startColumn": 4,
+            "startOffset": 6022,
+            "endColumn": 218,
+            "endOffset": 6236
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 0,
+                "startOffset": 283,
+                "endColumn": 218,
+                "endOffset": 501
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 53,
+            "startColumn": 4,
+            "startOffset": 6241,
+            "endColumn": 240,
+            "endOffset": 6477
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 12,
+                "startColumn": 0,
+                "startOffset": 1473,
+                "endColumn": 240,
+                "endOffset": 1713
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 54,
+            "startColumn": 4,
+            "startOffset": 6482,
+            "endColumn": 117,
+            "endOffset": 6595
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 13,
+                "startColumn": 0,
+                "startOffset": 1714,
+                "endColumn": 113,
+                "endOffset": 1827
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 55,
+            "startColumn": 4,
+            "startOffset": 6600,
+            "endColumn": 204,
+            "endOffset": 6800
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 14,
+                "startColumn": 0,
+                "startOffset": 1828,
+                "endColumn": 204,
+                "endOffset": 2032
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 56,
+            "startColumn": 4,
+            "startOffset": 6805,
+            "endColumn": 137,
+            "endOffset": 6938
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 15,
+                "startColumn": 0,
+                "startOffset": 2033,
+                "endColumn": 133,
+                "endOffset": 2166
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 57,
+            "startColumn": 4,
+            "startOffset": 6943,
+            "endColumn": 207,
+            "endOffset": 7146
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 16,
+                "startColumn": 0,
+                "startOffset": 2167,
+                "endColumn": 207,
+                "endOffset": 2374
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 58,
+            "startColumn": 4,
+            "startOffset": 7151,
+            "endColumn": 190,
+            "endOffset": 7337
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 17,
+                "startColumn": 0,
+                "startOffset": 2375,
+                "endColumn": 186,
+                "endOffset": 2561
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 59,
+            "startColumn": 4,
+            "startOffset": 7342,
+            "endColumn": 93,
+            "endOffset": 7431
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 18,
+                "startColumn": 0,
+                "startOffset": 2562,
+                "endColumn": 89,
+                "endOffset": 2651
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 60,
+            "startColumn": 4,
+            "startOffset": 7436,
+            "endColumn": 98,
+            "endOffset": 7530
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 19,
+                "startColumn": 0,
+                "startOffset": 2652,
+                "endColumn": 94,
+                "endOffset": 2746
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 61,
+            "startColumn": 4,
+            "startOffset": 7535,
+            "endColumn": 120,
+            "endOffset": 7651
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 20,
+                "startColumn": 0,
+                "startOffset": 2747,
+                "endColumn": 116,
+                "endOffset": 2863
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 62,
+            "startColumn": 4,
+            "startOffset": 7656,
+            "endColumn": 99,
+            "endOffset": 7751
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/11.8.0/res/values-ml/values.xml",
+            "position": {
+                "startLine": 4,
+                "startColumn": 0,
+                "startOffset": 228,
+                "endColumn": 95,
+                "endOffset": 323
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 63,
+            "startColumn": 4,
+            "startOffset": 7756,
+            "endColumn": 81,
+            "endOffset": 7833
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 21,
+                "startColumn": 4,
+                "startOffset": 2072,
+                "endColumn": 81,
+                "endOffset": 2149
+            }
+        }
+    }, {
+        "to": {
+            "startLine": 64,
+            "startColumn": 4,
+            "startOffset": 7838,
+            "endColumn": 100,
+            "endOffset": 7934
+        },
+        "from": {
+            "file": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/26.0.1/res/values-ml/values-ml.xml",
+            "position": {
+                "startLine": 22,
+                "startColumn": 4,
+                "startOffset": 2154,
+                "endColumn": 100,
+                "endOffset": 2250
+            }
+        }
+    }]
+}];

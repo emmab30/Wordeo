@@ -1,0 +1,142 @@
+'use strict';
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _class, _temp;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    ImageCacheProvider: {
+        displayName: 'ImageCacheProvider'
+    }
+};
+
+var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-cached-image/ImageCacheProvider.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _reactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _ = require('lodash');
+var React = require('react');
+var ReactNative = require('react-native');
+
+var PropTypes = require('prop-types');
+
+var ImageCacheManagerOptionsPropTypes = require('./ImageCacheManagerOptionsPropTypes');
+
+var ImageCacheManager = require('./ImageCacheManager');
+var ImageCachePreloader = require('./ImageCachePreloader');
+
+var ImageCacheProvider = _wrapComponent('ImageCacheProvider')((_temp = _class = function (_React$Component) {
+    _inherits(ImageCacheProvider, _React$Component);
+
+    function ImageCacheProvider(props) {
+        _classCallCheck(this, ImageCacheProvider);
+
+        var _this = _possibleConstructorReturn(this, (ImageCacheProvider.__proto__ || Object.getPrototypeOf(ImageCacheProvider)).call(this, props));
+
+        _this.getImageCacheManagerOptions = _this.getImageCacheManagerOptions.bind(_this);
+        _this.getImageCacheManager = _this.getImageCacheManager.bind(_this);
+        _this.preloadImages = _this.preloadImages.bind(_this);
+
+        return _this;
+    }
+
+    _createClass(ImageCacheProvider, [{
+        key: 'getChildContext',
+        value: function getChildContext() {
+            var self = this;
+            return {
+                getImageCacheManager: function getImageCacheManager() {
+                    return self.getImageCacheManager();
+                }
+            };
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this.preloadImages(this.props.urlsToPreload);
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            this.imageCacheManager = null;
+
+            if (this.props.urlsToPreload !== nextProps.urlsToPreload) {
+                this.preloadImages(nextProps.urlsToPreload);
+            }
+        }
+    }, {
+        key: 'getImageCacheManagerOptions',
+        value: function getImageCacheManagerOptions() {
+            return _.pick(this.props, _.keys(ImageCacheManagerOptionsPropTypes));
+        }
+    }, {
+        key: 'getImageCacheManager',
+        value: function getImageCacheManager() {
+            if (!this.imageCacheManager) {
+                var options = this.getImageCacheManagerOptions();
+                this.imageCacheManager = ImageCacheManager(options);
+            }
+            return this.imageCacheManager;
+        }
+    }, {
+        key: 'preloadImages',
+        value: function preloadImages(urlsToPreload) {
+            var _this2 = this;
+
+            var imageCacheManager = this.getImageCacheManager();
+            ImageCachePreloader.preloadImages(urlsToPreload, imageCacheManager, this.props.numberOfConcurrentPreloads).then(function () {
+                return _this2.props.onPreloadComplete();
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return React.Children.only(this.props.children);
+        }
+    }]);
+
+    return ImageCacheProvider;
+}(React.Component), _class.propTypes = _extends({
+    children: PropTypes.element
+
+}, ImageCacheManagerOptionsPropTypes, {
+    urlsToPreload: PropTypes.arrayOf(PropTypes.string).isRequired,
+    numberOfConcurrentPreloads: PropTypes.number.isRequired,
+
+    onPreloadComplete: PropTypes.func.isRequired
+}), _class.defaultProps = {
+    urlsToPreload: [],
+    numberOfConcurrentPreloads: 0,
+    onPreloadComplete: _.noop
+}, _class.childContextTypes = {
+    getImageCacheManager: PropTypes.func
+}, _temp));
+
+module.exports = ImageCacheProvider;

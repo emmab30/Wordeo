@@ -1,0 +1,350 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _class,
+    _temp,
+    _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-actionsheet/lib/ActionSheetCustom.js';
+
+var _reactNative = require('react-native');
+
+var _utils = require('./utils');
+
+var utils = _interopRequireWildcard(_utils);
+
+var _styles = require('./styles');
+
+var _styles2 = _interopRequireDefault(_styles);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+  ActionSheet: {
+    displayName: 'ActionSheet'
+  }
+};
+
+var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+  filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-actionsheet/lib/ActionSheetCustom.js',
+  components: _components,
+  locals: [module],
+  imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+  return function (Component) {
+    return _reactTransformHmrLibIndexJs2(Component, id);
+  };
+}
+
+var WARN_COLOR = '#FF3B30';
+var MAX_HEIGHT = _reactNative.Dimensions.get('window').height * 0.7;
+
+var ActionSheet = _wrapComponent('ActionSheet')((_temp = _class = function (_React$Component) {
+  _inherits(ActionSheet, _React$Component);
+
+  function ActionSheet(props) {
+    _classCallCheck(this, ActionSheet);
+
+    var _this = _possibleConstructorReturn(this, (ActionSheet.__proto__ || Object.getPrototypeOf(ActionSheet)).call(this, props));
+
+    _this.show = function () {
+      _this.setState({ visible: true }, function () {
+        _this._showSheet();
+      });
+    };
+
+    _this.hide = function (index) {
+      _this._hideSheet(function () {
+        _this.setState({ visible: false }, function () {
+          _this.props.onPress(index);
+        });
+      });
+    };
+
+    _this._cancel = function () {
+      var cancelButtonIndex = _this.props.cancelButtonIndex;
+
+      if (utils.isset(cancelButtonIndex)) {
+        _this.hide(cancelButtonIndex);
+      }
+    };
+
+    _this._showSheet = function () {
+      _reactNative.Animated.timing(_this.state.sheetAnim, {
+        toValue: 0,
+        duration: 250,
+        easing: _reactNative.Easing.out(_reactNative.Easing.ease)
+      }).start();
+    };
+
+    _this.scrollEnabled = false;
+    _this.translateY = _this._calculateHeight(props);
+    _this.state = {
+      visible: false,
+      sheetAnim: new _reactNative.Animated.Value(_this.translateY)
+    };
+    return _this;
+  }
+
+  _createClass(ActionSheet, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.translateY = this._calculateHeight(nextProps);
+    }
+  }, {
+    key: '_hideSheet',
+    value: function _hideSheet(callback) {
+      _reactNative.Animated.timing(this.state.sheetAnim, {
+        toValue: this.translateY,
+        duration: 200
+      }).start(callback);
+    }
+  }, {
+    key: '_calculateHeight',
+    value: function _calculateHeight(props) {
+      var styles = this.styles;
+
+      var getHeight = function getHeight(name) {
+        var style = styles[name][styles[name].length - 1];
+        var h = 0;['height', 'marginTop', 'marginBottom'].forEach(function (attrName) {
+          if (typeof style[attrName] !== 'undefined') {
+            h += style[attrName];
+          }
+        });
+        return h;
+      };
+
+      var height = 0;
+      if (props.title) height += getHeight('titleBox');
+      if (props.message) height += getHeight('messageBox');
+      if (utils.isset(props.cancelButtonIndex)) {
+        height += getHeight('cancelButtonBox');
+        height += (props.options.length - 1) * getHeight('buttonBox');
+      } else {
+        height += props.options.length * getHeight('buttonBox');
+      }
+
+      if (height > MAX_HEIGHT) {
+        this.scrollEnabled = true;
+        height = MAX_HEIGHT;
+      } else {
+        this.scrollEnabled = false;
+      }
+
+      return height;
+    }
+  }, {
+    key: '_renderTitle',
+    value: function _renderTitle() {
+      var title = this.props.title;
+
+      var styles = this.styles;
+      if (!title) return null;
+      return _react3.default.createElement(
+        _reactNative.View,
+        { style: styles.titleBox, __source: {
+            fileName: _jsxFileName,
+            lineNumber: 125
+          }
+        },
+        _react3.default.isValidElement(title) ? title : _react3.default.createElement(
+          _reactNative.Text,
+          { style: styles.titleText, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 127
+            }
+          },
+          title
+        )
+      );
+    }
+  }, {
+    key: '_renderMessage',
+    value: function _renderMessage() {
+      var message = this.props.message;
+
+      var styles = this.styles;
+      if (!message) return null;
+      return _react3.default.createElement(
+        _reactNative.View,
+        { style: styles.messageBox, __source: {
+            fileName: _jsxFileName,
+            lineNumber: 138
+          }
+        },
+        _react3.default.isValidElement(message) ? message : _react3.default.createElement(
+          _reactNative.Text,
+          { style: styles.messageText, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 140
+            }
+          },
+          message
+        )
+      );
+    }
+  }, {
+    key: '_renderCancelButton',
+    value: function _renderCancelButton() {
+      var _props = this.props,
+          options = _props.options,
+          cancelButtonIndex = _props.cancelButtonIndex;
+
+      if (!utils.isset(cancelButtonIndex)) return null;
+      return this._createButton(options[cancelButtonIndex], cancelButtonIndex);
+    }
+  }, {
+    key: '_createButton',
+    value: function _createButton(title, index) {
+      var _this2 = this;
+
+      var styles = this.styles;
+      var _props2 = this.props,
+          buttonUnderlayColor = _props2.buttonUnderlayColor,
+          cancelButtonIndex = _props2.cancelButtonIndex,
+          destructiveButtonIndex = _props2.destructiveButtonIndex,
+          tintColor = _props2.tintColor;
+
+      var fontColor = destructiveButtonIndex === index ? WARN_COLOR : tintColor;
+      var buttonBoxStyle = cancelButtonIndex === index ? styles.cancelButtonBox : styles.buttonBox;
+      return _react3.default.createElement(
+        _reactNative.TouchableHighlight,
+        {
+          key: index,
+          activeOpacity: 1,
+          underlayColor: buttonUnderlayColor,
+          style: buttonBoxStyle,
+          onPress: function onPress() {
+            return _this2.hide(index);
+          },
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 158
+          }
+        },
+        _react3.default.isValidElement(title) ? title : _react3.default.createElement(
+          _reactNative.Text,
+          { style: [styles.buttonText, { color: fontColor }], __source: {
+              fileName: _jsxFileName,
+              lineNumber: 166
+            }
+          },
+          title
+        )
+      );
+    }
+  }, {
+    key: '_renderOptions',
+    value: function _renderOptions() {
+      var _this3 = this;
+
+      var cancelButtonIndex = this.props.cancelButtonIndex;
+
+      return this.props.options.map(function (title, index) {
+        return cancelButtonIndex === index ? null : _this3._createButton(title, index);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var styles = this.styles;
+      var _state = this.state,
+          visible = _state.visible,
+          sheetAnim = _state.sheetAnim;
+
+      return _react3.default.createElement(
+        _reactNative.Modal,
+        { visible: visible,
+          animationType: 'none',
+          transparent: true,
+          onRequestClose: this._cancel,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 183
+          }
+        },
+        _react3.default.createElement(
+          _reactNative.View,
+          { style: [styles.wrapper], __source: {
+              fileName: _jsxFileName,
+              lineNumber: 188
+            }
+          },
+          _react3.default.createElement(_reactNative.Text, {
+            style: [styles.overlay],
+            onPress: this._cancel,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 189
+            }
+          }),
+          _react3.default.createElement(
+            _reactNative.Animated.View,
+            {
+              style: [styles.body, { height: this.translateY, transform: [{ translateY: sheetAnim }] }],
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 193
+              }
+            },
+            this._renderTitle(),
+            this._renderMessage(),
+            _react3.default.createElement(
+              _reactNative.ScrollView,
+              { scrollEnabled: this.scrollEnabled, __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 201
+                }
+              },
+              this._renderOptions()
+            ),
+            this._renderCancelButton()
+          )
+        )
+      );
+    }
+  }, {
+    key: 'styles',
+    get: function get() {
+      var styles = this.props.styles;
+
+      var obj = {};
+      Object.keys(_styles2.default).forEach(function (key) {
+        var arr = [_styles2.default[key]];
+        if (styles[key]) {
+          arr.push(styles[key]);
+        }
+        obj[key] = arr;
+      });
+      return obj;
+    }
+  }]);
+
+  return ActionSheet;
+}(_react3.default.Component), _class.defaultProps = {
+  tintColor: '#007AFF',
+  buttonUnderlayColor: '#F4F4F4',
+  onPress: function onPress() {},
+  styles: {}
+}, _temp));
+
+exports.default = ActionSheet;

@@ -1,0 +1,4 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/android/app/build/intermediates/res/merged/release/xml/preferences.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.55.3/res/xml/preferences.xml"
+}];

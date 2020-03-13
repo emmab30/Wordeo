@@ -1,0 +1,273 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/dialogs/CommonDialog.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _default = require('../../styles/default');
+
+var _global = require('../../components/common/global');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    CommonDialog: {
+        displayName: 'CommonDialog'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/dialogs/CommonDialog.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var width = _reactNative.Dimensions.get('window').width;
+var height = _reactNative.Dimensions.get('window').height;
+
+var CommonDialog = _wrapComponent('CommonDialog')(function (_Component) {
+    _inherits(CommonDialog, _Component);
+
+    function CommonDialog(props) {
+        _classCallCheck(this, CommonDialog);
+
+        var _this = _possibleConstructorReturn(this, (CommonDialog.__proto__ || Object.getPrototypeOf(CommonDialog)).call(this, props));
+
+        _this.hide = function () {
+            _this.setState({ visible: false, dialogType: null, message: null, randomAvatar: null, onCloseCallback: null });
+        };
+
+        _this.show = function (type, message, onClose) {
+            _this.setState({ visible: true, dialogType: type, message: message, randomAvatar: _this.getRandomAvatar(), onCloseCallback: onClose });
+        };
+
+        _this.state = {
+            height: height,
+            isLandscape: false,
+            visible: false,
+            dialogType: 'success',
+            message: '',
+            heightInnerViewContent: 0,
+            randomAvatar: null,
+            onCloseCallback: null
+        };
+        return _this;
+    }
+
+    _createClass(CommonDialog, [{
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate() {}
+    }, {
+        key: 'onLayout',
+        value: function onLayout(e) {
+            var _this2 = this;
+
+            this.setState({ height: _reactNative.Dimensions.get('window').height });
+
+            _global.Global.getOrientation(function (orientation) {
+                _this2.setState({
+                    isLandscape: orientation == 'LANDSCAPE'
+                });
+            });
+        }
+    }, {
+        key: 'getRandomAvatar',
+        value: function getRandomAvatar() {
+            var avatars = ['https://cdn2.iconfinder.com/data/icons/cutecritters/t9elephant_trans.png', 'https://cdn2.iconfinder.com/data/icons/cutecritters/t9lion_trans.png', 'https://cdn2.iconfinder.com/data/icons/cutecritters/t9foxy_trans.png', 'https://cdn2.iconfinder.com/data/icons/cutecritters/t9dog1_trans.png', 'https://cdn2.iconfinder.com/data/icons/cutecritters/t9batty_trans.png', 'https://cdn2.iconfinder.com/data/icons/cutecritters/t9ducky_trans.png', 'https://cdn2.iconfinder.com/data/icons/cutecritters/t9froggy_trans.png', 'https://cdn2.iconfinder.com/data/icons/cutecritters/t9panda_trans.png'];
+
+            return avatars[Math.floor(Math.random() * avatars.length)];
+        }
+    }, {
+        key: 'onLayoutTextMessage',
+        value: function onLayoutTextMessage(e) {
+            var _e$nativeEvent$layout = e.nativeEvent.layout,
+                x = _e$nativeEvent$layout.x,
+                y = _e$nativeEvent$layout.y,
+                width = _e$nativeEvent$layout.width,
+                height = _e$nativeEvent$layout.height;
+
+            if (height != null) {
+                this.setState({ heightInnerViewContent: height + 130 });
+            }
+        }
+    }, {
+        key: 'reset',
+        value: function reset() {
+            this.setState({ dialogType: 'success', message: '', visible: false });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            if (!this.state.visible) return null;
+
+            var avatar = { uri: this.state.randomAvatar };
+            var backgroundOverlayColor = 'rgba(255, 90, 0, 0.55)';
+            var extraMessageStyle = {};
+
+            if (this.state.dialogType == 'error') {
+                backgroundOverlayColor = 'rgba(6,119,255,.75)';
+            }
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    onLayout: this.onLayout.bind(this), __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 107
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    {
+                        ref: 'overlay',
+                        visible: this.state.visible,
+                        closeOnTouchOutside: true,
+                        easing: 'ease-in-quart',
+                        animationType: 'rubberBand',
+                        animationOutType: 'zoomOut',
+                        animationDuration: 300,
+                        onClose: function onClose() {
+                            if (_this3.state.onCloseCallback) {
+                                _this3.state.onCloseCallback();
+                            }
+                            _this3.setState({ visible: false });
+                        },
+                        containerStyle: { backgroundColor: backgroundOverlayColor, flex: 1, width: '100%' },
+                        childrenWrapperStyle: [styles.overlayChildren, { backgroundColor: "#fff", borderRadius: 10, width: this.state.isLandscape ? '60%' : '100%', maxHeight: this.state.heightInnerViewContent > 0 ? this.state.heightInnerViewContent : 180, height: this.state.height - 100, paddingBottom: this.props.paddingBottom !== undefined ? this.props.paddingBottom : 0 }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 109
+                        }
+                    },
+                    _react3.default.createElement(_reactNative.Image, {
+                        source: avatar,
+                        style: { resizeMode: 'contain', width: 45, height: 45, position: 'absolute', right: 10, top: 0, zIndex: -10000 },
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 125
+                        }
+                    }),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: { width: '100%', height: '100%', zIndex: 999, overflow: 'hidden' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 129
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.TouchableOpacity,
+                            {
+                                onPress: function onPress(e) {
+                                    _this3.reset();
+                                    if (_this3.state.onCloseCallback) {
+                                        _this3.state.onCloseCallback();
+                                    }
+                                },
+                                style: styles.closeButtonContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 130
+                                }
+                            },
+                            _react3.default.createElement(_reactNative.Image, {
+                                style: { width: 20, tintColor: 'rgba(0,0,0,.7)', height: 20, resizeMode: 'contain' },
+                                source: require("../../images/wordeo/dialogs/dialog_close.png"), __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 138
+                                }
+                            })
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.innerView, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 142
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { onLayout: this.onLayoutTextMessage.bind(this), style: [styles.errorMessage, extraMessageStyle], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 143
+                                    }
+                                },
+                                this.state.message
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CommonDialog;
+}(_react2.Component));
+
+exports.default = CommonDialog;
+
+
+var styles = _reactNative.StyleSheet.create({
+    errorMessage: {
+        color: '#000000',
+        fontFamily: _default.Font.PTSansBold,
+        fontSize: 14,
+        marginBottom: 20,
+        marginTop: 20,
+        textAlign: 'center'
+    },
+    closeButtonContainer: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 15,
+        width: 27,
+        height: 27,
+        zIndex: 9999
+    },
+    overlayChildren: {
+        shadowColor: '#444',
+        shadowOffset: { width: 0, height: 20 },
+        shadowOpacity: 0.95,
+        shadowRadius: 100,
+        elevation: 6,
+        alignSelf: 'center'
+    },
+    innerView: {
+        flex: 1,
+        zIndex: 10,
+        marginTop: 30,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+});

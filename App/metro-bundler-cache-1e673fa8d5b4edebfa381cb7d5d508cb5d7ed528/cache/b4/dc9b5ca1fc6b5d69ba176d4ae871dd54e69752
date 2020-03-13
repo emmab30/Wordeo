@@ -1,0 +1,63 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ApiService = ApiService;
+exports.GiphyServiceWrapper = GiphyServiceWrapper;
+exports.ApiUrl = ApiUrl;
+exports.SocketUrl = SocketUrl;
+exports.BucketS3URL = BucketS3URL;
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _reactNative = require('react-native');
+
+var _reactNativeConfig = require('react-native-config');
+
+var _reactNativeConfig2 = _interopRequireDefault(_reactNativeConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ApiService() {
+    GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
+    var api = _axios2.default.create({
+        baseURL: ApiUrl(),
+        timeout: 30000
+    });
+
+    _reactNative.AsyncStorage.getItem("user").then(function (value) {
+        if (value != null) {
+            var user = JSON.parse(value);
+            _axios2.default.defaults.headers.common['Authorization'] = user.session.id;
+        }
+    }).done();
+
+    return api;
+}
+
+function GiphyServiceWrapper() {
+    GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
+    var api = _axios2.default.create({
+        baseURL: "https://api.giphy.com/v1/gifs",
+        timeout: 5000
+    });
+
+    delete _axios2.default.defaults.headers.common['Authorization'];
+
+    return api;
+}
+
+function ApiUrl() {
+    return "http://192.168.0.12:3000/api";
+    return _reactNativeConfig2.default.API_URL;
+}
+
+function SocketUrl() {
+    return "http://192.168.0.12:3000";
+    return _reactNativeConfig2.default.SOCKET_URL;
+}
+
+function BucketS3URL() {
+    return _reactNativeConfig2.default.BUCKET_S3_URL;
+}

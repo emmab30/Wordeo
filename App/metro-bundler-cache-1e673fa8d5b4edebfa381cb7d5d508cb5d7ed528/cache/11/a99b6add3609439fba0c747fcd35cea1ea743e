@@ -1,0 +1,108 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _apps = require('../../utils/apps');
+
+var _apps2 = _interopRequireDefault(_apps);
+
+var _internals = require('../../utils/internals');
+
+var _internals2 = _interopRequireDefault(_internals);
+
+var _firebaseApp = require('./firebase-app');
+
+var _firebaseApp2 = _interopRequireDefault(_firebaseApp);
+
+var _version = require('../../version');
+
+var _version2 = _interopRequireDefault(_version);
+
+var _admob = require('../admob');
+
+var _auth = require('../auth');
+
+var _analytics = require('../analytics');
+
+var _config = require('../config');
+
+var _crash = require('../crash');
+
+var _crashlytics = require('../fabric/crashlytics');
+
+var _database = require('../database');
+
+var _firestore = require('../firestore');
+
+var _links = require('../links');
+
+var _messaging = require('../messaging');
+
+var _perf = require('../perf');
+
+var _storage = require('../storage');
+
+var _utils = require('../utils');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FirebaseCoreModule = _reactNative.NativeModules.RNFirebase;
+
+var Firebase = function () {
+  function Firebase() {
+    _classCallCheck(this, Firebase);
+
+    if (!FirebaseCoreModule) {
+      throw new Error(_internals2.default.STRINGS.ERROR_MISSING_CORE);
+    }
+    _apps2.default.initializeNativeApps();
+
+    this.admob = _apps2.default.moduleAndStatics('admob', _admob.statics, _admob.MODULE_NAME);
+    this.analytics = _apps2.default.moduleAndStatics('analytics', _analytics.statics, _analytics.MODULE_NAME);
+    this.auth = _apps2.default.moduleAndStatics('auth', _auth.statics, _auth.MODULE_NAME);
+    this.config = _apps2.default.moduleAndStatics('config', _config.statics, _config.MODULE_NAME);
+    this.crash = _apps2.default.moduleAndStatics('crash', _crash.statics, _crash.MODULE_NAME);
+    this.database = _apps2.default.moduleAndStatics('database', _database.statics, _database.MODULE_NAME);
+    this.fabric = {
+      crashlytics: _apps2.default.moduleAndStatics('crashlytics', _crashlytics.statics, _crashlytics.MODULE_NAME)
+    };
+    this.firestore = _apps2.default.moduleAndStatics('firestore', _firestore.statics, _firestore.MODULE_NAME);
+    this.links = _apps2.default.moduleAndStatics('links', _links.statics, _links.MODULE_NAME);
+    this.messaging = _apps2.default.moduleAndStatics('messaging', _messaging.statics, _messaging.MODULE_NAME);
+    this.perf = _apps2.default.moduleAndStatics('perf', _perf.statics, _perf.MODULE_NAME);
+    this.storage = _apps2.default.moduleAndStatics('storage', _storage.statics, _storage.MODULE_NAME);
+    this.utils = _apps2.default.moduleAndStatics('utils', _utils.statics, _utils.MODULE_NAME);
+  }
+
+  _createClass(Firebase, [{
+    key: 'initializeApp',
+    value: function initializeApp(options, name) {
+      return _apps2.default.initializeApp(options, name);
+    }
+  }, {
+    key: 'app',
+    value: function app(name) {
+      return _apps2.default.app(name);
+    }
+  }, {
+    key: 'apps',
+    get: function get() {
+      return _apps2.default.apps();
+    }
+  }, {
+    key: 'SDK_VERSION',
+    get: function get() {
+      return _version2.default;
+    }
+  }]);
+
+  return Firebase;
+}();
+
+exports.default = new Firebase();

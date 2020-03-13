@@ -1,0 +1,66 @@
+
+'use strict';
+
+var AppEventsLogger = require('react-native').NativeModules.FBAppEventsLogger;
+
+
+module.exports = {
+  setFlushBehavior: function setFlushBehavior(flushBehavior) {
+    AppEventsLogger.setFlushBehavior(flushBehavior);
+  },
+  logEvent: function logEvent(eventName) {
+    var valueToSum = 0;
+
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    if (typeof args[0] === 'number') {
+      valueToSum = args.shift();
+    }
+    var parameters = null;
+    if (typeof args[0] === 'object') {
+      parameters = args[0];
+    }
+    AppEventsLogger.logEvent(eventName, valueToSum, parameters);
+  },
+  logPurchase: function logPurchase(purchaseAmount, currencyCode, parameters) {
+    AppEventsLogger.logPurchase(purchaseAmount, currencyCode, parameters);
+  },
+  logPushNotificationOpen: function logPushNotificationOpen(payload) {
+    AppEventsLogger.logPushNotificationOpen(payload);
+  },
+  flush: function flush() {
+    AppEventsLogger.flush();
+  },
+  setUserID: function setUserID(userID) {
+    AppEventsLogger.setUserID(userID);
+  },
+  getUserID: function getUserID() {
+    return regeneratorRuntime.async(function getUserID$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return regeneratorRuntime.awrap(AppEventsLogger.getUserID());
+
+          case 2:
+            return _context.abrupt('return', _context.sent);
+
+          case 3:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, null, this);
+  },
+  updateUserProperties: function updateUserProperties(parameters) {
+    AppEventsLogger.updateUserProperties(parameters);
+  },
+  setPushNotificationsDeviceToken: function setPushNotificationsDeviceToken(deviceToken) {
+    AppEventsLogger.setPushNotificationsDeviceToken(deviceToken);
+  },
+  setPushNotificationsRegistrationId: function setPushNotificationsRegistrationId(registrationId) {
+    AppEventsLogger.setPushNotificationsRegistrationId(registrationId);
+  }
+};

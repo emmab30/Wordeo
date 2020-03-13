@@ -1,0 +1,73 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.createMethods = createMethods;
+exports.createMethod = createMethod;
+exports.getterForProperty = getterForProperty;
+exports.setterForProperty = setterForProperty;
+
+var _collections = require('./collections');
+
+var _constants = require('./constants');
+
+var _rpc = require('./rpc');
+
+var rpc = _interopRequireWildcard(_rpc);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function createMethods(prototype, type, methodNames, mutates) {
+    var props = {};
+
+    methodNames.forEach(function (name) {
+        props[name] = {
+            value: createMethod(type, name, mutates)
+        };
+    });
+
+    Object.defineProperties(prototype, props);
+}
+
+function createMethod(type, name, mutates) {
+    return function () {
+        var realmId = this[_constants.keys.realm];
+        var id = this[_constants.keys.id];
+
+        if (!realmId || !id) {
+            throw new TypeError(name + ' method was not called on a Realm object!');
+        }
+        if (this[_constants.keys.type] !== type) {
+            throw new TypeError(name + ' method was called on an object of the wrong type!');
+        }
+
+        try {
+            return rpc.callMethod(realmId, id, name, Array.from(arguments));
+        } finally {
+            if (mutates) {
+                (0, _collections.fireMutationListeners)(realmId);
+            }
+        }
+    };
+}
+
+function getterForProperty(name) {
+    return function () {
+        return rpc.getProperty(this[_constants.keys.realm], this[_constants.keys.id], name);
+    };
+}
+
+function setterForProperty(name) {
+    return function (value) {
+        var realmId = this[_constants.keys.realm];
+
+        rpc.setProperty(realmId, this[_constants.keys.id], name, value);
+
+        if (value && typeof value == 'object') {
+            (0, _collections.fireMutationListeners)(realmId);
+        }
+    };
+}

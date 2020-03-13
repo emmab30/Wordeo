@@ -1,0 +1,995 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactNative = require('react-native');
+
+var _reactNative2 = _interopRequireDefault(_reactNative);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _PropRegistry = require('./../PropRegistry');
+
+var _PropRegistry2 = _interopRequireDefault(_PropRegistry);
+
+var _Navigation = require('./../Navigation');
+
+var _Navigation2 = _interopRequireDefault(_Navigation);
+
+var _platformSpecific = require('./../platformSpecific');
+
+var newPlatformSpecific = _interopRequireWildcard(_platformSpecific);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
+
+function startSingleScreenApp(params) {
+  var components;
+  return regeneratorRuntime.async(function startSingleScreenApp$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          components = params.components;
+
+          if (!(!params.screen && !components)) {
+            _context.next = 4;
+            break;
+          }
+
+          console.error('startSingleScreenApp(params): screen must include a screen property');
+          return _context.abrupt('return');
+
+        case 4:
+
+          if (components) {
+            params.screen = createSingleScreen(components[0]);
+            components.shift();
+            params.screen.screens = components.map(createSingleScreen) || [];
+            params.screen.screens.map(function (c, i) {
+              return i === 0 ? c : addTitleBarBackButtonIfNeeded(c);
+            });
+          } else {
+            params.screen = createSingleScreen(_extends({}, params.screen, { passProps: params.passProps }));
+          }
+
+          params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
+          params.overrideBackPress = params.screen.overrideBackPress;
+          params.animateShow = convertAnimationType(params.animationType);
+          params.appStyle = convertStyleParams(params.appStyle);
+          if (params.appStyle) {
+            params.appStyle.orientation = getOrientation(params);
+          }
+
+          _context.next = 12;
+          return regeneratorRuntime.awrap(newPlatformSpecific.startApp(params));
+
+        case 12:
+          return _context.abrupt('return', _context.sent);
+
+        case 13:
+        case 'end':
+          return _context.stop();
+      }
+    }
+  }, null, this);
+}
+
+function createSingleScreen(params) {
+  var screen = params;
+  addNavigatorParams(screen);
+  addNavigatorButtons(screen, params.drawer);
+  addNavigationStyleParams(screen);
+  screen.passProps = params.passProps;
+
+  adaptTopTabs(screen, screen.navigatorID);
+  screen.screenId = screen.screen;
+  screen = adaptNavigationStyleToScreenStyle(screen);
+  screen = adaptNavigationParams(screen);
+  return screen;
+}
+
+function getOrientation(params) {
+  if (params.portraitOnlyMode || _lodash2.default.get(params, 'appStyle.orientation') === 'portrait') {
+    return 'portrait';
+  }
+  if (params.landscaptOnlyMode || _lodash2.default.get(params, 'appStyle.orientation') === 'landscape') {
+    return 'landscape';
+  }
+  return 'auto';
+}
+
+function adaptTopTabs(screen, navigatorID) {
+  screen.topTabs = _lodash2.default.cloneDeep(screen.topTabs);
+  _lodash2.default.forEach(_lodash2.default.get(screen, 'topTabs'), function (tab) {
+    addNavigatorParams(tab);
+    if (navigatorID) {
+      tab.navigatorID = navigatorID;
+    }
+    tab.screen = tab.screenId;
+    if (tab.icon) {
+      addTabIcon(tab);
+    }
+    addNavigatorButtons(tab);
+    adaptNavigationParams(tab);
+    addNavigationStyleParams(tab);
+    tab = adaptNavigationStyleToScreenStyle(tab);
+  });
+}
+
+function navigatorPush(navigator, params) {
+  addNavigatorParams(params, navigator);
+  addNavigatorButtons(params);
+  addTitleBarBackButtonIfNeeded(params);
+  addNavigationStyleParams(params);
+
+  adaptTopTabs(params, params.navigatorID);
+
+  params.screenId = params.screen;
+  var adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.overrideBackPress = params.overrideBackPress;
+  adapted.timestamp = Date.now();
+  if (!adapted.passProps) {
+    adapted.passProps = {};
+  }
+  if (!adapted.passProps.commandType) {
+    adapted.passProps.commandType = 'Push';
+  }
+
+  return newPlatformSpecific.push(adapted);
+}
+
+function navigatorPop(navigator, params) {
+  addNavigatorParams(params, navigator);
+
+  params.screenId = params.screen;
+  var adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.timestamp = Date.now();
+
+  newPlatformSpecific.pop(adapted);
+}
+
+function navigatorPopToRoot(navigator, params) {
+  addNavigatorParams(params, navigator);
+
+  params.screenId = params.screen;
+  var adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.timestamp = Date.now();
+
+  newPlatformSpecific.popToRoot(adapted);
+}
+
+function navigatorResetTo(navigator, params) {
+  addNavigatorParams(params, navigator);
+  addNavigatorButtons(params);
+  addNavigationStyleParams(params);
+
+  adaptTopTabs(params, params.navigatorID);
+
+  params.screenId = params.screen;
+  var adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.timestamp = Date.now();
+
+  newPlatformSpecific.newStack(adapted);
+}
+
+function adaptNavigationStyleToScreenStyle(screen) {
+  var navigatorStyle = screen.navigatorStyle;
+  if (!navigatorStyle) {
+    return screen;
+  }
+
+  screen.styleParams = convertStyleParams(navigatorStyle);
+
+  return _lodash2.default.omit(screen, ['navigatorStyle']);
+}
+
+function convertStyleParams(originalStyleObject) {
+  if (!originalStyleObject) {
+    return null;
+  }
+
+  var ret = {
+    orientation: originalStyleObject.orientation,
+    screenAnimationType: originalStyleObject.screenAnimationType,
+    statusBarColor: (0, _reactNative.processColor)(originalStyleObject.statusBarColor),
+    statusBarHidden: originalStyleObject.statusBarHidden,
+    statusBarTextColorScheme: originalStyleObject.statusBarTextColorScheme,
+    drawUnderStatusBar: originalStyleObject.drawUnderStatusBar,
+    topBarReactView: originalStyleObject.navBarCustomView,
+    topBarReactViewAlignment: originalStyleObject.navBarComponentAlignment,
+    topBarReactViewInitialProps: originalStyleObject.navBarCustomViewInitialProps,
+    topBarColor: (0, _reactNative.processColor)(originalStyleObject.navBarBackgroundColor),
+    topBarTransparent: originalStyleObject.navBarTransparent,
+    topBarTranslucent: originalStyleObject.navBarTranslucent,
+    topBarElevationShadowEnabled: originalStyleObject.topBarElevationShadowEnabled,
+    topBarCollapseOnScroll: originalStyleObject.topBarCollapseOnScroll,
+    topBarBorderColor: (0, _reactNative.processColor)(originalStyleObject.topBarBorderColor),
+    topBarBorderWidth: originalStyleObject.topBarBorderWidth && '' + originalStyleObject.topBarBorderWidth,
+    collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
+    collapsingToolBarComponent: originalStyleObject.collapsingToolBarComponent,
+    collapsingToolBarComponentHeight: originalStyleObject.collapsingToolBarComponentHeight,
+    collapsingToolBarCollapsedColor: (0, _reactNative.processColor)(originalStyleObject.collapsingToolBarCollapsedColor),
+    collapsingToolBarExpendedColor: (0, _reactNative.processColor)(originalStyleObject.collapsingToolBarExpendedColor),
+    showTitleWhenExpended: originalStyleObject.showTitleWhenExpended,
+    expendCollapsingToolBarOnTopTabChange: originalStyleObject.expendCollapsingToolBarOnTopTabChange,
+    titleBarHidden: originalStyleObject.navBarHidden,
+    titleBarHideOnScroll: originalStyleObject.navBarHideOnScroll,
+    titleBarTitleColor: (0, _reactNative.processColor)(originalStyleObject.navBarTextColor),
+    titleBarSubtitleColor: (0, _reactNative.processColor)(originalStyleObject.navBarSubtitleColor),
+    titleBarSubtitleFontSize: originalStyleObject.navBarSubtitleFontSize,
+    titleBarSubtitleFontFamily: originalStyleObject.navBarSubtitleFontFamily,
+    titleBarButtonColor: (0, _reactNative.processColor)(originalStyleObject.navBarButtonColor),
+    titleBarButtonFontFamily: originalStyleObject.navBarButtonFontFamily,
+    titleBarDisabledButtonColor: (0, _reactNative.processColor)(originalStyleObject.titleBarDisabledButtonColor),
+    titleBarTitleFontFamily: originalStyleObject.navBarTextFontFamily,
+    titleBarTitleFontSize: originalStyleObject.navBarTextFontSize,
+    titleBarTitleFontBold: originalStyleObject.navBarTextFontBold,
+    titleBarTitleTextCentered: originalStyleObject.navBarTitleTextCentered,
+    titleBarSubTitleTextCentered: originalStyleObject.navBarSubTitleTextCentered,
+    titleBarHeight: originalStyleObject.navBarHeight,
+    titleBarTopPadding: originalStyleObject.navBarTopPadding,
+    backButtonHidden: originalStyleObject.backButtonHidden,
+    topTabsHidden: originalStyleObject.topTabsHidden,
+    contextualMenuStatusBarColor: (0, _reactNative.processColor)(originalStyleObject.contextualMenuStatusBarColor),
+    contextualMenuBackgroundColor: (0, _reactNative.processColor)(originalStyleObject.contextualMenuBackgroundColor),
+    contextualMenuButtonsColor: (0, _reactNative.processColor)(originalStyleObject.contextualMenuButtonsColor),
+
+    drawBelowTopBar: !originalStyleObject.drawUnderNavBar,
+
+    topTabTextColor: (0, _reactNative.processColor)(originalStyleObject.topTabTextColor),
+    topTabTextFontFamily: originalStyleObject.topTabTextFontFamily,
+    topTabIconColor: (0, _reactNative.processColor)(originalStyleObject.topTabIconColor),
+    selectedTopTabIconColor: (0, _reactNative.processColor)(originalStyleObject.selectedTopTabIconColor),
+    selectedTopTabTextColor: (0, _reactNative.processColor)(originalStyleObject.selectedTopTabTextColor),
+    selectedTopTabIndicatorHeight: originalStyleObject.selectedTopTabIndicatorHeight,
+    selectedTopTabIndicatorColor: (0, _reactNative.processColor)(originalStyleObject.selectedTopTabIndicatorColor),
+    topTabsScrollable: originalStyleObject.topTabsScrollable,
+    topTabsHeight: originalStyleObject.topTabsHeight,
+    screenBackgroundColor: (0, _reactNative.processColor)(originalStyleObject.screenBackgroundColor),
+    rootBackgroundImageName: originalStyleObject.rootBackgroundImageName,
+
+    drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
+
+    initialTabIndex: originalStyleObject.initialTabIndex,
+    bottomTabsColor: (0, _reactNative.processColor)(originalStyleObject.tabBarBackgroundColor),
+    bottomTabsButtonColor: (0, _reactNative.processColor)(originalStyleObject.tabBarButtonColor),
+    bottomTabsSelectedButtonColor: (0, _reactNative.processColor)(originalStyleObject.tabBarSelectedButtonColor),
+    bottomTabsHidden: originalStyleObject.tabBarHidden,
+    bottomTabsHiddenOnScroll: originalStyleObject.bottomTabsHiddenOnScroll,
+    bottomTabsHideShadow: originalStyleObject.tabBarHideShadow,
+    forceTitlesDisplay: originalStyleObject.forceTitlesDisplay,
+    bottomTabBadgeTextColor: (0, _reactNative.processColor)(originalStyleObject.bottomTabBadgeTextColor),
+    bottomTabBadgeBackgroundColor: (0, _reactNative.processColor)(originalStyleObject.bottomTabBadgeBackgroundColor),
+    bottomTabFontFamily: originalStyleObject.tabFontFamily,
+    bottomTabFontSize: originalStyleObject.tabFontSize,
+    bottomTabSelectedFontSize: originalStyleObject.selectedTabFontSize,
+
+    navigationBarColor: (0, _reactNative.processColor)(originalStyleObject.navigationBarColor)
+  };
+
+  if (originalStyleObject.disabledButtonColor) {
+    ret.titleBarDisabledButtonColor = (0, _reactNative.processColor)(originalStyleObject.disabledButtonColor);
+  }
+
+  if (originalStyleObject.collapsingToolBarImage) {
+    if (_lodash2.default.isString(originalStyleObject.collapsingToolBarImage)) {
+      ret.collapsingToolBarImage = originalStyleObject.collapsingToolBarImage;
+    }
+
+    var collapsingToolBarImage = resolveAssetSource(originalStyleObject.collapsingToolBarImage);
+    if (collapsingToolBarImage) {
+      ret.collapsingToolBarImage = collapsingToolBarImage.uri;
+    }
+  }
+  if (_lodash2.default.isUndefined(ret.expendCollapsingToolBarOnTopTabChange)) {
+    ret.expendCollapsingToolBarOnTopTabChange = true;
+  }
+  if (ret.topBarReactViewInitialProps) {
+    var passPropsKey = _lodash2.default.uniqueId('customNavBarComponent');
+    _PropRegistry2.default.save(passPropsKey, ret.topBarReactViewInitialProps);
+    ret.topBarReactViewInitialProps = { passPropsKey: passPropsKey };
+  }
+  return ret;
+}
+
+function convertDrawerParamsToSideMenuParams(drawerParams) {
+  var drawer = _extends({}, drawerParams);
+
+  var result = {
+    left: {},
+    right: {}
+  };
+
+  Object.keys(result).forEach(function (key) {
+    if (drawer[key] && drawer[key].screen) {
+      result[key].screenId = drawer[key].screen;
+      addNavigatorParams(result[key]);
+      result[key] = adaptNavigationParams(result[key]);
+      result[key].passProps = drawer[key].passProps;
+      if (drawer.disableOpenGesture) {
+        result[key].disableOpenGesture = parseInt(drawer.disableOpenGesture);
+      } else {
+        var fixedWidth = drawer[key].disableOpenGesture;
+        result[key].disableOpenGesture = fixedWidth ? parseInt(fixedWidth) : null;
+      }
+      if (drawer.fixedWidth) {
+        result[key].fixedWidth = drawer.fixedWidth;
+      } else {
+        result[key].fixedWidth = drawer[key].fixedWidth;
+      }
+    } else {
+      result[key] = null;
+    }
+  });
+
+  return result;
+}
+
+function adaptNavigationParams(screen) {
+  screen.navigationParams = {
+    screenInstanceID: screen.screenInstanceID,
+    navigatorID: screen.navigatorID,
+    navigatorEventID: screen.navigatorEventID
+  };
+  return screen;
+}
+
+function startTabBasedApp(params) {
+  var newTabs;
+  return regeneratorRuntime.async(function startTabBasedApp$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          if (params.tabs) {
+            _context2.next = 3;
+            break;
+          }
+
+          console.error('startTabBasedApp(params): params.tabs is required');
+          return _context2.abrupt('return');
+
+        case 3:
+          newTabs = [];
+
+
+          params.tabs = _lodash2.default.cloneDeep(params.tabs);
+
+          params.tabs.forEach(function (tab, idx) {
+            if (tab.components) {
+              var components = tab.components;
+              var screen = createBottomTabScreen(tab, idx, params);
+              var _screen = screen,
+                  label = _screen.label,
+                  icon = _screen.icon;
+
+              screen.screens = components.map(function (c) {
+                return createBottomTabScreen(_extends({}, c, { icon: icon, label: label }), idx, params);
+              });
+              screen.screens.map(function (s, i) {
+                return addTitleBarBackButtonIfNeeded(s);
+              });
+              screen.screens.map(function (s, i) {
+                return s.navigationParams.navigatorID = screen.navigationParams.navigatorID;
+              });
+              screen = _lodash2.default.omit(screen, ['components']);
+              newTabs.push(screen);
+            } else {
+              newTabs.push(createBottomTabScreen(tab, idx, params));
+            }
+          });
+          params.tabs = newTabs;
+
+          params.appStyle = convertStyleParams(params.appStyle);
+          if (params.appStyle) {
+            params.appStyle.orientation = getOrientation(params);
+          }
+          params.sideMenu = convertDrawerParamsToSideMenuParams(params.drawer);
+          params.animateShow = convertAnimationType(params.animationType);
+
+          _context2.next = 13;
+          return regeneratorRuntime.awrap(newPlatformSpecific.startApp(params));
+
+        case 13:
+          return _context2.abrupt('return', _context2.sent);
+
+        case 14:
+        case 'end':
+          return _context2.stop();
+      }
+    }
+  }, null, this);
+}
+
+function createBottomTabScreen(tab, idx, params) {
+  addNavigatorParams(tab, null, idx);
+  addNavigatorButtons(tab, params.drawer);
+  addNavigationStyleParams(tab);
+  addTabIcon(tab);
+  if (!tab.passProps) {
+    tab.passProps = params.passProps;
+  }
+
+  adaptTopTabs(tab, tab.navigatorID);
+
+  tab.screenId = tab.screen;
+
+  var newtab = adaptNavigationStyleToScreenStyle(tab);
+  newtab = adaptNavigationParams(tab);
+  newtab.overrideBackPress = tab.overrideBackPress;
+  newtab.timestamp = Date.now();
+  return newtab;
+};
+
+function addTabIcon(tab) {
+  if (tab.icon) {
+    var icon = resolveAssetSource(tab.icon);
+    if (icon) {
+      tab.icon = icon.uri;
+    }
+  }
+
+  if (!tab.icon) {
+    throw new Error("No icon defined for tab " + tab.screen);
+  }
+}
+
+function convertAnimationType(animationType) {
+  return animationType !== 'none';
+}
+
+function navigatorSetButtons(navigator, navigatorEventID, _params) {
+  var params = _lodash2.default.cloneDeep(_params);
+  if (params.rightButtons) {
+    params.rightButtons.forEach(function (button) {
+      button.enabled = !button.disabled;
+      if (button.icon) {
+        var icon = resolveAssetSource(button.icon);
+        if (icon) {
+          button.icon = icon.uri;
+        }
+      }
+      if (button.buttonColor) {
+        button.color = (0, _reactNative.processColor)(button.buttonColor);
+      }
+      if (button.component) {
+        var passPropsKey = _lodash2.default.uniqueId('customButtonComponent');
+        _PropRegistry2.default.save(passPropsKey, button.passProps);
+        button.passProps = { passPropsKey: passPropsKey };
+      }
+    });
+  }
+  var leftButton = getLeftButton(params);
+  if (leftButton) {
+    if (leftButton.icon) {
+      var icon = resolveAssetSource(leftButton.icon);
+      if (icon) {
+        leftButton.icon = icon.uri;
+      }
+    }
+    if (leftButton.buttonColor) {
+      leftButton.color = (0, _reactNative.processColor)(leftButton.buttonColor);
+    }
+  } else if (shouldRemoveLeftButton(params)) {
+    leftButton = {};
+  }
+  var fab = getFab(params);
+  newPlatformSpecific.setScreenButtons(navigator.screenInstanceID, navigatorEventID, params.rightButtons, leftButton, fab);
+}
+
+function shouldRemoveLeftButton(params) {
+  return params.leftButtons && params.leftButtons.length === 0;
+}
+
+function navigatorSetTabBadge(navigator, params) {
+  var badge = params.badge ? params.badge.toString() : '';
+  if (params.tabIndex >= 0) {
+    newPlatformSpecific.setBottomTabBadgeByIndex(params.tabIndex, badge);
+  } else {
+    newPlatformSpecific.setBottomTabBadgeByNavigatorId(navigator.navigatorID, badge);
+  }
+}
+
+function navigatorSetTabButton(navigator, params) {
+  if (params.icon) {
+    var icon = resolveAssetSource(params.icon);
+    if (icon) {
+      params.icon = icon.uri;
+    }
+  }
+  params.navigationParams = {};
+  if (params.tabIndex >= 0) {
+    newPlatformSpecific.setBottomTabButtonByIndex(params.tabIndex, params);
+  } else {
+    newPlatformSpecific.setBottomTabButtonByNavigatorId(navigator.navigatorID, params);
+  }
+}
+
+function navigatorSetTitle(navigator, params) {
+  newPlatformSpecific.setScreenTitleBarTitle(navigator.screenInstanceID, params.title);
+}
+
+function navigatorSetSubtitle(navigator, params) {
+  newPlatformSpecific.setScreenTitleBarSubtitle(navigator.screenInstanceID, params.subtitle);
+}
+
+function navigatorSetStyle(navigator, params) {
+  var style = convertStyleParams(params);
+  newPlatformSpecific.setScreenStyle(navigator.screenInstanceID, style);
+}
+
+function navigatorSwitchToTab(navigator, params) {
+  if (params.tabIndex >= 0) {
+    newPlatformSpecific.selectBottomTabByTabIndex(params.tabIndex);
+  } else {
+    newPlatformSpecific.selectBottomTabByNavigatorId(navigator.navigatorID);
+  }
+}
+
+function navigatorSwitchToTopTab(navigator, params) {
+  if (params.tabIndex >= 0) {
+    newPlatformSpecific.selectTopTabByTabIndex(navigator.screenInstanceID, params.tabIndex);
+  } else {
+    newPlatformSpecific.selectTopTabByScreen(navigator.screenInstanceID);
+  }
+}
+
+function navigatorToggleDrawer(navigator, params) {
+  var animated = !(params.animated === false);
+  if (params.to) {
+    var visible = params.to === 'open';
+    newPlatformSpecific.setSideMenuVisible(animated, visible, params.side);
+  } else {
+    newPlatformSpecific.toggleSideMenuVisible(animated, params.side);
+  }
+}
+
+function navigatorSetDrawerEnabled(navigator, params) {
+  newPlatformSpecific.setSideMenuEnabled(params.enabled, params.side);
+}
+
+function navigatorToggleNavBar(navigator, params) {
+  var screenInstanceID = navigator.screenInstanceID;
+  var visible = params.to === 'shown' || params.to === 'show';
+  var animated = !(params.animated === false);
+
+  newPlatformSpecific.toggleTopBarVisible(screenInstanceID, visible, animated);
+}
+
+function navigatorToggleTabs(navigator, params) {
+  var visibility = params.to === 'hidden';
+  var animated = !(params.animated === false);
+  newPlatformSpecific.toggleBottomTabsVisible(visibility, animated);
+}
+
+function showModal(params) {
+  addNavigatorParams(params);
+  addNavigatorButtons(params);
+  addTitleBarBackButtonIfNeeded(params);
+  addNavigationStyleParams(params);
+
+  adaptTopTabs(params, params.navigatorID);
+  params.screenId = params.screen;
+  var adapted = adaptNavigationStyleToScreenStyle(params);
+  adapted = adaptNavigationParams(adapted);
+  adapted.overrideBackPress = params.overrideBackPress;
+  adapted.timestamp = Date.now();
+  if (!adapted.passProps) {
+    adapted.passProps = {};
+  }
+  if (!adapted.passProps.commandType) {
+    adapted.passProps.commandType = 'ShowModal';
+  }
+
+  newPlatformSpecific.showModal(adapted);
+}
+
+function showLightBox(params) {
+  params.navigationParams = {};
+  addNavigatorParams(params.navigationParams);
+  params.screenId = params.screen;
+  var backgroundBlur = _lodash2.default.get(params, 'style.backgroundBlur');
+  var backgroundColor = _lodash2.default.get(params, 'style.backgroundColor');
+  if (backgroundColor) {
+    params.backgroundColor = (0, _reactNative.processColor)(backgroundColor);
+  } else {
+    if (backgroundBlur === 'dark') {
+      params.backgroundColor = (0, _reactNative.processColor)('rgba(0, 0, 0, 0.5)');
+    } else {
+      params.backgroundColor = (0, _reactNative.processColor)('transparent');
+    }
+  }
+  params.tapBackgroundToDismiss = _lodash2.default.get(params, 'style.tapBackgroundToDismiss') || false;
+  newPlatformSpecific.showLightBox(params);
+}
+
+function dismissLightBox() {
+  newPlatformSpecific.dismissLightBox();
+}
+
+function dismissModal(params) {
+  newPlatformSpecific.dismissTopModal(_extends({}, params, {
+    navigationParams: {}
+  }));
+}
+
+function dismissAllModals(params) {
+  return regeneratorRuntime.async(function dismissAllModals$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return regeneratorRuntime.awrap(newPlatformSpecific.dismissAllModals());
+
+        case 2:
+          return _context3.abrupt('return', _context3.sent);
+
+        case 3:
+        case 'end':
+          return _context3.stop();
+      }
+    }
+  }, null, this);
+}
+
+function showInAppNotification(params) {
+  params.navigationParams = {};
+  addNavigatorParams(params.navigationParams);
+
+  params.autoDismissTimerSec = params.autoDismissTimerSec || 5;
+  if (params.autoDismiss === false) delete params.autoDismissTimerSec;
+
+  newPlatformSpecific.showInAppNotification(params);
+}
+
+function dismissInAppNotification(params) {
+  newPlatformSpecific.dismissInAppNotification(params);
+}
+
+function addNavigatorParams(screen) {
+  var navigator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var idx = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+
+  screen.navigatorID = navigator ? navigator.navigatorID : _lodash2.default.uniqueId('navigatorID') + '_nav' + idx;
+  screen.screenInstanceID = _lodash2.default.uniqueId('screenInstanceID');
+  screen.navigatorEventID = screen.screenInstanceID + '_events';
+}
+
+function addNavigatorButtons(screen, sideMenuParams) {
+  var Screen = _Navigation2.default.getRegisteredScreen(screen.screen);
+  if (screen.navigatorButtons == null) {
+    screen.navigatorButtons = _lodash2.default.cloneDeep(Screen.navigatorButtons);
+  }
+
+  var rightButtons = getRightButtons(screen);
+  if (rightButtons) {
+    rightButtons.forEach(function (button) {
+      button.enabled = !button.disabled;
+      if (button.icon) {
+        var icon = resolveAssetSource(button.icon);
+        if (icon) {
+          button.icon = icon.uri;
+        }
+      }
+      if (button.buttonColor) {
+        button.color = (0, _reactNative.processColor)(button.buttonColor);
+      }
+      if (button.component) {
+        var passPropsKey = _lodash2.default.uniqueId('customButtonComponent');
+        _PropRegistry2.default.save(passPropsKey, button.passProps);
+        button.passProps = { passPropsKey: passPropsKey };
+      }
+    });
+  }
+
+  var leftButton = getLeftButton(screen);
+  if (leftButton) {
+    if (leftButton.icon) {
+      var icon = resolveAssetSource(leftButton.icon);
+      if (icon) {
+        leftButton.icon = icon.uri;
+      }
+    }
+    if (leftButton.buttonColor) {
+      leftButton.color = (0, _reactNative.processColor)(leftButton.buttonColor);
+    }
+  }
+
+  var fab = getFab(screen);
+  if (fab) {
+    screen.fab = fab;
+  }
+
+  if (rightButtons) {
+    screen.rightButtons = rightButtons;
+  }
+  if (leftButton) {
+    screen.leftButton = leftButton;
+  }
+}
+
+function getFab(screen) {
+  var fab = screen.fab;
+  if (screen.navigatorButtons && screen.navigatorButtons.fab) {
+    fab = screen.navigatorButtons.fab;
+  }
+  if (fab === null || fab === undefined) {
+    return;
+  }
+  if (Object.keys(fab).length === 0) {
+    return {};
+  }
+
+  var collapsedIconUri = resolveAssetSource(fab.collapsedIcon);
+  if (!collapsedIconUri) {
+    return;
+  }
+  fab.collapsedIcon = collapsedIconUri.uri;
+  if (fab.expendedIcon) {
+    var expendedIconUri = resolveAssetSource(fab.expendedIcon);
+    if (expendedIconUri) {
+      fab.expendedIcon = expendedIconUri.uri;
+    }
+  }
+  if (fab.backgroundColor) {
+    fab.backgroundColor = (0, _reactNative.processColor)(fab.backgroundColor);
+  }
+  if (fab.collapsedIconColor) {
+    fab.collapsedIconColor = (0, _reactNative.processColor)(fab.collapsedIconColor);
+  }
+  if (fab.expendedIconColor) {
+    fab.expendedIconColor = (0, _reactNative.processColor)(fab.expendedIconColor);
+  }
+
+  if (fab.actions) {
+    _lodash2.default.forEach(fab.actions, function (action) {
+      action.icon = resolveAssetSource(action.icon).uri;
+      if (action.backgroundColor) {
+        action.backgroundColor = (0, _reactNative.processColor)(action.backgroundColor);
+      }
+      if (action.iconColor) {
+        action.iconColor = (0, _reactNative.processColor)(action.iconColor);
+      }
+      return action;
+    });
+  }
+
+  return fab;
+}
+
+function createSideMenuButton() {
+  return {
+    id: "sideMenu"
+  };
+}
+
+function addTitleBarBackButtonIfNeeded(screen) {
+  var leftButton = getLeftButton(screen);
+  if (!leftButton) {
+    screen.leftButton = {
+      id: 'back'
+    };
+  }
+}
+
+function getLeftButton(screen) {
+  var leftButton = getLeftButtonDeprecated(screen);
+  if (leftButton) {
+    return leftButton;
+  }
+
+  if (screen.navigatorButtons && screen.navigatorButtons.leftButtons) {
+    return screen.navigatorButtons.leftButtons[0];
+  }
+
+  if (screen.leftButtons) {
+    if (_lodash2.default.isArray(screen.leftButtons)) {
+      return screen.leftButtons[0];
+    } else {
+      return screen.leftButtons;
+    }
+  }
+
+  return null;
+}
+
+function getLeftButtonDeprecated(screen) {
+  if (screen.navigatorButtons && screen.navigatorButtons.leftButton) {
+    return screen.navigatorButtons.leftButton;
+  }
+
+  return screen.leftButton;
+}
+
+function getRightButtons(screen) {
+  if (screen.navigatorButtons && screen.navigatorButtons.rightButtons) {
+    return screen.navigatorButtons.rightButtons;
+  } else if (screen.rightButtons) {
+    return screen.rightButtons;
+  }
+
+  var Screen = _Navigation2.default.getRegisteredScreen(screen.screen);
+
+  if (Screen.navigatorButtons && !_lodash2.default.isEmpty(Screen.navigatorButtons.rightButtons)) {
+    return _lodash2.default.cloneDeep(Screen.navigatorButtons.rightButtons);
+  }
+
+  return null;
+}
+
+function addNavigationStyleParams(screen) {
+  var Screen = _Navigation2.default.getRegisteredScreen(screen.screen);
+  screen.navigatorStyle = _extends({}, Screen.navigatorStyle, screen.navigatorStyle);
+}
+
+function showSnackbar(params) {
+  var adapted = _lodash2.default.cloneDeep(params);
+  if (adapted.backgroundColor) {
+    adapted.backgroundColor = (0, _reactNative.processColor)(adapted.backgroundColor);
+  }
+  if (adapted.actionColor) {
+    adapted.actionColor = (0, _reactNative.processColor)(adapted.actionColor);
+  }
+  if (adapted.textColor) {
+    adapted.textColor = (0, _reactNative.processColor)(adapted.textColor);
+  }
+  return newPlatformSpecific.showSnackbar(adapted);
+}
+
+function dismissSnackbar() {
+  return newPlatformSpecific.dismissSnackbar();
+}
+
+function showContextualMenu(navigator, params) {
+  var contextualMenu = {
+    buttons: [],
+    backButton: { id: 'back' },
+    navigationParams: { navigatorEventID: navigator.navigatorEventID }
+  };
+
+  params.rightButtons.forEach(function (button, index) {
+    var btn = {
+      icon: resolveAssetSource(button.icon),
+      showAsAction: button.showAsAction,
+      color: (0, _reactNative.processColor)(button.color),
+      label: button.title,
+      index: index
+    };
+    if (btn.icon) {
+      btn.icon = btn.icon.uri;
+    }
+    contextualMenu.buttons.push(btn);
+  });
+
+  newPlatformSpecific.showContextualMenu(navigator.screenInstanceID, contextualMenu, params.onButtonPressed);
+}
+
+function dismissContextualMenu() {
+  newPlatformSpecific.dismissContextualMenu();
+}
+
+function isAppLaunched() {
+  return regeneratorRuntime.async(function isAppLaunched$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return regeneratorRuntime.awrap(newPlatformSpecific.isAppLaunched());
+
+        case 2:
+          return _context4.abrupt('return', _context4.sent);
+
+        case 3:
+        case 'end':
+          return _context4.stop();
+      }
+    }
+  }, null, this);
+}
+
+function isRootLaunched() {
+  return regeneratorRuntime.async(function isRootLaunched$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return regeneratorRuntime.awrap(newPlatformSpecific.isRootLaunched());
+
+        case 2:
+          return _context5.abrupt('return', _context5.sent);
+
+        case 3:
+        case 'end':
+          return _context5.stop();
+      }
+    }
+  }, null, this);
+}
+
+function getCurrentlyVisibleScreenId() {
+  return regeneratorRuntime.async(function getCurrentlyVisibleScreenId$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return regeneratorRuntime.awrap(newPlatformSpecific.getCurrentlyVisibleScreenId());
+
+        case 2:
+          return _context6.abrupt('return', _context6.sent);
+
+        case 3:
+        case 'end':
+          return _context6.stop();
+      }
+    }
+  }, null, this);
+}
+
+function getLaunchArgs() {
+  return regeneratorRuntime.async(function getLaunchArgs$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.next = 2;
+          return regeneratorRuntime.awrap(newPlatformSpecific.getLaunchArgs());
+
+        case 2:
+          return _context7.abrupt('return', _context7.sent);
+
+        case 3:
+        case 'end':
+          return _context7.stop();
+      }
+    }
+  }, null, this);
+}
+
+exports.default = {
+  startTabBasedApp: startTabBasedApp,
+  startSingleScreenApp: startSingleScreenApp,
+  navigatorPush: navigatorPush,
+  navigatorPop: navigatorPop,
+  navigatorPopToRoot: navigatorPopToRoot,
+  navigatorResetTo: navigatorResetTo,
+  showModal: showModal,
+  dismissModal: dismissModal,
+  dismissAllModals: dismissAllModals,
+  showInAppNotification: showInAppNotification,
+  showLightBox: showLightBox,
+  dismissLightBox: dismissLightBox,
+  dismissInAppNotification: dismissInAppNotification,
+  navigatorSetButtons: navigatorSetButtons,
+  navigatorSetTabBadge: navigatorSetTabBadge,
+  navigatorSetTabButton: navigatorSetTabButton,
+  navigatorSetTitle: navigatorSetTitle,
+  navigatorSetSubtitle: navigatorSetSubtitle,
+  navigatorSetStyle: navigatorSetStyle,
+  navigatorSwitchToTab: navigatorSwitchToTab,
+  navigatorSwitchToTopTab: navigatorSwitchToTopTab,
+  navigatorToggleDrawer: navigatorToggleDrawer,
+  navigatorSetDrawerEnabled: navigatorSetDrawerEnabled,
+  navigatorToggleTabs: navigatorToggleTabs,
+  navigatorToggleNavBar: navigatorToggleNavBar,
+  showSnackbar: showSnackbar,
+  dismissSnackbar: dismissSnackbar,
+  showContextualMenu: showContextualMenu,
+  dismissContextualMenu: dismissContextualMenu,
+  isAppLaunched: isAppLaunched,
+  isRootLaunched: isRootLaunched,
+  getCurrentlyVisibleScreenId: getCurrentlyVisibleScreenId,
+  getLaunchArgs: getLaunchArgs
+};

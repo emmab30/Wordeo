@@ -1,0 +1,174 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GoogleAnalyticsBackwardsCompability = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _GoogleTagManager = require('./GoogleTagManager');
+
+var _GoogleAnalyticsSettings = require('./GoogleAnalyticsSettings');
+
+var _GoogleAnalyticsTracker = require('./GoogleAnalyticsTracker');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function createNewTracker(trackerId, customDimensionsKeysIndexMap) {
+  return trackerId && new _GoogleAnalyticsTracker.GoogleAnalyticsTracker(trackerId, customDimensionsKeysIndexMap);
+}
+
+var GoogleAnalyticsBackwardsCompability = exports.GoogleAnalyticsBackwardsCompability = function () {
+  function GoogleAnalyticsBackwardsCompability(trackerId, customDimensionsKeysIndexMap) {
+    _classCallCheck(this, GoogleAnalyticsBackwardsCompability);
+
+    this.tracker = createNewTracker(trackerId, customDimensionsKeysIndexMap);
+  }
+
+  _createClass(GoogleAnalyticsBackwardsCompability, [{
+    key: 'setTrackerId',
+    value: function setTrackerId(trackerId, customDimensionsKeysIndexMap) {
+      this.tracker = createNewTracker(trackerId, customDimensionsKeysIndexMap);
+    }
+  }, {
+    key: 'setDryRun',
+    value: function setDryRun(enabled) {
+      _GoogleAnalyticsSettings.GoogleAnalyticsSettings.setDryRun(enabled);
+    }
+  }, {
+    key: 'setDispatchInterval',
+    value: function setDispatchInterval(intervalInSeconds) {
+      _GoogleAnalyticsSettings.GoogleAnalyticsSettings.setDispatchInterval(intervalInSeconds);
+    }
+  }, {
+    key: 'setOptOut',
+    value: function setOptOut(enabled) {
+      _GoogleAnalyticsSettings.GoogleAnalyticsSettings.setOptOut(enabled);
+    }
+  }, {
+    key: 'trackScreenView',
+    value: function trackScreenView(screenName) {
+      this.tracker.trackScreenView(screenName);
+    }
+  }, {
+    key: 'trackEvent',
+    value: function trackEvent(category, action) {
+      var optionalValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      this.tracker.trackEvent(category, action, optionalValues);
+    }
+  }, {
+    key: 'trackScreenViewWithCustomDimensionValues',
+    value: function trackScreenViewWithCustomDimensionValues(screenName, customDimensionValues) {
+      this.tracker.trackScreenViewWithCustomDimensionValues(screenName, customDimensionValues);
+    }
+  }, {
+    key: 'trackEventWithCustomDimensionValues',
+    value: function trackEventWithCustomDimensionValues(category, action) {
+      var optionalValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var customDimensionValues = arguments[3];
+
+      this.tracker.trackEventWithCustomDimensionValues(category, action, optionalValues, customDimensionValues);
+    }
+  }, {
+    key: 'trackTiming',
+    value: function trackTiming(category, value) {
+      var optionalValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      this.tracker.trackTiming(category, value, optionalValues);
+    }
+  }, {
+    key: 'trackPurchaseEvent',
+    value: function trackPurchaseEvent() {
+      var product = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var transaction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var eventCategory = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Ecommerce";
+      var eventAction = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "Purchase";
+
+      this.tracker.trackPurchaseEvent(product, transaction, eventCategory, eventAction);
+    }
+  }, {
+    key: 'trackMultiProductsPurchaseEvent',
+    value: function trackMultiProductsPurchaseEvent() {
+      var products = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var transaction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var eventCategory = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Ecommerce";
+      var eventAction = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "Purchase";
+
+      this.tracker.trackMultiProductsPurchaseEvent(products, transaction, eventCategory, eventAction);
+    }
+  }, {
+    key: 'trackMultiProductsPurchaseEventWithCustomDimensionValues',
+    value: function trackMultiProductsPurchaseEventWithCustomDimensionValues() {
+      var products = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var transaction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var eventCategory = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Ecommerce";
+      var eventAction = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "Purchase";
+      var customDimensionValues = arguments[4];
+
+      this.tracker.trackMultiProductsPurchaseEventWithCustomDimensionValues(products, transaction, eventCategory, eventAction, customDimensionValues);
+    }
+  }, {
+    key: 'trackException',
+    value: function trackException(error) {
+      var fatal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      this.tracker.trackException(error, fatal);
+    }
+  }, {
+    key: 'setUser',
+    value: function setUser(userId) {
+      this.tracker.setUser(userId);
+    }
+  }, {
+    key: 'allowIDFA',
+    value: function allowIDFA() {
+      var enabled = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+      this.tracker.allowIDFA(enabled);
+    }
+  }, {
+    key: 'trackSocialInteraction',
+    value: function trackSocialInteraction(network, action, targetUrl) {
+      this.tracker.trackSocialInteraction(network, action, targetUrl);
+    }
+  }, {
+    key: 'setTrackUncaughtExceptions',
+    value: function setTrackUncaughtExceptions(enabled) {
+      this.tracker.setTrackUncaughtExceptions(enabled);
+    }
+  }, {
+    key: 'setAppName',
+    value: function setAppName(appName) {
+      this.tracker.setAppName(appName);
+    }
+  }, {
+    key: 'setAppVersion',
+    value: function setAppVersion(appVersion) {
+      this.tracker.setAppVersion(appVersion);
+    }
+  }, {
+    key: 'setAnonymizeIp',
+    value: function setAnonymizeIp(enabled) {
+      this.tracker.setAnonymizeIp(enabled);
+    }
+  }, {
+    key: 'setSamplingRate',
+    value: function setSamplingRate(sampleRatio) {
+      this.tracker.setSamplingRate(sampleRatio);
+    }
+  }, {
+    key: 'setCurrency',
+    value: function setCurrency(currencyCode) {
+      this.tracker.setCurrency(currencyCode);
+    }
+  }, {
+    key: 'createNewSession',
+    value: function createNewSession(screenName) {
+      this.tracker.createNewSession(screenName);
+    }
+  }]);
+
+  return GoogleAnalyticsBackwardsCompability;
+}();
+
+GoogleAnalyticsBackwardsCompability.GoogleTagManager = _GoogleTagManager.GoogleTagManager;

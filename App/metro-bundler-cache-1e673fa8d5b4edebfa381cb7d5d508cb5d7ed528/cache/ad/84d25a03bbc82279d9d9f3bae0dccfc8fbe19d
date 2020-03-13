@@ -1,0 +1,334 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/ranking.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _RankingItem = require('../../components/componentsJs/RankingItem');
+
+var _RankingItem2 = _interopRequireDefault(_RankingItem);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _Services = require('../../services/Services');
+
+var _FontAwesome = require('react-native-vector-icons/FontAwesome');
+
+var _FontAwesome2 = _interopRequireDefault(_FontAwesome);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _global = require('../../components/common/global');
+
+var _profile = require('../../styles/dashboard/profile');
+
+var _default = require('../../styles/default');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    Ranking: {
+        displayName: 'Ranking'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/ranking.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var Ranking = _wrapComponent('Ranking')(function (_Component) {
+    _inherits(Ranking, _Component);
+
+    function Ranking(props) {
+        _classCallCheck(this, Ranking);
+
+        var _this = _possibleConstructorReturn(this, (Ranking.__proto__ || Object.getPrototypeOf(Ranking)).call(this, props));
+
+        _this.state = {
+            players: [],
+            scrollOffsetY: new _reactNative.Animated.Value(0)
+        };
+
+        _this.getRankingTopPlayers = _this.getRankingTopPlayers.bind(_this);
+        return _this;
+    }
+
+    _createClass(Ranking, [{
+        key: 'getRankingTopPlayers',
+        value: function getRankingTopPlayers() {
+            var _this2 = this;
+
+            this.refs.spinner.show();
+
+            _Services.CharacterService.getRankingTopPlayers({}, function (ranking) {
+                _this2.setState({ players: ranking.players, myPosition: ranking.myPosition });
+                setTimeout(function () {
+                    _this2.refs.spinner.hide();
+                }, 1300);
+            }, function (err) {});
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.getRankingTopPlayers();
+        }
+    }, {
+        key: 'renderNavbar',
+        value: function renderNavbar() {
+            return _react3.default.createElement(_CustomNavbar2.default, {
+                navigator: this.props.navigator,
+                gradientColors: ['#ED6552', '#ed5e26'],
+                backButton: true,
+                title: 'Top ranking',
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 73
+                }
+            });
+        }
+    }, {
+        key: 'getRandomColor',
+        value: function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var backgroundColor = this.state.scrollOffsetY.interpolate({
+                inputRange: [-50, 150],
+                outputRange: ['#fff', _default.Color.GoldenPrimary]
+            });
+
+            return _react3.default.createElement(
+                _reactNative.Animated.View,
+                { style: [_profile.ProfileStyle.container, { backgroundColor: backgroundColor }], __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 98
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.ImageBackground,
+                    {
+                        style: { width: '100%', height: '100%' },
+                        source: require('../../images/wordeo/ranking/background.png'), __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 99
+                        }
+                    },
+                    this.renderNavbar(),
+                    _react3.default.createElement(_SpinnerComponent2.default, {
+                        ref: 'spinner', __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 105
+                        }
+                    }),
+                    _react3.default.createElement(_reactNative.FlatList, {
+                        centerContent: false,
+                        style: { paddingTop: 15 },
+                        snapToAlignment: 'start',
+                        data: this.state.players,
+                        extraData: this.state.players.length,
+                        keyExtractor: function keyExtractor(item, index) {
+                            return 'playerId-' + item.id;
+                        },
+                        ListHeaderComponent: function ListHeaderComponent() {
+                            return _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { marginRight: 5, marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 30, color: _default.Color.BluePrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 119
+                                    }
+                                },
+                                'LOS MEJORES 20'
+                            );
+                        },
+                        onScroll: _reactNative.Animated.event([{
+                            nativeEvent: {
+                                contentOffset: {
+                                    y: this.state.scrollOffsetY
+                                }
+                            }
+                        }]),
+                        renderItem: function renderItem(rowData) {
+                            return _react3.default.createElement(_RankingItem2.default, {
+                                player: rowData.item,
+                                index: rowData.index, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 133
+                                }
+                            });
+                        },
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 108
+                        }
+                    }),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.stats, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 140
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 141
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { fontFamily: _default.Font.TitanOne, fontSize: 15, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 142
+                                    }
+                                },
+                                'TU POSICION EN EL RANKING'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { marginLeft: 20, backgroundColor: _default.Color.GoldenPrimary, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 143
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { fontFamily: _default.Font.TitanOne, backgroundColor: 'transparent', fontSize: 30, color: _default.Color.LightPrimary, textAlign: 'center' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 144
+                                        }
+                                    },
+                                    this.state.myPosition
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Ranking;
+}(_react2.Component));
+
+exports.default = Ranking;
+
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    loadingContainer: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formContainer: {
+        width: '90%',
+        maxWidth: '90%',
+        alignSelf: 'center',
+        flex: 1,
+        flexDirection: 'column'
+    },
+    inputContainer: {
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formInput: {
+        flex: 1,
+        fontFamily: _default.Font.PTSansRegular
+    },
+    formIcon: {
+        marginRight: 10
+    },
+    avatarImageContainer: {
+        flex: 1,
+        width: '100%'
+    },
+    avatarImageBackground: {
+        resizeMode: 'cover',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center'
+    },
+    avatar: {
+        flex: 0,
+        width: '100%',
+        height: 100,
+        resizeMode: 'contain',
+
+        alignSelf: 'center'
+    },
+    avatarName: {
+        color: 'white',
+        fontSize: 20,
+        marginVertical: 10,
+        backgroundColor: 'transparent',
+        fontFamily: _default.Font.PTSansRegular,
+        textAlign: 'center'
+    },
+    buttonUpdate: {
+        minWidth: '100%',
+        width: '100%',
+        borderRadius: 10,
+        backgroundColor: _default.Color.OrangePrimary,
+        height: 50
+    },
+    stats: {
+        flex: 0,
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        margin: 10,
+        padding: 5,
+        backgroundColor: 'rgba(22,22,22,0.95)'
+    }
+});

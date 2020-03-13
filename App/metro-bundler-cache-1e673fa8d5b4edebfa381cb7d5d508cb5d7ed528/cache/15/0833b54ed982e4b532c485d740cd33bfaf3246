@@ -1,0 +1,34 @@
+'use strict';
+
+var _ = require('lodash');
+
+function createPreloader(list) {
+    var urls = _.clone(list);
+    return {
+        next: function next() {
+            return urls.shift();
+        }
+    };
+}
+
+function runPreloadTask(prefetcher, imageCacheManager) {
+    var url = prefetcher.next();
+    if (!url) {
+        return Promise.resolve();
+    }
+
+    return imageCacheManager.downloadAndCacheUrl(url).catch(_.noop).then(function () {
+        return runPreloadTask(prefetcher, imageCacheManager);
+    });
+}
+
+module.exports = {
+    preloadImages: function preloadImages(urls, imageCacheManager, numberOfConcurrentPreloads) {
+        var preloader = createPreloader(urls);
+        var numberOfWorkers = numberOfConcurrentPreloads > 0 ? numberOfConcurrentPreloads : urls.length;
+        var promises = _.times(numberOfWorkers, function () {
+            return runPreloadTask(preloader, imageCacheManager);
+        });
+        return Promise.all(promises);
+    }
+};

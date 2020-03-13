@@ -1,0 +1,115 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _BaseService = require('./BaseService.js');
+
+var _global = require('../components/common/global');
+
+var _reactNativeSocket = require('react-native-socket.io-client');
+
+var _reactNativeSocket2 = _interopRequireDefault(_reactNativeSocket);
+
+var _reactNative = require('react-native');
+
+var _EventEmitter = require('EventEmitter');
+
+var _EventEmitter2 = _interopRequireDefault(_EventEmitter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SocketService = {
+    socket: null,
+    getSocket: function getSocket() {
+        return SocketService.socket;
+    },
+    connect: function connect(callback) {
+        if (SocketService.socket === null) {
+            SocketService.socket = (0, _reactNativeSocket2.default)((0, _BaseService.SocketUrl)(), {
+                autoConnect: true,
+                reconnection: true,
+                transports: ['websocket', 'polling']
+            });
+            SocketService.socket.on('connect', function () {
+                _reactNative.AsyncStorage.getItem("user").then(function (value) {
+                    if (value != null) {
+                        var user = JSON.parse(value);
+                        SocketService.socket.emit('authentication', { id: user.session.id, userId: user.session.userId });
+                    }
+
+                    if (callback !== undefined) {
+                        callback();
+                    }
+                }).done();
+            });
+        }
+    },
+    disconnect: function disconnect(cb) {
+        if (SocketService.socket !== null) {
+            SocketService.socket.disconnect();
+            cb();
+        } else {
+            cb();
+        }
+    },
+    on: function on(eventName, callback) {
+        SocketService.socket.on(eventName, function (value) {
+            if (callback) callback(value);
+        });
+    },
+    removeListener: function removeListener(eventName, fn) {
+        SocketService.socket.off(eventName, fn);
+    },
+    emit: function emit(eventName, parameters) {
+        if (SocketService.socket != null && SocketService.socket != undefined) {
+            SocketService.socket.emit(eventName, parameters);
+        }
+    },
+    subscribe: {
+        onDisconnect: function onDisconnect(callback) {
+            SocketService.socket.on('disconnect', function (value) {
+                setTimeout(function () {
+                    _global.Global.eventEmitter.emit('onDisconnect', value);
+                }, 1000);
+            });
+        },
+        onUsersOnlineUpdate: function onUsersOnlineUpdate(callback) {
+            SocketService.socket.on('onStatisticsUsers', function (value) {
+                setTimeout(function () {
+                    _global.Global.eventEmitter.emit('onUsersOnlineUpdate', value);
+                }, 1000);
+            });
+        },
+        onRoomCreated: function onRoomCreated(callback) {
+            SocketService.socket.on('onRoomCreated', function (value) {
+                setTimeout(function () {
+                    _global.Global.eventEmitter.emit('onRoomCreated', value);
+                }, 1000);
+            });
+        },
+        onRoomRemoved: function onRoomRemoved(callback) {
+            SocketService.socket.on('onRoomRemoved', function (value) {
+                setTimeout(function () {
+                    _global.Global.eventEmitter.emit('onRoomRemoved', value);
+                }, 1000);
+            });
+        },
+        onRoomActivity: function onRoomActivity(roomId, callback) {
+            SocketService.socket.on('onRoomActivity', function (value) {
+                setTimeout(function () {
+                    _global.Global.eventEmitter.emit('onRoomActivity', value);
+                }, 1000);
+            });
+        },
+        onStartRound: function onStartRound(callback) {
+            SocketService.socket.on('onStartRound', function (value) {
+                setTimeout(function () {
+                    _global.Global.eventEmitter.emit('onStartRound', value);
+                }, 1000);
+            });
+        }
+    }
+};
+
+exports.default = SocketService;

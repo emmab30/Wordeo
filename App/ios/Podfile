@@ -1,0 +1,21 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'OpenEnglish' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for OpenEnglish
+  pod 'Firebase/Core'
+
+  pod 'react-native-blur', :path => '../node_modules/react-native-blur'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'RNShare', :path => '../node_modules/react-native-share'
+
+  pod 'Interactable', :path => '../node_modules/react-native-interactable'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
+end

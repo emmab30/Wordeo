@@ -1,0 +1,306 @@
+'use strict';
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _class,
+    _temp,
+    _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-cached-image/CachedImage.js';
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    CachedImage: {
+        displayName: 'CachedImage'
+    }
+};
+
+var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-cached-image/CachedImage.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _reactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _ = require('lodash');
+var React = require('react');
+var ReactNative = require('react-native');
+
+var PropTypes = require('prop-types');
+
+var ImageCacheManagerOptionsPropTypes = require('./ImageCacheManagerOptionsPropTypes');
+
+var flattenStyle = ReactNative.StyleSheet.flatten;
+
+var ImageCacheManager = require('./ImageCacheManager');
+
+var View = ReactNative.View,
+    ImageBackground = ReactNative.ImageBackground,
+    ActivityIndicator = ReactNative.ActivityIndicator,
+    NetInfo = ReactNative.NetInfo,
+    Platform = ReactNative.Platform,
+    StyleSheet = ReactNative.StyleSheet;
+
+
+var styles = StyleSheet.create({
+    image: {
+        backgroundColor: 'transparent'
+    },
+    loader: {
+        backgroundColor: 'transparent'
+    },
+    loaderPlaceholder: {
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+});
+
+function getImageProps(props) {
+    return _.omit(props, ['source', 'defaultSource', 'fallbackSource', 'LoadingIndicator', 'activityIndicatorProps', 'style', 'useQueryParamsInCacheKey', 'renderImage', 'resolveHeaders']);
+}
+
+var CACHED_IMAGE_REF = 'cachedImage';
+
+var CachedImage = _wrapComponent('CachedImage')((_temp = _class = function (_React$Component) {
+    _inherits(CachedImage, _React$Component);
+
+    function CachedImage(props) {
+        _classCallCheck(this, CachedImage);
+
+        var _this = _possibleConstructorReturn(this, (CachedImage.__proto__ || Object.getPrototypeOf(CachedImage)).call(this, props));
+
+        _this._isMounted = false;
+        _this.state = {
+            isCacheable: true,
+            cachedImagePath: null,
+            networkAvailable: true
+        };
+
+        _this.getImageCacheManagerOptions = _this.getImageCacheManagerOptions.bind(_this);
+        _this.getImageCacheManager = _this.getImageCacheManager.bind(_this);
+        _this.safeSetState = _this.safeSetState.bind(_this);
+        _this.handleConnectivityChange = _this.handleConnectivityChange.bind(_this);
+        _this.processSource = _this.processSource.bind(_this);
+        _this.renderLoader = _this.renderLoader.bind(_this);
+        return _this;
+    }
+
+    _createClass(CachedImage, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _this2 = this;
+
+            this._isMounted = true;
+            NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+
+            NetInfo.isConnected.fetch().then(function (isConnected) {
+                _this2.safeSetState({
+                    networkAvailable: isConnected
+                });
+            });
+
+            this.processSource(this.props.source);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this._isMounted = false;
+            NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (!_.isEqual(this.props.source, nextProps.source)) {
+                this.processSource(nextProps.source);
+            }
+        }
+    }, {
+        key: 'setNativeProps',
+        value: function setNativeProps(nativeProps) {
+            try {
+                this.refs[CACHED_IMAGE_REF].setNativeProps(nativeProps);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    }, {
+        key: 'getImageCacheManagerOptions',
+        value: function getImageCacheManagerOptions() {
+            return _.pick(this.props, _.keys(ImageCacheManagerOptionsPropTypes));
+        }
+    }, {
+        key: 'getImageCacheManager',
+        value: function getImageCacheManager() {
+            if (this.context && this.context.getImageCacheManager) {
+                return this.context.getImageCacheManager();
+            }
+
+            var options = this.getImageCacheManagerOptions();
+            return ImageCacheManager(options);
+        }
+    }, {
+        key: 'safeSetState',
+        value: function safeSetState(newState) {
+            if (!this._isMounted) {
+                return;
+            }
+            return this.setState(newState);
+        }
+    }, {
+        key: 'handleConnectivityChange',
+        value: function handleConnectivityChange(isConnected) {
+            this.safeSetState({
+                networkAvailable: isConnected
+            });
+        }
+    }, {
+        key: 'processSource',
+        value: function processSource(source) {
+            var _this3 = this;
+
+            var url = _.get(source, ['uri'], null);
+            var options = this.getImageCacheManagerOptions();
+            var imageCacheManager = this.getImageCacheManager();
+
+            imageCacheManager.downloadAndCacheUrl(url, options).then(function (cachedImagePath) {
+                _this3.safeSetState({
+                    cachedImagePath: cachedImagePath
+                });
+            }).catch(function (err) {
+                _this3.safeSetState({
+                    cachedImagePath: null,
+                    isCacheable: false
+                });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (this.state.isCacheable && !this.state.cachedImagePath) {
+                return this.renderLoader();
+            }
+            var props = getImageProps(this.props);
+            var style = this.props.style || styles.image;
+            var source = this.state.isCacheable && this.state.cachedImagePath ? {
+                uri: 'file://' + this.state.cachedImagePath
+            } : this.props.source;
+            if (this.props.fallbackSource && !this.state.cachedImagePath) {
+                return this.props.renderImage(_extends({}, props, {
+                    key: (props.key || source.uri) + 'error',
+                    style: style,
+                    source: this.props.fallbackSource
+                }));
+            }
+            return this.props.renderImage(_extends({}, props, {
+                key: props.key || source.uri,
+                style: style,
+                source: source
+            }));
+        }
+    }, {
+        key: 'renderLoader',
+        value: function renderLoader() {
+            var imageProps = getImageProps(this.props);
+            var imageStyle = [this.props.style, styles.loaderPlaceholder];
+
+            var activityIndicatorProps = _.omit(this.props.activityIndicatorProps, ['style']);
+            var activityIndicatorStyle = this.props.activityIndicatorProps.style || styles.loader;
+
+            var LoadingIndicator = this.props.loadingIndicator;
+
+            var source = this.props.defaultSource;
+
+            if (!source || Platform.OS === 'android' && flattenStyle(imageStyle).borderRadius) {
+                if (LoadingIndicator) {
+                    return React.createElement(
+                        View,
+                        { style: [imageStyle, activityIndicatorStyle], __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 201
+                            }
+                        },
+                        React.createElement(LoadingIndicator, _extends({}, activityIndicatorProps, {
+                            __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 202
+                            }
+                        }))
+                    );
+                }
+                return React.createElement(ActivityIndicator, _extends({}, activityIndicatorProps, {
+                    style: [imageStyle, activityIndicatorStyle], __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 207
+                    }
+                }));
+            }
+
+            return this.props.renderImage(_extends({}, imageProps, {
+                style: imageStyle,
+                key: source.uri,
+                source: source,
+                children: LoadingIndicator ? React.createElement(
+                    View,
+                    { style: [imageStyle, activityIndicatorStyle], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 220
+                        }
+                    },
+                    React.createElement(LoadingIndicator, _extends({}, activityIndicatorProps, {
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 221
+                        }
+                    }))
+                ) : React.createElement(ActivityIndicator, _extends({}, activityIndicatorProps, {
+                    style: activityIndicatorStyle, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 223
+                    }
+                }))
+            }));
+        }
+    }]);
+
+    return CachedImage;
+}(React.Component), _class.propTypes = _extends({
+    renderImage: PropTypes.func.isRequired,
+    activityIndicatorProps: PropTypes.object.isRequired
+
+}, ImageCacheManagerOptionsPropTypes), _class.defaultProps = {
+    renderImage: function renderImage(props) {
+        return React.createElement(ImageBackground, _extends({ imageStyle: props.style, ref: CACHED_IMAGE_REF }, props, {
+            __source: {
+                fileName: _jsxFileName,
+                lineNumber: 55
+            }
+        }));
+    },
+    activityIndicatorProps: {}
+}, _class.contextTypes = {
+    getImageCacheManager: PropTypes.func
+}, _temp));
+
+module.exports = CachedImage;

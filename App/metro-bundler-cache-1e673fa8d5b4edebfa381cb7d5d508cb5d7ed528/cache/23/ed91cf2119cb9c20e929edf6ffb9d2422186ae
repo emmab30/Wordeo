@@ -1,0 +1,757 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/CustomizeCharacter.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _strings = require('../../components/localization/strings');
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _CustomMenu = require('../../components/navigation/CustomMenu');
+
+var _CustomMenu2 = _interopRequireDefault(_CustomMenu);
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _CommonDialog = require('../../components/dialogs/CommonDialog');
+
+var _CommonDialog2 = _interopRequireDefault(_CommonDialog);
+
+var _ConfirmationDialog = require('../../components/dialogs/ConfirmationDialog');
+
+var _ConfirmationDialog2 = _interopRequireDefault(_ConfirmationDialog);
+
+var _reactNativeOnesignal = require('react-native-onesignal');
+
+var _reactNativeOnesignal2 = _interopRequireDefault(_reactNativeOnesignal);
+
+var _reactNativeElements = require('react-native-elements');
+
+var _Services = require('../../services/Services');
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _global = require('../../components/common/global');
+
+var _general = require('../../styles/general');
+
+var _default = require('../../styles/default');
+
+var _reactNativeAnimatable = require('react-native-animatable');
+
+var Animatable = _interopRequireWildcard(_reactNativeAnimatable);
+
+var _reactNativeModalDropdown = require('react-native-modal-dropdown');
+
+var _reactNativeModalDropdown2 = _interopRequireDefault(_reactNativeModalDropdown);
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _RoundPlayer = require('../../components/componentsJs/RoundPlayer');
+
+var _RoundPlayer2 = _interopRequireDefault(_RoundPlayer);
+
+var _RoundItem = require('../../components/componentsJs/RoundItem');
+
+var _RoundItem2 = _interopRequireDefault(_RoundItem);
+
+var _NewRoomWizard = require('../../components/modals/NewRoomWizard');
+
+var _NewRoomWizard2 = _interopRequireDefault(_NewRoomWizard);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    CustomizeCharacter: {
+        displayName: 'CustomizeCharacter'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/CustomizeCharacter.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var Sound = require('react-native-sound');
+Sound.setCategory('Playback');
+
+var BackgroundOptionCell = 'rgba(28, 34, 40, .4)';
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var MODES = {
+    ACCESORIES: 1,
+    CHARACTERS: 2
+};
+
+var CustomizeCharacter = _wrapComponent('CustomizeCharacter')(function (_Component) {
+    _inherits(CustomizeCharacter, _Component);
+
+    function CustomizeCharacter(props) {
+        _classCallCheck(this, CustomizeCharacter);
+
+        var _this = _possibleConstructorReturn(this, (CustomizeCharacter.__proto__ || Object.getPrototypeOf(CustomizeCharacter)).call(this, props));
+
+        _this.state = {
+            character: null,
+            characterb64: null,
+            accesories: null,
+            selectedAccesories: [],
+            user: null,
+            lastCategoryRender: null,
+            containerDimensions: null,
+            currentMode: MODES.CHARACTERS,
+            isMounted: false
+        };
+
+        _this.loadCharacter = _this.loadCharacter.bind(_this);
+
+        _this.backgroundAnimation = new _reactNative.Animated.Value(0);
+        _this.containerWidth = new _reactNative.Animated.Value(0);
+        _this.containerHeight = new _reactNative.Animated.Value(0);
+        _this.tabIndicatorLeft = new _reactNative.Animated.Value(10);
+        return _this;
+    }
+
+    _createClass(CustomizeCharacter, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setState({ isMounted: true });
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            var _this2 = this;
+
+            if (nextProps.isVisible) {
+                setTimeout(function () {
+                    if (_this2.state.currentMode == MODES.CHARACTERS) {
+                        _this2.loadCharacters();
+                    } else {
+                        _this2.loadAccesories();
+                    }
+                }, 500);
+            }
+        }
+    }, {
+        key: 'loadAccesories',
+        value: function loadAccesories() {
+            var _this3 = this;
+
+            if (this.refs.spinner) this.refs.spinner.show();
+            _Services.CharacterService.getAvailableAccesories({ characterId: this.props.profile.characterId || -1 }, function (accesories) {
+
+                var fn = function fn() {
+                    _this3.setState({ isLoading: false, accesories: accesories, currentMode: MODES.ACCESORIES });
+                };
+                if (_this3.refs.spinner) {
+                    _this3.refs.spinner.hide(fn);
+                } else {
+                    fn();
+                }
+            }, function (err) {});
+        }
+    }, {
+        key: 'loadCharacters',
+        value: function loadCharacters() {
+            var _this4 = this;
+
+            if (this.refs.spinner) this.refs.spinner.show();
+            _Services.CharacterService.getAvailableCharacters(function (characters) {
+                var fn = function fn() {
+                    _this4.setState({ isLoading: false, characters: characters, currentMode: MODES.CHARACTERS });
+                };
+                if (_this4.refs.spinner) {
+                    _this4.refs.spinner.hide(fn);
+                } else {
+                    fn();
+                }
+            }, function (err) {
+                console.log(err);
+            });
+        }
+    }, {
+        key: 'loadCharacter',
+        value: function loadCharacter(characterId, accesories) {
+            var _this5 = this;
+
+            this.refs.spinner.show();
+            _Services.CharacterService.make({
+                characterId: characterId,
+                accesories: accesories.map(function (e) {
+                    return e.id;
+                })
+            }, function (base64) {
+                if (base64 != null) {
+                    var image = { uri: base64 };
+                    _this5.refs.spinner.hide(function () {
+                        _this5.setState({ characterb64: image });
+                    });
+                }
+            }, function (err) {});
+        }
+    }, {
+        key: 'onBuy',
+        value: function onBuy() {
+            var _this6 = this;
+
+            this.refs.spinner.show();
+            _Services.CharacterService.buyAccesories({
+                accesories: this.state.selectedAccesories.map(function (e) {
+                    return e.id;
+                })
+            }, function (data) {
+                _this6.refs.spinner.hide(function () {
+                    _this6.refs.dialog.show('success', data.message, function () {
+                        setTimeout(function () {
+                            _this6.props.onClose();
+                        });
+                    });
+                    _this6.props.onUpdateProfile();
+                });
+            }, function (err) {
+                _this6.setState({ isLoading: false });
+                _this6.refs.dialog.show('error', err.response.data.error.message);
+            });
+        }
+    }, {
+        key: 'onBuyCharacter',
+        value: function onBuyCharacter(characterId) {
+            var _this7 = this;
+
+            if (this.refs.spinner) this.refs.spinner.show();
+            _Services.CharacterService.buyCharacter({
+                characterId: characterId
+            }, function (data) {
+                if (_this7.refs.spinner) _this7.refs.spinner.hide();
+
+                setTimeout(function () {
+                    _this7.refs.dialog.show('success', data.message, function () {
+                        setTimeout(function () {
+                            _this7.props.onClose();
+                        });
+                    });
+                    _this7.props.onUpdateProfile();
+                }, 300);
+            }, function (err) {
+                _this7.refs.spinner.hide();
+                _this7.refs.dialog.show('error', err.response.data.error.message);
+            });
+        }
+    }, {
+        key: 'onLayoutContainer',
+        value: function onLayoutContainer(e) {
+            this.setState({ containerDimensions: e.nativeEvent.layout });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this8 = this;
+
+            var totalMount = 0;
+            var pricing = this.state.selectedAccesories.map(function (e) {
+                return e.price || 0;
+            });
+            for (var idx in pricing) {
+                totalMount += pricing[idx];
+            }
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 212
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    { visible: this.props.isVisible,
+                        closeOnTouchOutside: true,
+                        animationType: 'slideInDown',
+                        animationOutType: 'none',
+                        animationDuration: 300,
+                        onClose: function onClose() {
+                            _this8.props.onClose();
+                        },
+                        containerStyle: { backgroundColor: 'rgba(140, 140, 140, 0.6)', flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' },
+                        childrenWrapperStyle: [styles.overlayChildren], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 213
+                        }
+                    },
+                    _react3.default.createElement(_SpinnerComponent2.default, {
+                        ref: 'spinner',
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 224
+                        }
+                    }),
+                    _react3.default.createElement(_CommonDialog2.default, {
+                        ref: 'dialog', __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 228
+                        }
+                    }),
+                    _react3.default.createElement(_ConfirmationDialog2.default, {
+                        ref: 'confirmationDialog', __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 231
+                        }
+                    }),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.container, onLayout: this.onLayoutContainer.bind(this), __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 234
+                            }
+                        },
+                        this.state.characterb64 != null && _react3.default.createElement(_reactNative.Image, { source: this.state.characterb64, style: styles.avatar, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 236
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.tabs, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 239
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.TouchableOpacity,
+                                { onPress: function onPress() {
+                                        _reactNative.Animated.spring(_this8.tabIndicatorLeft, {
+                                            toValue: 20,
+                                            duration: 500
+                                        }).start();
+
+                                        _this8.loadCharacters();
+                                    }, style: [styles.tab], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 241
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: [styles.tab, { fontFamily: _default.Font.TitanOne, fontSize: 18, color: 'white', textAlign: 'center', backgroundColor: 'transparent' }], __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 249
+                                        }
+                                    },
+                                    'Personajes'
+                                )
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.TouchableOpacity,
+                                { onPress: function onPress() {
+                                        _reactNative.Animated.spring(_this8.tabIndicatorLeft, {
+                                            toValue: _this8.state.containerDimensions.width / 2 + 10,
+                                            duration: 500
+                                        }).start();
+
+                                        _this8.loadAccesories();
+                                    },
+                                    style: [styles.tab], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 252
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: [{ fontFamily: _default.Font.TitanOne, fontSize: 18, color: 'white', textAlign: 'center', backgroundColor: 'transparent' }], __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 261
+                                        }
+                                    },
+                                    'Accesorios'
+                                )
+                            ),
+                            _react3.default.createElement(_reactNative.Animated.View, { style: [styles.tabIndicator, { left: this.tabIndicatorLeft }], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 264
+                                }
+                            })
+                        ),
+                        this.state.characters != null && this.state.currentMode == MODES.CHARACTERS && _react3.default.createElement(_reactNative.FlatList, {
+                            style: { width: '100%', height: '100%', borderTopLeftRadius: 80, borderTopRightRadius: 80 },
+                            numColumns: 3,
+                            centerContent: false,
+                            snapToAlignment: 'start',
+                            data: this.state.characters,
+                            extraData: this.state.characters.length,
+                            keyExtractor: function keyExtractor(item, index) {
+                                return 'character-' + item.id;
+                            },
+                            ListHeaderComponent: function ListHeaderComponent() {
+                                return null;
+                            },
+                            renderItem: function renderItem(rowData) {
+
+                                var item = _react3.default.createElement(
+                                    _reactNative.View,
+                                    {
+                                        style: { width: '30%', marginTop: 20, flexDirection: 'column', margin: 5 }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 284
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.TouchableOpacity,
+                                        {
+                                            key: 'character-' + rowData.item.id,
+                                            activeOpacity: .3,
+                                            onPress: function onPress() {
+
+                                                if (_this8.props.profile.balance_tuls < rowData.item.price) {
+                                                    _this8.refs.dialog.show('error', 'No tienes suficientes tuls para comprar este personaje.');
+                                                } else if (rowData.item.isBought) {
+                                                    _this8.refs.dialog.show('error', 'Ya haz comprado este personaje');
+                                                } else {
+                                                    _this8.refs.confirmationDialog.show('¿Seguro desea comprar este personaje?', {
+                                                        onSuccess: function onSuccess() {
+                                                            setTimeout(function () {
+                                                                _this8.refs.confirmationDialog.hide();
+                                                            });
+                                                            _this8.onBuyCharacter(rowData.item.id);
+                                                        },
+                                                        onCancel: function onCancel() {
+                                                            _this8.refs.confirmationDialog.hide();
+                                                        }
+                                                    });
+                                                }
+                                            }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 286
+                                            }
+                                        },
+                                        !rowData.item.isBought && rowData.item.price != null && rowData.item.price > 0 && _react3.default.createElement(
+                                            _reactNative.View,
+                                            { style: { right: 0, top: 10, position: 'absolute', backgroundColor: _this8.props.profile.balance_tuls >= rowData.item.price ? 'rgba(110,220,44,.95)' : 'rgba(255,198,0,.95)', padding: 5, zIndex: 99, borderRadius: 5, shadowColor: 'white', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.7, shadowRadius: 3, elevation: 4, transform: [{ rotateZ: '25deg' }] }, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 311
+                                                }
+                                            },
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: { fontFamily: _default.Font.TitanOne, fontSize: 12, color: '#222', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 312
+                                                    }
+                                                },
+                                                _global.Global.formatPrice(rowData.item.price),
+                                                ' Tuls'
+                                            )
+                                        ),
+                                        rowData.item.isBought && _react3.default.createElement(
+                                            _reactNative.View,
+                                            { style: { right: 0, top: 10, position: 'absolute', backgroundColor: 'rgba(22, 22,22,.8)', padding: 5, zIndex: 99, borderRadius: 5, shadowColor: 'white', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.7, shadowRadius: 3, elevation: 4, transform: [{ rotateZ: '25deg' }] }, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 317
+                                                }
+                                            },
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: { fontFamily: _default.Font.TitanOne, fontSize: 15, color: 'white', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 318
+                                                    }
+                                                },
+                                                'ADQUIRIDO'
+                                            )
+                                        ),
+                                        _react3.default.createElement(_reactNative.Image, {
+                                            style: { width: '75%', alignSelf: 'center', height: 100, opacity: rowData.item.price > _this8.props.profile.balance_tuls ? .3 : 1, resizeMode: 'contain' },
+                                            source: { uri: rowData.item.imageb64 }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 322
+                                            }
+                                        }),
+                                        _react3.default.createElement(
+                                            _reactNative.Text,
+                                            { style: { marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 12, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 325
+                                                }
+                                            },
+                                            rowData.item.name
+                                        )
+                                    )
+                                );
+
+                                return item;
+                            },
+                            __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 268
+                            }
+                        }),
+                        this.state.accesories != null && this.state.currentMode == MODES.ACCESORIES && _react3.default.createElement(_reactNative.FlatList, {
+                            style: { width: '100%', height: '100%', borderTopLeftRadius: 80, borderTopRightRadius: 80 },
+                            numColumns: 3,
+                            centerContent: false,
+                            snapToAlignment: 'start',
+                            data: this.state.accesories,
+                            extraData: this.state.accesories.length,
+                            keyExtractor: function keyExtractor(item, index) {
+                                return 'accesory-' + item.id;
+                            },
+                            ListHeaderComponent: function ListHeaderComponent() {
+                                return null;
+                            },
+                            renderItem: function renderItem(rowData) {
+
+                                var item = _react3.default.createElement(
+                                    _reactNative.View,
+                                    {
+                                        style: { width: '30%', marginTop: 20, flexDirection: 'column', margin: 5 }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 352
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.TouchableOpacity,
+                                        {
+                                            activeOpacity: .3,
+                                            onPress: function onPress() {
+
+                                                if (_this8.props.profile.balance_tuls < rowData.item.price) {
+                                                    _this8.refs.dialog.show('error', 'No tienes suficientes tuls para comprar este item.');
+                                                } else {
+                                                    _this8.setState({ isLoading: true });
+
+                                                    var accesories = _this8.state.selectedAccesories;
+                                                    if (accesories.indexOf(rowData.item) > -1) {
+                                                        accesories.splice(accesories.indexOf(rowData.item), 1);
+                                                    } else {
+                                                        var itemSameCategory = _this8.state.selectedAccesories.find(function (e) {
+                                                            return e.category == rowData.item.category;
+                                                        });
+                                                        var existsItemWithSameCategory = itemSameCategory != null;
+                                                        if (existsItemWithSameCategory) {
+                                                            accesories.splice(_this8.state.selectedAccesories.indexOf(itemSameCategory), 1);
+                                                        }
+
+                                                        accesories.push(rowData.item);
+                                                    }
+                                                    _this8.setState({ selectedAccesories: accesories });
+                                                    _this8.loadCharacter(1, accesories);
+                                                }
+                                            }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 354
+                                            }
+                                        },
+                                        rowData.item.price != null && rowData.item.price > 0 && _react3.default.createElement(
+                                            _reactNative.View,
+                                            { style: { right: 0, top: 10, position: 'absolute', backgroundColor: _this8.props.profile.balance_tuls >= rowData.item.price ? 'rgba(110,220,44,.95)' : 'rgba(255,198,0,.95)', padding: 5, zIndex: 99, borderRadius: 5, shadowColor: 'white', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.7, shadowRadius: 3, elevation: 4, transform: [{ rotateZ: '25deg' }] }, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 381
+                                                }
+                                            },
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: { fontFamily: _default.Font.TitanOne, fontSize: 12, color: '#222', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 382
+                                                    }
+                                                },
+                                                _global.Global.formatPrice(rowData.item.price),
+                                                ' Tuls'
+                                            )
+                                        ),
+                                        _react3.default.createElement(_reactNative.Image, {
+                                            style: { width: '75%', alignSelf: 'center', height: 100, opacity: rowData.item.price > _this8.props.profile.balance_tuls ? .3 : 1, resizeMode: 'contain' },
+                                            source: { uri: rowData.item.imageb64 }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 386
+                                            }
+                                        }),
+                                        _react3.default.createElement(
+                                            _reactNative.Text,
+                                            { style: { marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 12, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 389
+                                                }
+                                            },
+                                            rowData.item.name
+                                        ),
+                                        _this8.state.selectedAccesories.indexOf(rowData.item) > -1 && _react3.default.createElement(
+                                            _reactNative.View,
+                                            { style: { position: 'absolute', top: 15, left: 15, marginTop: 5, backgroundColor: 'red', padding: 1, zIndex: 99, borderRadius: 5, shadowColor: 'white', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.7, shadowRadius: 3, elevation: 4, width: 20 }, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 391
+                                                }
+                                            },
+                                            _react3.default.createElement(
+                                                _reactNative.Text,
+                                                { style: { fontFamily: _default.Font.TitanOne, fontSize: 12, color: '#222', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                                        fileName: _jsxFileName,
+                                                        lineNumber: 392
+                                                    }
+                                                },
+                                                '-'
+                                            )
+                                        )
+                                    )
+                                );
+
+                                return item;
+                            },
+                            __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 336
+                            }
+                        }),
+                        totalMount > 0 && _react3.default.createElement(
+                            _reactNative.TouchableOpacity,
+                            {
+                                onPress: function onPress() {
+                                    if (totalMount > _this8.props.profile.balance_tuls) {
+                                        _this8.refs.dialog.show('error', 'No tienes suficientes tuls para comprar estos items.');
+                                    } else {
+                                        _this8.refs.confirmationDialog.show('¿Seguro desea realizar la compra?', {
+                                            onSuccess: function onSuccess() {
+                                                setTimeout(function () {
+                                                    _this8.refs.confirmationDialog.hide();
+                                                });
+                                                _this8.onBuy();
+                                            },
+                                            onCancel: function onCancel() {
+                                                _this8.refs.confirmationDialog.hide();
+                                            }
+                                        });
+                                    }
+                                },
+                                activeOpacity: 1,
+                                style: { width: '100%', marginBottom: 0, paddingLeft: 0, justifyContent: 'center', width: '98%', height: 50, backgroundColor: _default.Color.BluePrimary, alignSelf: 'center', marginVertical: 15, borderRadius: 5, shadowColor: 'rgba(255,255,255,.5)', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 1 }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 405
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { marginRight: 5, fontFamily: _default.Font.TitanOne, fontSize: 24, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 425
+                                    }
+                                },
+                                'COMPRAR (',
+                                _global.Global.formatPrice(totalMount),
+                                ' TULS)'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CustomizeCharacter;
+}(_react2.Component));
+
+exports.default = CustomizeCharacter;
+
+
+var styles = _reactNative.StyleSheet.create({
+    overlayChildren: {
+        maxHeight: height - 100,
+        shadowColor: _default.Color.OrangePrimary,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 6,
+        padding: 0,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    container: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#222',
+        padding: 10,
+        alignItems: 'center'
+    },
+    avatar: {
+        width: 250,
+        height: 150,
+        resizeMode: 'contain'
+    },
+    tabs: {
+        flex: 0,
+        flexDirection: 'row',
+        width: '100%',
+        paddingVertical: 10,
+        borderBottomColor: 'rgba(255,255,255,.1)',
+        borderBottomWidth: 1,
+        justifyContent: 'center'
+    },
+    tab: {
+        flex: 1
+    },
+    tabIndicator: {
+        flex: 1,
+        height: 4,
+        position: 'absolute',
+        left: 0,
+        bottom: -2,
+        borderRadius: 3,
+        width: '40%',
+        backgroundColor: _default.Color.BluePrimary
+    }
+});

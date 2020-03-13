@@ -1,0 +1,107 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ = require('./');
+
+var _AdRequest = require('./AdRequest');
+
+var _AdRequest2 = _interopRequireDefault(_AdRequest);
+
+var _events = require('../../utils/events');
+
+var _native = require('../../utils/native');
+
+var _utils = require('../../utils');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var subscriptions = [];
+
+var RewardedVideo = function () {
+  function RewardedVideo(admob, adUnit) {
+    var _this = this;
+
+    _classCallCheck(this, RewardedVideo);
+
+    this._onRewardedVideoEvent = function (event) {
+      var eventType = 'rewarded_video:' + _this.adUnit + ':' + event.type;
+
+      var emitData = _extends({}, event);
+
+      switch (event.type) {
+        case 'onAdLoaded':
+          _this.loaded = true;
+          break;
+        case 'onAdFailedToLoad':
+          emitData = (0, _utils.nativeToJSError)(event.payload.code, event.payload.message);
+          emitData.type = event.type;
+          break;
+        default:
+      }
+
+      _events.SharedEventEmitter.emit(eventType, emitData);
+      _events.SharedEventEmitter.emit('rewarded_video:' + _this.adUnit + ':*', emitData);
+    };
+
+    for (var i = 0, len = subscriptions.length; i < len; i++) {
+      subscriptions[i].remove();
+    }
+    subscriptions = [];
+
+    this._admob = admob;
+    this.adUnit = adUnit;
+    this.loaded = false;
+    _events.SharedEventEmitter.removeAllListeners('rewarded_video_' + adUnit);
+    _events.SharedEventEmitter.addListener('rewarded_video_' + adUnit, this._onRewardedVideoEvent);
+  }
+
+  _createClass(RewardedVideo, [{
+    key: 'loadAd',
+    value: function loadAd(request) {
+      var adRequest = request;
+
+      if (!adRequest || !Object.keys(adRequest)) {
+        adRequest = new _AdRequest2.default().addTestDevice().build();
+      }
+
+      return (0, _native.getNativeModule)(this._admob).rewardedVideoLoadAd(this.adUnit, adRequest);
+    }
+  }, {
+    key: 'isLoaded',
+    value: function isLoaded() {
+      return this.loaded;
+    }
+  }, {
+    key: 'show',
+    value: function show() {
+      if (this.loaded) {
+        (0, _native.getNativeModule)(this._admob).rewardedVideoShowAd(this.adUnit);
+      }
+    }
+  }, {
+    key: 'on',
+    value: function on(eventType, listenerCb) {
+      var types = _extends({}, _.statics.EventTypes, _.statics.RewardedVideoEventTypes);
+
+      if (!types[eventType]) {
+        console.warn('Invalid event type provided, must be one of: ' + Object.keys(types).join(', '));
+        return null;
+      }
+
+      var sub = _events.SharedEventEmitter.addListener('rewarded_video:' + this.adUnit + ':' + eventType, listenerCb);
+      subscriptions.push(sub);
+      return sub;
+    }
+  }]);
+
+  return RewardedVideo;
+}();
+
+exports.default = RewardedVideo;

@@ -1,0 +1,7 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/android/app/build/intermediates/res/merged/release/menu/stub.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/android/app/src/main/res/menu/stub.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/android/app/build/intermediates/res/merged/release/menu/search_item.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-navigation/android/app/src/main/res/menu/search_item.xml"
+}];

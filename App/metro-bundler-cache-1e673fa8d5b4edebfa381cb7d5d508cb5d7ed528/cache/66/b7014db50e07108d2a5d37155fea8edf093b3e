@@ -1,0 +1,932 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/profile.js';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _CustomizeCharacter = require('../../components/modals/CustomizeCharacter');
+
+var _CustomizeCharacter2 = _interopRequireDefault(_CustomizeCharacter);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _DialogError = require('../../components/DialogError');
+
+var _DialogError2 = _interopRequireDefault(_DialogError);
+
+var _global = require('../../components/common/global');
+
+var _profile = require('../../styles/dashboard/profile');
+
+var _default = require('../../styles/default');
+
+var _Services = require('../../services/Services');
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _reactNativeAnimatable = require('react-native-animatable');
+
+var Animatable = _interopRequireWildcard(_reactNativeAnimatable);
+
+var _FontAwesome = require('react-native-vector-icons/FontAwesome');
+
+var _FontAwesome2 = _interopRequireDefault(_FontAwesome);
+
+var _reactNativeElements = require('react-native-elements');
+
+var _reactNativeOnesignal = require('react-native-onesignal');
+
+var _reactNativeOnesignal2 = _interopRequireDefault(_reactNativeOnesignal);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    Profile: {
+        displayName: 'Profile'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/profile.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var Sound = require('react-native-sound');
+
+var Profile = _wrapComponent('Profile')(function (_Component) {
+    _inherits(Profile, _Component);
+
+    function Profile(props) {
+        _classCallCheck(this, Profile);
+
+        var _this = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
+
+        _this._finish = function () {
+            alert("Update!");
+        };
+
+        _this._error = function (message) {
+            _this.refs.dialog.show('error', message);
+        };
+
+        _this._success = function (message) {
+            _this.refs.dialog.show('success', message);
+        };
+
+        _this.goSettings = function () {
+            pushingView = _extends({}, _global.Global.Screen.Dashboard.Settings);
+            rootNavigator.push(pushingView);
+        };
+
+        _this.goContact = function () {
+            pushingView = _extends({}, _global.Global.Screen.Dashboard.Contact);
+            rootNavigator.push(pushingView);
+        };
+
+        _this.goLogout = function () {
+            if (_this.state.changesToSubmit == true) {
+                _this.setState({ exitWithoutSave: true, exitWithoutSaveMethod: 'logout' });
+            } else {
+                _this.setState({ confirmationLogout: true });
+            }
+        };
+
+        _this._onBack = function () {
+            if (_this.state.changesToSubmit == true) {
+                _this.setState({ exitWithoutSave: true, exitWithoutSaveMethod: 'back' });
+            } else {
+                _reactNativeOrientation2.default.unlockAllOrientations();
+                _this.props.navigator.pop();
+            }
+        };
+
+        _this._exitWithoutSave = function () {
+            if (_this.state.exitWithoutSaveMethod == 'back') {
+                _this.props.navigator.pop();
+            } else {
+                if (_this.state.exitWithoutSaveMethod == 'logout') {
+                    _this._logout();
+                }
+            }
+        };
+
+        _this.state = {
+            user: {
+                profile: {}
+            },
+            avatarSource: { uri: 'https://randomuser.me/api/portraits/men/18.jpg' },
+            avatar: null,
+            id: null,
+            spinner: false,
+            errorVisible: false,
+            errorMessage: '',
+            avatarChanged: false,
+            changesToSubmit: false,
+            confirmationLogout: false,
+            height: height,
+            pushNotificationEnabled: true,
+            soundEnabled: true,
+            language: null,
+            isUpdatingProfile: true,
+            isLoadedProfile: false
+        };
+
+        _this._logout = _this._logout.bind(_this);
+        _this._forceLogout = _this._forceLogout.bind(_this);
+        _this.getProfile = _this.getProfile.bind(_this);
+
+        _this.props.navigator.setOnNavigatorEvent(_this.onNavigatorEvent.bind(_this));
+        currentScreen = 'OpenEnglish.Dashboard.Profile';
+
+        _reactNative.AsyncStorage.getItem('Language').then(function (value) {
+            _this.setState({ language: value });
+        }).done();
+        return _this;
+    }
+
+    _createClass(Profile, [{
+        key: 'getProfile',
+        value: function getProfile() {
+            var _this2 = this;
+
+            this.refs.spinner.show();
+            _Services.AuthService.getMe(function (profile) {
+                _this2.refs.spinner.hide();
+                setTimeout(function () {
+                    if (profile.result) {
+                        _this2.setState({ user: profile.user, isLoadedProfile: true });
+                        if (profile.user.profile.avatar != null) {
+                            _this2.setState({
+                                avatarSource: { uri: profile.user.profile.character }
+                            });
+                        }
+                    }
+                }, 200);
+            }, function (err) {});
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this3 = this;
+
+            this.setState({ isUpdatingProfile: false });
+            this.getProfile();
+
+            _reactNativeOnesignal2.default.getPermissionSubscriptionState(function (status) {
+                if (status && status.subscriptionEnabled) {
+                    _this3.setState({ pushNotificationEnabled: true });
+                } else {
+                    _this3.setState({ pushNotificationEnabled: false });
+                }
+            });
+
+            _Services.PreferencesService.getPreferenceByKey('soundEnabled', function (value) {
+                _this3.setState({ soundEnabled: value });
+            });
+        }
+    }, {
+        key: 'onNavigatorEvent',
+        value: function onNavigatorEvent(event) {
+            if (event.type == 'NavBarButtonPress') {
+                if (event.id == 'openMenu') {
+                    this.props.navigator.toggleDrawer({
+                        side: 'left',
+                        animated: true
+                    });
+                }
+            } else if (event.type == 'ScreenChangedEvent' && event.id == 'didAppear') {
+                _global.Global.eventEmitter.emit('forceChangeCurrentRoute', { route: 'OpenEnglish.Dashboard.Profile' });
+            }
+
+            switch (event.id) {
+                case 'willAppear':
+                    _reactNativeOrientation2.default.lockToPortrait();
+                    break;
+                case 'didAppear':
+                    break;
+                case 'willDisappear':
+                    break;
+                case 'didDisappear':
+                    break;
+            }
+        }
+    }, {
+        key: '_pickAvatar',
+        value: function _pickAvatar() {
+            this.setState({ isCustomizingCharacter: true });
+        }
+    }, {
+        key: 'onSwitchSound',
+        value: function onSwitchSound() {
+            var _this4 = this;
+
+            _Services.PreferencesService.setPreferenceByKey('soundEnabled', !this.state.soundEnabled, function (newValue) {
+                _this4.setState({ soundEnabled: newValue });
+            });
+        }
+    }, {
+        key: 'onSwitchNotification',
+        value: function onSwitchNotification() {
+            var _this5 = this;
+
+            _reactNativeOnesignal2.default.getPermissionSubscriptionState(function (status) {
+                if (status && status.subscriptionEnabled) {
+                    _reactNativeOnesignal2.default.setSubscription(!status.subscriptionEnabled);
+                } else {
+                    _reactNativeOnesignal2.default.setSubscription(true);
+                }
+
+                _this5.setState({ pushNotificationEnabled: !_this5.state.pushNotificationEnabled });
+                _Services.AnalyticsService.trackEvent('toggle_push_notifications', {
+                    value: _this5.state.pushNotificationEnabled ? 'on' : 'off'
+                });
+            });
+        }
+    }, {
+        key: 'goResetPassword',
+        value: function goResetPassword() {
+            var screen = _extends({}, _global.Global.Screen.ChangePassword);
+            screen.passProps = {
+                'fromProfile': true
+            };
+            this.props.navigator.showModal(screen);
+        }
+    }, {
+        key: 'goReportTeacher',
+        value: function goReportTeacher() {
+            var screen = _extends({}, _global.Global.Screen.Dashboard.ReportTeacher);
+            this.props.navigator.push(screen);
+        }
+    }, {
+        key: 'goTermsAndConditions',
+        value: function goTermsAndConditions() {
+            _Services.AnalyticsService.trackEvent('terms_module');
+            var screen = _extends({}, _global.Global.Screen.Dashboard.TermsAndConditions);
+            this.props.navigator.push(screen);
+        }
+    }, {
+        key: 'goPrivacyPolicy',
+        value: function goPrivacyPolicy() {
+            _Services.AnalyticsService.trackEvent('privacy_module');
+            var screen = _extends({}, _global.Global.Screen.Dashboard.PrivacyPolicy);
+            this.props.navigator.push(screen);
+        }
+    }, {
+        key: '_dismissError',
+        value: function _dismissError() {
+            this.setState({ errorVisible: false, errorMessage: null });
+        }
+    }, {
+        key: '_logout',
+        value: function _logout() {
+            _Services.AnalyticsService.trackEvent('logout');
+            this.setState({ confirmationLogout: false });
+            _Services.AuthService.logout(function (success) {}, function (error) {});
+            _reactNative.AsyncStorage.removeItem('userCredentials');
+            _reactNative.AsyncStorage.removeItem('userFacebookToken');
+            _reactNative.AsyncStorage.removeItem('user');
+        }
+    }, {
+        key: '_forceLogout',
+        value: function _forceLogout() {
+            this.setState({ confirmationLogout: false });
+            _Services.AuthService.logout(function (success) {}, function (error) {});
+            _reactNative.AsyncStorage.removeItem('userCredentials');
+            _reactNative.AsyncStorage.removeItem('userFacebookToken');
+            _reactNative.AsyncStorage.removeItem('user');
+        }
+    }, {
+        key: 'onLayout',
+        value: function onLayout(e) {
+            this.setState({ height: _reactNative.Dimensions.get('window').height });
+        }
+    }, {
+        key: 'renderNavbar',
+        value: function renderNavbar() {
+            return _react3.default.createElement(_CustomNavbar2.default, {
+                backButtonFn: this._onBack.bind(this),
+                navigator: this.props.navigator,
+                gradientColors: ['#ED6552', '#ed5e26'],
+                backButton: true,
+                title: 'Mi perfil',
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 391
+                }
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this6 = this;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                { style: { width: '100%', height: '100%' }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 403
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.ScrollView,
+                    {
+                        bounces: false,
+                        style: [_profile.ProfileStyle.container, { marginTop: 0 }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 404
+                        }
+                    },
+                    _react3.default.createElement(_DialogError2.default, {
+                        ref: 'dialog', __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 408
+                        }
+                    }),
+                    this.renderNavbar(),
+                    this.state.spinner && _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.loadingContainer, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 414
+                            }
+                        },
+                        _react3.default.createElement(_reactNative.ActivityIndicator, {
+                            __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 415
+                            }
+                        })
+                    ),
+                    !this.state.spinner && _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.container, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 420
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.avatarImageContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 421
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.ImageBackground,
+                                { style: styles.avatarImageBackground, source: { uri: 'data:image/jpeg;base64,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' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 422
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        style: { maxWidth: '100%', width: '100%', alignSelf: 'center', paddingVertical: 10 },
+                                        onPress: this._pickAvatar.bind(this), __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 423
+                                        }
+                                    },
+                                    this.state.isLoadedProfile && _react3.default.createElement(
+                                        Animatable.Text,
+                                        {
+                                            style: { textAlign: 'center', backgroundColor: 'transparent', fontFamily: _default.Font.TitanOne, color: 'white', fontSize: 13, marginBottom: 10 },
+                                            animation: 'bounceIn',
+                                            iterationCount: 3,
+                                            duration: 1200, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 428
+                                            }
+                                        },
+                                        'Toca para editarme'
+                                    ),
+                                    this.state.isLoadedProfile && _react3.default.createElement(Animatable.Image, {
+                                        animation: 'bounceIn',
+                                        iterationCount: 1,
+                                        duration: 1800,
+                                        source: this.state.avatarSource, style: styles.avatar, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 436
+                                        }
+                                    })
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: styles.avatarName, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 443
+                                        }
+                                    },
+                                    this.state.user.profile.name,
+                                    ' ',
+                                    this.state.user.profile.lastName
+                                )
+                            )
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.formContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 447
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: styles.inputContainer, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 448
+                                    }
+                                },
+                                _react3.default.createElement(_FontAwesome2.default, { style: styles.formIcon, name: 'user-circle', size: 20, color: '#0088ff', __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 449
+                                    }
+                                }),
+                                _react3.default.createElement(_reactNative.TextInput, {
+                                    placeholder: 'Nombre',
+                                    underlineColorAndroid: 'transparent',
+                                    style: styles.formInput,
+                                    value: this.state.user.profile.name,
+                                    onChangeText: function onChangeText(text) {
+                                        var user = _extends({}, _this6.state.user);
+                                        user.profile.name = text;
+                                        _this6.setState({ user: user });
+                                    },
+                                    __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 450
+                                    }
+                                })
+                            ),
+                            _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 462
+                                }
+                            }),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: styles.inputContainer, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 464
+                                    }
+                                },
+                                _react3.default.createElement(_FontAwesome2.default, { style: styles.formIcon, name: 'user-circle', size: 20, color: '#0088ff', __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 465
+                                    }
+                                }),
+                                _react3.default.createElement(_reactNative.TextInput, {
+                                    placeholder: 'Apellido',
+                                    underlineColorAndroid: 'transparent',
+                                    style: styles.formInput,
+                                    value: this.state.user.profile.lastName,
+                                    onChangeText: function onChangeText(text) {
+                                        var user = _extends({}, _this6.state.user);
+                                        user.profile.lastName = text;
+                                        _this6.setState({ user: user });
+                                    },
+                                    __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 466
+                                    }
+                                })
+                            ),
+                            _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 478
+                                }
+                            }),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: styles.inputContainer, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 480
+                                    }
+                                },
+                                _react3.default.createElement(_FontAwesome2.default, { style: styles.formIcon, name: 'envelope-open', size: 20, color: '#0088ff', __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 481
+                                    }
+                                }),
+                                _react3.default.createElement(_reactNative.TextInput, {
+                                    placeholder: 'E-mail',
+                                    underlineColorAndroid: 'transparent',
+                                    style: styles.formInput,
+                                    value: this.state.user.email,
+                                    onChangeText: function onChangeText(text) {
+                                        var user = _extends({}, _this6.state.user);
+                                        user.email = text;
+                                        _this6.setState({ user: user });
+                                    },
+                                    __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 482
+                                    }
+                                })
+                            ),
+                            _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 495
+                                }
+                            }),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: [styles.inputContainer, { alignItems: 'center', justifyContent: 'space-between' }], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 497
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { fontFamily: _default.Font.PTSansRegular, marginRight: 10 }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 498
+                                        }
+                                    },
+                                    'Activar notificationes'
+                                ),
+                                _react3.default.createElement(_reactNative.Switch, {
+                                    tintColor: 'rgba(0,0,0,.15)',
+                                    onTintColor: _default.Color.BluePrimary,
+                                    onValueChange: function onValueChange(e) {
+                                        return _this6.onSwitchNotification();
+                                    },
+                                    value: this.state.pushNotificationEnabled, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 499
+                                    }
+                                })
+                            ),
+                            _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 506
+                                }
+                            }),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: [styles.inputContainer, { alignItems: 'center', justifyContent: 'space-between' }], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 508
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { fontFamily: _default.Font.PTSansRegular, marginRight: 10 }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 509
+                                        }
+                                    },
+                                    'Activar sonido'
+                                ),
+                                _react3.default.createElement(_reactNative.Switch, {
+                                    tintColor: 'rgba(0,0,0,.15)',
+                                    onTintColor: _default.Color.BluePrimary,
+                                    onValueChange: function onValueChange(e) {
+                                        return _this6.onSwitchSound();
+                                    },
+                                    value: this.state.soundEnabled, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 510
+                                    }
+                                })
+                            ),
+                            _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 517
+                                }
+                            })
+                        )
+                    ),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.stats, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 533
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { flexDirection: 'row', alignItems: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 534
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 15, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 535
+                                    }
+                                },
+                                'TULS ACUMULADOS'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 20, color: _default.Color.VioletPrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 536
+                                    }
+                                },
+                                _global.Global.formatPrice(this.state.user.profile.balance_tuls)
+                            )
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { flexDirection: 'row', marginVertical: 4, alignItems: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 538
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 15, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 539
+                                    }
+                                },
+                                'PUNTOS DE EXPERIENCIA'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 20, color: _default.Color.VioletPrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 540
+                                    }
+                                },
+                                this.state.user.profile.experience_points
+                            )
+                        ),
+                        _react3.default.createElement(_reactNativeElements.Divider, { style: { marginVertical: 5, backgroundColor: '#ededed' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 542
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { height: 50, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 543
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { flexDirection: 'column' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 544
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 15, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 545
+                                        }
+                                    },
+                                    'NIVEL'
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 20, color: _default.Color.VioletSecondary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 546
+                                        }
+                                    },
+                                    this.state.user.profile.level
+                                )
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { flexDirection: 'column' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 548
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 15, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 549
+                                        }
+                                    },
+                                    'PART. JUGADAS'
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 20, color: _default.Color.VioletSecondary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 550
+                                        }
+                                    },
+                                    this.state.user.profile.totalGames
+                                )
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { flexDirection: 'column' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 552
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 15, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 553
+                                        }
+                                    },
+                                    'GANADAS'
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 20, color: _default.Color.VioletSecondary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 554
+                                        }
+                                    },
+                                    this.state.user.profile.totalWins
+                                )
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { flexDirection: 'column' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 556
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 15, color: '#eee', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 557
+                                        }
+                                    },
+                                    'PERDIDAS'
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { flex: 1, fontFamily: _default.Font.TitanOne, fontSize: 20, color: _default.Color.VioletSecondary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 558
+                                        }
+                                    },
+                                    this.state.user.profile.totalLost
+                                )
+                            )
+                        )
+                    ),
+                    _react3.default.createElement(_CustomizeCharacter2.default, {
+                        onStartLoading: function onStartLoading() {
+                            _this6.refs.spinner.show();
+                        },
+                        onStopLoading: function onStopLoading() {
+                            _this6.refs.spinner.hide();
+                        },
+                        onClose: function onClose() {
+                            _this6.setState({ isCustomizingCharacter: false });
+                        },
+                        profile: this.state.user.profile,
+                        onUpdateProfile: function onUpdateProfile() {
+                            _this6.getProfile();
+                        },
+                        isVisible: this.state.isCustomizingCharacter,
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 563
+                        }
+                    })
+                ),
+                _react3.default.createElement(_SpinnerComponent2.default, {
+                    ref: 'spinner', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 582
+                    }
+                })
+            );
+        }
+    }]);
+
+    return Profile;
+}(_react2.Component));
+
+exports.default = Profile;
+
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    loadingContainer: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formContainer: {
+        width: '90%',
+        maxWidth: '90%',
+        alignSelf: 'center',
+        flex: 1,
+        flexDirection: 'column'
+    },
+    inputContainer: {
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formInput: {
+        flex: 1,
+        fontFamily: _default.Font.PTSansRegular
+    },
+    formIcon: {
+        marginRight: 10
+    },
+    avatarImageContainer: {
+        flex: 1,
+        width: '100%'
+    },
+    avatarImageBackground: {
+        minHeight: 200,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center'
+    },
+    avatar: {
+        flex: 0,
+        width: '100%',
+        height: 100,
+        resizeMode: 'contain',
+
+        alignSelf: 'center'
+    },
+    avatarName: {
+        color: 'white',
+        fontSize: 20,
+        marginVertical: 10,
+        backgroundColor: 'transparent',
+        fontFamily: _default.Font.PTSansRegular,
+        textAlign: 'center'
+    },
+    buttonUpdate: {
+        minWidth: '100%',
+        width: '100%',
+        borderRadius: 10,
+        backgroundColor: _default.Color.OrangePrimary,
+        height: 50
+    },
+    stats: {
+        flex: 0,
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        margin: 10,
+        padding: 5,
+        backgroundColor: 'rgba(22,22,22,0.95)'
+    }
+});

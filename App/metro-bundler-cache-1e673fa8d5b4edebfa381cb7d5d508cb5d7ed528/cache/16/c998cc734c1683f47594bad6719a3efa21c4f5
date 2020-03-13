@@ -1,0 +1,9 @@
+'use strict';
+
+module.exports = function (promise) {
+  return promise.then(function (data) {
+    return { data: data, status: "resolved" };
+  }).catch(function (error) {
+    return { error: error, status: "rejected" };
+  });
+};

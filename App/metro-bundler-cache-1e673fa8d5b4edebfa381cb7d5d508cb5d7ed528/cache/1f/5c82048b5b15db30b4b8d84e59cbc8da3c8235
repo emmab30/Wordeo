@@ -1,0 +1,215 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/celebration/RewardToNavbar.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../../components/localization/strings');
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _Services = require('../../../services/Services');
+
+var _default = require('../../../styles/default');
+
+var _general = require('../../../styles/general');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    RewardToNavbar: {
+        displayName: 'RewardToNavbar'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/celebration/RewardToNavbar.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var Sound = require('react-native-sound');
+
+var width = _reactNative.Dimensions.get('window').width;
+var height = _reactNative.Dimensions.get('window').height;
+
+var RewardToNavbar = _wrapComponent('RewardToNavbar')(function (_Component) {
+    _inherits(RewardToNavbar, _Component);
+
+    function RewardToNavbar(props) {
+        _classCallCheck(this, RewardToNavbar);
+
+        var _this = _possibleConstructorReturn(this, (RewardToNavbar.__proto__ || Object.getPrototypeOf(RewardToNavbar)).call(this, props));
+
+        _this.onEarned = function (data) {
+            _this.setRandomValues();
+
+            _this.setState({ isAnimationInProgress: true, tulsAccumulated: data.tulsAccumulated, tulsQuestion: data.tulsQuestion, expAccumulated: data.expAccumulated, expQuestion: data.expQuestion });
+            if (_this.earnedTulsSound && _this.state.soundEnabled) {
+                _this.earnedTulsSound.play();
+            }
+
+            _reactNative.Animated.parallel([_reactNative.Animated.spring(_this.topContainer, {
+                toValue: 0,
+                duration: 750
+            }), _reactNative.Animated.spring(_this.leftContainer, {
+                toValue: width - 80,
+                duration: 750
+            }), _reactNative.Animated.timing(_this.opacityContainer, {
+                toValue: 1,
+                duration: 900
+            }), _reactNative.Animated.timing(_this.scaleContainer, {
+                toValue: 1.3,
+                duration: 500
+            })]).start(function () {
+                _reactNative.Animated.spring(_this.scaleContainer, {
+                    toValue: 0.8
+                }).start(function () {
+                    _this.setState({ isAnimationInProgress: false });
+                });
+            });
+        };
+
+        _this.state = {
+            isAnimationInProgress: false,
+            tulsQuestion: 0,
+            tulsAccumulated: 0,
+            expAccumulated: 0,
+            expQuestion: 0,
+            soundEnabled: true
+        };
+
+        _this.topContainer = new _reactNative.Animated.Value(80);
+        _this.leftContainer = new _reactNative.Animated.Value(80);
+        _this.scaleContainer = new _reactNative.Animated.Value(1);
+        _this.opacityContainer = new _reactNative.Animated.Value(0);
+        _this.earnedTulsSound = new Sound('tuls_sound.mp3', Sound.MAIN_BUNDLE, function (err) {});
+        return _this;
+    }
+
+    _createClass(RewardToNavbar, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            _Services.PreferencesService.getPreferenceByKey('soundEnabled', function (value) {
+                _this2.setState({ soundEnabled: value });
+            });
+        }
+    }, {
+        key: 'onLayout',
+        value: function onLayout(e) {
+            this.setState({ height: _reactNative.Dimensions.get('window').height });
+        }
+    }, {
+        key: 'setRandomValues',
+        value: function setRandomValues() {
+            var randomHeight = Math.floor(Math.random() * height / 2) + height / 5;
+            var randomLeft = Math.floor(Math.random() * 10) + width / 2;
+            this.topContainer.setValue(randomHeight);
+            this.leftContainer.setValue(randomLeft);
+            this.opacityContainer.setValue(.6);
+            this.scaleContainer.setValue(0);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            return _react3.default.createElement(
+                _reactNative.Animated.View,
+                { style: [styles.container, { transform: [{ scale: this.scaleContainer }], left: this.leftContainer, top: this.topContainer, opacity: this.opacityContainer }], __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 142
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.View,
+                    { style: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 143
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.Text,
+                        { style: { fontFamily: _default.Font.TitanOne, fontSize: 20, color: 'white' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 144
+                            }
+                        },
+                        this.state.isAnimationInProgress ? "+" + this.state.tulsQuestion + " tuls" : this.state.tulsAccumulated + " tuls"
+                    ),
+                    _react3.default.createElement(
+                        _reactNative.Text,
+                        { style: { fontFamily: _default.Font.TitanOne, fontSize: 20, color: 'white' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 145
+                            }
+                        },
+                        this.state.isAnimationInProgress ? "+" + this.state.expQuestion + " exp" : this.state.expAccumulated + " exp"
+                    )
+                )
+            );
+        }
+    }]);
+
+    return RewardToNavbar;
+}(_react2.Component));
+
+exports.default = RewardToNavbar;
+
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        position: 'absolute',
+        top: 80,
+        bottom: 0,
+        left: 80,
+        right: 0,
+        zIndex: 999,
+        width: 80,
+        height: 80,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ffa312',
+        borderRadius: 40,
+        shadowColor: 'white',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: .5,
+        shadowRadius: 10,
+        elevation: 4
+    }
+});

@@ -1,0 +1,7 @@
+
+
+try {
+  module.exports = typeof XMLHttpRequest !== 'undefined' && 'withCredentials' in new XMLHttpRequest();
+} catch (err) {
+  module.exports = false;
+}

@@ -1,0 +1,148 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.statics = exports.NAMESPACE = exports.MODULE_NAME = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _events = require('../../utils/events');
+
+var _ModuleBase2 = require('../../utils/ModuleBase');
+
+var _ModuleBase3 = _interopRequireDefault(_ModuleBase2);
+
+var _utils = require('../../utils');
+
+var _native = require('../../utils/native');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EVENT_TYPE = {
+  Link: 'dynamic_link_received'
+};
+
+var NATIVE_EVENTS = [EVENT_TYPE.Link];
+
+var MODULE_NAME = exports.MODULE_NAME = 'RNFirebaseLinks';
+var NAMESPACE = exports.NAMESPACE = 'links';
+
+function validateParameters(parameters) {
+  var suportedParametersObject = {
+    dynamicLinkDomain: 'string',
+    link: 'string',
+    androidInfo: {
+      androidPackageName: 'string',
+      androidFallbackLink: 'string',
+      androidMinPackageVersionCode: 'string',
+      androidLink: 'string'
+    },
+    iosInfo: {
+      iosBundleId: 'string',
+      iosFallbackLink: 'string',
+      iosCustomScheme: 'string',
+      iosIpadFallbackLink: 'string',
+      iosIpadBundleId: 'string',
+      iosAppStoreId: 'string'
+    },
+    socialMetaTagInfo: {
+      socialTitle: 'string',
+      socialDescription: 'string',
+      socialImageLink: 'string'
+    },
+    suffix: {
+      option: 'string'
+    }
+  };
+  if (!(0, _utils.areObjectKeysContainedInOther)(parameters, suportedParametersObject)) {
+    throw new Error('Invalid Parameters.');
+  }
+}
+
+function checkForMandatoryParameters(parameters) {
+  if (!(0, _utils.isString)(parameters.dynamicLinkDomain)) {
+    throw new Error('No dynamicLinkDomain was specified.');
+  }
+  if (!(0, _utils.isString)(parameters.link)) {
+    throw new Error('No link was specified.');
+  }
+  if ((0, _utils.isObject)(parameters.androidInfo) && !(0, _utils.isString)(parameters.androidInfo.androidPackageName)) {
+    throw new Error('No androidPackageName was specified.');
+  }
+  if ((0, _utils.isObject)(parameters.iosInfo) && !(0, _utils.isString)(parameters.iosInfo.iosBundleId)) {
+    throw new Error('No iosBundleId was specified.');
+  }
+}
+
+var Links = function (_ModuleBase) {
+  _inherits(Links, _ModuleBase);
+
+  function Links(app) {
+    _classCallCheck(this, Links);
+
+    return _possibleConstructorReturn(this, (Links.__proto__ || Object.getPrototypeOf(Links)).call(this, app, {
+      events: NATIVE_EVENTS,
+      moduleName: MODULE_NAME,
+      multiApp: false,
+      namespace: NAMESPACE
+    }));
+  }
+
+  _createClass(Links, [{
+    key: 'getInitialLink',
+    value: function getInitialLink() {
+      return (0, _native.getNativeModule)(this).getInitialLink();
+    }
+  }, {
+    key: 'onLink',
+    value: function onLink(listener) {
+      var rnListener = _events.SharedEventEmitter.addListener(EVENT_TYPE.Link, listener);
+      return function () {
+        return rnListener.remove();
+      };
+    }
+  }, {
+    key: 'createDynamicLink',
+    value: function createDynamicLink() {
+      var parameters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      try {
+        checkForMandatoryParameters(parameters);
+        validateParameters(parameters);
+        return (0, _native.getNativeModule)(this).createDynamicLink(parameters);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+  }, {
+    key: 'createShortDynamicLink',
+    value: function createShortDynamicLink() {
+      var parameters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      try {
+        checkForMandatoryParameters(parameters);
+        validateParameters(parameters);
+        return (0, _native.getNativeModule)(this).createShortDynamicLink(parameters);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+  }, {
+    key: 'EVENT_TYPE',
+    get: function get() {
+      return EVENT_TYPE;
+    }
+  }]);
+
+  return Links;
+}(_ModuleBase3.default);
+
+exports.default = Links;
+var statics = exports.statics = {
+  EVENT_TYPE: EVENT_TYPE
+};

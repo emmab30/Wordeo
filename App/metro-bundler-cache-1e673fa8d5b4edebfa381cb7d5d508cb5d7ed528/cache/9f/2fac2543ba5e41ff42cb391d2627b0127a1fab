@@ -1,0 +1,329 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.registerTypeConverter = registerTypeConverter;
+exports.createSession = createSession;
+exports.createRealm = createRealm;
+exports.createUser = createUser;
+exports._adminUser = _adminUser;
+exports._getExistingUser = _getExistingUser;
+exports.callMethod = callMethod;
+exports.getProperty = getProperty;
+exports.setProperty = setProperty;
+exports.getAllUsers = getAllUsers;
+exports.clearTestState = clearTestState;
+exports.deserialize = deserialize;
+
+var _base = require('./base64');
+
+var base64 = _interopRequireWildcard(_base);
+
+var _constants = require('./constants');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var idKey = _constants.keys.id,
+    _realmKey = _constants.keys.realm;
+
+var registeredCallbacks = [];
+var typeConverters = {};
+
+var persistentCallback = Symbol("persistentCallback");
+
+var XMLHttpRequest = global.originalXMLHttpRequest || global.XMLHttpRequest;
+var sessionHost = void 0;
+var sessionId = void 0;
+
+if (XMLHttpRequest.__proto__ != global.XMLHttpRequestEventTarget) {
+    var fakeXMLHttpRequest = XMLHttpRequest;
+    delete global.XMLHttpRequest;
+    XMLHttpRequest = global.XMLHttpRequest;
+    global.XMLHttpRequest = fakeXMLHttpRequest;
+}
+
+registerTypeConverter(_constants.objectTypes.DATA, function (_, _ref) {
+    var value = _ref.value;
+    return base64.decode(value);
+});
+registerTypeConverter(_constants.objectTypes.DATE, function (_, _ref2) {
+    var value = _ref2.value;
+    return new Date(value);
+});
+registerTypeConverter(_constants.objectTypes.DICT, deserializeDict);
+registerTypeConverter(_constants.objectTypes.FUNCTION, deserializeFunction);
+
+function registerTypeConverter(type, handler) {
+    typeConverters[type] = handler;
+}
+
+function createSession(refreshAccessToken, host) {
+    refreshAccessToken[persistentCallback] = true;
+    sessionId = sendRequest('create_session', { refreshAccessToken: serialize(undefined, refreshAccessToken) }, host);
+    sessionHost = host;
+    return sessionId;
+}
+
+function createRealm(args) {
+    if (args) {
+        args = args.map(function (arg) {
+            return serialize(null, arg);
+        });
+    }
+
+    return sendRequest('create_realm', { arguments: args });
+}
+
+function createUser(args) {
+    args = args.map(function (arg) {
+        return serialize(null, arg);
+    });
+    var result = sendRequest('create_user', { arguments: args });
+    return deserialize(undefined, result);
+}
+
+function _adminUser(args) {
+    args = args.map(function (arg) {
+        return serialize(null, arg);
+    });
+    var result = sendRequest('_adminUser', { arguments: args });
+    return deserialize(undefined, result);
+}
+
+function _getExistingUser(args) {
+    args = args.map(function (arg) {
+        return serialize(null, arg);
+    });
+    var result = sendRequest('_getExistingUser', { arguments: args });
+    return deserialize(undefined, result);
+}
+
+function callMethod(realmId, id, name, args) {
+    if (args) {
+        args = args.map(function (arg) {
+            return serialize(realmId, arg);
+        });
+    }
+
+    var result = sendRequest('call_method', { realmId: realmId, id: id, name: name, arguments: args });
+    return deserialize(realmId, result);
+}
+
+function getProperty(realmId, id, name) {
+    var result = sendRequest('get_property', { realmId: realmId, id: id, name: name });
+    return deserialize(realmId, result);
+}
+
+function setProperty(realmId, id, name, value) {
+    value = serialize(realmId, value);
+    sendRequest('set_property', { realmId: realmId, id: id, name: name, value: value });
+}
+
+function getAllUsers() {
+    var result = sendRequest('get_all_users');
+    return deserialize(undefined, result);
+}
+
+function clearTestState() {
+    sendRequest('clear_test_state');
+
+    registeredCallbacks = registeredCallbacks.filter(function (cb) {
+        return Reflect.has(cb, persistentCallback);
+    });
+}
+
+function registerCallback(callback) {
+    var key = registeredCallbacks.indexOf(callback);
+    return key >= 0 ? key : registeredCallbacks.push(callback) - 1;
+}
+
+function serialize(realmId, value) {
+    if (typeof value == 'undefined') {
+        return { type: _constants.objectTypes.UNDEFINED };
+    }
+    if (typeof value == 'function') {
+        return { type: _constants.objectTypes.FUNCTION, value: registerCallback(value) };
+    }
+    if (!value || typeof value != 'object') {
+        return { value: value };
+    }
+
+    var id = value[idKey];
+    if (id) {
+        return { id: id };
+    }
+
+    if (value instanceof Date) {
+        return { type: _constants.objectTypes.DATE, value: value.getTime() };
+    }
+
+    if (Array.isArray(value)) {
+        var array = value.map(function (item) {
+            return serialize(realmId, item);
+        });
+        return { value: array };
+    }
+
+    if (value instanceof ArrayBuffer || ArrayBuffer.isView(value)) {
+        return { type: _constants.objectTypes.DATA, value: base64.encode(value) };
+    }
+
+    var keys = Object.keys(value);
+    var values = keys.map(function (key) {
+        return serialize(realmId, value[key]);
+    });
+    return { type: _constants.objectTypes.DICT, keys: keys, values: values };
+}
+
+function deserialize(realmId, info) {
+    var type = info.type;
+    var handler = type && typeConverters[type];
+    if (handler) {
+        return handler(realmId, info);
+    }
+
+    var value = info.value;
+    if (value && Array.isArray(value)) {
+        return value.map(function (item) {
+            return deserialize(realmId, item);
+        });
+    }
+
+    return value;
+}
+
+function deserializeDict(realmId, info) {
+    var keys = info.keys,
+        values = info.values;
+
+    var object = {};
+
+    for (var i = 0, len = keys.length; i < len; i++) {
+        object[keys[i]] = deserialize(realmId, values[i]);
+    }
+
+    return object;
+}
+
+function deserializeFunction(realmId, info) {
+    return registeredCallbacks[info.value];
+}
+
+function makeRequest(url, data) {
+    var statusCode = void 0;
+    var responseText = void 0;
+
+    if (global.__debug__) {
+        var request = global.__debug__.require('sync-request');
+        var response = request('POST', url, {
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "text/plain;charset=UTF-8"
+            }
+        });
+
+        statusCode = response.statusCode;
+        responseText = response.body.toString('utf-8');
+    } else {
+        var body = JSON.stringify(data);
+        var _request = new XMLHttpRequest();
+
+        _request.open('POST', url, false);
+        _request.send(body);
+
+        statusCode = _request.status;
+        responseText = _request.responseText;
+    }
+
+    if (statusCode != 200) {
+        throw new Error(responseText);
+    }
+
+    return JSON.parse(responseText);
+}
+
+var pollTimeoutId = void 0;
+
+function deserialize_json_value(value) {
+    var result = {};
+    for (var index = 0; index < value.keys.length; index++) {
+        var propName = value.keys[index];
+        var propValue = value.values[index];
+        if (propValue.type && propValue.type == 'dict') {
+            result[propName] = deserialize_json_value(propValue);
+        } else {
+            result[propName] = propValue.value;
+        }
+    }
+
+    return result;
+}
+
+function sendRequest(command, data) {
+    var host = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : sessionHost;
+
+    clearTimeout(pollTimeoutId);
+    try {
+        if (!host) {
+            throw new Error('Must first create RPC session with a valid host');
+        }
+
+        data = _extends({}, data, sessionId ? { sessionId: sessionId } : null);
+
+        var url = 'http://' + host + '/' + command;
+        var response = makeRequest(url, data);
+
+        if (!response || response.error) {
+            var error = response && response.error;
+
+            if (error && error.replace) {
+                error = error.replace(/^[a-z]+: /i, '');
+            } else if (error.type && error.type === 'dict') {
+                var responseError = deserialize_json_value(error);
+                var responeMessage = void 0;
+                if (response.message && response.message !== '') {
+                    responeMessage = response.message.replace(/^[a-z]+: /i, '');
+                }
+
+                var exceptionToReport = new Error(responeMessage);
+                _extends(exceptionToReport, responseError);
+                throw exceptionToReport;
+            }
+
+            throw new Error(error || 'Invalid response for "' + command + '"');
+        }
+        var callback = response.callback;
+        if (callback != null) {
+            var result = void 0;
+            var _error = void 0;
+            try {
+                var realmId = data.realmId;
+                var thisObject = deserialize(realmId, response.this);
+                var args = deserialize(realmId, response.arguments);
+                result = registeredCallbacks[callback].apply(thisObject, args);
+                result = serialize(realmId, result);
+            } catch (e) {
+                _error = e.message || '' + e;
+            }
+
+            var callbackCommand = "callback_result";
+            if (command == 'callbacks_poll') {
+                callbackCommand = "callback_poll_result";
+            }
+
+            return sendRequest(callbackCommand, { callback: callback, result: result, error: _error, "callback_call_counter": response.callback_call_counter });
+        }
+
+        return response.result;
+    } finally {
+        pollTimeoutId = setTimeout(function () {
+            return sendRequest('callbacks_poll');
+        }, 100);
+    }
+}

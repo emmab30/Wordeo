@@ -1,0 +1,40 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/tuls_sound.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/raw/tuls_sound.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/raw/error_notification.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/src/main/res/raw/error_notification.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/wrong.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/raw/wrong.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/error_notification.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/raw/error_notification.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/consumer_onesignal_keep.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.onesignal/OneSignal/3.9.0/res/raw/consumer_onesignal_keep.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/countdown.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/raw/countdown.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/finish_round_success.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/raw/finish_round_success.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/raw/success_notification.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/src/main/res/raw/success_notification.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/raw/push_nsound.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/src/main/res/raw/push_nsound.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/finish_round_lost.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/raw/finish_round_lost.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/success_notification.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/raw/success_notification.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/raw/success.mp3",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/src/main/res/raw/success.mp3"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/raw/consumer_onesignal_keep.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.onesignal/OneSignal/3.8.4/res/raw/consumer_onesignal_keep.xml"
+}];

@@ -1,0 +1,228 @@
+
+
+'use strict';
+
+var url_parse = require('url-parse');
+var managementSchema = require('./management-schema');
+
+function generateUniqueId() {
+  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : r & 0x3 | 0x8;
+    return v.toString(16);
+  });
+  return uuid;
+}
+
+var permissionSchema = [{
+  name: 'Permission',
+  properties: {
+    userId: { type: 'string' },
+    path: { type: 'string' },
+    mayRead: { type: 'bool', optional: false },
+    mayWrite: { type: 'bool', optional: false },
+    mayManage: { type: 'bool', optional: false },
+    updatedAt: { type: 'date', optional: false }
+  }
+}];
+
+var specialPurposeRealmsKey = '_specialPurposeRealms';
+
+function getSpecialPurposeRealm(user, realmName, schema) {
+  if (!user.hasOwnProperty(specialPurposeRealmsKey)) {
+    user[specialPurposeRealmsKey] = {};
+  }
+
+  if (user[specialPurposeRealmsKey].hasOwnProperty(realmName)) {
+    return Promise.resolve(user[specialPurposeRealmsKey][realmName]);
+  }
+
+  var url = url_parse(user.server);
+  if (url.protocol === 'http:') {
+    url.set('protocol', 'realm:');
+  } else if (url.protocol === 'https:') {
+    url.set('protocol', 'realms:');
+  } else {
+    throw new Error('Unexpected user auth url: ' + user.server);
+  }
+
+  url.set('pathname', '/~/' + realmName);
+
+  var config = {
+    schema: schema,
+    sync: {
+      user: user,
+      url: url.href
+    }
+  };
+
+  var Realm = user.constructor._realmConstructor;
+  return Realm.open(config).then(function (realm) {
+    user[specialPurposeRealmsKey][realmName] = realm;
+    return realm;
+  });
+}
+
+function createInManagementRealm(user, modelName, modelInitializer) {
+  return getSpecialPurposeRealm(user, '__management', managementSchema).then(function (managementRealm) {
+    return new Promise(function (resolve, reject) {
+      try {
+        var o = void 0;
+
+        var listener = function listener() {
+          if (!o) {
+            return;
+          }
+
+          var statusCode = o.statusCode;
+          if (typeof statusCode === 'number') {
+            managementRealm.removeListener('change', listener);
+
+            if (statusCode === 0) {
+              setTimeout(function () {
+                return resolve(o);
+              }, 1);
+            } else {
+              var e = new Error(o.statusMessage);
+              e.statusCode = statusCode;
+              e.managementObject = o;
+              setTimeout(function () {
+                return reject(e);
+              }, 1);
+            }
+          }
+        };
+
+        managementRealm.addListener('change', listener);
+
+        managementRealm.write(function () {
+          o = managementRealm.create(modelName, modelInitializer);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
+}
+
+var accessLevels = ['none', 'read', 'write', 'admin'];
+var offerAccessLevels = ['read', 'write', 'admin'];
+
+module.exports = {
+  getGrantedPermissions: function getGrantedPermissions(recipient) {
+    var _this = this;
+
+    if (recipient && ['currentUser', 'otherUser', 'any'].indexOf(recipient) === -1) {
+      return Promise.reject(new Error('\'' + recipient + '\' is not a valid recipient type. Must be \'any\', \'currentUser\' or \'otherUser\'.'));
+    }
+
+    return getSpecialPurposeRealm(this, '__permission', permissionSchema).then(function (permissionRealm) {
+      var permissions = permissionRealm.objects('Permission').filtered('NOT path ENDSWITH "__permission" AND NOT path ENDSWITH "__management"');
+
+      if (recipient === 'currentUser') {
+        permissions = permissions.filtered('userId = $0', _this.identity);
+      } else if (recipient === 'otherUser') {
+        permissions = permissions.filtered('userId != $0', _this.identity);
+      }
+      return permissions;
+    });
+  },
+  applyPermissions: function applyPermissions(condition, realmUrl, accessLevel) {
+    if (!realmUrl) {
+      return Promise.reject(new Error('realmUrl must be specified'));
+    }
+
+    if (accessLevels.indexOf(accessLevel) === -1) {
+      return Promise.reject(new Error('\'' + accessLevel + '\' is not a valid access level. Must be ' + accessLevels.join(', ') + '.'));
+    }
+
+    var mayRead = accessLevel === 'read' || accessLevel === 'write' || accessLevel === 'admin';
+    var mayWrite = accessLevel === 'write' || accessLevel === 'admin';
+    var mayManage = accessLevel === 'admin';
+
+    var permissionChange = {
+      id: generateUniqueId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      realmUrl: realmUrl,
+      mayRead: mayRead,
+      mayWrite: mayWrite,
+      mayManage: mayManage
+    };
+
+    if (condition.hasOwnProperty('userId')) {
+      permissionChange.userId = condition.userId;
+    } else {
+      permissionChange.userId = '';
+      permissionChange.metadataKey = condition.metadataKey;
+      permissionChange.metadataValue = condition.metadataValue;
+    }
+
+    return createInManagementRealm(this, 'PermissionChange', permissionChange);
+  },
+  offerPermissions: function offerPermissions(realmUrl, accessLevel, expiresAt) {
+    if (!realmUrl) {
+      return Promise.reject(new Error('realmUrl must be specified'));
+    }
+
+    if (offerAccessLevels.indexOf(accessLevel) === -1) {
+      return Promise.reject(new Error('\'' + accessLevel + '\' is not a valid access level. Must be ' + offerAccessLevels.join(', ') + '.'));
+    }
+
+    var mayRead = true;
+    var mayWrite = accessLevel === 'write' || accessLevel === 'admin';
+    var mayManage = accessLevel === 'admin';
+
+    var permissionOffer = {
+      id: generateUniqueId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      expiresAt: expiresAt,
+      realmUrl: realmUrl,
+      mayRead: mayRead,
+      mayWrite: mayWrite,
+      mayManage: mayManage
+    };
+
+    return createInManagementRealm(this, 'PermissionOffer', permissionOffer).then(function (appliedOffer) {
+      return appliedOffer.token;
+    });
+  },
+  acceptPermissionOffer: function acceptPermissionOffer(token) {
+    if (!token) {
+      return Promise.reject(new Error('Offer token must be specified'));
+    }
+
+    var permissionOfferResponse = {
+      id: generateUniqueId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      token: token
+    };
+
+    return createInManagementRealm(this, 'PermissionOfferResponse', permissionOfferResponse).then(function (appliedReponse) {
+      return appliedReponse.realmUrl;
+    });
+  },
+  invalidatePermissionOffer: function invalidatePermissionOffer(permissionOfferOrToken) {
+    return getSpecialPurposeRealm(this, '__management', managementSchema).then(function (managementRealm) {
+      var permissionOffer = void 0;
+
+      if (typeof permissionOfferOrToken === 'string') {
+        var q = managementRealm.objects('PermissionOffer').filtered('token = $0', permissionOfferOrToken);
+
+        if (q.length === 0) {
+          throw new Error("No permission offers with the given token were found");
+        }
+
+        permissionOffer = q[0];
+      } else {
+        permissionOffer = permissionOfferOrToken;
+      }
+
+      managementRealm.write(function () {
+        permissionOffer.expiresAt = new Date();
+      });
+    });
+  }
+};

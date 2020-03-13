@@ -1,0 +1,188 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/celebration/StreakCorrectReward.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../../components/localization/strings');
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _Services = require('../../../services/Services');
+
+var _default = require('../../../styles/default');
+
+var _general = require('../../../styles/general');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    StreakCorrectReward: {
+        displayName: 'StreakCorrectReward'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/celebration/StreakCorrectReward.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var Sound = require('react-native-sound');
+Sound.setCategory('Playback');
+
+var width = _reactNative.Dimensions.get('window').width;
+var height = _reactNative.Dimensions.get('window').height;
+
+var POINTS_PER_STREAK = 100;
+
+var StreakCorrectReward = _wrapComponent('StreakCorrectReward')(function (_Component) {
+    _inherits(StreakCorrectReward, _Component);
+
+    function StreakCorrectReward(props) {
+        _classCallCheck(this, StreakCorrectReward);
+
+        var _this = _possibleConstructorReturn(this, (StreakCorrectReward.__proto__ || Object.getPrototypeOf(StreakCorrectReward)).call(this, props));
+
+        _this.onEarned = function (data) {
+            _this.setRandomValues();
+
+            _this.setState({ isAnimationInProgress: true, tulsAccumulated: data.tulsAccumulated, tulsQuestion: data.tulsQuestion, expAccumulated: data.expAccumulated, expQuestion: data.expQuestion });
+
+            _reactNative.Animated.parallel([_reactNative.Animated.spring(_this.topContainer, {
+                toValue: Math.floor(Math.random() * 0) + 150,
+                duration: 750
+            }), _reactNative.Animated.timing(_this.opacityContainer, {
+                toValue: 1,
+                duration: 900
+            })]).start(function () {
+                setTimeout(function () {
+                    _reactNative.Animated.spring(_this.opacityContainer, {
+                        toValue: 0
+                    }).start();
+                    _this.setState({ isAnimationInProgress: false });
+                }, 750);
+            });
+        };
+
+        _this.state = {
+            isAnimationInProgress: false,
+            tulsQuestion: 0,
+            tulsAccumulated: 0,
+            expAccumulated: 0,
+            expQuestion: 0
+        };
+
+        _this.topContainer = new _reactNative.Animated.Value(Math.floor(Math.random() * 0) + 150);
+        _this.opacityContainer = new _reactNative.Animated.Value(0);
+        return _this;
+    }
+
+    _createClass(StreakCorrectReward, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'onLayout',
+        value: function onLayout(e) {
+            this.setState({ height: _reactNative.Dimensions.get('window').height });
+        }
+    }, {
+        key: 'setRandomValues',
+        value: function setRandomValues() {
+            var randomHeight = Math.floor(Math.random() * 0) + 150;
+            this.topContainer.setValue(randomHeight);
+            this.opacityContainer.setValue(.6);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            return _react3.default.createElement(
+                _reactNative.Animated.View,
+                { style: [styles.container, { left: '10%', top: this.topContainer, opacity: this.opacityContainer }], __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 100
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.View,
+                    { style: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 101
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.Text,
+                        { style: { fontFamily: _default.Font.TitanOne, fontSize: 20, color: 'white' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 102
+                            }
+                        },
+                        '+',
+                        POINTS_PER_STREAK,
+                        ' por seguidilla!'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return StreakCorrectReward;
+}(_react2.Component));
+
+exports.default = StreakCorrectReward;
+
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        position: 'absolute',
+        top: 20,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 999,
+        width: '75%',
+        height: 40,
+        opacity: .7,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: _default.Color.BluePrimary,
+        borderRadius: 40,
+        shadowColor: 'white',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: .5,
+        shadowRadius: 10,
+        elevation: 4
+    }
+});

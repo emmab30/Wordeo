@@ -1,0 +1,176 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LoginStyle = undefined;
+
+var _reactNative = require('react-native');
+
+var _default = require('./default');
+
+var _global = require('../components/common/global');
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+if (_reactNative.Platform.OS === 'ios') {
+  height = height + 5;
+}
+
+var LoginStyle = exports.LoginStyle = _reactNative.StyleSheet.create({
+  containerPrimary: {
+    flex: 1
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    maxWidth: '90%',
+    alignSelf: 'center',
+    height: null
+  },
+  containerLogo: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
+  logo: {
+    width: width * .8,
+    height: '80%',
+    resizeMode: 'contain',
+    alignSelf: 'flex-end',
+    marginVertical: 0
+  },
+  keyboardContainer: {
+    height: height,
+    flexDirection: 'column',
+    alignItems: 'stretch'
+  },
+  containerForm: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    flex: 2.5,
+    flexDirection: 'column',
+    maxWidth: width * .8
+  },
+  loginButton: {
+    marginTop: 20,
+    borderColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: width * .8,
+    borderRadius: 22,
+    backgroundColor: '#ff6600'
+  },
+  loginButtonText: {
+    color: '#fff',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    paddingVertical: 10,
+    fontSize: 18,
+    fontFamily: _default.Font.NunitoBold
+  },
+  loginButtonFacebook: {
+    marginTop: 10,
+    borderColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    width: width * .8,
+    borderRadius: 22,
+    marginTop: '20%',
+    backgroundColor: _default.Color.BluePrimary,
+    borderWidth: 2,
+    borderColor: '#fff',
+    flexDirection: 'row'
+  },
+  loginButtonFacebookText: {
+    marginLeft: 10,
+    color: '#fff',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    paddingVertical: 10,
+    fontSize: 18,
+    fontFamily: _default.Font.PTSansRegular
+  },
+  forgotPasswordButton: {
+    marginTop: 10
+  },
+  forgotPasswordButtonText: {
+    color: _default.Color.primaryBlue,
+    fontSize: 16,
+    fontFamily: _default.Font.NunitoSemiBold
+  },
+  buttonRegister: {
+    width: width,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  bottomButtonTextRegister: {
+    fontSize: 16,
+    color: _default.Color.primaryBlue,
+    fontFamily: _default.Font.NunitoSemiBold
+  },
+  bottomButtonTextForgot: {
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    color: 'white',
+    fontFamily: _default.Font.ProximaNovaSemibold,
+    fontSize: _global.Global.normalizeFontSize(14)
+  },
+  containerBottom: {
+    position: 'absolute',
+    bottom: 10,
+    width: '100%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-around',
+    paddingHorizontal: 15,
+    paddingBottom: 40
+  },
+  bottomButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+    paddingVertical: 10,
+    fontSize: 12,
+    fontFamily: _default.Font.KarlaItalic
+  },
+  containerInput: {
+    width: '85%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  input: {
+    fontFamily: _default.Font.NunitoSemiBold,
+    color: '#7f7f7f',
+    width: '100%',
+    fontSize: 16,
+    paddingLeft: 10,
+    minHeight: _reactNative.Platform.OS == 'ios' ? 45 : 'auto'
+  },
+  iconFieldUsername: {
+    width: 25,
+    height: 25,
+    alignSelf: 'flex-end',
+    position: 'absolute'
+  },
+  iconFieldPassword: {
+    width: 23,
+    height: 28
+  },
+  iconEye: {
+    width: 22,
+    height: 13
+  },
+  containerIconPassword: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    flexDirection: 'row'
+  }
+});

@@ -1,0 +1,176 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _apps = require('../../utils/apps');
+
+var _apps2 = _interopRequireDefault(_apps);
+
+var _events = require('../../utils/events');
+
+var _internals = require('../../utils/internals');
+
+var _internals2 = _interopRequireDefault(_internals);
+
+var _utils = require('../../utils');
+
+var _admob = require('../admob');
+
+var _admob2 = _interopRequireDefault(_admob);
+
+var _auth = require('../auth');
+
+var _auth2 = _interopRequireDefault(_auth);
+
+var _analytics = require('../analytics');
+
+var _analytics2 = _interopRequireDefault(_analytics);
+
+var _config = require('../config');
+
+var _config2 = _interopRequireDefault(_config);
+
+var _crash = require('../crash');
+
+var _crash2 = _interopRequireDefault(_crash);
+
+var _crashlytics = require('../fabric/crashlytics');
+
+var _crashlytics2 = _interopRequireDefault(_crashlytics);
+
+var _database = require('../database');
+
+var _database2 = _interopRequireDefault(_database);
+
+var _firestore = require('../firestore');
+
+var _firestore2 = _interopRequireDefault(_firestore);
+
+var _links = require('../links');
+
+var _links2 = _interopRequireDefault(_links);
+
+var _messaging = require('../messaging');
+
+var _messaging2 = _interopRequireDefault(_messaging);
+
+var _perf = require('../perf');
+
+var _perf2 = _interopRequireDefault(_perf);
+
+var _storage = require('../storage');
+
+var _storage2 = _interopRequireDefault(_storage);
+
+var _utils2 = require('../utils');
+
+var _utils3 = _interopRequireDefault(_utils2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FirebaseCoreModule = _reactNative.NativeModules.RNFirebase;
+
+var App = function () {
+  function App(name, options) {
+    var _this = this;
+
+    var fromNative = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+    _classCallCheck(this, App);
+
+    this._initialized = false;
+    this._nativeInitialized = false;
+
+    this._name = name;
+    this._options = _extends({}, options);
+
+    if (fromNative) {
+      this._initialized = true;
+      this._nativeInitialized = true;
+    } else if (options.databaseURL && options.apiKey) {
+      FirebaseCoreModule.initializeApp(this._name, this._options, function (error, result) {
+        _this._initialized = true;
+        _events.SharedEventEmitter.emit('AppReady:' + _this._name, { error: error, result: result });
+      });
+    }
+
+    this.admob = _apps2.default.appModule(this, _admob.NAMESPACE, _admob2.default);
+    this.analytics = _apps2.default.appModule(this, _analytics.NAMESPACE, _analytics2.default);
+    this.auth = _apps2.default.appModule(this, _auth.NAMESPACE, _auth2.default);
+    this.config = _apps2.default.appModule(this, _config.NAMESPACE, _config2.default);
+    this.crash = _apps2.default.appModule(this, _crash.NAMESPACE, _crash2.default);
+    this.database = _apps2.default.appModule(this, _database.NAMESPACE, _database2.default);
+    this.fabric = {
+      crashlytics: _apps2.default.appModule(this, _crashlytics.NAMESPACE, _crashlytics2.default)
+    };
+    this.firestore = _apps2.default.appModule(this, _firestore.NAMESPACE, _firestore2.default);
+    this.links = _apps2.default.appModule(this, _links.NAMESPACE, _links2.default);
+    this.messaging = _apps2.default.appModule(this, _messaging.NAMESPACE, _messaging2.default);
+    this.perf = _apps2.default.appModule(this, _perf.NAMESPACE, _perf2.default);
+    this.storage = _apps2.default.appModule(this, _storage.NAMESPACE, _storage2.default);
+    this.utils = _apps2.default.appModule(this, _utils2.NAMESPACE, _utils3.default);
+    this._extendedProps = {};
+  }
+
+  _createClass(App, [{
+    key: 'extendApp',
+    value: function extendApp(props) {
+      if (!(0, _utils.isObject)(props)) throw new Error(_internals2.default.STRINGS.ERROR_MISSING_ARG('Object', 'extendApp'));
+      var keys = Object.keys(props);
+
+      for (var i = 0, len = keys.length; i < len; i++) {
+        var key = keys[i];
+
+        if (!this._extendedProps[key] && Object.hasOwnProperty.call(this, key)) {
+          throw new Error(_internals2.default.STRINGS.ERROR_PROTECTED_PROP(key));
+        }
+
+        this[key] = props[key];
+        this._extendedProps[key] = true;
+      }
+    }
+  }, {
+    key: 'delete',
+    value: function _delete() {
+      throw new Error(_internals2.default.STRINGS.ERROR_UNSUPPORTED_CLASS_METHOD('app', 'delete'));
+    }
+  }, {
+    key: 'onReady',
+    value: function onReady() {
+      var _this2 = this;
+
+      if (this._initialized) return Promise.resolve(this);
+
+      return new Promise(function (resolve, reject) {
+        _events.SharedEventEmitter.once('AppReady:' + _this2._name, function (_ref) {
+          var error = _ref.error;
+
+          if (error) return reject(new Error(error));
+          return resolve(_this2);
+        });
+      });
+    }
+  }, {
+    key: 'name',
+    get: function get() {
+      return this._name;
+    }
+  }, {
+    key: 'options',
+    get: function get() {
+      return _extends({}, this._options);
+    }
+  }]);
+
+  return App;
+}();
+
+exports.default = App;

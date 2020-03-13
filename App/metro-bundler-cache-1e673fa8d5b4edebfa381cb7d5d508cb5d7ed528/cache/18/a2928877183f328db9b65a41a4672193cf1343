@@ -1,0 +1,229 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.windowOrGlobal = exports.isAndroid = exports.isIOS = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.deepGet = deepGet;
+exports.deepExists = deepExists;
+exports.areObjectKeysContainedInOther = areObjectKeysContainedInOther;
+exports.isArrayContainedInOther = isArrayContainedInOther;
+exports.isObject = isObject;
+exports.isFunction = isFunction;
+exports.isString = isString;
+exports.tryJSONParse = tryJSONParse;
+exports.tryJSONStringify = tryJSONStringify;
+exports.noop = noop;
+exports.typeOf = typeOf;
+exports.generatePushID = generatePushID;
+exports.nativeToJSError = nativeToJSError;
+exports.objectToUniqueId = objectToUniqueId;
+exports.promiseOrCallback = promiseOrCallback;
+exports.firestoreAutoId = firestoreAutoId;
+
+var _reactNative = require('react-native');
+
+var PUSH_CHARS = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
+var AUTO_ID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+var hasOwnProperty = Object.hasOwnProperty;
+function deepGet(object, path) {
+  var joiner = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '/';
+
+  var keys = path.split(joiner);
+
+  var i = 0;
+  var tmp = object;
+  var len = keys.length;
+
+  while (i < len) {
+    var key = keys[i++];
+    if (!tmp || !hasOwnProperty.call(tmp, key)) return null;
+    tmp = tmp[key];
+  }
+
+  return tmp;
+}
+
+function deepExists(object, path) {
+  var joiner = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '/';
+
+  var keys = path.split(joiner);
+
+  var i = 0;
+  var tmp = object;
+  var len = keys.length;
+
+  while (i < len) {
+    var key = keys[i++];
+    if (!tmp || !hasOwnProperty.call(tmp, key)) return false;
+    tmp = tmp[key];
+  }
+
+  return tmp !== undefined;
+}
+
+function areObjectKeysContainedInOther(obj1, obj2) {
+  if (!isObject(obj1) || !isObject(obj2)) {
+    return false;
+  }
+  var keys1 = Object.keys(obj1);
+  var keys2 = Object.keys(obj2);
+  if (isArrayContainedInOther(keys1, keys2)) {
+    return keys1.filter(function (key) {
+      return isObject(obj1[key]);
+    }).reduce(function (acc, cur) {
+      return acc && areObjectKeysContainedInOther(obj1[cur], obj2[cur]);
+    }, true);
+  }
+  return false;
+}
+
+function isArrayContainedInOther(arr1, arr2) {
+  if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
+    return false;
+  }
+  return arr1.reduce(function (acc, cur) {
+    return acc && arr2.includes(cur);
+  }, true);
+}
+
+function isObject(item) {
+  return item ? typeof item === 'object' && !Array.isArray(item) && item !== null : false;
+}
+
+function isFunction(item) {
+  return item ? typeof item === 'function' : false;
+}
+
+function isString(value) {
+  return typeof value === 'string';
+}
+
+var isIOS = exports.isIOS = _reactNative.Platform.OS === 'ios';
+var isAndroid = exports.isAndroid = _reactNative.Platform.OS === 'android';
+
+function tryJSONParse(string) {
+  try {
+    return string && JSON.parse(string);
+  } catch (jsonError) {
+    return string;
+  }
+}
+
+function tryJSONStringify(data) {
+  try {
+    return JSON.stringify(data);
+  } catch (jsonError) {
+    return null;
+  }
+}
+
+var windowOrGlobal = exports.windowOrGlobal = typeof self === 'object' && self.self === self && self || typeof global === 'object' && global.global === global && global || this;
+
+function noop() {}
+
+function typeOf(value) {
+  if (value === null) return 'null';
+  if (Array.isArray(value)) return 'array';
+  return typeof value;
+}
+
+var lastPushTime = 0;
+
+var lastRandChars = [];
+
+function generatePushID() {
+  var serverTimeOffset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+  var timeStampChars = new Array(8);
+  var now = new Date().getTime() + serverTimeOffset;
+  var duplicateTime = now === lastPushTime;
+
+  lastPushTime = now;
+
+  for (var i = 7; i >= 0; i -= 1) {
+    timeStampChars[i] = PUSH_CHARS.charAt(now % 64);
+    now = Math.floor(now / 64);
+  }
+
+  if (now !== 0) throw new Error('We should have converted the entire timestamp.');
+
+  var id = timeStampChars.join('');
+
+  if (!duplicateTime) {
+    for (var _i = 0; _i < 12; _i += 1) {
+      lastRandChars[_i] = Math.floor(Math.random() * 64);
+    }
+  } else {
+    var _i2 = void 0;
+    for (_i2 = 11; _i2 >= 0 && lastRandChars[_i2] === 63; _i2 -= 1) {
+      lastRandChars[_i2] = 0;
+    }
+
+    lastRandChars[_i2] += 1;
+  }
+
+  for (var _i3 = 0; _i3 < 12; _i3++) {
+    id += PUSH_CHARS.charAt(lastRandChars[_i3]);
+  }
+
+  if (id.length !== 20) throw new Error('Length should be 20.');
+
+  return id;
+}
+
+function nativeToJSError(code, message) {
+  var additionalProps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+  var error = new Error(message);
+  error.code = code;
+  _extends(error, additionalProps);
+
+  var _stackArray = error.stack.split('\n');
+  error.stack = _stackArray.splice(1, _stackArray.length).join('\n');
+  return error;
+}
+
+function objectToUniqueId(object) {
+  if (!isObject(object) || object === null) return JSON.stringify(object);
+
+  var keys = Object.keys(object).sort();
+
+  var key = '{';
+  for (var i = 0; i < keys.length; i++) {
+    if (i !== 0) key += ',';
+    key += JSON.stringify(keys[i]);
+    key += ':';
+    key += objectToUniqueId(object[keys[i]]);
+  }
+
+  key += '}';
+  return key;
+}
+
+function promiseOrCallback(promise, optionalCallback) {
+  if (!isFunction(optionalCallback)) return promise;
+
+  return promise.then(function (result) {
+    if (optionalCallback && optionalCallback.length === 1) {
+      optionalCallback(null);
+    } else if (optionalCallback) {
+      optionalCallback(null, result);
+    }
+
+    return Promise.resolve(result);
+  }).catch(function (error) {
+    if (optionalCallback) optionalCallback(error);
+    return Promise.reject(error);
+  });
+}
+
+function firestoreAutoId() {
+  var autoId = '';
+
+  for (var i = 0; i < 20; i++) {
+    autoId += AUTO_ID_CHARS.charAt(Math.floor(Math.random() * AUTO_ID_CHARS.length));
+  }
+  return autoId;
+}

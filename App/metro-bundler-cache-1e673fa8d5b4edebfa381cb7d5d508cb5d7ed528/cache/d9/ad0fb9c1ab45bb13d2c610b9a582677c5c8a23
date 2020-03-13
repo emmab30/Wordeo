@@ -1,0 +1,50 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _BaseService = require('./BaseService.js');
+
+var _reactNative = require('react-native');
+
+var PreferencesService = {
+    preferences: {},
+    getPreferences: function getPreferences() {
+        return PreferencesService.preferences;
+    },
+    getPreferenceByKey: function getPreferenceByKey(key, callback) {
+        this.loadPreferences(function (value) {
+            if (callback) callback(value[key]);
+        });
+    },
+    setPreferenceByKey: function setPreferenceByKey(key, value, callback) {
+        PreferencesService.savePreferenceKey(key, value, function (newValue) {
+            if (callback) callback(newValue);
+        });
+    },
+    loadPreferences: function loadPreferences(callback) {
+        _reactNative.AsyncStorage.getItem('preferences').then(function (value) {
+            var val = null;
+            if (value == null) {
+                val = {
+                    soundEnabled: true
+                };
+                _reactNative.AsyncStorage.setItem('preferences', JSON.stringify(val));
+            } else {
+                val = JSON.parse(value);
+            }
+
+            PreferencesService.preferences = val;
+            if (callback) callback(val);
+        });
+    },
+    savePreferenceKey: function savePreferenceKey(key, value, callback) {
+        this.loadPreferences(function (json) {
+            json[key] = value;
+            _reactNative.AsyncStorage.setItem('preferences', JSON.stringify(json));
+            if (callback) callback(value);
+        });
+    }
+};
+
+exports.default = PreferencesService;

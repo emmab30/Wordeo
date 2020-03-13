@@ -1,0 +1,121 @@
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _class,
+    _temp,
+    _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-spinkit/index.js';
+
+var _reactNative = require('react-native');
+
+var _reactNative2 = _interopRequireDefault(_reactNative);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+	Spinkit: {
+		displayName: 'Spinkit'
+	}
+};
+
+var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/node_modules/react-native-spinkit/index.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+	return function (Component) {
+		return _reactTransformHmrLibIndexJs2(Component, id);
+	};
+}
+
+var NativeModules = _reactNative2.default.NativeModules,
+    processColor = _reactNative2.default.processColor,
+    requireNativeComponent = _reactNative2.default.requireNativeComponent,
+    View = _reactNative2.default.View;
+
+
+var RNSpinkit = null;
+
+var Spinkit = _wrapComponent('Spinkit')((_temp = _class = function (_React$Component) {
+	_inherits(Spinkit, _React$Component);
+
+	function Spinkit() {
+		_classCallCheck(this, Spinkit);
+
+		return _possibleConstructorReturn(this, (Spinkit.__proto__ || Object.getPrototypeOf(Spinkit)).apply(this, arguments));
+	}
+
+	_createClass(Spinkit, [{
+		key: 'render',
+		value: function render() {
+			if (!this.props.isVisible) return _react3.default.createElement(View, {
+				__source: {
+					fileName: _jsxFileName,
+					lineNumber: 45
+				}
+			});
+
+			var size = { height: this.props.size, width: this.props.size };
+
+			var colorNumber = processColor(this.props.color);
+
+			return _react3.default.createElement(RNSpinkit, {
+				type: String(this.props.type),
+				size: parseInt(this.props.size),
+				color: colorNumber,
+				style: [size, this.props.style], __source: {
+					fileName: _jsxFileName,
+					lineNumber: 57
+				}
+			});
+		}
+	}]);
+
+	return Spinkit;
+}(_react3.default.Component), _class.propTypes = {
+	type: _propTypes2.default.string,
+
+	color: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
+	size: _propTypes2.default.number,
+	isVisible: _propTypes2.default.bool,
+	testID: _propTypes2.default.string,
+	accessibilityComponentType: _propTypes2.default.string,
+	accessibilityLabel: _propTypes2.default.string,
+	accessibilityLiveRegion: _propTypes2.default.string,
+	renderToHardwareTextureAndroid: _propTypes2.default.bool,
+	importantForAccessibility: _propTypes2.default.string,
+	onLayout: _propTypes2.default.func
+}, _class.defaultProps = {
+	size: 37,
+	color: "#000000",
+	isVisible: true
+}, _temp));
+
+NativeModules.RNSpinkit;
+
+RNSpinkit = requireNativeComponent('RNSpinkit', Spinkit, {
+	nativeOnly: {
+		'nativeID': true
+	}
+});
+
+module.exports = Spinkit;

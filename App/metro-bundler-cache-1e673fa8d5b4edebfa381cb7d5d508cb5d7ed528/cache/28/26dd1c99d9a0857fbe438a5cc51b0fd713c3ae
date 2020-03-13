@@ -1,0 +1,122 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.GeneralStyle = undefined;
+
+var _reactNative = require('react-native');
+
+var _default = require('./default');
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var GeneralStyle = exports.GeneralStyle = _reactNative.StyleSheet.create({
+    headerCloseTitle: {
+        marginTop: 20,
+        paddingLeft: 10,
+        height: 100
+    },
+    closeIconContainer: {
+        height: 30
+    },
+    closeIcon: {
+        width: 20,
+        resizeMode: 'contain',
+        flex: 1
+    },
+    viewTitle: {
+        fontFamily: _default.Font.ProximaNovaRegular,
+        color: 'white',
+        fontSize: 24,
+        backgroundColor: 'transparent',
+        alignSelf: 'center'
+    },
+    fProximaNovaRegular: {
+        fontFamily: _default.Font.ProximaNovaRegular
+    },
+    fProximaNovaSemibold: {
+        fontFamily: _default.Font.ProximaNovaSemibold
+    },
+    fProximaNovaItalic: {
+        fontFamily: _default.Font.ProximaNovaItalic
+    },
+    centered: {
+        textAlign: 'center'
+    },
+    white: {
+        color: '#fff'
+    },
+
+    buttonWhiteBlue: {
+        height: 45,
+        width: width / 2.5,
+        borderRadius: 23,
+
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    buttonWhiteBlueText: {
+        color: _default.Color.blue,
+        fontFamily: _default.Font.ProximaNovaSemibold
+    },
+    buttonBlueWhite: {
+        height: 40,
+        width: width / 2.5,
+        borderRadius: 25,
+        backgroundColor: _default.Color.blue,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    buttonBlueWhiteText: {
+        color: 'white',
+        fontFamily: _default.Font.ProximaNovaSemibold
+    },
+
+    f15: {
+        fontSize: 15
+    },
+    f16: {
+        fontSize: 16
+    },
+    f17: {
+        fontSize: 17
+    },
+    f18: {
+        fontSize: 18
+    },
+    f19: {
+        fontSize: 19
+    },
+    header: {
+        marginVertical: 10,
+        width: '100%',
+        fontSize: 17,
+        fontFamily: _default.Font.TitanOne,
+        textAlign: 'center'
+    },
+    transparent: {
+        backgroundColor: 'transparent'
+    },
+    textInput: {
+        minHeight: _reactNative.Platform.OS === 'ios' ? 45 : 'auto',
+        height: _reactNative.Platform.OS === 'ios' ? 45 : 40,
+        fontFamily: _default.Font.NunitoRegular
+    },
+    transparentButton: {
+        backgroundColor: 'transparent'
+    },
+    transparentText: {
+        backgroundColor: 'transparent'
+    },
+    customNavbarTitle: {
+        backgroundColor: 'transparent',
+        fontSize: 15,
+        fontFamily: _default.Font.TitanOne,
+        color: '#fff',
+        textAlign: 'center',
+        alignSelf: 'center',
+        marginRight: 5
+    }
+});

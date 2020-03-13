@@ -1,0 +1,49 @@
+var _AuthService = require('./AuthService');
+
+var _AuthService2 = _interopRequireDefault(_AuthService);
+
+var _RoomService = require('./RoomService');
+
+var _RoomService2 = _interopRequireDefault(_RoomService);
+
+var _SocketService = require('./SocketService');
+
+var _SocketService2 = _interopRequireDefault(_SocketService);
+
+var _AnalyticsService = require('./AnalyticsService');
+
+var _AnalyticsService2 = _interopRequireDefault(_AnalyticsService);
+
+var _QuestionService = require('./QuestionService');
+
+var _QuestionService2 = _interopRequireDefault(_QuestionService);
+
+var _CharacterService = require('./CharacterService');
+
+var _CharacterService2 = _interopRequireDefault(_CharacterService);
+
+var _ConfigurationService = require('./ConfigurationService');
+
+var _ConfigurationService2 = _interopRequireDefault(_ConfigurationService);
+
+var _ContactService = require('./ContactService');
+
+var _ContactService2 = _interopRequireDefault(_ContactService);
+
+var _PreferencesService = require('./PreferencesService');
+
+var _PreferencesService2 = _interopRequireDefault(_PreferencesService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+    AuthService: _AuthService2.default,
+    RoomService: _RoomService2.default,
+    SocketService: _SocketService2.default,
+    AnalyticsService: _AnalyticsService2.default,
+    QuestionService: _QuestionService2.default,
+    CharacterService: _CharacterService2.default,
+    ConfigurationService: _ConfigurationService2.default,
+    ContactService: _ContactService2.default,
+    PreferencesService: _PreferencesService2.default
+};

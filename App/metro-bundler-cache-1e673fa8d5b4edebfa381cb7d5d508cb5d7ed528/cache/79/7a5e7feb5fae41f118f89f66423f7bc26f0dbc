@@ -1,0 +1,58 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _BaseService = require('./BaseService.js');
+
+var _reactNative = require('react-native');
+
+var RoomService = {
+    create: function create(data, success, error) {
+        (0, _BaseService.ApiService)().post('/rooms', data).then(function (response) {
+            if (success) success(response.data);
+        }).catch(function (err) {
+            if (error) error(err);
+        });
+    },
+    get: function get(data, success, error) {
+        var url = '/rooms' + '?filter={"where": {"isActive" : true}}';
+        (0, _BaseService.ApiService)().get(url, data).then(function (response) {
+            if (success) success(response.data);
+        }).catch(function (err) {
+            if (error) error(err);
+        });
+    },
+    join: function join(data, success, error) {
+        (0, _BaseService.ApiService)().post('/rooms/join', data).then(function (response) {
+            if (success) success(response.data);
+        }).catch(function (err) {
+            if (err && err.response && err.response.data && err.response.data.error) {
+                if (error) error(err.response.data.error);
+            }
+        });
+    },
+    postStats: function postStats(data, success, error) {
+        (0, _BaseService.ApiService)().post('/rooms/stats', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    getStatsForRoom: function getStatsForRoom(roomId, success, error) {
+        (0, _BaseService.ApiService)().get('/rooms/' + roomId + '/stats').then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    getQuestionsForRoom: function getQuestionsForRoom(roomId, success, error) {
+        (0, _BaseService.ApiService)().get('/rooms/' + roomId + '/questions').then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    }
+};
+
+exports.default = RoomService;

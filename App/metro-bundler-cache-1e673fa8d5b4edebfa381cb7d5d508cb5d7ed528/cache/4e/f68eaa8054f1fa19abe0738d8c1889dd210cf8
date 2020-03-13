@@ -1,0 +1,6 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Config = exports.Config = {
+  REALM_PATH: 'reactNativeQueue.realm',
+  REALM_SCHEMA_VERSION: 0 };

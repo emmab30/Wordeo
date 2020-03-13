@@ -1,0 +1,473 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _query = require('./query');
+
+var _query2 = _interopRequireDefault(_query);
+
+var _snapshot2 = require('./snapshot');
+
+var _snapshot3 = _interopRequireDefault(_snapshot2);
+
+var _disconnect = require('./disconnect');
+
+var _disconnect2 = _interopRequireDefault(_disconnect);
+
+var _log = require('../../utils/log');
+
+var _native = require('../../utils/native');
+
+var _ReferenceBase2 = require('../../utils/ReferenceBase');
+
+var _ReferenceBase3 = _interopRequireDefault(_ReferenceBase2);
+
+var _utils = require('../../utils');
+
+var _SyncTree = require('../../utils/SyncTree');
+
+var _SyncTree2 = _interopRequireDefault(_SyncTree);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var listeners = 0;
+
+var ReferenceEventTypes = {
+  value: 'value',
+  child_added: 'child_added',
+  child_removed: 'child_removed',
+  child_changed: 'child_changed',
+  child_moved: 'child_moved'
+};
+
+var Reference = function (_ReferenceBase) {
+  _inherits(Reference, _ReferenceBase);
+
+  function Reference(database, path, existingModifiers) {
+    _classCallCheck(this, Reference);
+
+    var _this = _possibleConstructorReturn(this, (Reference.__proto__ || Object.getPrototypeOf(Reference)).call(this, path));
+
+    _this._promise = null;
+    _this._refListeners = {};
+    _this._database = database;
+    _this._query = new _query2.default(_this, existingModifiers);
+    (0, _log.getLogger)(database).debug('Created new Reference', _this._getRefKey());
+    return _this;
+  }
+
+  _createClass(Reference, [{
+    key: 'keepSynced',
+    value: function keepSynced(bool) {
+      return (0, _native.getNativeModule)(this._database).keepSynced(this._getRefKey(), this.path, this._query.getModifiers(), bool);
+    }
+  }, {
+    key: 'set',
+    value: function set(value, onComplete) {
+      return (0, _utils.promiseOrCallback)((0, _native.getNativeModule)(this._database).set(this.path, this._serializeAnyType(value)), onComplete);
+    }
+  }, {
+    key: 'setPriority',
+    value: function setPriority(priority, onComplete) {
+      var _priority = this._serializeAnyType(priority);
+
+      return (0, _utils.promiseOrCallback)((0, _native.getNativeModule)(this._database).setPriority(this.path, _priority), onComplete);
+    }
+  }, {
+    key: 'setWithPriority',
+    value: function setWithPriority(value, priority, onComplete) {
+      var _value = this._serializeAnyType(value);
+      var _priority = this._serializeAnyType(priority);
+
+      return (0, _utils.promiseOrCallback)((0, _native.getNativeModule)(this._database).setWithPriority(this.path, _value, _priority), onComplete);
+    }
+  }, {
+    key: 'update',
+    value: function update(val, onComplete) {
+      var value = this._serializeObject(val);
+
+      return (0, _utils.promiseOrCallback)((0, _native.getNativeModule)(this._database).update(this.path, value), onComplete);
+    }
+  }, {
+    key: 'remove',
+    value: function remove(onComplete) {
+      return (0, _utils.promiseOrCallback)((0, _native.getNativeModule)(this._database).remove(this.path), onComplete);
+    }
+  }, {
+    key: 'transaction',
+    value: function transaction(transactionUpdate, onComplete) {
+      var _this2 = this;
+
+      var applyLocally = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      if (!(0, _utils.isFunction)(transactionUpdate)) {
+        return Promise.reject(new Error('Missing transactionUpdate function argument.'));
+      }
+
+      return new Promise(function (resolve, reject) {
+        var onCompleteWrapper = function onCompleteWrapper(error, committed, snapshotData) {
+          if ((0, _utils.isFunction)(onComplete)) {
+            if (error) {
+              onComplete(error, committed, null);
+            } else {
+              onComplete(null, committed, new _snapshot3.default(_this2, snapshotData));
+            }
+          }
+
+          if (error) return reject(error);
+          return resolve({
+            committed: committed,
+            snapshot: new _snapshot3.default(_this2, snapshotData)
+          });
+        };
+
+        _this2._database._transactionHandler.add(_this2, transactionUpdate, onCompleteWrapper, applyLocally);
+      });
+    }
+  }, {
+    key: 'once',
+    value: function once() {
+      var eventName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'value';
+      var successCallback = arguments[1];
+
+      var _this3 = this;
+
+      var cancelOrContext = arguments[2];
+      var context = arguments[3];
+
+      return (0, _native.getNativeModule)(this._database).once(this._getRefKey(), this.path, this._query.getModifiers(), eventName).then(function (_ref) {
+        var snapshot = _ref.snapshot;
+
+        var _snapshot = new _snapshot3.default(_this3, snapshot);
+
+        if ((0, _utils.isFunction)(successCallback)) {
+          if ((0, _utils.isObject)(cancelOrContext)) successCallback.bind(cancelOrContext)(_snapshot);
+          if (context && (0, _utils.isObject)(context)) successCallback.bind(context)(_snapshot);
+          successCallback(_snapshot);
+        }
+
+        return _snapshot;
+      }).catch(function (error) {
+        if ((0, _utils.isFunction)(cancelOrContext)) return cancelOrContext(error);
+        return error;
+      });
+    }
+  }, {
+    key: 'push',
+    value: function push(value, onComplete) {
+      if (value === null || value === undefined) {
+        return new Reference(this._database, this.path + '/' + (0, _utils.generatePushID)(this._database._serverTimeOffset));
+      }
+
+      var newRef = new Reference(this._database, this.path + '/' + (0, _utils.generatePushID)(this._database._serverTimeOffset));
+      var promise = newRef.set(value);
+
+      if ((0, _utils.isFunction)(onComplete)) {
+        return promise.then(function () {
+          return onComplete(null, newRef);
+        }).catch(function (error) {
+          return onComplete(error, null);
+        });
+      }
+
+      newRef._setThenable(promise);
+      return newRef;
+    }
+  }, {
+    key: 'orderByKey',
+    value: function orderByKey() {
+      return this.orderBy('orderByKey');
+    }
+  }, {
+    key: 'orderByPriority',
+    value: function orderByPriority() {
+      return this.orderBy('orderByPriority');
+    }
+  }, {
+    key: 'orderByValue',
+    value: function orderByValue() {
+      return this.orderBy('orderByValue');
+    }
+  }, {
+    key: 'orderByChild',
+    value: function orderByChild(key) {
+      return this.orderBy('orderByChild', key);
+    }
+  }, {
+    key: 'orderBy',
+    value: function orderBy(name, key) {
+      var newRef = new Reference(this._database, this.path, this._query.getModifiers());
+      newRef._query.orderBy(name, key);
+      return newRef;
+    }
+  }, {
+    key: 'limitToLast',
+    value: function limitToLast(limit) {
+      return this.limit('limitToLast', limit);
+    }
+  }, {
+    key: 'limitToFirst',
+    value: function limitToFirst(limit) {
+      return this.limit('limitToFirst', limit);
+    }
+  }, {
+    key: 'limit',
+    value: function limit(name, _limit) {
+      var newRef = new Reference(this._database, this.path, this._query.getModifiers());
+      newRef._query.limit(name, _limit);
+      return newRef;
+    }
+  }, {
+    key: 'equalTo',
+    value: function equalTo(value, key) {
+      return this.filter('equalTo', value, key);
+    }
+  }, {
+    key: 'endAt',
+    value: function endAt(value, key) {
+      return this.filter('endAt', value, key);
+    }
+  }, {
+    key: 'startAt',
+    value: function startAt(value, key) {
+      return this.filter('startAt', value, key);
+    }
+  }, {
+    key: 'filter',
+    value: function filter(name, value, key) {
+      var newRef = new Reference(this._database, this.path, this._query.getModifiers());
+      newRef._query.filter(name, value, key);
+      return newRef;
+    }
+  }, {
+    key: 'onDisconnect',
+    value: function onDisconnect() {
+      return new _disconnect2.default(this);
+    }
+  }, {
+    key: 'child',
+    value: function child(path) {
+      return new Reference(this._database, this.path + '/' + path);
+    }
+  }, {
+    key: 'toString',
+    value: function toString() {
+      return this._database.app.options.databaseURL + '/' + this.path;
+    }
+  }, {
+    key: 'isEqual',
+    value: function isEqual(otherRef) {
+      return !!otherRef && otherRef.constructor === Reference && otherRef.key === this.key && this._query.queryIdentifier() === otherRef._query.queryIdentifier();
+    }
+  }, {
+    key: 'then',
+    value: function then(fnResolve, fnReject) {
+      var _this4 = this;
+
+      if ((0, _utils.isFunction)(fnResolve) && this._promise && this._promise.then) {
+        return this._promise.then.bind(this._promise)(function (result) {
+          _this4._promise = null;
+          return fnResolve(result);
+        }, function (possibleErr) {
+          _this4._promise = null;
+
+          if ((0, _utils.isFunction)(fnReject)) {
+            return fnReject(possibleErr);
+          }
+
+          throw possibleErr;
+        });
+      }
+
+      throw new Error("Cannot read property 'then' of undefined.");
+    }
+  }, {
+    key: 'catch',
+    value: function _catch(fnReject) {
+      var _this5 = this;
+
+      if ((0, _utils.isFunction)(fnReject) && this._promise && this._promise.catch) {
+        return this._promise.catch.bind(this._promise)(function (possibleErr) {
+          _this5._promise = null;
+          return fnReject(possibleErr);
+        });
+      }
+
+      throw new Error("Cannot read property 'catch' of undefined.");
+    }
+  }, {
+    key: '_getRegistrationKey',
+    value: function _getRegistrationKey(eventType) {
+      return '$' + this._database.app.name + '$/' + this.path + '$' + this._query.queryIdentifier() + '$' + listeners + '$' + eventType;
+    }
+  }, {
+    key: '_getRefKey',
+    value: function _getRefKey() {
+      return '$' + this._database.app.name + '$/' + this.path + '$' + this._query.queryIdentifier();
+    }
+  }, {
+    key: '_setThenable',
+    value: function _setThenable(promise) {
+      this._promise = promise;
+    }
+  }, {
+    key: '_serializeObject',
+    value: function _serializeObject(obj) {
+      if (!(0, _utils.isObject)(obj)) return obj;
+
+      return (0, _utils.tryJSONParse)((0, _utils.tryJSONStringify)(obj));
+    }
+  }, {
+    key: '_serializeAnyType',
+    value: function _serializeAnyType(value) {
+      if ((0, _utils.isObject)(value)) {
+        return {
+          type: 'object',
+          value: this._serializeObject(value)
+        };
+      }
+
+      return {
+        type: typeof value,
+        value: value
+      };
+    }
+  }, {
+    key: 'on',
+    value: function on(eventType, callback, cancelCallbackOrContext, context) {
+      if (!eventType) {
+        throw new Error('Query.on failed: Function called with 0 arguments. Expects at least 2.');
+      }
+
+      if (!(0, _utils.isString)(eventType) || !ReferenceEventTypes[eventType]) {
+        throw new Error('Query.on failed: First argument must be a valid string event type: "' + Object.keys(ReferenceEventTypes).join(', ') + '"');
+      }
+
+      if (!callback) {
+        throw new Error('Query.on failed: Function called with 1 argument. Expects at least 2.');
+      }
+
+      if (!(0, _utils.isFunction)(callback)) {
+        throw new Error('Query.on failed: Second argument must be a valid function.');
+      }
+
+      if (cancelCallbackOrContext && !(0, _utils.isFunction)(cancelCallbackOrContext) && !(0, _utils.isObject)(context) && !(0, _utils.isObject)(cancelCallbackOrContext)) {
+        throw new Error('Query.on failed: Function called with 3 arguments, but third optional argument `cancelCallbackOrContext` was not a function.');
+      }
+
+      if (cancelCallbackOrContext && !(0, _utils.isFunction)(cancelCallbackOrContext) && context) {
+        throw new Error('Query.on failed: Function called with 4 arguments, but third optional argument `cancelCallbackOrContext` was not a function.');
+      }
+
+      var eventRegistrationKey = this._getRegistrationKey(eventType);
+      var registrationCancellationKey = eventRegistrationKey + '$cancelled';
+      var _context = cancelCallbackOrContext && !(0, _utils.isFunction)(cancelCallbackOrContext) ? cancelCallbackOrContext : context;
+      var registrationObj = {
+        eventType: eventType,
+        ref: this,
+        path: this.path,
+        key: this._getRefKey(),
+        appName: this._database.app.name,
+        eventRegistrationKey: eventRegistrationKey
+      };
+
+      _SyncTree2.default.addRegistration(_extends({}, registrationObj, {
+        listener: _context ? callback.bind(_context) : callback
+      }));
+
+      if (cancelCallbackOrContext && (0, _utils.isFunction)(cancelCallbackOrContext)) {
+        _SyncTree2.default.addRegistration({
+          ref: this,
+          once: true,
+          path: this.path,
+          key: this._getRefKey(),
+          appName: this._database.app.name,
+          eventType: eventType + '$cancelled',
+          eventRegistrationKey: registrationCancellationKey,
+          listener: _context ? cancelCallbackOrContext.bind(_context) : cancelCallbackOrContext
+        });
+      }
+
+      (0, _native.getNativeModule)(this._database).on({
+        eventType: eventType,
+        path: this.path,
+        key: this._getRefKey(),
+        appName: this._database.app.name,
+        modifiers: this._query.getModifiers(),
+        hasCancellationCallback: (0, _utils.isFunction)(cancelCallbackOrContext),
+        registration: {
+          eventRegistrationKey: eventRegistrationKey,
+          key: registrationObj.key,
+          registrationCancellationKey: registrationCancellationKey
+        }
+      });
+
+      listeners += 1;
+
+      return callback;
+    }
+  }, {
+    key: 'off',
+    value: function off() {
+      var eventType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      var originalCallback = arguments[1];
+
+      if (!arguments.length) {
+        return _SyncTree2.default.removeListenersForRegistrations(_SyncTree2.default.getRegistrationsByPath(this.path));
+      }
+
+      if (eventType && (!(0, _utils.isString)(eventType) || !ReferenceEventTypes[eventType])) {
+        throw new Error('Query.off failed: First argument must be a valid string event type: "' + Object.keys(ReferenceEventTypes).join(', ') + '"');
+      }
+
+      if (originalCallback && !(0, _utils.isFunction)(originalCallback)) {
+        throw new Error('Query.off failed: Function called with 2 arguments, but second optional argument was not a function.');
+      }
+
+      if (eventType && originalCallback) {
+        var registration = _SyncTree2.default.getOneByPathEventListener(this.path, eventType, originalCallback);
+        if (!registration) return [];
+
+        _SyncTree2.default.removeListenersForRegistrations([registration + '$cancelled']);
+
+        return _SyncTree2.default.removeListenerRegistrations(originalCallback, [registration]);
+      }
+
+      var registrations = _SyncTree2.default.getRegistrationsByPathEvent(this.path, eventType);
+
+      _SyncTree2.default.removeListenersForRegistrations(_SyncTree2.default.getRegistrationsByPathEvent(this.path, eventType + '$cancelled'));
+
+      return _SyncTree2.default.removeListenersForRegistrations(registrations);
+    }
+  }, {
+    key: 'parent',
+    get: function get() {
+      if (this.path === '/') return null;
+      return new Reference(this._database, this.path.substring(0, this.path.lastIndexOf('/')));
+    }
+  }, {
+    key: 'ref',
+    get: function get() {
+      return this;
+    }
+  }, {
+    key: 'root',
+    get: function get() {
+      return new Reference(this._database, '/');
+    }
+  }]);
+
+  return Reference;
+}(_ReferenceBase3.default);
+
+exports.default = Reference;

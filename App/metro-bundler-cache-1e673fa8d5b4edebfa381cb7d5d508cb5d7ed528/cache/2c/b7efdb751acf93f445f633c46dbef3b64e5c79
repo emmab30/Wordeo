@@ -1,0 +1,35 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.strings = undefined;
+
+var _reactNative = require('react-native');
+
+var _reactNativeLocalization = require('react-native-localization');
+
+var _reactNativeLocalization2 = _interopRequireDefault(_reactNativeLocalization);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var translations = new _reactNativeLocalization2.default({
+    en: {
+        LoginWithFacebook: 'Login with Facebook',
+        Rooms: 'Rooms',
+        Round: 'Round',
+        Categories: 'Categories',
+        Question: 'Question',
+        Confirm: 'Confirm',
+        Cancel: 'Cancel'
+    },
+    es: {
+        LoginWithFacebook: 'Entrar con Facebook',
+        Rooms: 'Salas',
+        Round: 'Ronda',
+        Categories: 'Categorias',
+        Question: 'Pregunta',
+        Confirm: 'Confirmar',
+        Cancel: 'Cancelar'
+    }
+});
+
+var strings = exports.strings = translations;

@@ -1,0 +1,245 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/navigation/CustomMenu.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _global = require('../../components/common/global');
+
+var _strings = require('../localization/strings');
+
+var _default = require('../../styles/default');
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    CustomMenu: {
+        displayName: 'CustomMenu'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/navigation/CustomMenu.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var OVERLAY_BACKGROUND = 'rgba(0,96,255,.85)';
+
+var CustomMenu = _wrapComponent('CustomMenu')(function (_Component) {
+    _inherits(CustomMenu, _Component);
+
+    function CustomMenu(props) {
+        _classCallCheck(this, CustomMenu);
+
+        var _this = _possibleConstructorReturn(this, (CustomMenu.__proto__ || Object.getPrototypeOf(CustomMenu)).call(this, props));
+
+        _this.onShow = function (callback) {
+            _reactNative.Animated.spring(_this.state.heightMenu, {
+                toValue: height,
+                duration: 3000
+            }).start();
+        };
+
+        _this.onHide = function (callback) {
+            var animatedValue = new _reactNative.Animated.Value(0);
+            _this.setState({ heightMenu: animatedValue });
+        };
+
+        _this.state = {
+            isOpened: false,
+            heightMenu: new _reactNative.Animated.Value(0)
+        };
+        return _this;
+    }
+
+    _createClass(CustomMenu, [{
+        key: 'onNavigatorEvent',
+        value: function onNavigatorEvent(event) {
+            switch (event.id) {
+                case 'willAppear':
+                    _reactNative.Keyboard.dismiss();
+                    break;
+                case 'didAppear':
+                    break;
+                case 'willDisappear':
+                    break;
+                case 'didDisappear':
+                    break;
+            }
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.isOpened) {
+                this.setState({ isOpened: nextProps.isOpened });
+                this.onShow();
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            if (!this.props.isOpened) return null;
+
+            return _react3.default.createElement(
+                _reactNative.Animated.View,
+                { style: { height: this.state.heightMenu }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 80
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    { visible: this.props.isOpened,
+                        closeOnTouchOutside: true,
+                        animationType: 'flipInY',
+                        animationOutType: 'none',
+                        animationDuration: 1000,
+                        onClose: function onClose() {
+                            _this2.props.onClose();
+                        },
+                        containerStyle: { backgroundColor: OVERLAY_BACKGROUND, flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' },
+                        childrenWrapperStyle: [styles.overlayChildren, { overflow: 'hidden', paddingTop: 0, marginTop: 0, backgroundColor: "transparent", paddingHorizontal: 0, borderRadius: 10, width: this.state.isLandscape ? '80%' : '100%', height: '100%', justifyContent: 'center', paddingBottom: this.props.paddingBottom !== undefined ? this.props.paddingBottom : 0 }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 81
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.TouchableOpacity,
+                        {
+                            activeOpacity: 1,
+                            onPress: function onPress() {
+                                _this2.props.onClose();
+                            },
+                            style: { width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 92
+                            }
+                        },
+                        this.renderMenuItem({ backgroundColor: '#1aba5d', image: require('../../images/wordeo/menu/1.png'), title: 'Mi perfil', screen: _global.Global.Screen.Dashboard.Profile }),
+                        this.renderMenuItem({ backgroundColor: '#f4ae01', image: require('../../images/wordeo/menu/2.png'), title: 'Ranking', screen: _global.Global.Screen.Dashboard.Ranking }),
+                        this.renderMenuItem({ backgroundColor: '#2ba9e0', image: require('../../images/wordeo/menu/3.png'), title: '¡Seguir jugando!', screen: _extends({}, _global.Global.Screen.Dashboard.Home) }),
+                        this.renderMenuItem({ backgroundColor: '#f85200', image: require('../../images/wordeo/menu/4.png'), title: 'Cargá preguntas y ganá tuls!', screen: _extends({}, _global.Global.Screen.Dashboard.AddQuestion) }),
+                        this.renderMenuItem({ backgroundColor: '#db457e', image: require('../../images/wordeo/menu/5.png'), title: 'Zona de contacto', screen: _extends({}, _global.Global.Screen.Dashboard.Contact) })
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'renderMenuItem',
+        value: function renderMenuItem(item) {
+            var _this3 = this;
+
+            return _react3.default.createElement(
+                _reactNative.TouchableOpacity,
+                {
+                    onPress: function onPress() {
+                        if (item.screen != null) {
+                            _this3.props.onClose();
+                            rootNavigator.push(item.screen);
+                        }
+                    },
+                    style: [styles.menuItem, { backgroundColor: item.backgroundColor }], __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 113
+                    }
+                },
+                _react3.default.createElement(_reactNative.Image, { source: item.image, style: styles.menuItemIcon, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 121
+                    }
+                }),
+                _react3.default.createElement(
+                    _reactNative.Text,
+                    { style: styles.menuItemText, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 122
+                        }
+                    },
+                    item.title
+                )
+            );
+        }
+    }]);
+
+    return CustomMenu;
+}(_react2.Component));
+
+exports.default = CustomMenu;
+
+
+var styles = _reactNative.StyleSheet.create({
+    menuItem: {
+        flexDirection: 'row',
+        height: 80,
+        borderRadius: 10,
+        width: '100%',
+        marginVertical: 15,
+        backgroundColor: '#0088ff',
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: 'white',
+        shadowColor: '#aaa',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: .9,
+        shadowRadius: 10,
+        elevation: 4
+    },
+    menuItemIcon: {
+        width: 65,
+        height: 65,
+        marginHorizontal: 5,
+        resizeMode: 'contain'
+    },
+    menuItemText: {
+        marginHorizontal: 10,
+        fontFamily: _default.Font.PTSansBold,
+        fontSize: 18,
+        color: 'white'
+    }
+});

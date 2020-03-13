@@ -1,0 +1,193 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/navigation/EntranceAfterLaunchScreen.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../localization/strings');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _default = require('../../styles/default');
+
+var _global = require('../common/global');
+
+var _BaseService = require('../../services/BaseService.js');
+
+var _AuthService = require('../../services/AuthService.js');
+
+var _AuthService2 = _interopRequireDefault(_AuthService);
+
+var _Helper = require('../common/Helper');
+
+var _Helper2 = _interopRequireDefault(_Helper);
+
+var _CustomNavbarNotification = require('./CustomNavbarNotification');
+
+var _CustomNavbarNotification2 = _interopRequireDefault(_CustomNavbarNotification);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _DialogConfirmation = require('../DialogConfirmation');
+
+var _DialogConfirmation2 = _interopRequireDefault(_DialogConfirmation);
+
+var _Services = require('../../services/Services.js');
+
+var _reactNativeCachedImage = require('react-native-cached-image');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    EntranceAfterLaunchScreen: {
+        displayName: 'EntranceAfterLaunchScreen'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/navigation/EntranceAfterLaunchScreen.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var EntranceAfterLaunchScreen = _wrapComponent('EntranceAfterLaunchScreen')(function (_Component) {
+    _inherits(EntranceAfterLaunchScreen, _Component);
+
+    function EntranceAfterLaunchScreen(props) {
+        _classCallCheck(this, EntranceAfterLaunchScreen);
+
+        var _this = _possibleConstructorReturn(this, (EntranceAfterLaunchScreen.__proto__ || Object.getPrototypeOf(EntranceAfterLaunchScreen)).call(this, props));
+
+        _this.show = function () {
+            if (_this.state.isMounted) {
+                _this.setState({ isVisible: true });
+                _reactNative.Animated.spring(_this.circleScale, {
+                    toValue: 1,
+                    duration: 2000
+                }).start();
+            }
+        };
+
+        _this.hide = function (cb) {
+            if (_this.state.isMounted) {
+                setTimeout(function () {
+                    if (cb) cb();
+                }, 200);
+                _reactNative.Animated.spring(_this.circleScale, {
+                    toValue: 2,
+                    duration: 2000
+                }).start(function () {
+                    _this.setState({ isVisible: false });
+                });
+            }
+        };
+
+        _this.state = {
+            isVisible: false,
+            isMounted: true
+        };
+
+        _this.circleScale = new _reactNative.Animated.Value(0);
+        return _this;
+    }
+
+    _createClass(EntranceAfterLaunchScreen, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {}
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.isVisible && this.state.isVisible != nextProps.isVisible) {
+                this.show();
+            } else if (nextProps.isVisible == false && this.state.isVisible == true) {
+                this.hide();
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (!this.state.isVisible || !this.state.isMounted) return null;
+
+            var opacityInterpolate = this.circleScale.interpolate({
+                inputRange: [1, 2],
+                outputRange: [1, 0]
+            });
+
+            return _react3.default.createElement(
+                _reactNative.Animated.View,
+                { style: { zIndex: 100000, position: 'absolute', top: 0, left: 0, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', opacity: opacityInterpolate, backgroundColor: 'rgba(0,0,0,.8)', zIndex: 999 }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 112
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.Animated.View,
+                    { style: { justifyContent: 'center', alignItems: 'center', backgroundColor: _default.Color.BluePrimary, borderRadius: width / 2, width: width / 2, height: width / 2, transform: [{ scale: this.circleScale }], opacity: opacityInterpolate }, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 113
+                        }
+                    },
+                    _react3.default.createElement(_reactNative.Animated.Image, {
+                        style: styles.image,
+                        source: require('../../images/wordeo/general/logo_transparent.png'), __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 114
+                        }
+                    })
+                )
+            );
+        }
+    }]);
+
+    return EntranceAfterLaunchScreen;
+}(_react2.Component));
+
+exports.default = EntranceAfterLaunchScreen;
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var styles = _reactNative.StyleSheet.create({
+    image: {
+        width: 100,
+        height: 100
+    }
+});

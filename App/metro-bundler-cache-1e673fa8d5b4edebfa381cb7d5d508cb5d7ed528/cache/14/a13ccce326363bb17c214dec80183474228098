@@ -1,0 +1,75 @@
+'use strict';
+
+var _ = require('lodash');
+var URL = require('url-parse');
+var SHA1 = require("crypto-js/sha1");
+
+var defaultImageTypes = ['png', 'jpeg', 'jpg', 'gif', 'bmp', 'tiff', 'tif'];
+
+function serializeObjectKeys(obj) {
+    return _(obj).toPairs().sortBy(function (a) {
+        return a[0];
+    }).map(function (a) {
+        return a[1];
+    }).value();
+}
+
+function getQueryForCacheKey(url, useQueryParamsInCacheKey) {
+    if (_.isArray(useQueryParamsInCacheKey)) {
+        return serializeObjectKeys(_.pick(url.query, useQueryParamsInCacheKey));
+    }
+    if (useQueryParamsInCacheKey) {
+        return serializeObjectKeys(url.query);
+    }
+    return '';
+}
+
+function generateCacheKey(url) {
+    var useQueryParamsInCacheKey = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+    var parsedUrl = new URL(url, null, true);
+
+    var pathParts = parsedUrl.pathname.split('/');
+
+    var fileName = pathParts.pop();
+    var filePath = pathParts.join('/');
+
+    var parts = fileName.split('.');
+    var fileType = parts.length > 1 ? _.toLower(parts.pop()) : '';
+    var type = defaultImageTypes.includes(fileType) ? fileType : 'jpg';
+
+    var cacheable = filePath + fileName + type + getQueryForCacheKey(parsedUrl, useQueryParamsInCacheKey);
+    return SHA1(cacheable) + '.' + type;
+}
+
+function getHostCachePathComponent(url) {
+    var _ref = new URL(url),
+        host = _ref.host;
+
+    return host.replace(/\.:/gi, '_').replace(/[^a-z0-9_]/gi, '_').toLowerCase() + '_' + SHA1(host);
+}
+
+module.exports = {
+    getImageFilePath: function getImageFilePath(url, cacheLocation) {
+        var hostCachePath = getHostCachePathComponent(url);
+        var cacheKey = generateCacheKey(url);
+
+        return cacheLocation + '/' + hostCachePath + '/' + cacheKey;
+    },
+    getImageRelativeFilePath: function getImageRelativeFilePath(url) {
+        var hostCachePath = getHostCachePathComponent(url);
+        var cacheKey = generateCacheKey(url);
+
+        return hostCachePath + '/' + cacheKey;
+    },
+    getCacheableUrl: function getCacheableUrl(url, useQueryParamsInCacheKey) {
+        var parsedUrl = new URL(url, null, true);
+        if (_.isArray(useQueryParamsInCacheKey)) {
+            parsedUrl.set('query', _.pick(parsedUrl.query, useQueryParamsInCacheKey));
+        }
+        if (!useQueryParamsInCacheKey) {
+            parsedUrl.set('query', {});
+        }
+        return parsedUrl.toString();
+    }
+};

@@ -1,0 +1,94 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _reactNativeGoogleAnalyticsBridge = require('react-native-google-analytics-bridge');
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _reactNativeConfig = require('react-native-config');
+
+var _reactNativeConfig2 = _interopRequireDefault(_reactNativeConfig);
+
+var _Helper = require('../components/common/Helper');
+
+var _Helper2 = _interopRequireDefault(_Helper);
+
+var _reactNativeFirebase = require('react-native-firebase');
+
+var _reactNativeFirebase2 = _interopRequireDefault(_reactNativeFirebase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FBSDK = require('react-native-fbsdk');
+var AppEventsLogger = FBSDK.AppEventsLogger;
+
+
+var trackingId = 'UA-2777546-34';
+
+var AnalyticsService = {
+    initialized: false,
+    configure: function configure() {
+        _reactNativeFirebase2.default.analytics().setAnalyticsCollectionEnabled(true);
+        AnalyticsService.initialized = true;
+    },
+    setUser: function setUser(userId) {
+        if (AnalyticsService.initialized && _Helper2.default.isAnalyticsEnabled()) {
+            if (userId != null && userId.toString() != null) {
+                console.log("[Firebase] Setting user ID for tracker " + userId);
+                _reactNativeFirebase2.default.analytics().setUserId(userId.toString());
+            }
+        }
+    },
+    trackError: function trackError(category, screen, error) {
+        if (AnalyticsService.initialized && _Helper2.default.isAnalyticsEnabled()) {
+            console.log("[Firebase] Tracking error " + category + " [screen=" + screen + ", error=" + error + "]");
+            _reactNativeFirebase2.default.analytics().logEvent(category, {
+                screen: screen,
+                error: error
+            });
+        }
+    },
+    trackEvent: function trackEvent(category, params, extraParams) {
+        if (AnalyticsService.initialized && _Helper2.default.isAnalyticsEnabled()) {
+            console.log("[Firebase] Tracking event " + category + " [action=" + params + "]");
+            if (!params) {
+                params = {};
+            } else if (typeof params == 'string') {
+                console.log("[Firebase] Tracking event " + category + " [action=" + params + "]");
+                params = {
+                    event: params
+                };
+            } else {
+                console.log("[Firebase] Tracking event " + category + " [action=" + JSON.stringify(params) + "]");
+            }
+
+            _reactNativeFirebase2.default.analytics().logEvent(category, params);
+        }
+    },
+    trackScreenView: function trackScreenView(screenView) {
+        if (AnalyticsService.initialized && _Helper2.default.isAnalyticsEnabled()) {
+            console.log("[Firebase] Tracking view " + screenView);
+            _reactNativeFirebase2.default.analytics().setCurrentScreen(screenView, screenView);
+        }
+    },
+    trackInstallation: function trackInstallation() {
+        if (_reactNativeConfig2.default.GLOBAL_POSTBACK_ENABLED == 'true' || _reactNativeConfig2.default.GLOBAL_POSTBACK_ENABLED == true) {
+            var packageName = "com.openenglish.chatbyoe.silentinstall";
+            var referrer = 'INSTALLATION';
+            var url = "http://convs.appia.com/v2/installAd.jsp?packageName=" + packageName + "&referrer=" + referrer;
+
+            _axios2.default.get(url).then(function (response) {}).catch(function (err) {});
+        }
+    },
+    trackEventFacebook: function trackEventFacebook(event) {
+        if (_Helper2.default.isAnalyticsEnabled()) {
+            AppEventsLogger.logEvent(event);
+        }
+    }
+};
+
+exports.default = AnalyticsService;

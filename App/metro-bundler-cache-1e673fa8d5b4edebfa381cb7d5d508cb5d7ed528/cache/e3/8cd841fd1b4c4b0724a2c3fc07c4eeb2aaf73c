@@ -1,0 +1,140 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _events = require('../../utils/events');
+
+var _log = require('../../utils/log');
+
+var _native = require('../../utils/native');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var transactionId = 0;
+
+var generateTransactionId = function generateTransactionId() {
+  return transactionId++;
+};
+
+var TransactionHandler = function () {
+  function TransactionHandler(database) {
+    _classCallCheck(this, TransactionHandler);
+
+    this._transactions = {};
+    this._database = database;
+
+    this._transactionListener = _events.SharedEventEmitter.addListener((0, _events.getAppEventName)(this._database, 'database_transaction_event'), this._handleTransactionEvent.bind(this));
+  }
+
+  _createClass(TransactionHandler, [{
+    key: 'add',
+    value: function add(reference, transactionUpdater, onComplete) {
+      var applyLocally = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+      var id = generateTransactionId();
+
+      this._transactions[id] = {
+        id: id,
+        reference: reference,
+        transactionUpdater: transactionUpdater,
+        onComplete: onComplete,
+        applyLocally: applyLocally,
+        completed: false,
+        started: true
+      };
+
+      (0, _native.getNativeModule)(this._database).transactionStart(reference.path, id, applyLocally);
+    }
+  }, {
+    key: '_handleTransactionEvent',
+    value: function _handleTransactionEvent() {
+      var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      switch (event.type) {
+        case 'update':
+          return this._handleUpdate(event);
+        case 'error':
+          return this._handleError(event);
+        case 'complete':
+          return this._handleComplete(event);
+        default:
+          (0, _log.getLogger)(this._database).warn('Unknown transaction event type: \'' + event.type + '\'', event);
+          return undefined;
+      }
+    }
+  }, {
+    key: '_handleUpdate',
+    value: function _handleUpdate() {
+      var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var newValue = void 0;
+      var id = event.id,
+          value = event.value;
+
+
+      try {
+        var transaction = this._transactions[id];
+        if (!transaction) return;
+
+        newValue = transaction.transactionUpdater(value);
+      } finally {
+        var abort = false;
+
+        if (newValue === undefined) {
+          abort = true;
+        }
+
+        (0, _native.getNativeModule)(this._database).transactionTryCommit(id, {
+          value: newValue,
+          abort: abort
+        });
+      }
+    }
+  }, {
+    key: '_handleError',
+    value: function _handleError() {
+      var _this = this;
+
+      var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var transaction = this._transactions[event.id];
+      if (transaction && !transaction.completed) {
+        transaction.completed = true;
+        try {
+          transaction.onComplete(event.error, false, null);
+        } finally {
+          setImmediate(function () {
+            delete _this._transactions[event.id];
+          });
+        }
+      }
+    }
+  }, {
+    key: '_handleComplete',
+    value: function _handleComplete() {
+      var _this2 = this;
+
+      var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var transaction = this._transactions[event.id];
+      if (transaction && !transaction.completed) {
+        transaction.completed = true;
+        try {
+          transaction.onComplete(null, event.committed, _extends({}, event.snapshot));
+        } finally {
+          setImmediate(function () {
+            delete _this2._transactions[event.id];
+          });
+        }
+      }
+    }
+  }]);
+
+  return TransactionHandler;
+}();
+
+exports.default = TransactionHandler;

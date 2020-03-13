@@ -1,0 +1,9 @@
+var _InteractableView = require('./src/InteractableView');
+
+var _InteractableView2 = _interopRequireDefault(_InteractableView);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+  View: _InteractableView2.default
+};

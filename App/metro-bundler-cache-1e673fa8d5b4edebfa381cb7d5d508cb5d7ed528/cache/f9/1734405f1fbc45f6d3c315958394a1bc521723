@@ -1,0 +1,58 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _BaseService = require('./BaseService.js');
+
+var _reactNative = require('react-native');
+
+var QuestionService = {
+    getCategories: function getCategories(data, success, error) {
+        (0, _BaseService.ApiService)().get('/QuestionCategories', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    getCategoriesWithRandomQuestions: function getCategoriesWithRandomQuestions(data, success, error) {
+        (0, _BaseService.ApiService)().post('/QuestionCategories/random_questions', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    getRandomQuestionForCategory: function getRandomQuestionForCategory(categoryId, success, error) {
+        var data = {
+            categoryId: categoryId
+        };
+        (0, _BaseService.ApiService)().post('/QuestionCategories/random_questions', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    addQuestionToRevision: function addQuestionToRevision(data, success, error) {
+        (0, _BaseService.ApiService)().post('/PendingQuestions/add_pending_question', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    getSentQuestions: function getSentQuestions(data, success, error) {
+        (0, _BaseService.ApiService)().get('/PendingQuestions/me').then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    },
+    reportQuestion: function reportQuestion(data, success, error) {
+        (0, _BaseService.ApiService)().post('/QuestionReports/create', data).then(function (response) {
+            success(response.data);
+        }).catch(function (err) {
+            error(err);
+        });
+    }
+};
+
+exports.default = QuestionService;

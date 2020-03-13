@@ -55,11 +55,27 @@
                     </li>
                 </ul>
             </li> !-->
-            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.badges')}">
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.pendingQuestions')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.pendingQuestions')}" href="#"><i class="icon-settings"></i> Preguntas de usuarios</a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link" ui-sref-active="active" ui-sref="app.pendingQuestions.list"><i class="icon-list"></i> Listar preguntas</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.players')}">
+                <a class="nav-link nav-dropdown-toggle" ui-sref="app.players.list" ng-class="{active: $state.includes('app.players')}" href="#"><i class="icon-settings"></i> Jugadores</a>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.players')}">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.players')}" href="#"><i class="icon-settings"></i> Noticias</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.news.list"><i class="icon-list"></i> Listar noticias</a>
+                    </li>
+                </ul>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.news.add"><i class="icon-list"></i> Crear noticia</a>
                     </li>
                 </ul>
             </li>

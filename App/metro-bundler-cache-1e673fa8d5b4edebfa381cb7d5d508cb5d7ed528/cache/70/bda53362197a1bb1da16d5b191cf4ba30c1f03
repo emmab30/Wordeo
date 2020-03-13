@@ -1,0 +1,365 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/navigation/CustomNavbar.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../localization/strings');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _default = require('../../styles/default');
+
+var _global = require('../common/global');
+
+var _BaseService = require('../../services/BaseService.js');
+
+var _AuthService = require('../../services/AuthService.js');
+
+var _AuthService2 = _interopRequireDefault(_AuthService);
+
+var _Helper = require('../common/Helper');
+
+var _Helper2 = _interopRequireDefault(_Helper);
+
+var _CustomNavbarNotification = require('./CustomNavbarNotification');
+
+var _CustomNavbarNotification2 = _interopRequireDefault(_CustomNavbarNotification);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _DialogConfirmation = require('../DialogConfirmation');
+
+var _DialogConfirmation2 = _interopRequireDefault(_DialogConfirmation);
+
+var _Services = require('../../services/Services.js');
+
+var _reactNativeCachedImage = require('react-native-cached-image');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    CustomNavbar: {
+        displayName: 'CustomNavbar'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/navigation/CustomNavbar.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var CustomNavbar = _wrapComponent('CustomNavbar')(function (_Component) {
+    _inherits(CustomNavbar, _Component);
+
+    function CustomNavbar(props) {
+        _classCallCheck(this, CustomNavbar);
+
+        var _this = _possibleConstructorReturn(this, (CustomNavbar.__proto__ || Object.getPrototypeOf(CustomNavbar)).call(this, props));
+
+        _this.onBack = function () {
+            if (_this.props.backButtonFn) {
+                _this.props.backButtonFn();
+            } else {
+                _this.props.navigator.pop();
+            }
+        };
+
+        _this.showMessage = function (message) {
+            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            _this.navbarNotification.showMessage(message, options);
+            if (options.duration) {
+                setTimeout(function () {
+                    if (_this.navbarNotification) _this.navbarNotification.hide();
+                }, options.duration || 3000);
+            }
+        };
+
+        _this.hide = function () {
+            if (_this.navbarNotification) _this.navbarNotification.hide();
+        };
+
+        _this.state = {
+            customNavbarNotification: {
+                isVisible: true,
+                notification: {
+                    text: '¡Texto de prueba!'
+                }
+            },
+            isSocketConnected: true
+        };
+
+        _this.navbarNotification = null;
+        _this.props.navigator.setOnNavigatorEvent(_this.onNavigatorEvent.bind(_this));
+        return _this;
+    }
+
+    _createClass(CustomNavbar, [{
+        key: 'onNavigatorEvent',
+        value: function onNavigatorEvent(event) {
+            switch (event.id) {
+                case 'willAppear':
+
+                    _reactNative.Keyboard.dismiss();
+                    _Services.SocketService.on('connect', this.onSocketConnect.bind(this));
+                    _Services.SocketService.on('disconnect', this.onSocketDisconnect.bind(this));
+
+                    break;
+                case 'didAppear':
+                    break;
+                case 'willDisappear':
+                    _Services.SocketService.removeListener('connect', this.onSocketConnect);
+                    _Services.SocketService.removeListener('disconnect', this.onSocketDisconnect);
+
+                    break;
+                case 'didDisappear':
+                    break;
+            }
+        }
+    }, {
+        key: 'onSocketConnect',
+        value: function onSocketConnect() {
+            this.setState({ isSocketConnected: true });
+        }
+    }, {
+        key: 'onSocketDisconnect',
+        value: function onSocketDisconnect() {
+            this.setState({ isSocketConnected: false });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _props = this.props,
+                title = _props.title,
+                backButton = _props.backButton,
+                customLeftView = _props.customLeftView,
+                customCenterView = _props.customCenterView,
+                customRightView = _props.customRightView,
+                customLeftViewContainerStyle = _props.customLeftViewContainerStyle,
+                customCenterViewContainerStyle = _props.customCenterViewContainerStyle,
+                customRightViewContainerStyle = _props.customRightViewContainerStyle,
+                flexCenterContent = _props.flexCenterContent,
+                gradientColors = _props.gradientColors;
+
+
+            var containerStyle = [styles.navbar];
+            if (this.props.containerStyle) {
+                containerStyle.push(this.props.containerStyle);
+            }
+
+            return _react3.default.createElement(
+                _reactNativeLinearGradient2.default,
+                { style: { shadowColor: 'white', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.3, shadowRadius: 5 }, colors: gradientColors, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 139
+                    }
+                },
+                _react3.default.createElement(_CustomNavbarNotification2.default, {
+                    ref: function ref(e) {
+                        _this2.navbarNotification = e;
+                    }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 140
+                    }
+                }),
+                _react3.default.createElement(
+                    _reactNative.View,
+                    { style: containerStyle, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 143
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.item, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 144
+                            }
+                        },
+                        backButton && _react3.default.createElement(
+                            _reactNative.TouchableOpacity,
+                            { onPress: this.onBack, style: { flex: 1, paddingLeft: 20, justifyContent: 'center', width: '100%', height: '100%' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 146
+                                }
+                            },
+                            _react3.default.createElement(_reactNative.Image, {
+                                style: { alignSelf: 'flex-start', tintColor: 'white', width: 15, maxHeight: 20 },
+                                source: require('../../images/wordeo/navbar/back.png'), __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 147
+                                }
+                            })
+                        ),
+                        customLeftView != null && _react3.default.createElement(
+                            _reactNative.View,
+                            { style: [styles.customLeftViewContainer, customLeftViewContainerStyle], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 154
+                                }
+                            },
+                            customLeftView()
+                        )
+                    ),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: [styles.item, styles.itemCenter, { flex: flexCenterContent != null ? flexCenterContent : 1, backgroundColor: 'transparent' }], __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 159
+                            }
+                        },
+                        title && _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: styles.title, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 161
+                                }
+                            },
+                            title
+                        ),
+                        !this.state.isSocketConnected && _react3.default.createElement(
+                            _reactNative.View,
+                            { style: [styles.customCenterViewContainer, customCenterViewContainerStyle], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 165
+                                }
+                            },
+                            _react3.default.createElement(_reactNative.ActivityIndicator, {
+                                size: "small",
+                                color: "white", __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 166
+                                }
+                            }),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: [styles.title, { fontSize: 12, marginTop: 5 }], __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 169
+                                    }
+                                },
+                                'Conectando..'
+                            )
+                        ),
+                        this.state.isSocketConnected && customCenterView != null && _react3.default.createElement(
+                            _reactNative.View,
+                            { style: [styles.customCenterViewContainer, customCenterViewContainerStyle], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 174
+                                }
+                            },
+                            customCenterView()
+                        )
+                    ),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.item, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 179
+                            }
+                        },
+                        customRightView != null && _react3.default.createElement(
+                            _reactNative.View,
+                            { style: [styles.customRightViewContainer, customRightViewContainerStyle], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 181
+                                }
+                            },
+                            customRightView()
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CustomNavbar;
+}(_react2.Component));
+
+exports.default = CustomNavbar;
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var styles = _reactNative.StyleSheet.create({
+    navbar: {
+        width: '100%',
+        maxWidth: '95%',
+        alignSelf: 'center',
+        height: 60,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    title: {
+        fontSize: 18,
+        fontFamily: _default.Font.TitanOne,
+        color: 'white',
+        textAlign: 'center'
+    },
+    titleContainer: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    item: {
+        flex: 1
+    },
+    itemCenter: {
+        flex: 1.5,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    customLeftViewContainer: {
+        flex: 1,
+        width: '100%'
+    },
+    customCenterViewContainer: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    customRightViewContainer: {
+        flex: 1,
+        width: '100%'
+    }
+});

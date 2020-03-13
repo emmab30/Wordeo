@@ -1,0 +1,13 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/xml/preferences.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.51.1/res/xml/preferences.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/xml/provider_paths.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/OpenEnglish/react-native-image-picker/unspecified/res/xml/provider_paths.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/xml/preferences.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.51.0/res/xml/preferences.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/xml/provider_paths.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/Wordeo/react-native-image-picker/unspecified/res/xml/provider_paths.xml"
+}];

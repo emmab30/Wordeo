@@ -1,0 +1,426 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/contact.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _RankingItem = require('../../components/componentsJs/RankingItem');
+
+var _RankingItem2 = _interopRequireDefault(_RankingItem);
+
+var _FontAwesome = require('react-native-vector-icons/FontAwesome');
+
+var _FontAwesome2 = _interopRequireDefault(_FontAwesome);
+
+var _reactNativeElements = require('react-native-elements');
+
+var _Helper = require('../../components/common/Helper');
+
+var _Helper2 = _interopRequireDefault(_Helper);
+
+var _SentQuestions = require('../../components/modals/SentQuestions');
+
+var _SentQuestions2 = _interopRequireDefault(_SentQuestions);
+
+var _reactNativeOnesignal = require('react-native-onesignal');
+
+var _reactNativeOnesignal2 = _interopRequireDefault(_reactNativeOnesignal);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _AuthService = require('../../services/AuthService.js');
+
+var _AuthService2 = _interopRequireDefault(_AuthService);
+
+var _global = require('../../components/common/global');
+
+var _profile = require('../../styles/dashboard/profile');
+
+var _BaseService = require('../../services/BaseService.js');
+
+var _ImageService = require('../../services/ImageService.js');
+
+var _ImageService2 = _interopRequireDefault(_ImageService);
+
+var _CommonDialog = require('../../components/dialogs/CommonDialog');
+
+var _CommonDialog2 = _interopRequireDefault(_CommonDialog);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _default = require('../../styles/default');
+
+var _general = require('../../styles/general');
+
+var _register = require('../../styles/register');
+
+var _AnalyticsService = require('../../services/AnalyticsService.js');
+
+var _AnalyticsService2 = _interopRequireDefault(_AnalyticsService);
+
+var _Services = require('../../services/Services');
+
+var _reactNativeCachedImage = require('react-native-cached-image');
+
+var _DialogConfirmation = require('../../components/DialogConfirmation');
+
+var _DialogConfirmation2 = _interopRequireDefault(_DialogConfirmation);
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _dropdown = require('../../styles/dropdown');
+
+var _reactNativeModalDropdown = require('react-native-modal-dropdown');
+
+var _reactNativeModalDropdown2 = _interopRequireDefault(_reactNativeModalDropdown);
+
+var _reactNativeAnimatable = require('react-native-animatable');
+
+var Animatable = _interopRequireWildcard(_reactNativeAnimatable);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    Contact: {
+        displayName: 'Contact'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/contact.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var dropdownOptions = [_strings.strings.English, _strings.strings.Spanish];
+var TOPICS_DETAILS = {
+    SUGERENCIAS: 'Sugerencias',
+    PROBLEMAS: 'Problemas'
+};
+
+var Contact = _wrapComponent('Contact')(function (_Component) {
+    _inherits(Contact, _Component);
+
+    function Contact(props) {
+        _classCallCheck(this, Contact);
+
+        var _this = _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).call(this, props));
+
+        _this.state = {
+            contact: {}
+        };
+        return _this;
+    }
+
+    _createClass(Contact, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
+        key: 'onSend',
+        value: function onSend() {
+            var _this2 = this;
+
+            this.refs.spinner.show();
+            _Services.ContactService.send(this.state.contact, function (data) {
+                _this2.refs.spinner.hide(function () {
+                    _this2.refs.dialog.show('success', data.message, function () {
+                        _this2.props.navigator.pop();
+                    });
+                });
+            }, function (err) {
+                _this2.refs.spinner.hide(function () {
+                    if (err) {
+                        _this2.refs.dialog.show('error', err.response.data.error.message);
+                    }
+                });
+            });
+        }
+    }, {
+        key: 'renderNavbar',
+        value: function renderNavbar() {
+            return _react3.default.createElement(_CustomNavbar2.default, {
+                navigator: this.props.navigator,
+                gradientColors: ['#ED6552', '#ed5e26'],
+                backButton: true,
+                title: 'Contáctanos',
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 104
+                }
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                { style: [_profile.ProfileStyle.container], __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 115
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.KeyboardAvoidingView,
+                    { behavior: 'padding', keyboardVerticalOffset: -100, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 116
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.ImageBackground,
+                        {
+                            style: { width: '100%', height: '100%' },
+                            source: require('../../images/wordeo/ranking/background.png'), __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 117
+                            }
+                        },
+                        this.renderNavbar(),
+                        _react3.default.createElement(_CommonDialog2.default, {
+                            ref: 'dialog', __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 123
+                            }
+                        }),
+                        _react3.default.createElement(_SpinnerComponent2.default, {
+                            ref: 'spinner', __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 126
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: { marginRight: 5, marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 30, color: _default.Color.BluePrimary, textAlign: 'center', backgroundColor: 'transparent', paddingHorizontal: 20 }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 129
+                                }
+                            },
+                            'ENV\xCDANOS UN MENSAJE'
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.questionAddContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 131
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { marginRight: 5, marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 17, color: _default.Color.BluePrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 132
+                                    }
+                                },
+                                'TU INQUIETUD'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: styles.radios, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 133
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.View,
+                                    { style: styles.radio, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 134
+                                        }
+                                    },
+                                    _react3.default.createElement(_reactNative.TouchableOpacity, { onPress: function onPress() {
+                                            var contact = _extends({}, _this3.state.contact);
+                                            contact.subject = TOPICS_DETAILS.SUGERENCIAS;
+                                            _this3.setState({ contact: contact });
+                                        }, style: [styles.btnRadio, { backgroundColor: this.state.contact.subject == TOPICS_DETAILS.SUGERENCIAS ? _default.Color.BluePrimary : 'white' }], __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 135
+                                        }
+                                    }),
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: styles.radioText, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 140
+                                            }
+                                        },
+                                        'SUGERENCIAS'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.View,
+                                    { style: [styles.radio], __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 142
+                                        }
+                                    },
+                                    _react3.default.createElement(_reactNative.TouchableOpacity, {
+                                        onPress: function onPress() {
+                                            var contact = _extends({}, _this3.state.contact);
+                                            contact.subject = TOPICS_DETAILS.PROBLEMAS;
+                                            _this3.setState({ contact: contact });
+                                        },
+                                        style: [styles.btnRadio, { backgroundColor: this.state.contact.subject == TOPICS_DETAILS.PROBLEMAS ? _default.Color.BluePrimary : 'white' }], __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 143
+                                        }
+                                    }),
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: styles.radioText, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 150
+                                            }
+                                        },
+                                        'REPORTE DE UN PROBLEMA'
+                                    )
+                                )
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { marginRight: 5, marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 17, color: _default.Color.BluePrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 153
+                                    }
+                                },
+                                'MAS DETALLES'
+                            ),
+                            _react3.default.createElement(_reactNative.TextInput, {
+                                multiline: true,
+                                placeholder: '',
+                                style: styles.formInput,
+                                onChangeText: function onChangeText(text) {
+                                    var contact = _extends({}, _this3.state.contact);
+                                    contact.message = text;
+                                    _this3.setState({ contact: contact });
+                                },
+                                value: this.state.contact.message,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 154
+                                }
+                            }),
+                            _react3.default.createElement(_reactNativeElements.Button, {
+                                loading: this.state.isCreatingRoom,
+                                onPress: this.onSend.bind(this),
+                                containerViewStyle: { width: '100%', marginLeft: 0, marginVertical: 20 },
+                                buttonStyle: styles.buttonUpdate,
+                                textStyle: { fontFamily: _default.Font.PTSansBold },
+                                title: 'ENVIAR PREGUNTA', __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 166
+                                }
+                            })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Contact;
+}(_react2.Component));
+
+exports.default = Contact;
+
+
+var styles = _reactNative.StyleSheet.create({
+    radios: {
+        flex: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginVertical: 20
+    },
+    radio: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    btnRadio: {
+        flex: 0.2,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        backgroundColor: 'red',
+        marginHorizontal: 5,
+        borderWidth: 2,
+        borderColor: _default.Color.GoldenPrimary,
+        backgroundColor: 'white'
+    },
+    radioText: {
+        flex: 1,
+        fontFamily: _default.Font.TitanOne,
+        color: '#aaa',
+        backgroundColor: 'transparent',
+        fontSize: 18,
+        textAlign: 'center'
+    },
+    questionAddContainer: {
+        flex: 1,
+        padding: 20
+    },
+    formInput: {
+        fontFamily: _default.Font.PTSansBold,
+        marginTop: 5,
+        minHeight: 80,
+        padding: 5,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,.2)',
+        borderRadius: 10,
+        textAlign: 'center',
+        backgroundColor: 'white'
+    },
+    buttonUpdate: {
+        minWidth: '100%',
+        width: '100%',
+        borderRadius: 10,
+        backgroundColor: _default.Color.VioletPrimary,
+        height: 50
+    }
+});

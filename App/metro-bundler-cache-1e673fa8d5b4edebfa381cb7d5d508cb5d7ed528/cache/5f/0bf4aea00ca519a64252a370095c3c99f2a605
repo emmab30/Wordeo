@@ -1,0 +1,59 @@
+
+
+'use strict';
+
+module.exports = {
+  get ShareOpenGraphAction() {
+    return require('./models/FBShareOpenGraphAction');
+  },
+  get ShareOpenGraphObject() {
+    return require('./models/FBShareOpenGraphObject');
+  },
+  get ShareOpenGraphValueContainer() {
+    return require('./models/FBShareOpenGraphValueContainer');
+  },
+
+  get AccessToken() {
+    return require('./FBAccessToken');
+  },
+  get AppEventsLogger() {
+    return require('./FBAppEventsLogger');
+  },
+  get AppInviteDialog() {
+    return require('./FBAppInviteDialog');
+  },
+  get GameRequestDialog() {
+    return require('./FBGameRequestDialog');
+  },
+  get GraphRequest() {
+    return require('./FBGraphRequest');
+  },
+  get GraphRequestManager() {
+    return require('./FBGraphRequestManager');
+  },
+  get LoginManager() {
+    return require('./FBLoginManager');
+  },
+  get MessageDialog() {
+    return require('./FBMessageDialog');
+  },
+  get ShareApi() {
+    return require('./FBShareApi');
+  },
+  get ShareDialog() {
+    return require('./FBShareDialog');
+  },
+
+  get LikeView() {
+    return require('./FBLikeView');
+  },
+  get LoginButton() {
+    return require('./FBLoginButton');
+  },
+  get SendButton() {
+    return require('./FBSendButton');
+  },
+  get ShareButton() {
+    return require('./FBShareButton');
+  }
+};

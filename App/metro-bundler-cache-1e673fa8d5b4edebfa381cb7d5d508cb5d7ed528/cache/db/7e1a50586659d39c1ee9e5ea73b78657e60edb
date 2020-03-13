@@ -1,0 +1,380 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/in_round_question.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _CustomMenu = require('../../components/navigation/CustomMenu');
+
+var _CustomMenu2 = _interopRequireDefault(_CustomMenu);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _RoundItem = require('../../components/componentsJs/RoundItem');
+
+var _RoundItem2 = _interopRequireDefault(_RoundItem);
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _reactNativeAnimatable = require('react-native-animatable');
+
+var Animatable = _interopRequireWildcard(_reactNativeAnimatable);
+
+var _default = require('../../styles/default');
+
+var _Services = require('../../services/Services');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    InRoundQuestion: {
+        displayName: 'InRoundQuestion'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/in_round_question.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var Sound = require('react-native-sound');
+Sound.setCategory('Playback');
+
+var BackgroundOptionCell = _default.Color.BluePrimary;
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var InRoundQuestion = _wrapComponent('InRoundQuestion')(function (_Component) {
+    _inherits(InRoundQuestion, _Component);
+
+    function InRoundQuestion(props) {
+        _classCallCheck(this, InRoundQuestion);
+
+        var _this = _possibleConstructorReturn(this, (InRoundQuestion.__proto__ || Object.getPrototypeOf(InRoundQuestion)).call(this, props));
+
+        _this._onReply = function (question) {
+            _this.setState({ blockTaps: true });
+            var selectedIdx = _this.state.question.options.indexOf(question);
+            if (_this.state.question.options[selectedIdx].isCorrect) {
+                if (_this.state.soundEnabled) _this.successSound.play();
+                _this.setState({ isCorrectAnswer: true, selectedAnswerIdx: selectedIdx });
+            } else {
+                if (_this.state.soundEnabled) _this.errorSound.play();
+                _this.setState({ isCorrectAnswer: false, selectedAnswerIdx: selectedIdx });
+            }
+
+            setTimeout(function () {
+                _reactNative.Animated.timing(_this.backgroundAnimation, {
+                    toValue: 1,
+                    duration: 50
+                }).start(function () {
+                    var fn = function fn() {
+                        _this.props.onReplyQuestion({
+                            isCorrect: _this.state.question.options[selectedIdx].isCorrect ? true : false,
+                            questionId: _this.state.question.id,
+                            optionId: _this.state.question.options[selectedIdx].id,
+                            profitExp: _this.state.question.profitExp
+                        });
+                        _this.props.navigator.pop();
+                    };
+
+                    if (_reactNative.Platform.OS === 'android') {
+                        setTimeout(function () {
+                            fn();
+                        }, 300);
+                    } else {
+                        fn();
+                    }
+                });
+            });
+        };
+
+        _this.state = {
+            question: {},
+            spinner: false,
+            isCorrectAnswer: false,
+            selectedAnswerIdx: null,
+            widthReward: new _reactNative.Animated.Value(0),
+            heightReward: new _reactNative.Animated.Value(0),
+            blockTaps: false,
+            soundEnabled: true
+        };
+
+        _this.backgroundAnimation = new _reactNative.Animated.Value(0);
+
+        _this.successSound = new Sound('success.mp3', Sound.MAIN_BUNDLE, function (err) {});
+        _this.errorSound = new Sound('wrong.mp3', Sound.MAIN_BUNDLE, function (err) {});
+        _this.handleBackButton = _this.handleBackButton.bind(_this);
+
+        _this.props.navigator.setOnNavigatorEvent(_this.onNavigatorEvent.bind(_this));
+        return _this;
+    }
+
+    _createClass(InRoundQuestion, [{
+        key: 'onNavigatorEvent',
+        value: function onNavigatorEvent(event) {
+            if (event.id === 'backPress') {}
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            _reactNativeOrientation2.default.lockToPortrait();
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            _reactNative.BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        }
+    }, {
+        key: 'handleBackButton',
+        value: function handleBackButton() {
+            return false;
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.setState({ question: this.props.question });
+            _reactNative.BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+
+            _Services.PreferencesService.getPreferenceByKey('soundEnabled', function (value) {
+                _this2.setState({ soundEnabled: value });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            var backgroundColor = 'rgba(28, 34, 40, .4)';
+            if (this.state.selectedAnswerIdx >= 0) {
+                var outputRange = void 0,
+                    inputRange = void 0;
+                if (this.state.isCorrectAnswer) {
+                    outputRange = [BackgroundOptionCell, '#1aba5d'];
+                    inputRange = [0, 1];
+                } else {
+                    outputRange = [BackgroundOptionCell, '#e74833'];
+                    inputRange = [0, 1];
+                }
+
+                backgroundColor = this.backgroundAnimation.interpolate({
+                    inputRange: inputRange,
+                    outputRange: outputRange
+                });
+            } else {
+                backgroundColor = this.backgroundAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [backgroundColor, backgroundColor]
+                });
+            }
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    style: { flex: 1, width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'rgba(22,22,22,1)' }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 166
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.View,
+                    { style: styles.mainContainer, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 169
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: [styles.questionBox], __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 170
+                            }
+                        },
+                        this.state.question.photoURL != null && _react3.default.createElement(
+                            Animatable.View,
+                            { useNativeDriver: true, animation: 'zoomIn', duration: 800, style: { flex: 1, padding: 0, margin: 0, width: '100%', alignSelf: 'center', overflow: 'hidden' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 172
+                                }
+                            },
+                            _react3.default.createElement(_reactNative.Image, { source: { uri: this.state.question.photoURL },
+                                style: { width: '100%', height: '100%', resizeMode: 'cover', overflow: 'hidden' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 173
+                                }
+                            })
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { flex: 1, paddingHorizontal: 20, justifyContent: 'center', alignItems: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 177
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { color: _default.Color.LightPrimary, backgroundColor: 'transparent', fontFamily: _default.Font.TitanOne, fontSize: 25, textAlign: 'center' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 178
+                                    }
+                                },
+                                ' ',
+                                this.state.question.question
+                            )
+                        )
+                    ),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.repliesBox, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 182
+                            }
+                        },
+                        _react3.default.createElement(_reactNative.FlatList, {
+                            scrollEnabled: false,
+                            contentContainerStyle: { flex: 0 },
+                            centerContent: false,
+                            snapToAlignment: 'start',
+                            data: this.state.question.options,
+                            renderItem: function renderItem(rowData) {
+                                return _react3.default.createElement(
+                                    Animatable.View,
+                                    { key: 'questionId-' + rowData.item.id, animation: 'fadeIn', style: [styles.replyOptionContainer, { backgroundColor: _this3.state.selectedAnswerIdx == rowData.index ? backgroundColor : BackgroundOptionCell }], __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 191
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.TouchableOpacity,
+                                        {
+                                            onPress: function onPress() {
+                                                if (_this3.state.blockTaps) return;
+
+                                                _this3._onReply(rowData.item);
+                                            },
+                                            style: { width: '100%', height: '100%', flex: 1, justifyContent: 'center' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 192
+                                            }
+                                        },
+                                        _react3.default.createElement(
+                                            _reactNative.Text,
+                                            { style: styles.replyOptionText, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 200
+                                                }
+                                            },
+                                            rowData.item.name
+                                        )
+                                    )
+                                );
+                            },
+                            __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 183
+                            }
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return InRoundQuestion;
+}(_react2.Component));
+
+exports.default = InRoundQuestion;
+
+
+var styles = _reactNative.StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
+    mainContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        resizeMode: 'cover'
+    },
+    questionBox: {
+        flex: 1,
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    repliesBox: {
+        flex: 0,
+        marginBottom: 100,
+        justifyContent: 'space-around',
+        marginHorizontal: 20
+    },
+    replyOptionContainer: {
+        width: '100%',
+        height: 60,
+        marginVertical: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: BackgroundOptionCell,
+        borderRadius: 10
+    },
+    replyOptionText: {
+        backgroundColor: 'transparent',
+        fontFamily: _default.Font.TitanOne,
+        textAlign: 'center',
+        fontSize: 18,
+        padding: 5,
+        color: 'white'
+    },
+    items: {
+        flex: 0.5,
+        flexDirection: 'row',
+        position: 'absolute',
+        bottom: 0,
+        width: '100%'
+    }
+});

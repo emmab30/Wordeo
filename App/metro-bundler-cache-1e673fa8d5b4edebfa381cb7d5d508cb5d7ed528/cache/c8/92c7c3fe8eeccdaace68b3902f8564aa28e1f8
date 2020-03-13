@@ -1,0 +1,142 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.addMutationListener = addMutationListener;
+exports.removeMutationListener = removeMutationListener;
+exports.clearMutationListeners = clearMutationListeners;
+exports.fireMutationListeners = fireMutationListeners;
+exports.createCollection = createCollection;
+
+var _constants = require('./constants');
+
+var _util = require('./util');
+
+var _rpc = require('./rpc');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var mutationListeners = {};
+
+var Collection = function Collection() {
+    _classCallCheck(this, Collection);
+
+    throw new TypeError('Illegal constructor');
+};
+
+exports.default = Collection;
+function addMutationListener(realmId, callback) {
+    var listeners = mutationListeners[realmId] || (mutationListeners[realmId] = new Set());
+    listeners.add(callback);
+}
+
+function removeMutationListener(realmId, callback) {
+    var listeners = mutationListeners[realmId];
+    if (listeners) {
+        listeners.delete(callback);
+    }
+}
+
+function clearMutationListeners() {
+    mutationListeners = {};
+}
+
+function fireMutationListeners(realmId) {
+    var listeners = mutationListeners[realmId];
+    if (listeners) {
+        listeners.forEach(function (cb) {
+            return cb();
+        });
+    }
+}
+
+function isIndex(propertyName) {
+    return typeof propertyName === 'number' || typeof propertyName === 'string' && /^-?\d+$/.test(propertyName);
+}
+
+var mutable = Symbol('mutable');
+
+var traps = {
+    get: function get(collection, property, receiver) {
+        if (isIndex(property)) {
+            return (0, _rpc.getProperty)(collection[_constants.keys.realm], collection[_constants.keys.id], property);
+        }
+
+        return Reflect.get(collection, property, collection);
+    },
+    set: function set(collection, property, value, receiver) {
+        if (isIndex(property)) {
+            if (!collection[mutable]) {
+                return false;
+            }
+
+            (0, _rpc.setProperty)(collection[_constants.keys.realm], collection[_constants.keys.id], property, value);
+
+            if (value && typeof value == 'object') {
+                fireMutationListeners(collection[_constants.keys.realm]);
+            }
+
+            return true;
+        }
+
+        if (!Reflect.set(collection, property, value, collection)) {
+            throw new TypeError('Cannot assign to read only property \'' + property + '\'');
+        }
+        return true;
+    },
+    ownKeys: function ownKeys(collection) {
+        return Reflect.ownKeys(collection).concat(Array.from({ length: collection.length }, function (value, key) {
+            return String(key);
+        }));
+    },
+    getOwnPropertyDescriptor: function getOwnPropertyDescriptor(collection, property) {
+        var _this = this;
+
+        if (isIndex(property)) {
+            var descriptor = {
+                enumerable: true,
+                configurable: true,
+                writable: collection[mutable]
+            };
+            Reflect.defineProperty(descriptor, "value", { get: function get() {
+                    return _this.get(collection, property);
+                } });
+            return descriptor;
+        }
+
+        return Reflect.getOwnPropertyDescriptor(collection, property);
+    },
+    has: function has(collection, property) {
+        if (isIndex(property)) {
+            return true;
+        }
+
+        return Reflect.has(collection, property);
+    }
+};
+
+function createCollection(prototype, realmId, info, _mutable) {
+    var collection = Object.create(prototype);
+
+    Object.defineProperties(collection, {
+        'length': {
+            get: (0, _util.getterForProperty)('length')
+        },
+        'type': {
+            get: (0, _util.getterForProperty)('type')
+        },
+        'optional': {
+            get: (0, _util.getterForProperty)('optional')
+        }
+    });
+
+    collection[_constants.keys.realm] = realmId;
+    collection[_constants.keys.id] = info.id;
+    collection[_constants.keys.type] = info.type;
+    collection[mutable] = _mutable;
+
+    return new Proxy(collection, traps);
+}

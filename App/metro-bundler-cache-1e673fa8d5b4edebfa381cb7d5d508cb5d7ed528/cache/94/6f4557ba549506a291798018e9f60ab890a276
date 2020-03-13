@@ -1,0 +1,49 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_pause.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_pause.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_play.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_play.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_rewind.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_rewind.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_next.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_next.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/design_ic_visibility_off.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/design/25.3.1/res/drawable-anydpi-v21/design_ic_visibility_off.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_previous.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_previous.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/design_ic_visibility.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.android.support/design/25.3.1/res/drawable-anydpi-v21/design_ic_visibility.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/design_ic_visibility.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/design/25.3.1/res/drawable-anydpi-v21/design_ic_visibility.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/design_ic_visibility_off.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.android.support/design/25.3.1/res/drawable-anydpi-v21/design_ic_visibility_off.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_play.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_play.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_rewind.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_rewind.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_pause.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_pause.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_fastforward.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_fastforward.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_fastforward.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_fastforward.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_previous.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_previous.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/exo_controls_next.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/com.google.android.exoplayer/exoplayer/r2.3.1/res/drawable-anydpi-v21/exo_controls_next.xml"
+}];

@@ -1,0 +1,7 @@
+module.exports = [{
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/res/merged/debug/layout-land/hockeyapp_activity_update.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/android/app/build/intermediates/exploded-aar/net.hockeyapp.android/HockeySDK/4.1.4/res/layout-land/hockeyapp_activity_update.xml"
+}, {
+    "merged": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/res/merged/debug/layout-land/hockeyapp_activity_update.xml",
+    "source": "/Users/eabuslaiman-mcpro/Trabajo/Qroom/OpenEnglish/app/OpenEnglish/android/app/build/intermediates/exploded-aar/net.hockeyapp.android/HockeySDK/4.1.4/res/layout-land/hockeyapp_activity_update.xml"
+}];

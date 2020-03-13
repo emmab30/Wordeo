@@ -1,0 +1,24 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = undefined;
+
+var _BaseService = require('./BaseService.js');
+
+var _reactNative = require('react-native');
+
+var ContactService = {
+    send: function send(data, success, error) {
+        (0, _BaseService.ApiService)().post('/Contacts/send', data).then(function (response) {
+            if (success) {
+                success(response.data);
+            }
+        }).catch(function (err) {
+            if (error) {
+                error(err);
+            }
+        });
+    }
+};
+
+exports.default = ContactService;

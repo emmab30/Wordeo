@@ -1,0 +1,77 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.decode = decode;
+exports.encode = encode;
+var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+var CHAR_MAP = {};
+
+Array.from(CHARS, function (char, i) {
+    return CHAR_MAP[char] = i;
+});
+
+function decode(base64) {
+    var length = base64.length;
+    var byteCount = length * 0.75;
+
+    if (base64[length - 1] === '=') {
+        byteCount--;
+        if (base64[length - 2] === '=') {
+            byteCount--;
+        }
+    }
+
+    var buffer = new ArrayBuffer(byteCount);
+    var bytes = new Uint8Array(buffer);
+
+    for (var i = 0, j = 0; i < length; i += 4) {
+        var index1 = CHAR_MAP[base64[i]];
+        var index2 = CHAR_MAP[base64[i + 1]];
+        var index3 = CHAR_MAP[base64[i + 2]];
+        var index4 = CHAR_MAP[base64[i + 3]];
+
+        bytes[j++] = (index1 << 2) + ((index2 & 0x30) >> 4);
+        bytes[j++] = ((index2 & 0x0f) << 4) + ((index3 & 0x3c) >> 2);
+        bytes[j++] = ((index3 & 0x03) << 6) + index4;
+    }
+
+    return buffer;
+}
+
+function encode(data) {
+    var byteOffset = 0;
+    var buffer;
+
+    if (data instanceof ArrayBuffer) {
+        buffer = data;
+    } else if (ArrayBuffer.isView(data)) {
+        buffer = data.buffer;
+        byteOffset = data.byteOffset;
+    } else {
+        throw new TypeError('Can only base64 encode ArrayBuffer and ArrayBufferView objects');
+    }
+
+    var byteCount = data.byteLength;
+    var bytes = new Uint8Array(buffer, byteOffset, byteCount);
+    var base64 = '';
+
+    for (var i = 0; i < byteCount; i += 3) {
+        base64 += CHARS[(bytes[i] & 0xfc) >> 2];
+        base64 += CHARS[((bytes[i] & 0x03) << 4) + ((bytes[i + 1] & 0xf0) >> 4)];
+        base64 += CHARS[((bytes[i + 1] & 0x0f) << 2) + ((bytes[i + 2] & 0xc0) >> 6)];
+        base64 += CHARS[bytes[i + 2] & 0x3f];
+    }
+
+    switch (byteCount % 3) {
+        case 1:
+            return base64.slice(0, -2) + '==';
+        case 2:
+            return base64.slice(0, -1) + '=';
+        default:
+            return base64;
+    }
+}

@@ -1,0 +1,443 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/SentQuestions.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _strings = require('../../components/localization/strings');
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _CustomMenu = require('../../components/navigation/CustomMenu');
+
+var _CustomMenu2 = _interopRequireDefault(_CustomMenu);
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _CommonDialog = require('../../components/dialogs/CommonDialog');
+
+var _CommonDialog2 = _interopRequireDefault(_CommonDialog);
+
+var _ConfirmationDialog = require('../../components/dialogs/ConfirmationDialog');
+
+var _ConfirmationDialog2 = _interopRequireDefault(_ConfirmationDialog);
+
+var _reactNativeOnesignal = require('react-native-onesignal');
+
+var _reactNativeOnesignal2 = _interopRequireDefault(_reactNativeOnesignal);
+
+var _reactNativeElements = require('react-native-elements');
+
+var _Services = require('../../services/Services');
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _global = require('../../components/common/global');
+
+var _general = require('../../styles/general');
+
+var _default = require('../../styles/default');
+
+var _reactNativeAnimatable = require('react-native-animatable');
+
+var Animatable = _interopRequireWildcard(_reactNativeAnimatable);
+
+var _reactNativeModalDropdown = require('react-native-modal-dropdown');
+
+var _reactNativeModalDropdown2 = _interopRequireDefault(_reactNativeModalDropdown);
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _RoundPlayer = require('../../components/componentsJs/RoundPlayer');
+
+var _RoundPlayer2 = _interopRequireDefault(_RoundPlayer);
+
+var _RoundItem = require('../../components/componentsJs/RoundItem');
+
+var _RoundItem2 = _interopRequireDefault(_RoundItem);
+
+var _NewRoomWizard = require('../../components/modals/NewRoomWizard');
+
+var _NewRoomWizard2 = _interopRequireDefault(_NewRoomWizard);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    SentQuestions: {
+        displayName: 'SentQuestions'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/SentQuestions.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var Sound = require('react-native-sound');
+Sound.setCategory('Playback');
+
+var BackgroundOptionCell = 'rgba(28, 34, 40, .4)';
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var MODES = {
+    ACCESORIES: 1,
+    CHARACTERS: 2
+};
+
+var SentQuestions = _wrapComponent('SentQuestions')(function (_Component) {
+    _inherits(SentQuestions, _Component);
+
+    function SentQuestions(props) {
+        _classCallCheck(this, SentQuestions);
+
+        var _this = _possibleConstructorReturn(this, (SentQuestions.__proto__ || Object.getPrototypeOf(SentQuestions)).call(this, props));
+
+        _this.state = {
+            sentQuestions: [],
+            isLoading: false
+        };
+
+        _this.loadQuestions = _this.loadQuestions.bind(_this);
+        return _this;
+    }
+
+    _createClass(SentQuestions, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setState({ isMounted: true });
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.isVisible) {
+                this.loadQuestions();
+            }
+        }
+    }, {
+        key: 'loadQuestions',
+        value: function loadQuestions() {
+            var _this2 = this;
+
+            if (this.refs.spinner) this.refs.spinner.show();
+            this.setState({ isLoading: true });
+            _Services.QuestionService.getSentQuestions({}, function (questions) {
+                _this2.setState({ sentQuestions: questions, isLoading: false });
+            }, function (err) {
+                _this2.setState({ isLoading: false });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            if (!this.props.isVisible) return null;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                { style: { width: '100%', height: '100%' }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 110
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    { visible: this.props.isVisible,
+                        closeOnTouchOutside: true,
+                        animationType: 'bounceInDown',
+                        animationOutType: 'none',
+                        animationDuration: 0,
+                        onClose: function onClose() {
+                            _this3.props.onClose();
+                        },
+                        containerStyle: { backgroundColor: 'rgba(140, 140, 140, 0.6)', flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' },
+                        childrenWrapperStyle: [styles.overlayChildren], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 111
+                        }
+                    },
+                    _react3.default.createElement(_SpinnerComponent2.default, {
+                        ref: 'spinner',
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 122
+                        }
+                    }),
+                    _react3.default.createElement(_CommonDialog2.default, {
+                        ref: 'dialog', __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 126
+                        }
+                    }),
+                    _react3.default.createElement(
+                        _reactNative.Text,
+                        { style: { marginRight: 5, marginVertical: 10, fontFamily: _default.Font.TitanOne, fontSize: 30, color: _default.Color.BluePrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 129
+                            }
+                        },
+                        'TUS PREGUNTAS'
+                    ),
+                    (this.state.sentQuestions == null || this.state.sentQuestions.length == 0) && !this.state.isLoading && _react3.default.createElement(
+                        _reactNative.Text,
+                        { style: { maxWidth: '80%', alignSelf: 'center', marginVertical: 10, fontFamily: _default.Font.TitanOne, fontSize: 18, color: _default.Color.GoldenPrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 131
+                            }
+                        },
+                        'No tienes preguntas enviadas a\xFAn. \xBFQue est\xE1s esperando para ganar Tuls con tus preguntas?'
+                    ),
+                    this.state.sentQuestions != null && _react3.default.createElement(_reactNative.FlatList, {
+                        style: { width: '100%', height: '100%', flex: 0 },
+                        centerContent: false,
+                        bounces: false,
+                        data: this.state.sentQuestions,
+                        extraData: this.state.sentQuestions.length,
+                        renderItem: function renderItem(rowData) {
+                            return _react3.default.createElement(
+                                _reactNative.View,
+                                { style: styles.questionContainer,
+                                    onStartShouldSetResponder: function onStartShouldSetResponder() {
+                                        return true;
+                                    }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 142
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.View,
+                                    { style: styles.questionTopDetails, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 145
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { backgroundColor: 'transparent', fontFamily: _default.Font.TitanOne, fontSize: 20, color: 'white', textAlign: 'center' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 146
+                                            }
+                                        },
+                                        rowData.item.question
+                                    ),
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { backgroundColor: 'transparent', fontFamily: _default.Font.PTSansBold, fontSize: 16, color: '#00ff48', textAlign: 'center' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 147
+                                            }
+                                        },
+                                        '- ',
+                                        rowData.item.option1
+                                    ),
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { backgroundColor: 'transparent', fontFamily: _default.Font.PTSansBold, fontSize: 16, color: 'white', textAlign: 'center' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 148
+                                            }
+                                        },
+                                        '- ',
+                                        rowData.item.option2
+                                    ),
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { backgroundColor: 'transparent', fontFamily: _default.Font.PTSansBold, fontSize: 16, color: 'white', textAlign: 'center' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 149
+                                            }
+                                        },
+                                        '- ',
+                                        rowData.item.option3
+                                    ),
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { backgroundColor: 'transparent', fontFamily: _default.Font.PTSansBold, fontSize: 16, color: 'white', textAlign: 'center' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 150
+                                            }
+                                        },
+                                        '- ',
+                                        rowData.item.option4
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.View,
+                                    { style: styles.questionBottomDetails, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 153
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.View,
+                                        { style: { flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 154
+                                            }
+                                        },
+                                        _react3.default.createElement(
+                                            _reactNative.Text,
+                                            { style: styles.bottomDetailText, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 155
+                                                }
+                                            },
+                                            'Creada'
+                                        ),
+                                        _react3.default.createElement(
+                                            _reactNative.Text,
+                                            { style: [styles.bottomDetailText, { fontFamily: _default.Font.PTSansBold, fontSize: 14 }], __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 156
+                                                }
+                                            },
+                                            (0, _moment2.default)(rowData.item.createdAt).format('dd DD/MM/YYYY HH:mm')
+                                        )
+                                    ),
+                                    _react3.default.createElement(
+                                        _reactNative.View,
+                                        { style: { flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 158
+                                            }
+                                        },
+                                        _react3.default.createElement(
+                                            _reactNative.Text,
+                                            { style: styles.bottomDetailText, __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 159
+                                                }
+                                            },
+                                            'Estado'
+                                        ),
+                                        _react3.default.createElement(
+                                            _reactNative.Text,
+                                            { style: [styles.bottomDetailText, { fontFamily: _default.Font.PTSansBold, fontSize: 14 }], __source: {
+                                                    fileName: _jsxFileName,
+                                                    lineNumber: 160
+                                                }
+                                            },
+                                            rowData.item.isApproved ? 'APROBADA' : 'PENDIENTE'
+                                        )
+                                    )
+                                )
+                            );
+                        },
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 134
+                        }
+                    })
+                )
+            );
+        }
+    }]);
+
+    return SentQuestions;
+}(_react2.Component));
+
+exports.default = SentQuestions;
+
+
+var styles = _reactNative.StyleSheet.create({
+    overlayChildren: {
+        maxHeight: height - 100,
+        shadowColor: _default.Color.GoldenPrimary,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 6,
+        padding: 0,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        borderRadius: 20
+    },
+    container: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(255,255,255,.8)',
+        padding: 10
+    },
+    questionContainer: {
+        width: '90%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        backgroundColor: _default.Color.GoldenPrimary,
+        padding: 10,
+        marginVertical: 10
+    },
+    questionText: {},
+    questionTopDetails: {
+        flex: 1
+    },
+    questionBottomDetails: {
+        flex: 1,
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    bottomDetailText: {
+        flex: 1,
+        color: 'white',
+        fontFamily: _default.Font.TitanOne,
+        color: 'white',
+        fontSize: 18,
+        textAlign: 'center'
+    }
+});

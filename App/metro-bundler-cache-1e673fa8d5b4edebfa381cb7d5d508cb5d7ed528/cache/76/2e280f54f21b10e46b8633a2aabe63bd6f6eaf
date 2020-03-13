@@ -1,0 +1,27 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var keys = exports.keys = {};
+var objectTypes = exports.objectTypes = {};
+var propTypes = exports.propTypes = {};
+
+['id', 'realm', 'type'].forEach(function (name) {
+    keys[name] = Symbol(name);
+});
+
+['DATA', 'DATE', 'DICT', 'FUNCTION', 'LIST', 'OBJECT', 'REALM', 'RESULTS', 'USER', 'SESSION', 'SUBSCRIPTION', 'UNDEFINED'].forEach(function (type) {
+    Object.defineProperty(objectTypes, type, {
+        value: type.toLowerCase()
+    });
+});
+
+['BOOL', 'INT', 'FLOAT', 'DOUBLE', 'STRING', 'DATE', 'DATA', 'OBJECT', 'LIST'].forEach(function (type) {
+    Object.defineProperty(propTypes, type, {
+        value: type.toLowerCase(),
+        enumerable: true
+    });
+});

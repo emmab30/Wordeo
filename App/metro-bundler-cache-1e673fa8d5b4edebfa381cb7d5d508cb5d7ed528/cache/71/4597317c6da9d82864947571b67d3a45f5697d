@@ -1,0 +1,457 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/add_question.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _CustomNavbar = require('../../components/navigation/CustomNavbar');
+
+var _CustomNavbar2 = _interopRequireDefault(_CustomNavbar);
+
+var _RankingItem = require('../../components/componentsJs/RankingItem');
+
+var _RankingItem2 = _interopRequireDefault(_RankingItem);
+
+var _FontAwesome = require('react-native-vector-icons/FontAwesome');
+
+var _FontAwesome2 = _interopRequireDefault(_FontAwesome);
+
+var _reactNativeElements = require('react-native-elements');
+
+var _Helper = require('../../components/common/Helper');
+
+var _Helper2 = _interopRequireDefault(_Helper);
+
+var _SentQuestions = require('../../components/modals/SentQuestions');
+
+var _SentQuestions2 = _interopRequireDefault(_SentQuestions);
+
+var _reactNativeOnesignal = require('react-native-onesignal');
+
+var _reactNativeOnesignal2 = _interopRequireDefault(_reactNativeOnesignal);
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _AuthService = require('../../services/AuthService.js');
+
+var _AuthService2 = _interopRequireDefault(_AuthService);
+
+var _global = require('../../components/common/global');
+
+var _profile = require('../../styles/dashboard/profile');
+
+var _BaseService = require('../../services/BaseService.js');
+
+var _ImageService = require('../../services/ImageService.js');
+
+var _ImageService2 = _interopRequireDefault(_ImageService);
+
+var _CommonDialog = require('../../components/dialogs/CommonDialog');
+
+var _CommonDialog2 = _interopRequireDefault(_CommonDialog);
+
+var _SpinnerComponent = require('../../components/SpinnerComponent');
+
+var _SpinnerComponent2 = _interopRequireDefault(_SpinnerComponent);
+
+var _default = require('../../styles/default');
+
+var _general = require('../../styles/general');
+
+var _register = require('../../styles/register');
+
+var _AnalyticsService = require('../../services/AnalyticsService.js');
+
+var _AnalyticsService2 = _interopRequireDefault(_AnalyticsService);
+
+var _Services = require('../../services/Services');
+
+var _reactNativeCachedImage = require('react-native-cached-image');
+
+var _DialogConfirmation = require('../../components/DialogConfirmation');
+
+var _DialogConfirmation2 = _interopRequireDefault(_DialogConfirmation);
+
+var _reactNativeOrientation = require('react-native-orientation');
+
+var _reactNativeOrientation2 = _interopRequireDefault(_reactNativeOrientation);
+
+var _dropdown = require('../../styles/dropdown');
+
+var _reactNativeModalDropdown = require('react-native-modal-dropdown');
+
+var _reactNativeModalDropdown2 = _interopRequireDefault(_reactNativeModalDropdown);
+
+var _reactNativeAnimatable = require('react-native-animatable');
+
+var Animatable = _interopRequireWildcard(_reactNativeAnimatable);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    AddQuestion: {
+        displayName: 'AddQuestion'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/screens/dashboard/add_question.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var dropdownOptions = [_strings.strings.English, _strings.strings.Spanish];
+
+var AddQuestion = _wrapComponent('AddQuestion')(function (_Component) {
+    _inherits(AddQuestion, _Component);
+
+    function AddQuestion(props) {
+        _classCallCheck(this, AddQuestion);
+
+        var _this = _possibleConstructorReturn(this, (AddQuestion.__proto__ || Object.getPrototypeOf(AddQuestion)).call(this, props));
+
+        _this.state = {
+            question: {},
+            viewSentQuestions: false
+        };
+        return _this;
+    }
+
+    _createClass(AddQuestion, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
+        key: 'onSend',
+        value: function onSend() {
+            var _this2 = this;
+
+            this.refs.spinner.show();
+            _Services.QuestionService.addQuestionToRevision(this.state.question, function (success) {
+                _this2.refs.spinner.hide(function () {
+                    _this2.refs.dialog.show('success', success.message, function () {
+                        _this2.props.navigator.pop();
+                    });
+                });
+            }, function (err) {
+                _this2.refs.spinner.hide(function () {
+                    if (err) {
+                        _this2.refs.dialog.show('error', err.response.data.error.message);
+                    }
+                });
+            });
+        }
+    }, {
+        key: 'renderNavbar',
+        value: function renderNavbar() {
+            return _react3.default.createElement(_CustomNavbar2.default, {
+                navigator: this.props.navigator,
+                gradientColors: ['#ED6552', '#ed5e26'],
+                backButton: true,
+                title: 'Enviar pregunta',
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 101
+                }
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            return _react3.default.createElement(
+                _reactNative.ScrollView,
+                { style: [_profile.ProfileStyle.container], __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 112
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.KeyboardAvoidingView,
+                    { behavior: 'position', keyboardVerticalOffset: -100, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 113
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.ImageBackground,
+                        {
+                            style: { width: '100%', height: '100%' },
+                            source: require('../../images/wordeo/ranking/background.png'), __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 114
+                            }
+                        },
+                        this.renderNavbar(),
+                        _react3.default.createElement(_CommonDialog2.default, {
+                            ref: 'dialog', __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 120
+                            }
+                        }),
+                        _react3.default.createElement(_SpinnerComponent2.default, {
+                            ref: 'spinner', __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 123
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: { marginRight: 5, marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 30, color: _default.Color.BluePrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 126
+                                }
+                            },
+                            'AGREGA TU PREGUNTA'
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { padding: 10, width: '95%', backgroundColor: _default.Color.GoldenPrimary, borderRadius: 10, alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 127
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { fontFamily: _default.Font.PTSansRegular, fontSize: 15, color: '#222', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 128
+                                    }
+                                },
+                                'Con Wordeo puedes cargar preguntas y ganar Tuls. Recuerda que una vez enviada la pregunta, entrar\xE1 en un proceso de no m\xE1s de 2 d\xEDas de revisi\xF3n. Si tu pregunta es aceptada, te avisaremos con cuantos Tuls te hemos recompensado a trav\xE9s de esta misma secci\xF3n.'
+                            )
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.questionAddContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 131
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { marginRight: 5, marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 17, color: _default.Color.BluePrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 132
+                                    }
+                                },
+                                'PREGUNTA'
+                            ),
+                            _react3.default.createElement(_reactNative.TextInput, {
+                                multiline: false,
+                                underlineColorAndroid: 'transparent',
+                                placeholder: '',
+                                style: styles.formInput,
+                                onChangeText: function onChangeText(text) {
+                                    var question = _extends({}, _this3.state.question);
+                                    question.question = text;
+                                    _this3.setState({ question: question });
+                                },
+                                onSubmitEditing: function onSubmitEditing() {
+                                    _this3.refs.option1.focus();
+                                },
+                                value: this.state.question.question,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 133
+                                }
+                            }),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { marginRight: 5, marginTop: 10, fontFamily: _default.Font.TitanOne, fontSize: 17, color: _default.Color.BluePrimary, textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 148
+                                    }
+                                },
+                                'OPCIONES'
+                            ),
+                            _react3.default.createElement(_reactNative.TextInput, {
+                                ref: 'option1',
+                                multiline: false,
+                                underlineColorAndroid: 'transparent',
+                                placeholder: 'Opcion 1 (LA CORRECTA)',
+                                style: styles.formInput,
+                                onChangeText: function onChangeText(text) {
+                                    var question = _extends({}, _this3.state.question);
+                                    question.option1 = text;
+                                    _this3.setState({ question: question });
+                                },
+                                onSubmitEditing: function onSubmitEditing() {
+                                    _this3.refs.option2.focus();
+                                },
+                                value: this.state.question.option1,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 149
+                                }
+                            }),
+                            _react3.default.createElement(_reactNative.TextInput, {
+                                ref: 'option2',
+                                multiline: false,
+                                underlineColorAndroid: 'transparent',
+                                placeholder: 'Opcion 2',
+                                style: styles.formInput,
+                                onChangeText: function onChangeText(text) {
+                                    var question = _extends({}, _this3.state.question);
+                                    question.option2 = text;
+                                    _this3.setState({ question: question });
+                                },
+                                onSubmitEditing: function onSubmitEditing() {
+                                    _this3.refs.option3.focus();
+                                },
+                                value: this.state.question.option2,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 165
+                                }
+                            }),
+                            _react3.default.createElement(_reactNative.TextInput, {
+                                ref: 'option3',
+                                multiline: false,
+                                underlineColorAndroid: 'transparent',
+                                placeholder: 'Opcion 3',
+                                style: styles.formInput,
+                                onChangeText: function onChangeText(text) {
+                                    var question = _extends({}, _this3.state.question);
+                                    question.option3 = text;
+                                    _this3.setState({ question: question });
+                                },
+                                onSubmitEditing: function onSubmitEditing() {
+                                    _this3.refs.option4.focus();
+                                },
+                                value: this.state.question.option3,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 181
+                                }
+                            }),
+                            _react3.default.createElement(_reactNative.TextInput, {
+                                ref: 'option4',
+                                multiline: false,
+                                underlineColorAndroid: 'transparent',
+                                placeholder: 'Opcion 4',
+                                style: styles.formInput,
+                                onChangeText: function onChangeText(text) {
+                                    var question = _extends({}, _this3.state.question);
+                                    question.option4 = text;
+                                    _this3.setState({ question: question });
+                                },
+                                value: this.state.question.option4,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 197
+                                }
+                            }),
+                            _react3.default.createElement(_reactNativeElements.Button, {
+                                loading: this.state.isCreatingRoom,
+                                onPress: this.onSend.bind(this),
+                                containerViewStyle: { width: '100%', marginLeft: 0, marginVertical: 20 },
+                                buttonStyle: styles.buttonUpdate,
+                                textStyle: { fontFamily: _default.Font.PTSansBold },
+                                title: 'ENVIAR PREGUNTA', __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 211
+                                }
+                            }),
+                            _react3.default.createElement(
+                                _reactNative.TouchableOpacity,
+                                {
+                                    style: { width: '100%', paddingVertical: 0 },
+                                    onPress: function onPress() {
+                                        _this3.setState({ viewSentQuestions: true });
+                                    }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 219
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: { fontFamily: _default.Font.PTSansRegular, fontSize: 15, color: '#222', textAlign: 'center', backgroundColor: 'transparent' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 224
+                                        }
+                                    },
+                                    'VER PREGUNTAS ENVIADAS'
+                                )
+                            )
+                        )
+                    ),
+                    _react3.default.createElement(_SentQuestions2.default, {
+                        isVisible: this.state.viewSentQuestions,
+                        onClose: function onClose() {
+                            _this3.setState({ viewSentQuestions: false });
+                        }, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 229
+                        }
+                    })
+                )
+            );
+        }
+    }]);
+
+    return AddQuestion;
+}(_react2.Component));
+
+exports.default = AddQuestion;
+
+
+var styles = _reactNative.StyleSheet.create({
+    questionAddContainer: {
+        flex: 1,
+        margin: 20
+    },
+    formInput: {
+        fontFamily: _default.Font.PTSansBold,
+        marginTop: 5,
+        height: 40,
+        padding: 5,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,.2)',
+        borderRadius: 10,
+        textAlign: 'center',
+        backgroundColor: 'white'
+    },
+    buttonUpdate: {
+        minWidth: '100%',
+        width: '100%',
+        borderRadius: 10,
+        backgroundColor: _default.Color.VioletPrimary,
+        height: 50
+    }
+});

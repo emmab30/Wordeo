@@ -1,0 +1,710 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/NewRoomWizard.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _reactNativeModalOverlay = require('react-native-modal-overlay');
+
+var _reactNativeModalOverlay2 = _interopRequireDefault(_reactNativeModalOverlay);
+
+var _FontAwesome = require('react-native-vector-icons/FontAwesome');
+
+var _FontAwesome2 = _interopRequireDefault(_FontAwesome);
+
+var _Services = require('../../services/Services');
+
+var _reactNativeElements = require('react-native-elements');
+
+var _strings = require('../../components/localization/strings');
+
+var _login = require('../../styles/login');
+
+var _reactNativeCachedImage = require('react-native-cached-image');
+
+var _default = require('../../styles/default');
+
+var _general = require('../../styles/general');
+
+var _global = require('../../components/common/global');
+
+var _CommonDialog = require('../../components/dialogs/CommonDialog');
+
+var _CommonDialog2 = _interopRequireDefault(_CommonDialog);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    NewRoomWizard: {
+        displayName: 'NewRoomWizard'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/modals/NewRoomWizard.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var width = _reactNative.Dimensions.get('window').width;
+var height = _reactNative.Dimensions.get('window').height;
+
+var NewRoomWizard = _wrapComponent('NewRoomWizard')(function (_Component) {
+    _inherits(NewRoomWizard, _Component);
+
+    function NewRoomWizard(props) {
+        _classCallCheck(this, NewRoomWizard);
+
+        var _this = _possibleConstructorReturn(this, (NewRoomWizard.__proto__ || Object.getPrototypeOf(NewRoomWizard)).call(this, props));
+
+        _this.state = {
+            height: height,
+            width: width,
+            room: {
+                name: '',
+                isProtected: false,
+                password: '',
+                players: 2,
+                duration: 90
+            },
+            isLandscape: false,
+            isCreatingRoom: false
+        };
+        return _this;
+    }
+
+    _createClass(NewRoomWizard, [{
+        key: 'onLayout',
+        value: function onLayout(e) {
+            _global.Global.getOrientation(function (orientation) {
+                this.setState({
+                    isLandscape: orientation == 'LANDSCAPE',
+                    width: _reactNative.Dimensions.get('window').width,
+                    height: _reactNative.Dimensions.get('window').height
+                });
+            }.bind(this));
+        }
+    }, {
+        key: 'createRoom',
+        value: function createRoom() {
+            var _this2 = this;
+
+            var room = {
+                name: this.state.room.name,
+                players: this.state.room.players,
+                isProtected: this.state.room.isProtected,
+                password: this.state.room.password,
+                duration: this.state.room.duration
+            };
+
+            var isValid = false;
+            if (this.state.room.name.trim().length == 0) {
+                this.refs.dialog.show('error', 'Debes colocar un nombre de sala correcto para poder jugar');
+                _Services.AnalyticsService.trackEvent('create_room_error', {
+                    details: 'name_incomplete'
+                });
+            } else if (this.state.room.isProtected && this.state.room.password.trim().length == 0) {
+                this.refs.dialog.show('error', 'Debes colocar una contraseña si deseas que la sala sea privada');
+                _Services.AnalyticsService.trackEvent('create_room_error', {
+                    details: 'password_incomplete'
+                });
+            } else {
+                isValid = true;
+            }
+
+            if (isValid) {
+                this.setState({ isCreatingRoom: true });
+                _Services.RoomService.create(room, function (data) {
+                    _Services.AnalyticsService.trackEvent('created_room');
+                    _this2.setState({ isCreatingRoom: false });
+
+                    setTimeout(function () {
+                        _this2.props.onCreatedRoom(data);
+                        _this2.props.onClose();
+                    });
+                }, function (err) {
+                    _Services.AnalyticsService.trackEvent('create_room_error', {
+                        error: 'err_server'
+                    });
+                    _this2.setState({ isCreatingRoom: false });
+                });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            if (!this.props.isVisible) return null;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    onLayout: this.onLayout.bind(this), __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 119
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeModalOverlay2.default,
+                    { visible: this.props.isVisible,
+                        closeOnTouchOutside: true,
+                        animationType: 'slideInDown',
+                        animationOutType: 'none',
+                        animationDuration: 300,
+                        onClose: function onClose() {
+                            _this3.props.onClose();
+                        },
+                        containerStyle: { backgroundColor: 'rgba(140, 140, 140, 0.8)', flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' },
+                        childrenWrapperStyle: [styles.overlayChildren, { overflow: 'hidden', paddingTop: 0, marginTop: 0, backgroundColor: "#fff", paddingHorizontal: 0, borderRadius: 10, width: this.state.isLandscape ? '80%' : '100%', maxHeight: this.state.room.isProtected ? 600 : 550 }], __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 121
+                        }
+                    },
+                    this.renderPortraitMode()
+                )
+            );
+        }
+    }, {
+        key: 'renderPortraitMode',
+        value: function renderPortraitMode() {
+            var _this4 = this;
+
+            return _react3.default.createElement(
+                _reactNative.View,
+                {
+                    onStartShouldSetResponder: function onStartShouldSetResponder() {
+                        return true;
+                    },
+                    style: { width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 139
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNative.ScrollView,
+                    {
+                        style: { width: '100%', alignSelf: 'center', height: '100%' }, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 142
+                        }
+                    },
+                    _react3.default.createElement(_CommonDialog2.default, {
+                        ref: 'dialog', __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 145
+                        }
+                    }),
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: styles.formContainer, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 148
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: _general.GeneralStyle.header, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 149
+                                }
+                            },
+                            'CREAR SALA'
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { width: 100, height: 100, borderRadius: 50, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', backgroundColor: _default.Color.VioletPrimary }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 150
+                                }
+                            },
+                            _react3.default.createElement(_reactNative.Image, { source: require('../../images/wordeo/menu/2.png'), style: { width: 80, height: 80, resizeMode: 'contain' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 151
+                                }
+                            })
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.inputContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 153
+                                }
+                            },
+                            _react3.default.createElement(_FontAwesome2.default, { style: styles.formIcon, name: 'user-circle', size: 20, color: _default.Color.BluePrimary, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 154
+                                }
+                            }),
+                            _react3.default.createElement(_reactNative.TextInput, {
+                                multiline: false,
+                                underlineColorAndroid: 'transparent',
+                                placeholder: 'Nombre de la sala',
+                                style: styles.formInput,
+                                onChangeText: function onChangeText(text) {
+                                    var room = _extends({}, _this4.state.room);
+                                    room.name = text;
+                                    _this4.setState({ room: room });
+                                },
+                                value: this.state.room.name,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 155
+                                }
+                            })
+                        ),
+                        _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 168
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.inputContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 170
+                                }
+                            },
+                            _react3.default.createElement(_reactNativeElements.CheckBox, {
+                                containerStyle: { width: '100%', backgroundColor: 'white', borderWidth: 0, marginLeft: 0, paddingLeft: 5 },
+                                textStyle: { fontFamily: _default.Font.PTSansRegular },
+                                title: 'Sala privada',
+                                onPress: function onPress(event, value) {
+                                    var room = _extends({}, _this4.state.room);
+                                    room.isProtected = !room.isProtected;
+                                    _this4.setState({ room: room });
+                                },
+                                checked: this.state.room.isProtected,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 171
+                                }
+                            })
+                        ),
+                        this.state.room.isProtected && _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 185
+                            }
+                        }),
+                        this.state.room.isProtected && _react3.default.createElement(
+                            _reactNative.View,
+                            { style: [styles.inputContainer, { marginLeft: 30 }], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 189
+                                }
+                            },
+                            _react3.default.createElement(_FontAwesome2.default, { style: styles.formIcon, name: 'unlock', size: 20, color: _default.Color.BluePrimary, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 190
+                                }
+                            }),
+                            _react3.default.createElement(_reactNative.TextInput, {
+                                multiline: false,
+                                placeholder: 'Contraseña',
+                                style: styles.formInput,
+                                onChangeText: function onChangeText(text) {
+                                    var room = _extends({}, _this4.state.room);
+                                    room.password = text;
+                                    _this4.setState({ room: room });
+                                },
+                                value: this.state.room.password,
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 191
+                                }
+                            })
+                        ),
+                        this.state.room.isProtected && _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 206
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { width: '100%', marginVertical: 10, height: 'auto' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 209
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: _general.GeneralStyle.header, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 210
+                                    }
+                                },
+                                'Numero de jugadores'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { flexDirection: 'row', height: 50, width: '100%' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 211
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            var room = _extends({}, _this4.state.room);
+                                            room.players = 2;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.players == 2 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, borderRightWidth: 1, borderRightColor: 'rgba(255,255,255,.3)' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 212
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 220
+                                            }
+                                        },
+                                        '2'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            _Services.AnalyticsService.trackEvent('config_room_players', {
+                                                players: 3
+                                            });
+
+                                            var room = _extends({}, _this4.state.room);
+                                            room.players = 3;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.players == 3 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1, borderRightColor: 'rgba(255,255,255,.3)' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 222
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 234
+                                            }
+                                        },
+                                        '3'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            _Services.AnalyticsService.trackEvent('config_room_players', {
+                                                players: 4
+                                            });
+
+                                            var room = _extends({}, _this4.state.room);
+                                            room.players = 4;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.players == 4 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1, borderRightColor: 'rgba(255,255,255,.3)' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 236
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 248
+                                            }
+                                        },
+                                        '4'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            _Services.AnalyticsService.trackEvent('config_room_players', {
+                                                players: 5
+                                            });
+
+                                            var room = _extends({}, _this4.state.room);
+                                            room.players = 5;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.players == 5 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1, borderRightColor: 'rgba(255,255,255,.3)' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 250
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 262
+                                            }
+                                        },
+                                        '5'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            _Services.AnalyticsService.trackEvent('config_room_players', {
+                                                players: 6
+                                            });
+
+                                            var room = _extends({}, _this4.state.room);
+                                            room.players = 6;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.players == 6 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderTopRightRadius: 10, borderBottomRightRadius: 10 }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 264
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 276
+                                            }
+                                        },
+                                        '6'
+                                    )
+                                )
+                            )
+                        ),
+                        _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 281
+                            }
+                        }),
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: { width: '100%', marginVertical: 10, height: 'auto' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 283
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: _general.GeneralStyle.header, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 284
+                                    }
+                                },
+                                'Duraci\xF3n de ronda'
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { flexDirection: 'row', height: 50, width: '100%' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 285
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            _Services.AnalyticsService.trackEvent('config_room_duration', {
+                                                duration: 60
+                                            });
+
+                                            var room = _extends({}, _this4.state.room);
+                                            room.duration = 60;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.duration == 60 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, borderRightWidth: 1, borderRightColor: 'rgba(255,255,255,.3)' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 286
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 298
+                                            }
+                                        },
+                                        '60s'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            var room = _extends({}, _this4.state.room);
+                                            room.duration = 90;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.duration == 90 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1, borderRightColor: 'rgba(255,255,255,.3)' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 300
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 308
+                                            }
+                                        },
+                                        '90s'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            var room = _extends({}, _this4.state.room);
+                                            room.duration = 120;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.duration == 120 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1, borderRightColor: 'rgba(255,255,255,.3)' }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 310
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 318
+                                            }
+                                        },
+                                        '120s'
+                                    )
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.TouchableOpacity,
+                                    {
+                                        activeOpacity: .7,
+                                        onPress: function onPress() {
+                                            var room = _extends({}, _this4.state.room);
+                                            room.duration = 160;
+                                            _this4.setState({ room: room });
+                                        },
+                                        style: { backgroundColor: this.state.room.duration == 160 ? _default.Color.BluePrimary : _default.Color.VioletPrimary, flex: 1, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1, borderRightColor: 'rgba(255,255,255,.3)', borderTopRightRadius: 10, borderBottomRightRadius: 10 }, __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 320
+                                        }
+                                    },
+                                    _react3.default.createElement(
+                                        _reactNative.Text,
+                                        { style: { fontFamily: _default.Font.PTSansBold, fontSize: 15, color: 'white' }, __source: {
+                                                fileName: _jsxFileName,
+                                                lineNumber: 328
+                                            }
+                                        },
+                                        '160s'
+                                    )
+                                )
+                            )
+                        ),
+                        _react3.default.createElement(_reactNativeElements.Divider, { style: { backgroundColor: '#ededed' }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 333
+                            }
+                        }),
+                        _react3.default.createElement(_reactNativeElements.Button, {
+                            loading: this.state.isCreatingRoom,
+                            onPress: this.createRoom.bind(this),
+                            containerViewStyle: { width: '100%', marginLeft: 0, flex: 1, marginVertical: 10 },
+                            buttonStyle: styles.buttonUpdate,
+                            icon: this.state.isCreatingRoom ? null : { name: 'thumbs-up', type: 'font-awesome' },
+                            textStyle: { fontFamily: _default.Font.PTSansBold },
+                            title: 'Crear Sala', __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 335
+                            }
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return NewRoomWizard;
+}(_react2.Component));
+
+exports.default = NewRoomWizard;
+
+
+var styles = _reactNative.StyleSheet.create({
+    overlayChildren: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.7,
+        shadowRadius: 20,
+        elevation: 6
+    },
+    loadingContainer: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formContainer: {
+        alignSelf: 'center',
+        width: '90%',
+        maxWidth: '90%',
+        flex: 1
+    },
+    inputContainer: {
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formInput: {
+        fontFamily: _default.Font.PTSansBold,
+        height: 40,
+        flex: 1
+    },
+    formIcon: {
+        marginRight: 10
+    },
+    buttonUpdate: {
+        minWidth: '100%',
+        width: '100%',
+        borderRadius: 10,
+        backgroundColor: _default.Color.VioletPrimary,
+        height: 50
+    }
+});

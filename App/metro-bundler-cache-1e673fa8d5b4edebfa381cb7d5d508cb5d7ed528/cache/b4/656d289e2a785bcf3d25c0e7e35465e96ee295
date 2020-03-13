@@ -1,0 +1,46 @@
+
+
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ShareOpenGraphValueContainer = function () {
+  function ShareOpenGraphValueContainer(properties) {
+    _classCallCheck(this, ShareOpenGraphValueContainer);
+
+    this._properties = properties ? properties : {};
+  }
+
+  _createClass(ShareOpenGraphValueContainer, [{
+    key: 'putNumber',
+    value: function putNumber(key, number) {
+      this._properties[key] = { type: 'number', value: number };
+    }
+  }, {
+    key: 'putObject',
+    value: function putObject(key, object) {
+      this._properties[key] = { type: 'open-graph-object', value: object };
+    }
+  }, {
+    key: 'putPhoto',
+    value: function putPhoto(key, photo) {
+      this._properties[key] = { type: 'photo', value: photo };
+    }
+  }, {
+    key: 'putString',
+    value: function putString(key, string) {
+      this._properties[key] = { type: 'string', value: string };
+    }
+  }, {
+    key: 'getEntry',
+    value: function getEntry(key) {
+      return this._properties[key];
+    }
+  }]);
+
+  return ShareOpenGraphValueContainer;
+}();
+
+module.exports = ShareOpenGraphValueContainer;

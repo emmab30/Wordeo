@@ -1,0 +1,52 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GoogleTagManager = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _NativeBridges = require('./NativeBridges');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var GoogleTagManager = exports.GoogleTagManager = function () {
+  function GoogleTagManager() {
+    _classCallCheck(this, GoogleTagManager);
+  }
+
+  _createClass(GoogleTagManager, null, [{
+    key: 'openContainerWithId',
+    value: function openContainerWithId(containerId) {
+      return _NativeBridges.GoogleTagManagerBridge.openContainerWithId(containerId);
+    }
+  }, {
+    key: 'boolForKey',
+    value: function boolForKey(key) {
+      return _NativeBridges.GoogleTagManagerBridge.booleanForKey(key);
+    }
+  }, {
+    key: 'stringForKey',
+    value: function stringForKey(key) {
+      return _NativeBridges.GoogleTagManagerBridge.stringForKey(key);
+    }
+  }, {
+    key: 'doubleForKey',
+    value: function doubleForKey(key) {
+      return _NativeBridges.GoogleTagManagerBridge.doubleForKey(key);
+    }
+  }, {
+    key: 'pushDataLayerEvent',
+    value: function pushDataLayerEvent() {
+      var dictionary = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      return _NativeBridges.GoogleTagManagerBridge.pushDataLayerEvent(dictionary);
+    }
+  }, {
+    key: 'setVerboseLoggingEnabled',
+    value: function setVerboseLoggingEnabled(enabled) {
+      return _NativeBridges.GoogleTagManagerBridge.setVerboseLoggingEnabled(enabled);
+    }
+  }]);
+
+  return GoogleTagManager;
+}();

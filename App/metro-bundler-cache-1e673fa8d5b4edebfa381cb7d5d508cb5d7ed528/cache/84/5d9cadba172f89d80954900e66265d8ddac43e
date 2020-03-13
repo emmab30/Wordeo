@@ -1,0 +1,82 @@
+
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.clearRegisteredConstructors = clearRegisteredConstructors;
+exports.createObject = createObject;
+exports.registerConstructors = registerConstructors;
+exports.typeForConstructor = typeForConstructor;
+
+var _constants = require('./constants');
+
+var _util = require('./util');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var registeredConstructors = {};
+var registeredRealmPaths = {};
+
+var RealmObject = function RealmObject() {
+    _classCallCheck(this, RealmObject);
+};
+
+exports.default = RealmObject;
+
+(0, _util.createMethods)(RealmObject.prototype, _constants.objectTypes.OBJECT, ['isValid', 'objectSchema', 'linkingObjects', '_objectId', '_isSameObject']);
+
+function clearRegisteredConstructors() {
+    registeredConstructors = {};
+    registeredRealmPaths = {};
+}
+
+function createObject(realmId, info) {
+    var schema = info.schema;
+    var realmPath = registeredRealmPaths[realmId];
+    var constructor = (registeredConstructors[realmPath] || {})[schema.name];
+    var object = Object.create(constructor ? constructor.prototype : RealmObject.prototype);
+
+    object[_constants.keys.realm] = realmId;
+    object[_constants.keys.id] = info.id;
+    object[_constants.keys.type] = info.type;
+
+    schema.properties.forEach(function (name) {
+        Object.defineProperty(object, name, {
+            enumerable: true,
+            get: (0, _util.getterForProperty)(name),
+            set: (0, _util.setterForProperty)(name)
+        });
+    });
+
+    if (constructor) {
+        var result = constructor.call(object);
+        if (result != null && result != object) {
+            throw new Error('Realm object constructor must not return another value');
+        }
+    }
+
+    return object;
+}
+
+function registerConstructors(realmId, realmPath, constructors) {
+    registeredRealmPaths[realmId] = realmPath;
+
+    if (constructors) {
+        registeredConstructors[realmPath] = constructors;
+    }
+}
+
+function typeForConstructor(realmId, constructor) {
+    var realmPath = registeredRealmPaths[realmId];
+    var constructors = registeredConstructors[realmPath];
+
+    for (var name in constructors) {
+        if (constructors[name] == constructor) {
+            return name;
+        }
+    }
+
+    throw new Error("Constructor was not registered in the schema for this Realm");
+}

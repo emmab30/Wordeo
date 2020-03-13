@@ -1,0 +1,69 @@
+
+
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var NativeGraphRequestManager = require('react-native').NativeModules.FBGraphRequest;
+
+function _verifyParameters(request) {
+  if (request.config && request.config.parameters) {
+    for (var key in request.config.parameters) {
+      var param = request.config.parameters[key];
+      if (typeof param === 'object' && param.string) {
+        continue;
+      }
+      throw new Error("Unexpected value for parameter '" + key + "'. Request parameters " + "need to be objects with a 'string' field.");
+    }
+  }
+}
+
+var FBGraphRequestManager = function () {
+  function FBGraphRequestManager() {
+    _classCallCheck(this, FBGraphRequestManager);
+
+    this.requestBatch = [];
+    this.requestCallbacks = [];
+  }
+
+  _createClass(FBGraphRequestManager, [{
+    key: 'addRequest',
+    value: function addRequest(request) {
+      _verifyParameters(request);
+      this.requestBatch.push(request);
+      this.requestCallbacks.push(request.callback);
+      return this;
+    }
+  }, {
+    key: 'addBatchCallback',
+    value: function addBatchCallback(callback) {
+      this.batchCallback = callback;
+      return this;
+    }
+  }, {
+    key: 'start',
+    value: function start(timeout) {
+      var that = this;
+      var callback = function callback(error, result, response) {
+        if (response) {
+          that.requestCallbacks.forEach(function (innerCallback, index, array) {
+            if (innerCallback) {
+              innerCallback(response[index][0], response[index][1]);
+            }
+          });
+        }
+        if (that.batchCallback) {
+          that.batchCallback(error, result);
+        }
+      };
+
+      NativeGraphRequestManager.start(this.requestBatch, timeout || 0, callback);
+    }
+  }]);
+
+  return FBGraphRequestManager;
+}();
+
+module.exports = FBGraphRequestManager;

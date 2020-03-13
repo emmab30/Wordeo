@@ -1,0 +1,111 @@
+'use strict';
+
+var _ = require('lodash');
+
+var fsUtils = require('./utils/fsUtils');
+var pathUtils = require('./utils/pathUtils');
+var MemoryCache = require('react-native-clcasher/MemoryCache').default;
+
+module.exports = function () {
+    var defaultOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var urlCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : MemoryCache;
+    var fs = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : fsUtils;
+    var path = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : pathUtils;
+
+
+    var defaultDefaultOptions = {
+        headers: {},
+        ttl: 60 * 60 * 24 * 14,
+        useQueryParamsInCacheKey: false,
+        cacheLocation: fs.getCacheDir(),
+        allowSelfSignedSSL: false
+    };
+
+    _.defaults(defaultOptions, defaultDefaultOptions);
+
+    function isCacheable(url) {
+        return _.isString(url) && (_.startsWith(url.toLowerCase(), 'http://') || _.startsWith(url.toLowerCase(), 'https://'));
+    }
+
+    function cacheUrl(url, options, getCachedFile) {
+        if (!isCacheable(url)) {
+            return Promise.reject(new Error('Url is not cacheable'));
+        }
+
+        _.defaults(options, defaultOptions);
+
+        var cacheableUrl = path.getCacheableUrl(url, options.useQueryParamsInCacheKey);
+
+        return urlCache.get(cacheableUrl).then(function (fileRelativePath) {
+            if (!fileRelativePath) {
+                throw new Error('URL expired or not in cache');
+            }
+
+            var cachedFilePath = options.cacheLocation + '/' + fileRelativePath;
+
+            return fs.exists(cachedFilePath).then(function (exists) {
+                if (exists) {
+                    return cachedFilePath;
+                } else {
+                    throw new Error('file under URL stored in url cache doesn\'t exsts');
+                }
+            });
+        }).catch(function () {
+            var fileRelativePath = path.getImageRelativeFilePath(cacheableUrl);
+            var filePath = options.cacheLocation + '/' + fileRelativePath;
+
+            return fs.deleteFile(filePath).then(function () {
+                return getCachedFile(filePath);
+            }).then(function () {
+                return urlCache.set(cacheableUrl, fileRelativePath, options.ttl);
+            }).then(function () {
+                return filePath;
+            });
+        });
+    }
+
+    return {
+        downloadAndCacheUrl: function downloadAndCacheUrl(url) {
+            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            return cacheUrl(url, options, function (filePath) {
+                return fs.downloadFile(url, filePath, options.headers);
+            });
+        },
+        seedAndCacheUrl: function seedAndCacheUrl(url, seedPath) {
+            var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+            return cacheUrl(url, options, function (filePath) {
+                return fs.copyFile(seedPath, filePath);
+            });
+        },
+        deleteUrl: function deleteUrl(url) {
+            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            if (!isCacheable(url)) {
+                return Promise.reject(new Error('Url is not cacheable'));
+            }
+            _.defaults(options, defaultOptions);
+            var cacheableUrl = path.getCacheableUrl(url, options.useQueryParamsInCacheKey);
+            var filePath = path.getImageFilePath(cacheableUrl, options.cacheLocation);
+
+            return urlCache.remove(cacheableUrl).then(function () {
+                return fs.deleteFile(filePath);
+            });
+        },
+        clearCache: function clearCache() {
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            _.defaults(options, defaultOptions);
+            return urlCache.flush().then(function () {
+                return fs.cleanDir(options.cacheLocation);
+            });
+        },
+        getCacheInfo: function getCacheInfo() {
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            _.defaults(options, defaultOptions);
+            return fs.getDirInfo(options.cacheLocation);
+        }
+    };
+};

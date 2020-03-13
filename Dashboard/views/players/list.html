@@ -1,0 +1,81 @@
+<div class="animated fadeIn list-students">
+    <modal visible="isGivingReward"  ng-show="isGivingReward">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="name">Título</label>
+                    <input type="text" class="form-control" id="teacher_id" ng-model="reward.title" placeholder="Título del premio">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="name">Texto del premio</label>
+                    <input type="text" class="form-control" id="teacher_id" ng-model="reward.text" placeholder="Texto del premio">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="name">Tuls de ganancia</label>
+                    <input type="text" class="form-control" id="teacher_id" ng-model="reward.profitTuls" placeholder="Profit tuls">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="name">Exp de ganancia</label>
+                    <input type="text" class="form-control" id="teacher_id" ng-model="reward.profitExp" placeholder="Profit Exp">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" style="margin-top: 10px;">
+                <button type="button" class="btn btn-primary col-sm-12" ng-click="sendReward()">Enviar</button>
+            </div>
+        </div>
+    </modal>
+
+    <div class="card" id="new">
+        <div class="card-body">
+
+            <table datatable="ng" ng-if="players" class="row-border hover">
+                <thead>
+                    <td class="text-center">ID</td>
+                    <td class="text-center">Nombre</td>
+                    <td class="text-center">Tuls</td>
+                    <td class="text-center">Exp</td>
+                    <td class="text-center">Email</td>
+                    <td class="text-center">Online</td>
+                    <td class="text-center">Acciones</td>
+                </thead>
+                <tr ng-repeat="player in players">
+                    <td class="text-center">{{ player.id }}</td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ player.profile.name }} {{ player.profile.lastName }}</p>
+                    </td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ player.profile.balance_tuls }}</p>
+                    </td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ player.profile.experience_points }}</p>
+                    </td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ player.email }}</p>
+                    </td>
+                    <td class="text-center">
+                        <p style="font-size: 12px;">{{ player.isOnline ? 'SI' : 'NO' }}</p>
+                    </td>
+                    <td class="text-center">
+                        <a ng-click="giveReward(player.id)" href="#">[ Dar premio ]</a>
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

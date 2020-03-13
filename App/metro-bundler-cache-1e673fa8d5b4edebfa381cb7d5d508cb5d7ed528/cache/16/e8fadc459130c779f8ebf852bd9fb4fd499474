@@ -1,0 +1,362 @@
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactNative = require('react-native');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _PropRegistry = require('./PropRegistry');
+
+var _PropRegistry2 = _interopRequireDefault(_PropRegistry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NativeReactModule = _reactNative.NativeModules.NavigationReactModule;
+
+function startApp(activityParams) {
+  return regeneratorRuntime.async(function startApp$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          savePassProps(activityParams);
+          _context.next = 3;
+          return regeneratorRuntime.awrap(NativeReactModule.startApp(activityParams));
+
+        case 3:
+          return _context.abrupt('return', _context.sent);
+
+        case 4:
+        case 'end':
+          return _context.stop();
+      }
+    }
+  }, null, this);
+}
+
+function push(screenParams) {
+  savePassProps(screenParams);
+  return NativeReactModule.push(screenParams);
+}
+
+function pop(screenParams) {
+  NativeReactModule.pop(screenParams);
+}
+
+function popToRoot(screenParams) {
+  NativeReactModule.popToRoot(screenParams);
+}
+
+function newStack(screenParams) {
+  savePassProps(screenParams);
+  NativeReactModule.newStack(screenParams);
+}
+
+function toggleTopBarVisible(screenInstanceID, visible, animated) {
+  NativeReactModule.setTopBarVisible(screenInstanceID, visible, animated);
+}
+
+function toggleBottomTabsVisible(visible, animated) {
+  NativeReactModule.setBottomTabsVisible(visible, animated);
+}
+
+function setScreenTitleBarTitle(screenInstanceID, title) {
+  NativeReactModule.setScreenTitleBarTitle(screenInstanceID, title);
+}
+
+function setScreenTitleBarSubtitle(screenInstanceID, subtitle) {
+  NativeReactModule.setScreenTitleBarSubtitle(screenInstanceID, subtitle);
+}
+
+function setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab) {
+  NativeReactModule.setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, leftButton, fab);
+}
+
+function showModal(screenParams) {
+  savePassProps(screenParams);
+  NativeReactModule.showModal(screenParams);
+}
+
+function showLightBox(params) {
+  savePassProps(params);
+  NativeReactModule.showLightBox(params);
+}
+
+function dismissLightBox() {
+  NativeReactModule.dismissLightBox();
+}
+
+function dismissTopModal(params) {
+  return regeneratorRuntime.async(function dismissTopModal$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return regeneratorRuntime.awrap(NativeReactModule.dismissTopModal(params));
+
+        case 2:
+          return _context2.abrupt('return', _context2.sent);
+
+        case 3:
+        case 'end':
+          return _context2.stop();
+      }
+    }
+  }, null, this);
+}
+
+function dismissAllModals() {
+  return regeneratorRuntime.async(function dismissAllModals$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return regeneratorRuntime.awrap(NativeReactModule.dismissAllModals());
+
+        case 2:
+          return _context3.abrupt('return', _context3.sent);
+
+        case 3:
+        case 'end':
+          return _context3.stop();
+      }
+    }
+  }, null, this);
+}
+
+function showInAppNotification(params) {
+  savePassProps(params);
+  NativeReactModule.showSlidingOverlay(params);
+}
+
+function dismissInAppNotification(params) {
+  NativeReactModule.hideSlidingOverlay(params);
+}
+
+function savePassProps(params) {
+  if (params.navigationParams && params.passProps) {
+    _PropRegistry2.default.save(params.navigationParams.screenInstanceID, params.passProps);
+  }
+
+  if (params.screen && params.screen.passProps) {
+    _PropRegistry2.default.save(params.screen.navigationParams.screenInstanceID, params.screen.passProps);
+  }
+
+  if (_lodash2.default.get(params, 'screen.screens')) {
+    _lodash2.default.forEach(params.screen.screens, savePassProps);
+  }
+
+  if (_lodash2.default.get(params, 'screen.topTabs')) {
+    _lodash2.default.forEach(params.screen.topTabs, function (tab) {
+      return savePassProps(tab);
+    });
+  }
+
+  if (params.topTabs) {
+    _lodash2.default.forEach(params.topTabs, function (tab) {
+      return savePassProps(tab);
+    });
+  }
+
+  if (params.tabs) {
+    _lodash2.default.forEach(params.tabs, function (tab) {
+      if (!tab.passProps) {
+        tab.passProps = params.passProps;
+      }
+      savePassProps(tab);
+
+      if (tab.screens) {
+        _lodash2.default.forEach(tab.screens, savePassProps);
+      }
+    });
+  }
+
+  if (params.sideMenu && params.sideMenu.left) {
+    _PropRegistry2.default.save(params.sideMenu.left.navigationParams.screenInstanceID, params.sideMenu.left.passProps);
+  }
+  if (params.sideMenu && params.sideMenu.right) {
+    _PropRegistry2.default.save(params.sideMenu.right.navigationParams.screenInstanceID, params.sideMenu.right.passProps);
+  }
+}
+
+function toggleSideMenuVisible(animated, side) {
+  NativeReactModule.toggleSideMenuVisible(animated, side);
+}
+
+function setSideMenuVisible(animated, visible, side) {
+  NativeReactModule.setSideMenuVisible(animated, visible, side);
+}
+
+function setSideMenuEnabled(enabled, side) {
+  NativeReactModule.setSideMenuEnabled(enabled, side);
+}
+
+function selectTopTabByTabIndex(screenInstanceId, index) {
+  NativeReactModule.selectTopTabByTabIndex(screenInstanceId, index);
+}
+
+function selectTopTabByScreen(screenInstanceId) {
+  NativeReactModule.selectTopTabByScreen(screenInstanceId);
+}
+
+function selectBottomTabByNavigatorId(navigatorId) {
+  NativeReactModule.selectBottomTabByNavigatorId(navigatorId);
+}
+
+function selectBottomTabByTabIndex(index) {
+  NativeReactModule.selectBottomTabByTabIndex(index);
+}
+
+function setBottomTabBadgeByIndex(index, badge) {
+  NativeReactModule.setBottomTabBadgeByIndex(index, badge);
+}
+
+function setBottomTabBadgeByNavigatorId(navigatorId, badge) {
+  NativeReactModule.setBottomTabBadgeByNavigatorId(navigatorId, badge);
+}
+
+function setBottomTabButtonByIndex(index, params) {
+  NativeReactModule.setBottomTabButtonByIndex(index, params);
+}
+
+function setBottomTabButtonByNavigatorId(navigatorId, params) {
+  NativeReactModule.setBottomTabButtonByNavigatorId(navigatorId, params);
+}
+
+function showSnackbar(params) {
+  NativeReactModule.showSnackbar(params);
+}
+
+function dismissSnackbar() {
+  NativeReactModule.dismissSnackbar();
+}
+
+function showContextualMenu(screenInstanceID, params, onButtonPressed) {
+  NativeReactModule.showContextualMenu(screenInstanceID, params, onButtonPressed);
+}
+
+function dismissContextualMenu(screenInstanceID) {
+  NativeReactModule.dismissContextualMenu(screenInstanceID);
+}
+
+function setScreenStyle(screenInstanceId, style) {
+  NativeReactModule.setScreenStyle(screenInstanceId, style);
+}
+
+function isAppLaunched() {
+  return regeneratorRuntime.async(function isAppLaunched$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return regeneratorRuntime.awrap(NativeReactModule.isAppLaunched());
+
+        case 2:
+          return _context4.abrupt('return', _context4.sent);
+
+        case 3:
+        case 'end':
+          return _context4.stop();
+      }
+    }
+  }, null, this);
+}
+
+function isRootLaunched() {
+  return regeneratorRuntime.async(function isRootLaunched$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return regeneratorRuntime.awrap(NativeReactModule.isRootLaunched());
+
+        case 2:
+          return _context5.abrupt('return', _context5.sent);
+
+        case 3:
+        case 'end':
+          return _context5.stop();
+      }
+    }
+  }, null, this);
+}
+
+function getCurrentlyVisibleScreenId() {
+  return regeneratorRuntime.async(function getCurrentlyVisibleScreenId$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return regeneratorRuntime.awrap(NativeReactModule.getCurrentlyVisibleScreenId());
+
+        case 2:
+          return _context6.abrupt('return', _context6.sent);
+
+        case 3:
+        case 'end':
+          return _context6.stop();
+      }
+    }
+  }, null, this);
+}
+
+function getLaunchArgs() {
+  return regeneratorRuntime.async(function getLaunchArgs$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.next = 2;
+          return regeneratorRuntime.awrap(NativeReactModule.getLaunchArgs());
+
+        case 2:
+          return _context7.abrupt('return', _context7.sent);
+
+        case 3:
+        case 'end':
+          return _context7.stop();
+      }
+    }
+  }, null, this);
+}
+
+module.exports = {
+  startApp: startApp,
+  push: push,
+  pop: pop,
+  popToRoot: popToRoot,
+  newStack: newStack,
+  toggleTopBarVisible: toggleTopBarVisible,
+  toggleBottomTabsVisible: toggleBottomTabsVisible,
+  setScreenTitleBarTitle: setScreenTitleBarTitle,
+  setScreenTitleBarSubtitle: setScreenTitleBarSubtitle,
+  setScreenButtons: setScreenButtons,
+  showModal: showModal,
+  dismissTopModal: dismissTopModal,
+  dismissAllModals: dismissAllModals,
+  showLightBox: showLightBox,
+  dismissLightBox: dismissLightBox,
+  selectTopTabByScreen: selectTopTabByScreen,
+  selectTopTabByTabIndex: selectTopTabByTabIndex,
+  showInAppNotification: showInAppNotification,
+  dismissInAppNotification: dismissInAppNotification,
+  toggleSideMenuVisible: toggleSideMenuVisible,
+  setSideMenuVisible: setSideMenuVisible,
+  setSideMenuEnabled: setSideMenuEnabled,
+  selectBottomTabByNavigatorId: selectBottomTabByNavigatorId,
+  selectBottomTabByTabIndex: selectBottomTabByTabIndex,
+  setBottomTabBadgeByNavigatorId: setBottomTabBadgeByNavigatorId,
+  setBottomTabBadgeByIndex: setBottomTabBadgeByIndex,
+  setBottomTabButtonByNavigatorId: setBottomTabButtonByNavigatorId,
+  setBottomTabButtonByIndex: setBottomTabButtonByIndex,
+  showSnackbar: showSnackbar,
+  dismissSnackbar: dismissSnackbar,
+  showContextualMenu: showContextualMenu,
+  dismissContextualMenu: dismissContextualMenu,
+  setScreenStyle: setScreenStyle,
+  isAppLaunched: isAppLaunched,
+  isRootLaunched: isRootLaunched,
+  getCurrentlyVisibleScreenId: getCurrentlyVisibleScreenId,
+  getLaunchArgs: getLaunchArgs
+};

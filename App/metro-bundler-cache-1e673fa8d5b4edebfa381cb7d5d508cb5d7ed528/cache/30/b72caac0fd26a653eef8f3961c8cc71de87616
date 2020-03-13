@@ -1,0 +1,275 @@
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react2 = require('react');
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require('./../../node_modules/react-transform-hmr/lib/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/componentsJs/Room.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require('react-native');
+
+var _strings = require('../../components/localization/strings');
+
+var _reactNativeNavigation = require('react-native-navigation');
+
+var _global = require('../../components/common/global');
+
+var _general = require('../../styles/general');
+
+var _default = require('../../styles/default');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _reactNativeLinearGradient = require('react-native-linear-gradient');
+
+var _reactNativeLinearGradient2 = _interopRequireDefault(_reactNativeLinearGradient);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+    Room: {
+        displayName: 'Room'
+    }
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: '/Users/eabuslaiman-mcpro/Trabajo/Qroom/Wordeo/App/components/componentsJs/Room.js',
+    components: _components,
+    locals: [module],
+    imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+    return function (Component) {
+        return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+    };
+}
+
+var _Dimensions$get = _reactNative.Dimensions.get('window'),
+    height = _Dimensions$get.height,
+    width = _Dimensions$get.width;
+
+var Room = _wrapComponent('Room')(function (_Component) {
+    _inherits(Room, _Component);
+
+    function Room(props) {
+        _classCallCheck(this, Room);
+
+        var _this = _possibleConstructorReturn(this, (Room.__proto__ || Object.getPrototypeOf(Room)).call(this, props));
+
+        _this._hide = function (callback) {
+            _reactNative.Animated.parallel([_reactNative.Animated.timing(_this.state.width, {
+                toValue: width,
+                duration: 0,
+                easing: _reactNative.Easing.Ease
+            }), _reactNative.Animated.timing(_this.state.opacity, {
+                toValue: 1,
+                duration: 1000,
+                easing: _reactNative.Easing.Ease
+            }), _reactNative.Animated.timing(_this.state.height, {
+                toValue: 0,
+                duration: 1000,
+                easing: _reactNative.Easing.Ease
+            })]).start(function () {
+                callback();
+            });
+        };
+
+        _this.state = {
+            spinner: true,
+            isPairing: false,
+            width: new _reactNative.Animated.Value(0),
+            height: new _reactNative.Animated.Value(100),
+            opacity: new _reactNative.Animated.Value(0)
+        };
+        return _this;
+    }
+
+    _createClass(Room, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setState({ spinner: false });
+
+            _reactNative.Animated.parallel([_reactNative.Animated.timing(this.state.width, {
+                toValue: width,
+                duration: 400,
+                easing: _reactNative.Easing.Ease
+            }), _reactNative.Animated.timing(this.state.opacity, {
+                toValue: 1,
+                duration: 1000,
+                easing: _reactNative.Easing.Ease
+            })]).start();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            if (this.state.isPairing) {
+                return this.renderLoading();
+            }
+
+            var _props$room = this.props.room,
+                name = _props$room.name,
+                players = _props$room.players,
+                isProtected = _props$room.isProtected;
+
+            return _react3.default.createElement(
+                _reactNative.Animated.View,
+                {
+                    style: { opacity: this.state.opacity, width: this.state.width, height: this.state.height }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 99
+                    }
+                },
+                _react3.default.createElement(
+                    _reactNativeLinearGradient2.default,
+                    { colors: [_default.Color.BluePrimary, _default.Color.BlueSecondary], style: styles.roomContainer, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 101
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.TouchableOpacity,
+                        {
+                            style: { flex: 1, flexDirection: 'row', height: '100%', width: '100%' },
+                            onPress: function onPress() {
+                                _this2.props.onTapRoom(_this2.props.room);
+                            }, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 102
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: styles.roomInfoContainer, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 107
+                                }
+                            },
+                            _react3.default.createElement(_reactNative.Image, { source: { uri: 'https://images.pexels.com/photos/34591/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
+                                style: { flex: 0.5, width: 30, height: '100%', resizeMode: 'cover' }, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 108
+                                }
+                            }),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 110
+                                    }
+                                },
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: [styles.roomText, { fontSize: 18 }], __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 111
+                                        }
+                                    },
+                                    name
+                                ),
+                                _react3.default.createElement(
+                                    _reactNative.Text,
+                                    { style: [styles.roomText, { fontFamily: _default.Font.PTSansRegular }], __source: {
+                                            fileName: _jsxFileName,
+                                            lineNumber: 112
+                                        }
+                                    },
+                                    players,
+                                    ' players'
+                                )
+                            ),
+                            _react3.default.createElement(
+                                _reactNative.View,
+                                { style: { flex: 0, height: '100%', padding: 10, justifyContent: 'flex-start', alignItems: 'flex-start' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 114
+                                    }
+                                },
+                                _react3.default.createElement(_reactNative.Image, { source: require('../../images/wordeo/room/locked.png'),
+                                    style: { opacity: isProtected ? 1 : .2, width: 25, height: 25, resizeMode: 'contain', tintColor: '#ddd' }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 115
+                                    }
+                                })
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'renderLoading',
+        value: function renderLoading() {
+            return _react3.default.createElement(
+                _reactNativeLinearGradient2.default,
+                { colors: [_default.Color.OrangePrimary, _default.Color.OrangeSecondary], style: styles.roomContainer, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 127
+                    }
+                },
+                _react3.default.createElement(_reactNative.ActivityIndicator, { color: 'white', size: 1, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 128
+                    }
+                })
+            );
+        }
+    }]);
+
+    return Room;
+}(_react2.Component));
+
+exports.default = Room;
+
+
+var styles = _reactNative.StyleSheet.create({
+    roomContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        height: 100,
+        backgroundColor: 'transparent',
+        marginHorizontal: 5,
+        marginVertical: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5
+    },
+    roomInfoContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden'
+    },
+    roomText: {
+        color: _default.Color.LightPrimary,
+        fontFamily: _default.Font.TitanOne,
+        fontSize: 16
+    },
+    basicRoomInfo: {
+        flex: 1,
+        flexDirection: 'row',
+        maxHeight: '100%'
+    }
+});

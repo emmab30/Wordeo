@@ -369,7 +369,7 @@ angular
             }]
         }
     })
-    //Gamification
+    //Wordeo
     .state('app.pendingQuestions', {
         url: "/pending_questions",
         abstract: true,
@@ -390,6 +390,70 @@ angular
                 // you can lazy load controllers
                 return $ocLazyLoad.load({
                     files: ['js/controllers/PendingQuestionsCtrl.js', 'js/services/api.js']
+                });
+            }]
+        }
+    })
+    .state('app.players', {
+        url: "/players",
+        abstract: true,
+        template: '<ui-view></ui-view>',
+        ncyBreadcrumb: {
+            label: 'Jugadores'
+        }
+    })
+    .state('app.players.list', {
+        url: '/list',
+        templateUrl: 'views/players/list.html',
+        ncyBreadcrumb: {
+            label: 'Jugadores'
+        },
+        controller: 'PlayersCtrl',
+        resolve: {
+            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                // you can lazy load controllers
+                return $ocLazyLoad.load({
+                    files: ['js/controllers/PlayersCtrl.js', 'js/services/api.js']
+                });
+            }]
+        }
+    })
+    .state('app.news', {
+        url: "/news",
+        abstract: true,
+        template: '<ui-view></ui-view>',
+        ncyBreadcrumb: {
+            label: 'Noticias'
+        }
+    })
+    .state('app.news.list', {
+        url: '/list',
+        templateUrl: 'views/news/list.html',
+        ncyBreadcrumb: {
+            label: 'Noticias'
+        },
+        controller: 'NewsCtrl',
+        resolve: {
+            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                // you can lazy load controllers
+                return $ocLazyLoad.load({
+                    files: ['js/controllers/NewsCtrl.js', 'js/services/api.js']
+                });
+            }]
+        }
+    })
+    .state('app.news.add', {
+        url: '/add',
+        templateUrl: 'views/news/add.html',
+        ncyBreadcrumb: {
+            label: 'Noticias'
+        },
+        controller: 'NewsCtrl',
+        resolve: {
+            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                // you can lazy load controllers
+                return $ocLazyLoad.load({
+                    files: ['js/controllers/NewsCtrl.js', 'js/services/api.js']
                 });
             }]
         }

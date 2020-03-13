@@ -1,0 +1,28 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ActionSheetCustom = undefined;
+
+var _reactNative = require('react-native');
+
+var _ActionSheetIOS2 = require('./ActionSheetIOS');
+
+var _ActionSheetIOS3 = _interopRequireDefault(_ActionSheetIOS2);
+
+var _ActionSheetCustom2 = require('./ActionSheetCustom');
+
+var _ActionSheetCustom3 = _interopRequireDefault(_ActionSheetCustom2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ActionSheetCustom = exports.ActionSheetCustom = _ActionSheetCustom3.default;
+
+var ActionSheet = void 0;
+
+if (_reactNative.Platform.OS === 'ios') {
+  ActionSheet = _ActionSheetIOS3.default;
+} else {
+  ActionSheet = _ActionSheetCustom3.default;
+}
+
+exports.default = ActionSheet;

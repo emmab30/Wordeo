@@ -1,0 +1,137 @@
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _reactNative = require('react-native');
+
+var _firebaseApp = require('../modules/core/firebase-app');
+
+var _firebaseApp2 = _interopRequireDefault(_firebaseApp);
+
+var _internals = require('./internals');
+
+var _internals2 = _interopRequireDefault(_internals);
+
+var _ = require('./');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FirebaseCoreModule = _reactNative.NativeModules.RNFirebase;
+
+var APPS = {};
+var APP_MODULES = {};
+var DEFAULT_APP_NAME = '[DEFAULT]';
+
+exports.default = {
+  DEFAULT_APP_NAME: DEFAULT_APP_NAME,
+
+  app: function app(name) {
+    var _name = name ? name.toUpperCase() : DEFAULT_APP_NAME;
+    var app = APPS[_name];
+    if (!app) throw new Error(_internals2.default.STRINGS.ERROR_APP_NOT_INIT(_name));
+    return app;
+  },
+  apps: function apps() {
+    return Object.values(APPS);
+  },
+  appModule: function appModule(app, namespace, InstanceClass) {
+    return function () {
+      if (!APP_MODULES[app]) {
+        APP_MODULES[app] = {};
+      }
+
+      if (_.isAndroid && namespace !== 'utils' && !_internals2.default.FLAGS.checkedPlayServices) {
+        _internals2.default.FLAGS.checkedPlayServices = true;
+        app.utils().checkPlayServicesAvailability();
+      }
+
+      if (!APP_MODULES[app][namespace]) {
+        APP_MODULES[app][namespace] = new InstanceClass(app, app.options);
+      }
+
+      return APP_MODULES[app][namespace];
+    };
+  },
+  deleteApp: function deleteApp(name) {
+    var app = APPS[name];
+    if (!app) return Promise.resolve(true);
+
+    return app.delete().then(function () {
+      delete APPS[name];
+      return true;
+    });
+  },
+  initializeApp: function initializeApp(options, name) {
+    if (name && !(0, _.isString)(name)) {
+      throw new Error(_internals2.default.STRINGS.ERROR_INIT_STRING_NAME);
+    }
+
+    var _name = (name || DEFAULT_APP_NAME).toUpperCase();
+
+    if (APPS[_name]) {
+      console.warn(_internals2.default.STRINGS.WARN_INITIALIZE_DEPRECATION);
+      return APPS[_name];
+    }
+
+    if (!(0, _.isObject)(options)) {
+      throw new Error(_internals2.default.STRINGS.ERROR_INIT_OBJECT);
+    }
+
+    if (!options.apiKey) {
+      throw new Error(_internals2.default.STRINGS.ERROR_MISSING_OPT('apiKey'));
+    }
+
+    if (!options.appId) {
+      throw new Error(_internals2.default.STRINGS.ERROR_MISSING_OPT('appId'));
+    }
+
+    if (!options.databaseURL) {
+      throw new Error(_internals2.default.STRINGS.ERROR_MISSING_OPT('databaseURL'));
+    }
+
+    if (!options.messagingSenderId) {
+      throw new Error(_internals2.default.STRINGS.ERROR_MISSING_OPT('messagingSenderId'));
+    }
+
+    if (!options.projectId) {
+      throw new Error(_internals2.default.STRINGS.ERROR_MISSING_OPT('projectId'));
+    }
+
+    if (!options.storageBucket) {
+      throw new Error(_internals2.default.STRINGS.ERROR_MISSING_OPT('storageBucket'));
+    }
+
+    APPS[_name] = new _firebaseApp2.default(_name, options);
+
+    return APPS[_name];
+  },
+  initializeNativeApps: function initializeNativeApps() {
+    for (var i = 0, len = FirebaseCoreModule.apps.length; i < len; i++) {
+      var app = FirebaseCoreModule.apps[i];
+      var options = _extends({}, app);
+      delete options.name;
+      APPS[app.name] = new _firebaseApp2.default(app.name, options, true);
+    }
+  },
+  moduleAndStatics: function moduleAndStatics(namespace, statics, moduleName) {
+    var _this = this;
+
+    var getModule = function getModule(app) {
+      var _app = app;
+
+      if (_app && !(_app instanceof _firebaseApp2.default)) throw new Error(_internals2.default.STRINGS.ERROR_NOT_APP(namespace));else if (!_app) _app = _this.app(DEFAULT_APP_NAME);
+      if (namespace === 'crashlytics') {
+        return _app.fabric[namespace]();
+      }
+
+      var module = _app[namespace];
+      return module();
+    };
+
+    return _extends(getModule, statics, {
+      nativeModuleExists: !!_reactNative.NativeModules[moduleName]
+    });
+  }
+};

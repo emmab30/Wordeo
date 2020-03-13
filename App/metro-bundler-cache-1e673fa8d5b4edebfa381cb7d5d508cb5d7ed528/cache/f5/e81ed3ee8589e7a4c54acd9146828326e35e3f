@@ -1,0 +1,95 @@
+
+
+'use strict';
+
+var require_method = require;
+
+function nodeRequire(module) {
+    return require_method(module);
+}
+
+function getContext() {
+    if (typeof process === 'object' && process + '' === '[object process]') {
+        if (typeof global !== 'undefined' && global.__debug__) {
+            return 'vscodedebugger';
+        }
+
+        return process.type === 'renderer' ? 'electron' : 'nodejs';
+    }
+
+    if (typeof jest === 'object') {
+        return 'nodejs';
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+        if (typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent)) {
+            return 'chromedebugger';
+        }
+
+        if (typeof atob !== 'undefined') {
+            return 'chromedebugger';
+        }
+
+        if (typeof Realm === 'undefined') {
+            throw new Error('Missing Realm constructor. Did you run "react-native link realm"? Please see https://realm.io/docs/react-native/latest/#missing-realm-constructor for troubleshooting');
+        }
+        return 'reactnative';
+    }
+
+    if (typeof Realm !== 'undefined') {
+        return 'jscore';
+    }
+
+    if (typeof global !== 'undefined' && global.__debug__) {
+        return 'vscodedebugger';
+    }
+
+    if (typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent)) {
+        return 'chromedebugger';
+    }
+
+    throw Error("Unknown execution context");
+}
+
+var realmConstructor;
+
+switch (getContext()) {
+    case 'nodejs':
+    case 'electron':
+        nodeRequire('./submit-analytics')('Run');
+
+        var binary = nodeRequire('node-pre-gyp');
+        var path = nodeRequire('path');
+        var pkg = path.resolve(path.join(__dirname, '../package.json'));
+        var binding_path = binary.find(pkg);
+
+        realmConstructor = require_method(binding_path).Realm;
+        break;
+
+    case 'reactnative':
+    case 'jscore':
+        realmConstructor = Realm;
+        break;
+
+    case 'chromedebugger':
+    case 'vscodedebugger':
+        realmConstructor = require('./browser').default;
+        break;
+}
+
+if (!realmConstructor) {
+    throw Error("Error trying to establish execution context");
+}
+
+require('./extensions')(realmConstructor);
+
+if (realmConstructor.Sync) {
+    if (getContext() === 'nodejs') {
+        nodeRequire('./notifier')(realmConstructor);
+        if (!realmConstructor.Worker) {
+            Object.defineProperty(realmConstructor, 'Worker', { value: nodeRequire('./worker') });
+        }
+    }
+}
+
+module.exports = realmConstructor;
