@@ -2,7 +2,7 @@
 
 Wordeo is an online trivia game where a participant joins a round and answers questions over a span of 60 seconds. The participant who correctly answers the most questions within these 60 seconds wins and earns TULS (game points). The categories are varied, ranging from Sports, Mathematics, History, Geography, TV, and more.
 
-![Wordeo Screenshot](https://i.ibb.co/Bnz3FvM/Screenshot-2023-07-11-at-08-04-10.png)
+![Wordeo Screenshot](https://i.ibb.co/zGqVYmY/Screenshot-2023-07-11-at-08-06-04.png)
 
 ## Marketplace
 
